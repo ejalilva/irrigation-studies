@@ -1,0 +1,2020 @@
+{
+  "updated": "2026-10-18",
+  "papers": [
+    {
+      "id": "10.5194/egusphere-2026-1856",
+      "title": "Incorporating irrigation effects into high-resolution daily land evaporation estimates over the Iberian Peninsula",
+      "authors": "Baez-Villanueva, O. M., Crespo-Otero, A., Modanesi, S., et al.",
+      "first_author": "Baez-Villanueva",
+      "year": 2026,
+      "date": "2026-04-10",
+      "venue": "EGUsphere (preprint)",
+      "doi": "10.5194/egusphere-2026-1856",
+      "url": null,
+      "status": "preprint",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Iberian Peninsula",
+      "region": "Europe",
+      "scale": "regional",
+      "period": {
+        "start": 2018,
+        "end": 2022
+      },
+      "approach": "Explicit irrigation added to GLEAM4 evaporation model at 1 km",
+      "methods": [
+        "model",
+        "sm",
+        "et"
+      ],
+      "data": [
+        "GLEAM4",
+        "Sentinel-1 soil moisture",
+        "Irrigated-extent map",
+        "Satellite crop phenology",
+        "Vegetation optical depth",
+        "LAI"
+      ],
+      "keywords": [
+        "evaporation",
+        "GLEAM4",
+        "irrigation",
+        "Iberian Peninsula",
+        "1 km",
+        "Sentinel-1"
+      ],
+      "summary": "Adds explicit irrigation to the GLEAM4 evaporation model at 1 km over Iberia; irrigation raises evaporation by up to about 450 mm per year over irrigated land.",
+      "note": "Estimates irrigation-driven evaporation, not the amount of water applied.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-30-2579-2026",
+      "title": "On the gap between crop and land surface models: comparing irrigation and other land surface estimates from AquaCrop and Noah-MP over the Po Valley",
+      "authors": "Busschaert, L., Bechtold, M., Modanesi, S., et al.",
+      "first_author": "Busschaert",
+      "year": 2026,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-30-2579-2026",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Po Valley, Italy",
+      "region": "Europe",
+      "scale": "regional",
+      "period": null,
+      "approach": "AquaCrop and Noah-MP sprinkler irrigation simulations in NASA LIS",
+      "methods": [
+        "model",
+        "sm",
+        "et"
+      ],
+      "data": [
+        "AquaCrop",
+        "Noah-MP",
+        "NASA Land Information System",
+        "SMAP (downscaled)"
+      ],
+      "keywords": [
+        "crop model",
+        "land surface model",
+        "irrigation",
+        "Po Valley",
+        "AquaCrop",
+        "Noah-MP"
+      ],
+      "summary": "Compares 1 km irrigation from AquaCrop and Noah-MP over the Po Valley; Noah-MP simulates about 434 mm/yr versus 268 mm/yr, mainly because of larger water losses.",
+      "note": "First posted as an EGUsphere preprint in July 2025.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.rse.2025.115153",
+      "title": "Characterization of irrigation timing using thermal satellite observations, a data-driven approach",
+      "authors": "Jalilvand, E., Kumar, S.V., Truong, C., Haacker, E., Mahanama, S.",
+      "first_author": "Jalilvand",
+      "year": 2026,
+      "date": null,
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2025.115153",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": false
+      },
+      "domain": null,
+      "region": "North America",
+      "scale": "field",
+      "period": null,
+      "approach": "Data-driven detection of irrigation timing from thermal observations (AgroTrack)",
+      "methods": [
+        "et",
+        "ml"
+      ],
+      "data": [
+        "Thermal land surface temperature"
+      ],
+      "keywords": [
+        "irrigation timing",
+        "AgroTrack",
+        "land surface temperature",
+        "fallowing"
+      ],
+      "summary": "Introduces AgroTrack, a data-driven method that infers where and when fields are irrigated from thermal satellite observations; it captured widespread fallowing after California's 2021 drought.",
+      "added": null,
+      "needs_review": true,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-30-3675-2026",
+      "title": "Satellite data rendered irrigation using Penman–Monteith and SEBAL – sDRIPS for surface water irrigation optimization",
+      "authors": "Khan, S., Hossain, F., Islam, K., et al.",
+      "first_author": "Khan",
+      "year": 2026,
+      "date": "2026-06-16",
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-30-3675-2026",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Teesta Barrage Project, northern Bangladesh",
+      "region": "Asia",
+      "scale": "regional",
+      "period": {
+        "start": 2023,
+        "end": 2023
+      },
+      "approach": "Weekly canal irrigation advisories from SEBAL and Penman-Monteith ET",
+      "methods": [
+        "et",
+        "sm",
+        "imagery"
+      ],
+      "data": [
+        "Landsat 8/9",
+        "Sentinel-1",
+        "GPM IMERG",
+        "GFS forecasts",
+        "SEBAL"
+      ],
+      "keywords": [
+        "irrigation advisory",
+        "SEBAL",
+        "Penman-Monteith",
+        "canal irrigation",
+        "Bangladesh"
+      ],
+      "summary": "Estimates weekly net irrigation water requirements for canal command areas from satellite evapotranspiration and rainfall forecasts, co-developed with Bangladesh's water agency for the Teesta scheme.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/essd-18-4833-2026",
+      "title": "Long-term irrigation water use datasets from multiple Earth Observation-based methods in major irrigated regions",
+      "authors": "Laluet, P., Dari, J., Busschaert, L., et al.",
+      "first_author": "Laluet",
+      "year": 2026,
+      "date": "2026-07-13",
+      "venue": "Earth System Science Data",
+      "doi": "10.5194/essd-18-4833-2026",
+      "url": null,
+      "status": "published",
+      "type": "dataset",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "CONUS, India, Murray-Darling and Ebro basins",
+      "region": "Multiple",
+      "scale": "regional",
+      "period": null,
+      "approach": "Monthly 0.25-degree irrigation from soil-moisture methods and Noah-MP",
+      "methods": [
+        "sm",
+        "et",
+        "model"
+      ],
+      "data": [
+        "Satellite soil moisture products",
+        "Satellite ET products",
+        "Noah-MP",
+        "Satellite irrigated-area maps"
+      ],
+      "keywords": [
+        "irrigation water use",
+        "dataset",
+        "soil moisture",
+        "Noah-MP",
+        "multi-method",
+        "0.25 degree"
+      ],
+      "summary": "Releases monthly 0.25-degree irrigation water use datasets from several satellite soil moisture-based methods and Noah-MP for four major irrigated regions, evaluated against survey and basin data.",
+      "note": "First posted as an ESSD discussion paper in January 2026.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1029/2026gl123183",
+      "title": "Detecting irrigation from spectral differences between satellite and modeled soil moisture across the contiguous United States",
+      "authors": "Massari, C., Modanesi, S., Heyvaert, Z., et al.",
+      "first_author": "Massari",
+      "year": 2026,
+      "date": "2026-09-16",
+      "venue": "Geophysical Research Letters",
+      "doi": "10.1029/2026GL123183",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Contiguous United States",
+      "region": "North America",
+      "scale": "continental",
+      "period": {
+        "start": 2010,
+        "end": 2023
+      },
+      "approach": "Wavelet comparison of SMOS and irrigation-free Noah-MP soil moisture",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "SMOS",
+        "Noah-MP",
+        "LGRIP30"
+      ],
+      "keywords": [
+        "irrigation detection",
+        "wavelet",
+        "SMOS",
+        "Noah-MP",
+        "CONUS"
+      ],
+      "summary": "Maps irrigated areas across the contiguous US from seasonal and sub-seasonal spectral differences between SMOS soil moisture and Noah-MP runs without irrigation.",
+      "note": "First posted on EarthArXiv in March 2026 under the title 'Spectral signatures in satellite soil moisture reveal irrigation patterns across the contiguous United States'.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/egusphere-2025-2004",
+      "title": "Detecting irrigation signals from SMAP L3 and L4 soil moisture: A case study in California's Central Valley",
+      "authors": "Huang, X., He, Q., Hanasaki, N., et al.",
+      "first_author": "Huang",
+      "year": 2025,
+      "date": "2025-05-16",
+      "venue": "EGUsphere (preprint)",
+      "doi": "10.5194/egusphere-2025-2004",
+      "url": null,
+      "status": "preprint",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "California Central Valley",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 2016,
+        "end": 2022
+      },
+      "approach": "Cropping versus non-cropping season SMAP L3 minus L4 differences",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "SMAP L3 Enhanced soil moisture",
+        "SMAP L4 (land data assimilation product)"
+      ],
+      "keywords": [
+        "irrigation signal",
+        "SMAP",
+        "Level 4",
+        "Central Valley",
+        "soil moisture"
+      ],
+      "summary": "Maps relative irrigation intensity from differences between SMAP Level 3 retrievals and the Level 4 assimilation product, which excludes irrigation; correlations of 0.66 and 0.50 with benchmark maps.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/essd-15-1555-2023",
+      "title": "Regional data sets of high-resolution (1 and 6 km) irrigation estimates from space",
+      "authors": "Dari, J., Brocca, L., Modanesi, S., et al.",
+      "first_author": "Dari",
+      "year": 2023,
+      "date": null,
+      "venue": "Earth System Science Data",
+      "doi": "10.5194/essd-15-1555-2023",
+      "url": null,
+      "status": "published",
+      "type": "dataset",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Ebro basin, Po valley and Murray–Darling basin",
+      "region": "Multiple",
+      "scale": "regional",
+      "period": {
+        "start": 2016,
+        "end": 2020
+      },
+      "approach": "Soil-moisture-based inversion of Sentinel-1 and CYGNSS soil moisture",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "Sentinel-1",
+        "RT1 model",
+        "CYGNSS"
+      ],
+      "keywords": [
+        "irrigation dataset",
+        "Sentinel-1",
+        "CYGNSS",
+        "soil moisture inversion",
+        "high resolution"
+      ],
+      "summary": "Releases weekly irrigation-amount datasets at 1 km (Ebro, Po) and 6 km (Murray–Darling) from satellite soil moisture inversion, evaluated against district-level irrigation benchmarks.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1029/2022wr033342",
+      "title": "Is it possible to quantify irrigation water-use by assimilating a high-resolution satellite soil moisture product?",
+      "authors": "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., Kumar, S.V., Mohammadi, M.R., Das, N.N.",
+      "first_author": "Jalilvand",
+      "year": 2023,
+      "date": null,
+      "venue": "Water Resources Research",
+      "doi": "10.1029/2022WR033342",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": null,
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Particle batch smoother assimilation of 1 km soil moisture into VIC",
+      "methods": [
+        "sm",
+        "model",
+        "da"
+      ],
+      "data": [
+        "SMAP/Sentinel-1 1 km",
+        "VIC"
+      ],
+      "keywords": [
+        "irrigation water use",
+        "particle batch smoother",
+        "SMAP/Sentinel-1",
+        "synthetic experiments"
+      ],
+      "summary": "Assimilating 1 km SMAP/Sentinel-1 soil moisture estimated irrigation well when timing was known, but underestimated observed water use by 18.6% in real-world tests.",
+      "added": null,
+      "needs_review": true,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-27-2463-2023",
+      "title": "The precision of satellite-based net irrigation quantification in the Indus and Ganges basins",
+      "authors": "Kragh, S. J., Fensholt, R., Stisen, S., et al.",
+      "first_author": "Kragh",
+      "year": 2023,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-27-2463-2023",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Indus and Ganges basins",
+      "region": "Asia",
+      "scale": "regional",
+      "period": {
+        "start": 2003,
+        "end": 2013
+      },
+      "approach": "Ensemble of satellite ET minus rainfed mHM ET",
+      "methods": [
+        "et",
+        "model"
+      ],
+      "data": [
+        "mHM",
+        "FLUXCOM",
+        "NTSG",
+        "PML v2",
+        "CHIRPS",
+        "ERA5-Land"
+      ],
+      "keywords": [
+        "net irrigation",
+        "uncertainty",
+        "ensemble",
+        "evapotranspiration",
+        "Indus",
+        "Ganges"
+      ],
+      "summary": "Uses 15 combinations of ET and precipitation products with a rainfed mHM baseline to quantify net irrigation and its precision in the Indus and Ganges basins.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs15051449",
+      "title": "Irrigation timing retrieval at the plot scale using surface soil moisture derived from Sentinel time series in Europe",
+      "authors": "Le Page, M., Nguyen, T., Zribi, M., et al.",
+      "first_author": "Le Page",
+      "year": 2023,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs15051449",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Five sites in France, Germany and Italy",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2017,
+        "end": 2019
+      },
+      "approach": "Sentinel soil moisture compared with bucket and force-restore models",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "Sentinel-1",
+        "Sentinel-2",
+        "S2SM soil moisture",
+        "FAO-56 bucket model",
+        "Force-restore model"
+      ],
+      "keywords": [
+        "irrigation timing",
+        "plot scale",
+        "Sentinel-1",
+        "Sentinel-2",
+        "force-restore",
+        "ESA Irrigation+"
+      ],
+      "summary": "Retrieves plot-scale irrigation timing in Europe from Sentinel soil moisture; detection weakens with sparser observations and frequent irrigation, and a force-restore model raised F-scores by about 6 points.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-26-4685-2022",
+      "title": "Challenges and benefits of quantifying irrigation through the assimilation of Sentinel-1 backscatter observations into Noah-MP",
+      "authors": "Modanesi, S., Massari, C., Bechtold, M., et al.",
+      "first_author": "Modanesi",
+      "year": 2022,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-26-4685-2022",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Po Valley, Italy, and Lower Saxony, Germany",
+      "region": "Europe",
+      "scale": "regional",
+      "period": {
+        "start": 2015,
+        "end": 2020
+      },
+      "approach": "EnKF assimilation of Sentinel-1 backscatter into Noah-MP irrigation scheme",
+      "methods": [
+        "imagery",
+        "model",
+        "da"
+      ],
+      "data": [
+        "Sentinel-1",
+        "Noah-MP",
+        "NASA LIS",
+        "MERRA-2"
+      ],
+      "keywords": [
+        "backscatter assimilation",
+        "Noah-MP",
+        "sprinkler irrigation",
+        "water cloud model",
+        "EnKF"
+      ],
+      "summary": "Assimilates Sentinel-1 backscatter into Noah-MP with a sprinkler scheme; results are mixed and limited by the irrigation parameterization.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.jag.2022.102979",
+      "title": "How accurately can we retrieve irrigation timing and water amounts from (satellite) soil moisture?",
+      "authors": "Zappa, L., Schlaffer, S., Brocca, L., et al.",
+      "first_author": "Zappa",
+      "year": 2022,
+      "date": null,
+      "venue": "International Journal of Applied Earth Observation and Geoinformation",
+      "doi": "10.1016/j.jag.2022.102979",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Four center-pivot fields, Germany, plus synthetic experiment",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2016,
+        "end": 2019
+      },
+      "approach": "Synthetic and real tests of soil moisture resolution and revisit",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "CGLS Sentinel-1 SSM",
+        "ESA CCI Soil Moisture",
+        "SMAP L3"
+      ],
+      "keywords": [
+        "irrigation timing",
+        "irrigation amounts",
+        "spatial resolution",
+        "revisit time",
+        "synthetic experiment"
+      ],
+      "summary": "Tests how soil moisture resolution, revisit time and noise limit irrigation retrieval; detection and quantification work with data every 3 days or better, while random errors hurt most.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1029/2021wr030031",
+      "title": "Estimation of global irrigation water use by the integration of multiple satellite observations",
+      "authors": "Zhang, K., Li, X., Zheng, D., et al.",
+      "first_author": "Zhang",
+      "year": 2022,
+      "date": null,
+      "venue": "Water Resources Research",
+      "doi": "10.1029/2021WR030031",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Global",
+      "region": "Global",
+      "scale": "global",
+      "period": {
+        "start": 2011,
+        "end": 2018
+      },
+      "approach": "Multi-satellite soil moisture water balance with PT-JPL ET",
+      "methods": [
+        "sm",
+        "et",
+        "model"
+      ],
+      "data": [
+        "ESA CCI SM",
+        "SMAP",
+        "SMOS",
+        "ASCAT",
+        "AMSR2",
+        "PT-JPL"
+      ],
+      "keywords": [
+        "global irrigation water use",
+        "satellite soil moisture",
+        "ensemble",
+        "Bayesian calibration",
+        "PT-JPL"
+      ],
+      "summary": "Combines several satellite soil moisture and precipitation products in a process-based framework to estimate global irrigation water use, evaluated against US, Chinese and FAO statistics.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.jhydrol.2021.126129",
+      "title": "Detecting and mapping irrigated areas in a Mediterranean environment by using remote sensing soil moisture and a land surface model",
+      "authors": "Dari, J., Quintana-Seguí, P., Escorihuela, M.J., et al.",
+      "first_author": "Dari",
+      "year": 2021,
+      "date": null,
+      "venue": "Journal of Hydrology",
+      "doi": "10.1016/j.jhydrol.2021.126129",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Irrigated area in northeast Spain",
+      "region": "Europe",
+      "scale": "regional",
+      "period": null,
+      "approach": "K-means clustering of satellite and modelled soil moisture",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "SMOS (DISPATCH 1 km)",
+        "SMAP (1 km and 9 km)",
+        "Sentinel-1 soil moisture",
+        "ASCAT",
+        "SURFEX-ISBA"
+      ],
+      "keywords": [
+        "soil moisture",
+        "irrigated areas",
+        "SMAP",
+        "K-means",
+        "land surface model",
+        "Spain"
+      ],
+      "summary": "Compares five satellite soil moisture products for detecting irrigation in northeast Spain and maps irrigated areas by K-means clustering, with downscaled SMAP agreeing up to 78%.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1109/jstars.2021.3119228",
+      "title": "Evaluation of SMAP/Sentinel 1 high-resolution soil moisture data to detect irrigation over agricultural domain",
+      "authors": "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., Das, N.N.",
+      "first_author": "Jalilvand",
+      "year": 2021,
+      "date": null,
+      "venue": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+      "doi": "10.1109/JSTARS.2021.3119228",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Irrigated plain south of Lake Urmia, Iran",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Mean and variability of SMAP and SMAP/Sentinel-1 soil moisture",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "SMAP enhanced 9 km",
+        "SMAP/Sentinel-1 1 km and 3 km"
+      ],
+      "keywords": [
+        "irrigation signal",
+        "vegetation water content",
+        "SMAP/Sentinel-1",
+        "soil moisture variability"
+      ],
+      "summary": "The 9 km SMAP product misses irrigation, but 1–3 km SMAP/Sentinel-1 data show it in soil moisture variability, especially with dynamic vegetation water content.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs13142667",
+      "title": "Irrigation amounts and timing retrieval through data assimilation of surface soil moisture into the FAO-56 approach in the South Mediterranean region",
+      "authors": "Ouaadi, N., Jarlan, L., Khabba, S., et al.",
+      "first_author": "Ouaadi",
+      "year": 2021,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs13142667",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Wheat fields, Haouz plain, central Morocco",
+      "region": "Africa",
+      "scale": "field",
+      "period": {
+        "start": 2002,
+        "end": 2018
+      },
+      "approach": "Particle filter assimilating surface soil moisture into FAO-56",
+      "methods": [
+        "sm",
+        "model",
+        "da"
+      ],
+      "data": [
+        "Sentinel-1 SSM",
+        "In situ surface soil moisture",
+        "FAO-56 model"
+      ],
+      "keywords": [
+        "irrigation timing",
+        "irrigation amounts",
+        "particle filter",
+        "FAO-56",
+        "wheat",
+        "Morocco"
+      ],
+      "summary": "Assimilates surface soil moisture into FAO-56 with a particle filter to retrieve irrigation timing and amounts on Moroccan wheat; Sentinel-1 data gave good seasonal totals.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/su132011355",
+      "title": "A method to estimate surface soil moisture and map the irrigated cropland area using Sentinel-1 and Sentinel-2 data",
+      "authors": "Rabiei, S., Jalilvand, E., Tajrishy, M.",
+      "first_author": "Rabiei",
+      "year": 2021,
+      "date": "2021-10-14",
+      "venue": "Sustainability",
+      "doi": "10.3390/su132011355",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Farms in Tehran and Alborz provinces, Iran",
+      "region": "Asia",
+      "scale": "field",
+      "period": {
+        "start": 2019,
+        "end": 2019
+      },
+      "approach": "CNN soil moisture from Sentinel-1/2, then irrigated-area classification",
+      "methods": [
+        "sm",
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Sentinel-1",
+        "Sentinel-2",
+        "SMAP/Sentinel-1"
+      ],
+      "keywords": [
+        "surface soil moisture",
+        "10 m",
+        "convolutional neural network",
+        "irrigation mapping"
+      ],
+      "summary": "Estimates 10 m surface soil moisture with a neural network, then maps irrigated cropland from it with 77% overall accuracy.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.rse.2021.112445",
+      "title": "Mapping annual irrigation from Landsat imagery and environmental variables across the conterminous United States",
+      "authors": "Xie, Y., Lark, T.J.",
+      "first_author": "Xie",
+      "year": 2021,
+      "date": null,
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2021.112445",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Conterminous United States",
+      "region": "North America",
+      "scale": "national",
+      "period": {
+        "start": 1997,
+        "end": 2017
+      },
+      "approach": "County-stratified random forests on Landsat and environmental variables",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Landsat",
+        "Environmental variables",
+        "USDA NASS Census of Agriculture"
+      ],
+      "keywords": [
+        "annual irrigation",
+        "Landsat",
+        "random forest",
+        "30 m",
+        "CONUS"
+      ],
+      "summary": "Produces 30 m annual irrigation maps for the conterminous US from 1997 to 2017 using Landsat, environmental variables and county-stratified random forest classifiers.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs13091727",
+      "title": "Detection and quantification of irrigation water amounts at 500 m using Sentinel-1 surface soil moisture",
+      "authors": "Zappa, L., Schlaffer, S., Bauer-Marschallinger, B., et al.",
+      "first_author": "Zappa",
+      "year": 2021,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs13091727",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Three irrigated sites, northeastern Germany",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2018,
+        "end": 2019
+      },
+      "approach": "Event detection and water-balance quantification from Sentinel-1 soil moisture",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "Sentinel-1",
+        "TU Wien S1 surface soil moisture"
+      ],
+      "keywords": [
+        "irrigation events",
+        "field scale",
+        "Sentinel-1",
+        "soil moisture",
+        "water amounts"
+      ],
+      "summary": "Detects field-scale irrigation events and estimates water amounts from 500 m Sentinel-1 soil moisture, agreeing with farmer-reported timing and patterns in Germany.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs12091456",
+      "title": "Near real-time irrigation detection at plot scale using Sentinel-1 data",
+      "authors": "Bazzi, H., Baghdadi, N., Fayad, I., et al.",
+      "first_author": "Bazzi",
+      "year": 2020,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs12091456",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Montpellier and Tarbes (France); Catalonia (Spain)",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2017,
+        "end": 2018
+      },
+      "approach": "Decision tree on Sentinel-1 backscatter change detection",
+      "methods": [
+        "imagery",
+        "sm"
+      ],
+      "data": [
+        "Sentinel-1 SAR backscatter",
+        "Sentinel-1 soil moisture (10 km grid)",
+        "Sentinel-2 NDVI"
+      ],
+      "keywords": [
+        "irrigation events",
+        "Sentinel-1",
+        "change detection",
+        "near real-time",
+        "plot scale"
+      ],
+      "summary": "Detects plot-scale irrigation events in near real time from Sentinel-1 backscatter changes, using coarse soil moisture to screen out rain; 84.8% of events detected at Montpellier.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs12244058",
+      "title": "Irrigation events detection over intensively irrigated grassland plots using Sentinel-1 data",
+      "authors": "Bazzi, H., Baghdadi, N., Fayad, I., et al.",
+      "first_author": "Bazzi",
+      "year": 2020,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs12244058",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Grassland plots, Crau plain, southeastern France",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2019,
+        "end": 2019
+      },
+      "approach": "Change detection on Sentinel-1 VV and VH backscatter",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "Sentinel-1 SAR (VV, VH)",
+        "Sentinel-2 NDVI"
+      ],
+      "keywords": [
+        "irrigation events",
+        "grassland",
+        "Sentinel-1",
+        "backscatter",
+        "Crau plain"
+      ],
+      "summary": "Detects irrigation events on 46 intensively irrigated grassland plots from Sentinel-1 backscatter time series; combining VV and VH gave the best F-score (76.4%).",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs12162593",
+      "title": "Exploiting high-resolution remote sensing soil moisture to estimate irrigation water amounts over a Mediterranean region",
+      "authors": "Dari, J., Brocca, L., Quintana-Seguí, P., et al.",
+      "first_author": "Dari",
+      "year": 2020,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs12162593",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Ebro basin, northeastern Spain",
+      "region": "Europe",
+      "scale": "regional",
+      "period": {
+        "start": 2011,
+        "end": 2017
+      },
+      "approach": "SM2RAIN inversion of 1 km downscaled satellite soil moisture",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "SMAP",
+        "SMOS",
+        "DISPATCH"
+      ],
+      "keywords": [
+        "irrigation amounts",
+        "SM2RAIN",
+        "DISPATCH downscaling",
+        "crop evapotranspiration",
+        "irrigation districts"
+      ],
+      "summary": "Applies SM2RAIN with crop evapotranspiration to 1 km DISPATCH-downscaled SMAP and SMOS soil moisture, reproducing irrigation amounts in four of five Ebro districts.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs12142328",
+      "title": "IrrMapper: A machine learning approach for high resolution mapping of irrigated agriculture across the Western U.S.",
+      "authors": "Ketchum, D., Jencso, K., Maneta, M.P., et al.",
+      "first_author": "Ketchum",
+      "year": 2020,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs12142328",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Eleven western US states",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 1986,
+        "end": 2018
+      },
+      "approach": "Random forest classification of Landsat and ancillary data in GEE",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Landsat",
+        "Climate and meteorological data",
+        "Terrain data",
+        "Google Earth Engine"
+      ],
+      "keywords": [
+        "IrrMapper",
+        "Landsat",
+        "random forest",
+        "western US",
+        "30 m"
+      ],
+      "summary": "Produces annual 30 m irrigated land maps for 11 western US states from 1986 to 2018 using Landsat and random forest, with 97.8% irrigated versus unirrigated accuracy.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1029/2020wr027413",
+      "title": "Estimating net irrigation across the North China Plain through dual modeling of evapotranspiration",
+      "authors": "Koch, J., Zhang, W., Martinsen, G., et al.",
+      "first_author": "Koch",
+      "year": 2020,
+      "date": null,
+      "venue": "Water Resources Research",
+      "doi": "10.1029/2020WR027413",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Haihe River Basin and North China Plain",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Remote sensing ET minus rainfed hydrologic model ET",
+      "methods": [
+        "et",
+        "model"
+      ],
+      "data": [
+        "MODIS",
+        "PT-JPL",
+        "mHM",
+        "GRACE"
+      ],
+      "keywords": [
+        "net irrigation",
+        "evapotranspiration residuals",
+        "North China Plain",
+        "groundwater depletion",
+        "GRACE"
+      ],
+      "summary": "Estimates monthly 1 km net irrigation as the residual between remote sensing ET and a hydrologic model without irrigation, about 126 mm/yr over the North China Plain.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs12101621",
+      "title": "Potential for the detection of irrigation events on maize plots using Sentinel-1 soil moisture products",
+      "authors": "Le Page, M., Jarlan, L., El Hajj, M., et al.",
+      "first_author": "Le Page",
+      "year": 2020,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs12101621",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Maize plots, southwestern France",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2018,
+        "end": 2018
+      },
+      "approach": "Sentinel-1 soil moisture changes compared with water balance simulations",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "Sentinel-1 SSM (S2MP)",
+        "Sentinel-2 NDVI",
+        "FAO-56 water balance model"
+      ],
+      "keywords": [
+        "irrigation events",
+        "Sentinel-1",
+        "soil moisture",
+        "maize",
+        "F-score"
+      ],
+      "summary": "Tests whether irrigation events on maize plots can be detected from Sentinel-1 soil moisture changes; detection reached F-scores around 80 with observations every 2-4 days.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.rse.2019.111627",
+      "title": "Irrigation retrieval from Landsat optical/thermal data integrated into a crop water balance model: A case study over winter wheat fields in a semi-arid region",
+      "authors": "Olivera-Guerra, L., Merlin, O., Er-Raki, S.",
+      "first_author": "Olivera-Guerra",
+      "year": 2020,
+      "date": null,
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2019.111627",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Winter wheat fields, Morocco",
+      "region": "Africa",
+      "scale": "field",
+      "period": null,
+      "approach": "Landsat thermal water stress constrains FAO-56 crop water balance",
+      "methods": [
+        "et",
+        "imagery",
+        "model"
+      ],
+      "data": [
+        "Landsat 7 LST",
+        "Landsat 8 LST",
+        "FAO-56 dual crop coefficient model"
+      ],
+      "keywords": [
+        "irrigation retrieval",
+        "Landsat",
+        "land surface temperature",
+        "FAO-56",
+        "winter wheat",
+        "Morocco"
+      ],
+      "summary": "Uses a Landsat thermal-derived crop water stress coefficient within a FAO-56 water balance to retrieve irrigation on Moroccan wheat; seasonal amounts agreed well, daily estimates less so.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1029/2019ms001797",
+      "title": "Soil moisture data assimilation to estimate irrigation water use",
+      "authors": "Abolafia-Rosenzweig, R., Livneh, B., Small, E. E., et al.",
+      "first_author": "Abolafia-Rosenzweig",
+      "year": 2019,
+      "date": null,
+      "venue": "Journal of Advances in Modeling Earth Systems",
+      "doi": "10.1029/2019MS001797",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Silver Creek watershed, Nebraska, USA",
+      "region": "North America",
+      "scale": "regional",
+      "period": null,
+      "approach": "Particle batch smoother assimilation of soil moisture (synthetic experiments)",
+      "methods": [
+        "sm",
+        "model",
+        "da"
+      ],
+      "data": [
+        "VIC",
+        "NLDAS-2",
+        "SMAP (synthetic)"
+      ],
+      "keywords": [
+        "particle batch smoother",
+        "OSSE",
+        "irrigation water use",
+        "data assimilation",
+        "VIC"
+      ],
+      "summary": "Synthetic experiments show a particle batch smoother assimilating SMAP-like soil moisture into a land surface model can estimate daily to seasonal irrigation amounts.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs11151836",
+      "title": "Mapping irrigated areas using Sentinel-1 time series in Catalonia, Spain",
+      "authors": "Bazzi, H., Baghdadi, N., Ienco, D., et al.",
+      "first_author": "Bazzi",
+      "year": 2019,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs11151836",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Western Catalonia, Spain",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2017,
+        "end": 2018
+      },
+      "approach": "Random forest and CNN on Sentinel-1 backscatter time series",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Sentinel-1 SAR",
+        "Sentinel-2 NDVI"
+      ],
+      "keywords": [
+        "Sentinel-1",
+        "SAR",
+        "irrigated plots",
+        "CNN",
+        "random forest",
+        "Catalonia"
+      ],
+      "summary": "Classifies irrigated and non-irrigated plots in western Catalonia from Sentinel-1 backscatter time series, with a convolutional neural network reaching about 94% accuracy.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.rse.2019.111400",
+      "title": "Mapping three decades of annual irrigation across the US High Plains Aquifer using Landsat and Google Earth Engine",
+      "authors": "Deines, J.M., Kendall, A.D., Crowley, M.A., et al.",
+      "first_author": "Deines",
+      "year": 2019,
+      "date": null,
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2019.111400",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "US High Plains Aquifer",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 1984,
+        "end": 2017
+      },
+      "approach": "Random forest with Bayesian (BULC) gap-filling in Google Earth Engine",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Landsat",
+        "Environmental covariates",
+        "Google Earth Engine"
+      ],
+      "keywords": [
+        "High Plains Aquifer",
+        "Landsat",
+        "random forest",
+        "BULC",
+        "annual irrigation",
+        "Google Earth Engine"
+      ],
+      "summary": "Maps annual 30 m irrigated area across the High Plains Aquifer for 1984–2017 using Landsat, random forest and Bayesian updating, reaching about 91% accuracy.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.rse.2019.111226",
+      "title": "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
+      "authors": "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., Brocca, L.",
+      "first_author": "Jalilvand",
+      "year": 2019,
+      "date": null,
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2019.111226",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Agricultural plains south of Lake Urmia, Iran",
+      "region": "Asia",
+      "scale": "regional",
+      "period": {
+        "start": 2012,
+        "end": 2015
+      },
+      "approach": "SM2RAIN inversion of coarse satellite soil moisture",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "AMSR2"
+      ],
+      "keywords": [
+        "SM2RAIN",
+        "irrigation water use",
+        "AMSR2",
+        "semi-arid"
+      ],
+      "summary": "Adapts SM2RAIN to estimate monthly irrigation from AMSR2 soil moisture, reaching R = 0.86 against in situ irrigation data after bias correction.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-23-897-2019",
+      "title": "Estimating irrigation water use over the contiguous United States by combining satellite and reanalysis soil moisture data",
+      "authors": "Zaussinger, F., Dorigo, W., Gruber, A., et al.",
+      "first_author": "Zaussinger",
+      "year": 2019,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-23-897-2019",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Contiguous United States",
+      "region": "North America",
+      "scale": "national",
+      "period": {
+        "start": 2013,
+        "end": 2016
+      },
+      "approach": "Satellite minus irrigation-free reanalysis soil moisture differences",
+      "methods": [
+        "sm",
+        "model"
+      ],
+      "data": [
+        "SMAP",
+        "AMSR2",
+        "ASCAT",
+        "MERRA-2"
+      ],
+      "keywords": [
+        "irrigation water use",
+        "CONUS",
+        "reanalysis",
+        "soil moisture",
+        "state withdrawals"
+      ],
+      "summary": "Derives monthly irrigation water use across CONUS from differences between satellite soil moisture and MERRA-2 reanalysis without irrigation; state totals correlate with but underestimate reported withdrawals.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.jag.2018.08.023",
+      "title": "How much water is used for irrigation? A new approach exploiting coarse resolution satellite soil moisture products",
+      "authors": "Brocca, L., Tarpanelli, A., Filippucci, P., et al.",
+      "first_author": "Brocca",
+      "year": 2018,
+      "date": null,
+      "venue": "International Journal of Applied Earth Observation and Geoinformation",
+      "doi": "10.1016/j.jag.2018.08.023",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Nine pilot sites in Europe, USA, Australia and Africa",
+      "region": "Multiple",
+      "scale": "regional",
+      "period": null,
+      "approach": "Soil water balance inversion (SM2RAIN) of satellite soil moisture",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "SMAP",
+        "SMOS",
+        "ASCAT",
+        "AMSR2"
+      ],
+      "keywords": [
+        "irrigation quantification",
+        "SM2RAIN",
+        "soil water balance",
+        "coarse resolution",
+        "synthetic experiments"
+      ],
+      "summary": "Inverts the soil water balance using coarse-resolution satellite soil moisture to estimate irrigation water applied, tested with synthetic experiments and at nine pilot sites.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1029/2018gl080870",
+      "title": "Utilizing SMAP soil moisture data to constrain irrigation in the Community Land Model",
+      "authors": "Felfelani, F., Pokhrel, Y., Guan, K., et al.",
+      "first_author": "Felfelani",
+      "year": 2018,
+      "date": null,
+      "venue": "Geophysical Research Letters",
+      "doi": "10.1029/2018GL080870",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Central United States (High Plains)",
+      "region": "North America",
+      "scale": "regional",
+      "period": null,
+      "approach": "SMAP soil moisture assimilation constraining CLM4.5 irrigation targets",
+      "methods": [
+        "sm",
+        "model",
+        "da"
+      ],
+      "data": [
+        "SMAP",
+        "CLM4.5",
+        "NLDAS-2"
+      ],
+      "keywords": [
+        "irrigation water requirement",
+        "CLM",
+        "SMAP",
+        "Kalman filter",
+        "High Plains"
+      ],
+      "summary": "Assimilating SMAP soil moisture to constrain CLM4.5 irrigation target soil moisture roughly halved errors in simulated irrigation water requirement in Nebraska, Kansas and Texas.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.3390/rs10091495",
+      "title": "Irrigation mapping using Sentinel-1 time series at field scale",
+      "authors": "Gao, Q., Zribi, M., Escorihuela, M.J., et al.",
+      "first_author": "Gao",
+      "year": 2018,
+      "date": null,
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs10091495",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Urgell, Catalonia, Spain",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2015,
+        "end": 2017
+      },
+      "approach": "SVM and random forest on Sentinel-1 time-series metrics",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Sentinel-1 SAR",
+        "SIGPAC parcel data"
+      ],
+      "keywords": [
+        "Sentinel-1",
+        "SAR",
+        "field scale",
+        "SVM",
+        "irrigation mapping",
+        "Catalonia"
+      ],
+      "summary": "Uses field-averaged Sentinel-1 backscatter time-series metrics and SVM to separate irrigated crops, irrigated trees and non-irrigated fields in Urgell, Catalonia, with about 81% accuracy.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-22-1119-2018",
+      "title": "A global approach to estimate irrigated areas – a comparison between different data and statistics",
+      "authors": "Meier, J., Zabel, F., Mauser, W.",
+      "first_author": "Meier",
+      "year": 2018,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-22-1119-2018",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Global",
+      "region": "Global",
+      "scale": "global",
+      "period": {
+        "start": 1999,
+        "end": 2012
+      },
+      "approach": "Decision tree combining NDVI time series and agricultural suitability",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "ESA CCI NDVI",
+        "SPOT-VGT",
+        "MERIS NDVI",
+        "Agricultural suitability data"
+      ],
+      "keywords": [
+        "irrigated area",
+        "global map",
+        "NDVI",
+        "decision tree",
+        "irrigation statistics"
+      ],
+      "summary": "Maps global irrigated area at 30 arcsec from NDVI time series and agricultural suitability data, finding about 18% more irrigated land than statistics-based maps.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-22-4959-2018",
+      "title": "Global 5 km resolution estimates of secondary evaporation including irrigation through satellite data assimilation",
+      "authors": "van Dijk, A. I. J. M., Schellekens, J., Yebra, M., et al.",
+      "first_author": "van Dijk",
+      "year": 2018,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-22-4959-2018",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Global",
+      "region": "Global",
+      "scale": "global",
+      "period": {
+        "start": 2001,
+        "end": 2014
+      },
+      "approach": "MODIS data assimilation into W3 global hydrological model",
+      "methods": [
+        "et",
+        "imagery",
+        "model",
+        "da"
+      ],
+      "data": [
+        "MODIS",
+        "W3 model",
+        "MSWEP",
+        "WFDEI"
+      ],
+      "keywords": [
+        "secondary evaporation",
+        "irrigation requirement",
+        "land surface temperature",
+        "global",
+        "data assimilation"
+      ],
+      "summary": "Assimilates MODIS observations into a global hydrological model to estimate secondary evaporation and a minimum irrigation water requirement of about 680 km³/yr.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1002/2017gl074071",
+      "title": "Annual irrigation dynamics in the US Northern High Plains derived from Landsat satellite data",
+      "authors": "Deines, J.M., Kendall, A.D., Hyndman, D.W.",
+      "first_author": "Deines",
+      "year": 2017,
+      "date": null,
+      "venue": "Geophysical Research Letters",
+      "doi": "10.1002/2017GL074071",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "US Northern High Plains",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 1999,
+        "end": 2016
+      },
+      "approach": "Random forest on Landsat with greenness-moisture indices in GEE",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Landsat",
+        "Climate covariates",
+        "Soil covariates",
+        "Google Earth Engine"
+      ],
+      "keywords": [
+        "High Plains",
+        "Landsat",
+        "random forest",
+        "annual irrigation",
+        "Google Earth Engine"
+      ],
+      "summary": "Maps annual 30 m irrigated area in the US Northern High Plains for 1999–2016 with Landsat and random forests, linking yearly changes to precipitation and commodity prices.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1002/2017gl075733",
+      "title": "Irrigation signals detected from SMAP soil moisture retrievals",
+      "authors": "Lawston, P.M., Santanello, J.A., Kumar, S.V.",
+      "first_author": "Lawston",
+      "year": 2017,
+      "date": null,
+      "venue": "Geophysical Research Letters",
+      "doi": "10.1002/2017GL075733",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Irrigated regions of the United States",
+      "region": "North America",
+      "scale": "regional",
+      "period": null,
+      "approach": "Comparing SMAP soil moisture over irrigated and non-irrigated areas",
+      "methods": [
+        "sm"
+      ],
+      "data": [
+        "SMAP L3 soil moisture"
+      ],
+      "keywords": [
+        "SMAP",
+        "soil moisture",
+        "irrigation signal",
+        "United States"
+      ],
+      "summary": "Shows that SMAP soil moisture retrievals can pick up the signature of irrigation over US agricultural regions.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1038/sdata.2016.118",
+      "title": "Remotely sensed high resolution irrigated area mapping in India for 2000 to 2015",
+      "authors": "Ambika, A.K., Wardlow, B., Mishra, V.",
+      "first_author": "Ambika",
+      "year": 2016,
+      "date": null,
+      "venue": "Scientific Data",
+      "doi": "10.1038/sdata.2016.118",
+      "url": null,
+      "status": "published",
+      "type": "dataset",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "India",
+      "region": "Asia",
+      "scale": "national",
+      "period": {
+        "start": 2000,
+        "end": 2015
+      },
+      "approach": "Annual MODIS NDVI-based mapping within agroecological zones",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "MODIS NDVI (250 m)",
+        "56 m land use/land cover",
+        "Agricultural statistics"
+      ],
+      "keywords": [
+        "India",
+        "irrigated area",
+        "MODIS",
+        "NDVI",
+        "annual maps"
+      ],
+      "summary": "Provides 250 m annual irrigated area maps for India from 2000 to 2015 using MODIS NDVI and land cover data, evaluated against agricultural statistics.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.5194/hess-19-3073-2015",
+      "title": "Water savings potentials of irrigation systems: global simulation of processes and linkages",
+      "authors": "Jägermeyr, J., Gerten, D., Heinke, J., et al.",
+      "first_author": "Jägermeyr",
+      "year": 2015,
+      "date": null,
+      "venue": "Hydrology and Earth System Sciences",
+      "doi": "10.5194/hess-19-3073-2015",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Global",
+      "region": "Global",
+      "scale": "global",
+      "period": {
+        "start": 2004,
+        "end": 2009
+      },
+      "approach": "Process-based surface, sprinkler and drip irrigation in LPJmL",
+      "methods": [
+        "model"
+      ],
+      "data": [
+        "LPJmL"
+      ],
+      "keywords": [
+        "irrigation efficiency",
+        "water withdrawal",
+        "irrigation systems",
+        "water savings",
+        "global"
+      ],
+      "summary": "Simulates global irrigation efficiency by system type in LPJmL, estimating 2469 km³ withdrawal and 1257 km³ consumption and potential savings from sprinkler and drip.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.jag.2015.01.014",
+      "title": "Global rain-fed, irrigated, and paddy croplands: A new high resolution map derived from remote sensing, crop inventories and climate data",
+      "authors": "Salmon, J.M., Friedl, M.A., Frolking, S., et al.",
+      "first_author": "Salmon",
+      "year": 2015,
+      "date": null,
+      "venue": "International Journal of Applied Earth Observation and Geoinformation",
+      "doi": "10.1016/j.jag.2015.01.014",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Global croplands",
+      "region": "Global",
+      "scale": "global",
+      "period": {
+        "start": 2004,
+        "end": 2006
+      },
+      "approach": "Boosted decision tree classification with crop-inventory priors",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "MODIS NBAR reflectance",
+        "MODIS land surface temperature",
+        "MODIS Land Cover",
+        "WorldClim",
+        "MIRCA2000"
+      ],
+      "keywords": [
+        "irrigated cropland",
+        "paddy rice",
+        "rain-fed",
+        "global map",
+        "MODIS"
+      ],
+      "summary": "Combines MODIS imagery, climate data and crop inventories to map rain-fed, irrigated and paddy croplands worldwide at 500 m for circa 2005.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1080/01431160802698919",
+      "title": "Global irrigated area map (GIAM), derived from remote sensing, for the end of the last millennium",
+      "authors": "Thenkabail, P.S., Biradar, C.M., Noojipady, P., et al.",
+      "first_author": "Thenkabail",
+      "year": 2009,
+      "date": null,
+      "venue": "International Journal of Remote Sensing",
+      "doi": "10.1080/01431160802698919",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Global",
+      "region": "Global",
+      "scale": "global",
+      "period": {
+        "start": 1997,
+        "end": 1999
+      },
+      "approach": "Unsupervised classification of multi-sensor data cube with spectral matching",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "AVHRR NDVI",
+        "SPOT VGT NDVI",
+        "JERS-1 SAR",
+        "CRU rainfall",
+        "GTOPO30 elevation",
+        "Landsat mosaics"
+      ],
+      "keywords": [
+        "GIAM",
+        "irrigated area",
+        "global map",
+        "AVHRR",
+        "spectral matching"
+      ],
+      "summary": "Produces a global irrigated area map for the late 1990s from AVHRR, SPOT VGT and ancillary data, estimating about 467 Mha of annualized irrigated area.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
+      "id": "10.1016/j.rse.2008.04.010",
+      "title": "A new methodology to map irrigated areas using multi-temporal MODIS and ancillary data: An application example in the continental US",
+      "authors": "Ozdogan, M., Gutman, G.",
+      "first_author": "Ozdogan",
+      "year": 2008,
+      "date": null,
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2008.04.010",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Continental United States",
+      "region": "North America",
+      "scale": "national",
+      "period": {
+        "start": 2001,
+        "end": 2001
+      },
+      "approach": "Climate index, MODIS signatures, supervised classification, regression trees",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "MODIS",
+        "Global climate datasets",
+        "Agricultural datasets",
+        "Cultivated area map"
+      ],
+      "keywords": [
+        "irrigated area",
+        "MODIS",
+        "United States",
+        "classification",
+        "irrigated fraction"
+      ],
+      "summary": "Maps irrigated cropland and sub-pixel irrigated fraction across the continental US for 2001 using multi-temporal MODIS data, climate data and a cultivated-area map.",
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    }
+  ]
+}

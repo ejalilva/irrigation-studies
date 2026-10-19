@@ -1,0 +1,1229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Irrigation research | Ehsan Jalilvand</title>
+<meta name="description" content="Ehsan Jalilvand's research on measuring farm irrigation from space using satellite soil moisture, thermal observations, land surface models and data assimilation.">
+<meta property="og:title" content="Measuring farm irrigation from space">
+<meta property="og:description" content="Studies on detecting where, when and how much farmers irrigate, using satellite soil moisture, thermal data and land surface models.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23CDB47E'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%231E5C86'/%3E%3Cline x1='16' y1='16' x2='26' y2='11' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Colors follow a soil-moisture map: dry soil (ochre) to wet (deep blue). */
+  :root {
+    --paper: #EEF2F0;
+    --surface: #FFFFFF;
+    --ink: #15242C;
+    --ink-2: #4A5A60;
+    --line: #CDD6D3;
+    --link: #1E5C86;
+    --tag-bg: #DFE7E5;
+    --r0: #B07A3B; --r1: #CDB47E; --r2: #A9C3AE; --r3: #4F93A3; --r4: #1E5C86;
+    --arm: rgba(255,255,255,.8);
+    --warn: #D08A12; --warn-ink: #8A5300;
+    --new-bg: #DCEAF2; --new-ink: #1E5C86;
+    --shadow: rgba(21,36,44,.28);
+    --gutter: 24px;
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0F1A1F; --surface: #15232A; --ink: #E3EAE8; --ink-2: #9DAEB2;
+      --line: #2B3C43; --link: #8BC2E0; --tag-bg: #1E3038;
+      --r0: #A57540; --r1: #BFA670; --r2: #86A898; --r3: #3F86A0; --r4: #2F72A3;
+      --arm: rgba(255,255,255,.7);
+      --warn: #E9A23B; --warn-ink: #F2B85C;
+      --new-bg: #1B3747; --new-ink: #A9D3EC;
+      --shadow: rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0F1A1F; --surface: #15232A; --ink: #E3EAE8; --ink-2: #9DAEB2;
+    --line: #2B3C43; --link: #8BC2E0; --tag-bg: #1E3038;
+    --r0: #A57540; --r1: #BFA670; --r2: #86A898; --r3: #3F86A0; --r4: #2F72A3;
+    --arm: rgba(255,255,255,.7);
+    --warn: #E9A23B; --warn-ink: #F2B85C;
+    --new-bg: #1B3747; --new-ink: #A9D3EC;
+    --shadow: rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 1.0625rem/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--paper); padding: 8px 12px; border-radius: 4px; }
+  .skip:focus { left: 16px; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  .site-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .site-name { font: 500 1.2rem/1.2 var(--serif); color: var(--ink); text-decoration: none; }
+  .site-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
+  .site-nav a { color: var(--ink-2); text-decoration: none; }
+  .site-nav a:hover { color: var(--ink); text-decoration: underline; }
+  .site-nav a[aria-current="page"] { color: var(--ink); font-weight: 500; }
+
+  /* Hero */
+  .hero { padding-top: 72px; }
+  h1 {
+    font: 500 clamp(2.5rem, 6.2vw, 4.4rem)/1.02 var(--serif);
+    letter-spacing: -0.015em;
+    margin: 0;
+    max-width: 13ch;
+  }
+  .lede { font-size: 1.2rem; line-height: 1.55; color: var(--ink-2); max-width: 58ch; margin: 24px 0 0; }
+
+  .scales { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin: 56px 0 0; padding: 0; }
+  .scale { margin: 0; }
+  .scale svg { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 4px; }
+  .scale figcaption { margin-top: 12px; }
+  .scale strong { display: block; font: 500 1.2rem/1.2 var(--serif); }
+  .scale span { display: block; font-size: .875rem; color: var(--ink-2); margin-top: 2px; }
+  .scales-note { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 20px; font-size: .9rem; color: var(--ink-2); }
+  .scales-note p { margin: 0; max-width: 62ch; }
+  .legend { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .legend .ramp { width: 120px; height: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--r0), var(--r1), var(--r2), var(--r3), var(--r4)); }
+
+  .scales.animate .scale svg { animation: resolve 1s cubic-bezier(.2,.7,.2,1) both; }
+  .scales.animate .scale:nth-child(2) svg { animation-delay: .3s; }
+  .scales.animate .scale:nth-child(3) svg { animation-delay: .6s; }
+  .scales.animate .scale:nth-child(4) svg { animation-delay: .9s; }
+  @keyframes resolve { from { filter: blur(10px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .scales.animate .scale svg { animation: none; } }
+
+  /* Sections */
+  section { padding-top: 96px; }
+  h2 { font: 500 2rem/1.15 var(--serif); letter-spacing: -0.01em; margin: 0; }
+  h3 { font: 500 1.35rem/1.25 var(--serif); margin: 0; }
+  .intro { color: var(--ink-2); max-width: 62ch; margin: 12px 0 0; }
+
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; margin-top: 32px; }
+  .fact { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 18px; padding: 22px 0; border-top: 1px solid var(--line); }
+  .fact-num { font: 500 2.3rem/1 var(--serif); color: var(--link); }
+  .fact p { margin: 0; }
+  .fact .src { display: block; font-size: .85rem; margin-top: 6px; color: var(--ink-2); }
+
+  details.more { margin-top: 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  details.more summary { cursor: pointer; list-style: none; padding: 18px 0; font: 500 1.15rem/1.3 var(--serif); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  details.more summary::-webkit-details-marker { display: none; }
+  details.more summary::after { content: "+"; font: 400 1.5rem/1 var(--sans); color: var(--ink-2); }
+  details.more[open] summary::after { content: "\2212"; }
+  details.more ul { margin: 0 0 8px; padding-left: 1.2em; max-width: 72ch; }
+  details.more li { margin: 8px 0; }
+  details.more .credit { font-size: .85rem; color: var(--ink-2); margin: 12px 0 22px; }
+
+  .gap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 56px; margin-top: 32px; }
+  .gap-grid ul, .findings, details.more ul { list-style: disc; }
+  .gap-grid ul { margin: 12px 0 0; padding-left: 1.2em; }
+  .gap-grid li { margin: 8px 0; }
+  .gap-grid li::marker, .findings li::marker { color: var(--r3); }
+  .bridge { font: 400 1.6rem/1.35 var(--serif); max-width: 34ch; margin: 56px 0 0; padding-left: 20px; border-left: 3px solid var(--r3); }
+
+  /* Studies */
+  .studies-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px 32px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; border: 0; }
+  .filters legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .filters button {
+    font: 500 .9rem/1 var(--sans); color: var(--ink); background: transparent;
+    border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer;
+  }
+  .filters button:hover { border-color: var(--ink-2); }
+  .filters button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .filters .n { opacity: .65; margin-left: 4px; font-weight: 400; }
+  .count { font-size: .9rem; color: var(--ink-2); margin: 16px 0 0; }
+
+  .study-list { list-style: none; margin: 16px 0 0; padding: 0; }
+  .study { display: grid; grid-template-columns: 6rem minmax(0, 1fr) minmax(0, 300px); gap: 32px; padding: 40px 0; border-top: 1px solid var(--line); }
+  .study[hidden] { display: none; }
+  .study-when .yr { display: block; font: 500 1.75rem/1 var(--serif); }
+  .study-when .sc { display: block; font-size: .85rem; color: var(--ink-2); margin-top: 8px; }
+  .study-title { font: 500 1.4rem/1.25 var(--serif); margin: 0; }
+  .study-title a { color: inherit; text-decoration: none; }
+  .study-title a:hover { text-decoration: underline; }
+  .venue { margin: 8px 0 0; font-size: .95rem; color: var(--ink-2); }
+  .venue em { font-style: italic; color: var(--ink); }
+  .authors { margin: 2px 0 0; font-size: .9rem; color: var(--ink-2); }
+  .authors strong { color: var(--ink); font-weight: 600; }
+  .summary { margin: 18px 0 0; max-width: 62ch; }
+  .findings { margin: 10px 0 0; padding-left: 1.2em; max-width: 62ch; }
+  .findings li { margin: 6px 0; }
+  .study-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 20px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .tag { font-size: .8rem; line-height: 1; padding: 6px 10px; border-radius: 999px; background: var(--tag-bg); }
+  .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .92rem; font-weight: 500; }
+  .linkbtn { font: inherit; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .linkbtn:hover { text-decoration-thickness: 2px; }
+
+  .study-fig { margin: 0; }
+  .study-fig a { display: block; }
+  .study-fig img, .study-fig svg { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); }
+  .study-fig svg { aspect-ratio: 1; max-width: 220px; }
+  .study-fig figcaption { font-size: .8rem; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
+
+  /* Related */
+  .related { list-style: none; margin: 24px 0 0; padding: 0; }
+  .related li { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 32px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .related .yr { font: 500 1.15rem/1.4 var(--serif); color: var(--ink-2); }
+  .related .t { font: 500 1.1rem/1.35 var(--serif); }
+  .related .t a { color: var(--ink); text-decoration: none; }
+  .related .t a:hover { text-decoration: underline; }
+  .related p { margin: 4px 0 0; font-size: .92rem; color: var(--ink-2); max-width: 70ch; }
+
+  /* Research landscape table */
+  .bleed { width: min(1280px, calc(100vw - 2 * var(--gutter))); margin-left: calc(50% - min(640px, 50vw - var(--gutter))); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .lit-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
+  .lit-search { position: relative; flex: 1 1 240px; max-width: 340px; }
+  .lit-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-2); pointer-events: none; }
+  .lit-search input {
+    width: 100%; font: 400 .95rem/1.2 var(--sans); color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px 11px 36px;
+  }
+  .lit-search input::placeholder { color: var(--ink-2); opacity: .85; }
+  .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+  .seg button { font: 500 .88rem/1 var(--sans); color: var(--ink); background: transparent; border: 0; border-left: 1px solid var(--line); padding: 11px 13px; cursor: pointer; }
+  .seg button:first-child { border-left: 0; }
+  .seg button:hover { background: var(--tag-bg); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .lit-select { position: relative; display: inline-block; }
+  .lit-select select {
+    appearance: none; -webkit-appearance: none; font: 500 .88rem/1.2 var(--sans); color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 34px 10px 12px; cursor: pointer;
+  }
+  .lit-select::after {
+    content: ""; position: absolute; right: 14px; top: 50%; width: 6px; height: 6px; pointer-events: none;
+    border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: translateY(-70%) rotate(45deg);
+  }
+  .lit-sort-mobile { display: none; }
+  .lit-reset { font: 500 .88rem/1 var(--sans); color: var(--link); background: none; border: 0; padding: 8px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .lit-reset[hidden] { display: none; }
+
+  .lit-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-top: 20px; font-size: .88rem; color: var(--ink-2); }
+  .lit-meta p { margin: 0; }
+  .lit-legend { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+  .lit-legend > span { display: inline-flex; align-items: center; gap: 8px; }
+
+  .lit { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; margin-top: 10px; font-size: .92rem; line-height: 1.45; }
+  .lit th { text-align: left; vertical-align: bottom; font: 500 .8rem/1.3 var(--sans); color: var(--ink-2); padding: 10px 12px; border-bottom: 1px solid var(--ink-2); white-space: nowrap; }
+  .lit th .sort { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .lit th .sort:hover { color: var(--ink); }
+  .lit th .arrow { width: 8px; height: 8px; opacity: .35; }
+  .lit th[aria-sort] .arrow { opacity: 1; }
+  .lit th[aria-sort="ascending"] .arrow { transform: rotate(180deg); }
+  .lit td { padding: 14px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+  .lit tbody tr:first-child td { border-top: 0; }
+  .lit .c-status { width: 118px; }
+  .lit .c-year { width: 58px; }
+  .lit .c-q { width: 214px; }
+  .lit .c-area { width: 15%; }
+  .lit .c-period { width: 104px; white-space: nowrap; }
+  .lit .c-approach { width: 22%; }
+  .lit td { overflow-wrap: anywhere; }
+
+  .lit tr.row { cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+  .lit tr.row:hover { transform: scale(1.014); box-shadow: 0 14px 30px -18px var(--shadow); position: relative; z-index: 2; }
+  .lit tr.row:hover, .lit tr.row.open { background: var(--surface); }
+  .lit tr.row:hover td { border-top-color: transparent; }
+  .lit tr.row:hover + tr td { border-top-color: transparent; }
+
+  .yr-cell { font: 500 1.05rem/1.3 var(--serif); }
+  .st { display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; line-height: 1.2; white-space: nowrap; }
+  .st-pub { color: var(--ink-2); }
+  .st-pre { color: var(--warn-ink); font-weight: 600; }
+  .st-sub { display: block; font-size: .76rem; color: var(--ink-2); margin-top: 3px; }
+  .pulse { position: relative; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
+  .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--warn); animation: ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
+  @keyframes ping { 0% { transform: scale(1); opacity: .75; } 80%, 100% { transform: scale(2.7); opacity: 0; } }
+  .dot-pub { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-2); }
+  .new { display: inline-block; margin-top: 7px; font: 600 .72rem/1 var(--sans); padding: 4px 7px; border-radius: 4px; background: var(--new-bg); color: var(--new-ink); }
+
+  .ti { font: 500 1.04rem/1.3 var(--serif); color: var(--ink); text-decoration: none; }
+  .ti:hover { text-decoration: underline; }
+  .by { margin: 4px 0 0; font-size: .84rem; color: var(--ink-2); }
+  .by em { font-style: italic; }
+  .more-btn { margin-top: 8px; font: 500 .82rem/1 var(--sans); color: var(--link); background: none; border: 0; padding: 4px 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .more-btn svg { transition: transform .18s ease; }
+  .more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+  .q { display: flex; flex-wrap: wrap; gap: 4px; }
+  .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--line); white-space: nowrap; }
+  .q span.on { background: var(--r4); border: 1px solid var(--r4); color: #fff; }
+  .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 3px; }
+  .muted { color: var(--ink-2); }
+  .kw { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 5px; }
+
+  .lit tr.detail td { padding: 4px 12px 26px; border-top: 0; background: var(--surface); }
+  .lit tr.detail td > div { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px 40px; padding-left: calc(118px + 58px); }
+  .lit tr.detail p { margin: 0 0 10px; max-width: 64ch; }
+  .lit tr.detail .note { font-size: .86rem; color: var(--warn-ink); }
+  .lit tr.detail dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; font-size: .86rem; }
+  .lit tr.detail dt { color: var(--ink-2); }
+  .lit tr.detail dd { margin: 0; }
+  .lit tr.detail .acts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .88rem; font-weight: 500; margin-top: 4px; }
+
+  .lit-empty td { padding: 40px 12px; text-align: center; color: var(--ink-2); }
+  .lit-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .88rem; color: var(--ink-2); }
+  .lit-foot p { margin: 0; max-width: 70ch; }
+  .lit-foot .acts { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+  .btn { font: 500 .9rem/1 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; }
+  .btn:hover { border-color: var(--ink-2); }
+  .btn[hidden] { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse::after { animation: none; }
+    .lit tr.row, .more-btn svg { transition: none; }
+  }
+
+  @media (max-width: 900px) {
+    .lit-sort-mobile { display: inline-block; }
+    .lit thead { display: none; }
+    .lit, .lit tbody { display: block; }
+    .lit tr.row {
+      display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); column-gap: 10px;
+      grid-template-areas: "year status" "study study" "q q" "area area" "period period" "approach approach";
+      padding: 18px 4px; border-top: 1px solid var(--line);
+    }
+    .lit tbody tr.row:first-child { border-top: 0; }
+    .lit tr.row:hover { transform: none; box-shadow: none; }
+    .lit tr.row td, .lit tr.row:hover td, .lit tr.row.open td { display: block; width: auto; padding: 0; border: 0; background: none; border-radius: 0; }
+    .lit tr.row.open { background: var(--surface); }
+    .lit .c-year { grid-area: year; }
+    .lit .c-status { grid-area: status; align-self: center; }
+    .lit .c-status { display: flex !important; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+    .lit .c-status .st-sub, .lit .c-status .new { margin: 0; }
+    .lit .c-study { grid-area: study; margin-top: 8px !important; }
+    .lit .c-q { grid-area: q; margin-top: 12px !important; }
+    .lit .c-area { grid-area: area; margin-top: 12px !important; }
+    .lit .c-period { grid-area: period; margin-top: 12px !important; }
+    .lit .c-approach { grid-area: approach; margin-top: 12px !important; }
+    .lit td[data-label]::before { content: attr(data-label); display: block; font-size: .74rem; color: var(--ink-2); margin-bottom: 2px; }
+    .lit .c-q::before, .lit .c-study::before, .lit .c-year::before, .lit .c-status::before { display: none !important; }
+    .lit tr.detail { display: block; }
+    .lit tr.detail td { display: block; padding: 0 4px 22px; }
+    .lit tr.detail td > div { grid-template-columns: minmax(0, 1fr); padding-left: 0; }
+    .lit-empty { display: block; }
+    .lit-empty td { display: block; }
+  }
+
+  /* Footer */
+  .site-foot { margin-top: 112px; border-top: 1px solid var(--line); padding: 32px 0 56px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; font-size: .9rem; color: var(--ink-2); }
+  .site-foot p { margin: 0; max-width: 56ch; }
+  .site-foot nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 6px; font-size: .92rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  @media (max-width: 860px) {
+    .study { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 32px 0; }
+    .study-when { display: flex; align-items: baseline; gap: 12px; }
+    .study-when .sc { margin-top: 0; }
+    .study-fig { max-width: 440px; }
+    .facts, .gap-grid { grid-template-columns: minmax(0, 1fr); }
+    .related li { grid-template-columns: 4rem minmax(0, 1fr); gap: 16px; }
+  }
+  @media (max-width: 640px) {
+    :root { --gutter: 16px; }
+    .wrap { padding: 0 16px; }
+    .hero { padding-top: 48px; }
+    section { padding-top: 72px; }
+    .scales { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
+    .fact { grid-template-columns: 4.6rem minmax(0, 1fr); }
+    .fact-num { font-size: 1.9rem; }
+    .bridge { font-size: 1.35rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#studies">Skip to studies</a>
+
+<div class="wrap">
+  <header class="site-head">
+    <a class="site-name" href="https://www.ehsanjalilvand.com/home">Ehsan Jalilvand</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="https://www.ehsanjalilvand.com/home">Home</a>
+      <a href="https://www.ehsanjalilvand.com/research" aria-current="page">Research</a>
+      <a href="https://www.ehsanjalilvand.com/research/permafrost">Permafrost</a>
+      <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications</a>
+      <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Measuring farm irrigation from space</h1>
+      <p class="lede">Irrigation is the largest use of fresh water on Earth, yet almost no one measures it directly. I combine satellite soil moisture and thermal observations with land surface models and data assimilation to detect where, when and how much farmers irrigate.</p>
+
+      <div class="scales" id="scales">
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="1" role="img" aria-label="One coarse pixel: the irrigation signal is averaged away"></svg>
+          <figcaption><strong>Tens of kilometers</strong><span>Passive microwave (AMSR2)</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="4" role="img" aria-label="A 4 by 4 grid: wetter cells begin to appear in one corner"></svg>
+          <figcaption><strong>9 km</strong><span>SMAP enhanced</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="16" role="img" aria-label="A 16 by 16 grid: wet patches line up with fields"></svg>
+          <figcaption><strong>1 km</strong><span>SMAP/Sentinel-1</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="field" role="img" aria-label="Field scale: individual center-pivot fields, most irrigated, two fallow"></svg>
+          <figcaption><strong>Field scale</strong><span>Sentinel-1/2 and thermal</span></figcaption>
+        </figure>
+      </div>
+      <div class="scales-note">
+        <div class="legend" aria-hidden="true"><span>Drier</span><span class="ramp"></span><span>Wetter</span></div>
+        <p>Illustration: one landscape at four resolutions. The irrigation signal that a coarse pixel averages away becomes visible at field scale.</p>
+      </div>
+    </div>
+
+    <section aria-labelledby="why">
+      <h2 id="why">Why irrigation matters</h2>
+      <p class="intro">Feeding a growing population depends on irrigated farms, and irrigated farms depend on water that is already running short.</p>
+      <div class="facts">
+        <div class="fact">
+          <div class="fact-num">70%</div>
+          <p>of the fresh water withdrawn worldwide goes to irrigation, and more than 90% in parts of the Middle East and Southeast Asia.<a class="src" href="https://www.nature.com/articles/nature10452">Foley et al., 2011</a></p>
+        </div>
+        <div class="fact">
+          <div class="fact-num">2&times;</div>
+          <p>Irrigated land is at least twice as productive per hectare as rainfed land.<a class="src" href="https://www.worldbank.org/en/topic/water-in-agriculture">World Bank, Water in agriculture</a></p>
+        </div>
+        <div class="fact">
+          <div class="fact-num">2050</div>
+          <p>is when global food demand is projected to have roughly doubled, driven more by diets shifting toward meat than by population growth.<a class="src" href="https://direct.mit.edu/daed/article/144/4/8/27090/Food-Agriculture-amp-the-Environment-Can-We-Feed">Tilman &amp; Clark, 2015</a></p>
+        </div>
+        <div class="fact">
+          <div class="fact-num">41%</div>
+          <p>of irrigation water use comes at the expense of rivers&rsquo; environmental flow requirements.<a class="src" href="https://www.nature.com/articles/ncomms15900">J&auml;germeyr et al., 2017</a></p>
+        </div>
+      </div>
+
+      <details class="more">
+        <summary>How irrigation changes the climate system</summary>
+        <ul>
+          <li>It can shift evapotranspiration from moisture-limited to energy-limited, changing local water and energy budgets (<a href="https://www.nature.com/articles/nclimate1744">Taylor et al., 2012</a>).</li>
+          <li>Groundwater-fed irrigation has increased downwind precipitation and streamflow by up to 30% in the High Plains and California&rsquo;s Central Valley (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD013892">DeAngelis et al., 2010</a>; <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010WR010046">Kustu et al., 2011</a>).</li>
+          <li>Large-scale irrigation can also suppress local precipitation (<a href="https://link.springer.com/article/10.1007/s40899-020-00368-w">Szilagyi et al., 2020</a>).</li>
+          <li>It cools the hottest days of the year (Thiery et al., 2020; Lawston et al., 2020).</li>
+          <li>It can delay the onset of monsoons (Tuinenburg, 2013).</li>
+          <li>It can create humid heat waves beyond what people can tolerate (Raymond et al., 2020).</li>
+        </ul>
+        <p class="credit">Adapted from <a href="https://www.nature.com/articles/s43017-023-00438-5">McDermid et al., 2023, Irrigation in the Earth system</a>.</p>
+      </details>
+    </section>
+
+    <section aria-labelledby="gap">
+      <h2 id="gap">The measurement gap</h2>
+      <p class="intro">To manage water withdrawals, someone first has to know how much water each farm is taking. On the ground, that is surprisingly hard.</p>
+      <div class="gap-grid">
+        <div>
+          <h3>Few withdrawals are metered</h3>
+          <ul>
+            <li>Metering is expensive and labor-intensive.</li>
+            <li>Some withdrawals from rivers and aquifers go unreported or are illegal.</li>
+            <li>Farmers may oppose meters over concerns about future regulation (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378">Foster et al., 2020</a>).</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Models estimate need, not decisions</h3>
+          <ul>
+            <li>Crops rotate from season to season.</li>
+            <li>Farmers often irrigate by rule of thumb, such as leaf color, curling or leaf temperature, rather than modeled crop water demand.</li>
+            <li>Most models estimate the irrigation a crop requires, not what was actually applied.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale.</p>
+    </section>
+
+    <section id="studies" aria-labelledby="studies-h">
+      <div class="studies-head">
+        <div>
+          <h2 id="studies-h">Studies</h2>
+          <p class="intro">Each study pushes the irrigation signal to a finer scale or adds a new kind of observation. Newest first.</p>
+        </div>
+        <fieldset class="filters" id="filters">
+          <legend>Filter studies by method</legend>
+        </fieldset>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <ol class="study-list" id="study-list"></ol>
+      <noscript><p>See the full list on the <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications page</a>.</p></noscript>
+    </section>
+
+    <section id="landscape" aria-labelledby="landscape-h">
+      <h2 id="landscape-h">The research landscape</h2>
+      <p class="intro">Studies from across the field that use satellite data or Earth system models to find where, when and how much farms irrigate. A small agent looks for new papers every week, and I review each one before it is added.</p>
+
+      <div class="bleed">
+        <div class="lit-controls" role="search" aria-label="Filter the research table">
+          <label class="lit-search">
+            <span class="sr">Search studies</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input type="search" id="lit-q" placeholder="Search by title, place, method or keyword" autocomplete="off">
+          </label>
+          <div class="seg" role="group" aria-label="Question the study answers" id="lit-qseg">
+            <button type="button" data-q="any" aria-pressed="true">Any question</button>
+            <button type="button" data-q="where" aria-pressed="false">Where</button>
+            <button type="button" data-q="when" aria-pressed="false">When</button>
+            <button type="button" data-q="how_much" aria-pressed="false">How much</button>
+            <button type="button" data-q="all" aria-pressed="false">All three</button>
+          </div>
+          <label class="lit-select"><span class="sr">Review status</span>
+            <select id="lit-status">
+              <option value="any">Any status</option>
+              <option value="published">Peer reviewed</option>
+              <option value="preprint">Preprints only</option>
+            </select>
+          </label>
+          <label class="lit-select"><span class="sr">Approach</span>
+            <select id="lit-method"><option value="any">Any approach</option></select>
+          </label>
+          <label class="lit-select"><span class="sr">Region</span>
+            <select id="lit-region"><option value="any">Any region</option></select>
+          </label>
+          <label class="lit-select lit-sort-mobile"><span class="sr">Sort</span>
+            <select id="lit-sort">
+              <option value="year:-1">Newest first</option>
+              <option value="year:1">Oldest first</option>
+              <option value="author:1">First author A to Z</option>
+              <option value="area:1">Study area A to Z</option>
+              <option value="period:-1">Most recent study period</option>
+            </select>
+          </label>
+          <button type="button" class="lit-reset" id="lit-reset" hidden>Clear filters</button>
+        </div>
+
+        <div class="lit-meta">
+          <p id="lit-count" aria-live="polite">Loading studies</p>
+          <div class="lit-legend">
+            <span><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>
+            <span><span class="pulse" aria-hidden="true"></span>Preprint, not yet peer reviewed</span>
+            <span><span class="new" style="margin:0">New</span>Published or posted in the last 90 days</span>
+          </div>
+        </div>
+
+        <table class="lit" id="lit">
+          <caption class="sr">Irrigation studies using satellite data or Earth system models. Select a row to see details.</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="c-status">Status</th>
+              <th scope="col" class="c-year" data-key="year" aria-sort="descending"><button type="button" class="sort">Year<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-study" data-key="author"><button type="button" class="sort">Study<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-q">Questions answered</th>
+              <th scope="col" class="c-area" data-key="area"><button type="button" class="sort">Study area<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-period" data-key="period"><button type="button" class="sort">Period<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-approach">Approach and keywords</th>
+            </tr>
+          </thead>
+          <tbody id="lit-body"></tbody>
+        </table>
+
+        <div class="lit-foot">
+          <p id="lit-updated"></p>
+          <div class="acts">
+            <button type="button" class="btn" id="lit-more" hidden>Show all studies</button>
+            <button type="button" class="btn" id="lit-csv">Download as CSV</button>
+            <a id="lit-suggest" href="#">Suggest a paper</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="related-h">
+      <h2 id="related-h">Related agricultural work</h2>
+      <p class="intro">Collaborations on crops, yield and agricultural water management.</p>
+      <ol class="related" id="related"></ol>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <p>All views expressed on this site are my own and do not reflect the opinions or positions of my employer or any affiliated organizations.</p>
+    <nav aria-label="Profiles">
+      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en">Google Scholar</a>
+      <a href="https://github.com/ejalilva">GitHub</a>
+      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/">LinkedIn</a>
+      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand">ResearchGate</a>
+      <a href="mailto:ehsan.jalilvand@gmail.com">Email</a>
+    </nav>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ======================================================================
+   HOW TO ADD A NEW STUDY
+   Copy any block in STUDIES below, paste it anywhere in the list, and
+   edit the fields. Studies are sorted newest-first automatically.
+
+   year      publication year (number)
+   title     paper title
+   authors   author list; "Jalilvand, E." is bolded automatically
+   journal   journal name
+   details   volume, issue, pages or article number
+   doi       DOI without "https://doi.org/"
+   url       optional link to use instead of the DOI
+   methods   any of: "sm", "da", "thermal", "ml" (see METHODS)
+   scale     one of: "coarse", "9km", "1km", "field" (see SCALES)
+   scaleNote optional text that replaces the scale label, e.g. "10 m"
+   summary   one or two plain-language sentences
+   findings  a short list of key results
+   image     optional { src, alt, caption }. Without an image, the page
+             draws a small resolution illustration instead.
+
+   Tip: save your figures in an "img" folder next to this file and use
+   src: "img/your-figure.png". Google Sites image links can change.
+   ====================================================================== */
+
+const GS = "https://lh7-us.googleusercontent.com/sitesv-images-rt/";
+
+const STUDIES = [
+  {
+    year: 2026,
+    title: "Characterization of irrigation timing using thermal satellite observations, a data-driven approach",
+    authors: "Jalilvand, E., Kumar, S.V., Truong, C., Haacker, E., & Mahanama, S.",
+    journal: "Remote Sensing of Environment",
+    details: "333, 115153",
+    doi: "10.1016/j.rse.2025.115153",
+    methods: ["thermal", "ml"],
+    scale: "field",
+    summary: "AgroTrack, a data-driven tool that reads farmers' irrigation decisions, meaning when fields are actually watered, from thermal satellite observations.",
+    findings: [
+      "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
+      "Captured widespread fallowing of fields after California's 2021 megadrought."
+    ],
+    image: {
+      src: GS + "AMxu72svyr-zaeniIGOinffSers-hEuUppAE4bQrvOmXpe6PGXRxFo6mnicD-_aVa8nExSJjciR7Je-j_O4D2nm0hGcINjaYsJqsJ7UCNZmZd6UgDHYQLf4Bkt1YRZjc6wzL4BnAAhmQU55tva7-a67MSWHXbytchyHMY9buAEiPRleY3YAosAx5PtslOf9aW44=w1280",
+      alt: "AgroTrack results for California after the 2021 drought",
+      caption: "AgroTrack captured widespread fallowing after California's 2021 megadrought."
+    }
+  },
+  {
+    year: 2023,
+    title: "Is it possible to quantify irrigation water-use by assimilating a high-resolution satellite soil moisture product?",
+    authors: "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., Kumar, S.V., Mohammadi, M.R., & Das, N.N.",
+    journal: "Water Resources Research",
+    details: "59(4), e2022WR033342",
+    doi: "10.1029/2022WR033342",
+    methods: ["sm", "da"],
+    scale: "1km",
+    summary: "Assimilates roughly weekly 1 km SMAP/Sentinel-1 soil moisture into a model with a particle batch smoother to estimate how much water was applied.",
+    findings: [
+      "Estimated irrigation was significantly lower over non-irrigated pixels than over irrigated ones.",
+      "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
+      "In synthetic tests, knowing when irrigation happened raised accuracy to a 3% bias and R² = 0.95, which motivated the later work on timing."
+    ]
+  },
+  {
+    year: 2021,
+    title: "Evaluation of SMAP/Sentinel 1 high-resolution soil moisture data to detect irrigation over agricultural domain",
+    authors: "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., & Das, N.N.",
+    journal: "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+    details: "14, 10733–10747",
+    doi: "10.1109/JSTARS.2021.3119228",
+    methods: ["sm"],
+    scale: "1km",
+    scaleNote: "9 km vs. 1 km",
+    summary: "Tests whether SMAP soil moisture can see irrigation inside its footprint, comparing the 9 km enhanced product with 1 km SMAP/Sentinel-1.",
+    findings: [
+      "The 9 km enhanced product misses irrigation on small plots.",
+      "The 1 km SMAP/Sentinel-1 product shows higher mean soil moisture and more variability over irrigated fields.",
+      "Using real-time vegetation water content instead of climatology improves retrievals over irrigated cropland."
+    ],
+    image: {
+      src: GS + "AMxu72uIbRAy3S3qgjEVYN055zxvaycV9P3XwjuRwbKQOa4Hq1z6KofNdawEnRIFZ5Ts9hjJNORamdrZjHq0LSbdMubFmDWbRq0LJukywX3mkkPYWq3CHSnIUh98CAYBpO_mY9GgQqa19vXczHpJ40u0htQMzwXSjAnMw1K6AZvIRlmWdg17aTVacI7vSzpXenA0txT4DV75WQf3SEp3clMaboZFDGbdFIeQ1AB4IYCXOuQ=w1280",
+      alt: "SMAP/Sentinel-1 soil moisture variability over cropland",
+      caption: "SMAP/Sentinel-1 soil moisture varies more over cropland than over surrounding land."
+    }
+  },
+  {
+    year: 2021,
+    title: "A method to estimate surface soil moisture and map the irrigated cropland area using Sentinel-1 and Sentinel-2 data",
+    authors: "Rabiei, S., Jalilvand, E., & Tajrishy, M.",
+    journal: "Sustainability",
+    details: "13(20), 11355",
+    doi: "10.3390/su132011355",
+    methods: ["sm", "ml"],
+    scale: "field",
+    scaleNote: "10 m",
+    summary: "Estimates surface soil moisture at 10 m from Sentinel-1 radar and Sentinel-2 imagery with machine learning, then uses it to map irrigated fields.",
+    findings: [
+      "A convolutional neural network performed best, reaching R² = 0.92 (Sentinel-2) and 0.84 (Sentinel-1) against field measurements.",
+      "Irrigated fields had significantly wetter surface soil than rainfed cropland during the irrigation season.",
+      "Classifying the soil moisture maps identified irrigated agriculture with 77% overall accuracy."
+    ],
+    image: {
+      src: "https://pub.mdpi-res.com/sustainability/sustainability-13-11355/article_deploy/html/images/sustainability-13-11355-g013.png?1634539361",
+      alt: "Land-use classification derived from Sentinel-2 soil moisture",
+      caption: "Land-use classes from Sentinel-2 soil moisture. Figure: Rabiei et al. (2021), CC BY."
+    }
+  },
+  {
+    year: 2019,
+    title: "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
+    authors: "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., & Brocca, L.",
+    journal: "Remote Sensing of Environment",
+    details: "231, 111226",
+    doi: "10.1016/j.rse.2019.111226",
+    methods: ["sm"],
+    scale: "coarse",
+    summary: "Uses AMSR2 satellite soil moisture with the SM2RAIN approach to estimate how much water farmers apply.",
+    findings: [
+      "SM2RAIN captured irrigation patterns consistent with observations.",
+      "It estimated nearly zero irrigation over non-irrigated pixels.",
+      "Irrigated pixels showed a weekly cycle in soil moisture.",
+      "Coarse microwave resolution limits the method over small parcels, which set up the move to higher-resolution data."
+    ],
+    image: {
+      src: GS + "AMxu72tPXVSElCALcVUZX010mteXhYwTcb1ORo6m_yz7PFtj1xcuc1PSpTgWShejq9S53GlY8NgOM3bTxcQqN1Fp-2NGgtbKXcv9mVVxqTSPHHaUbGCVh3xcYlble6gKdMIvFQWB3yD0YrdfMzi5GNvjGEIDVMIqc5WwCCXiIn3xyqVnmzqQdydJpAOYZ7h7URPjtqwF5wahAv7CxMUv8Ft35NpE7UA8a3DX9ecEKeuR=w1280",
+      alt: "Satellite soil moisture increases over cropland used to estimate irrigation",
+      caption: "Positive changes in satellite soil moisture over cropland can be used to estimate irrigation water use."
+    }
+  }
+];
+
+/* Related work: same idea, shorter entries. */
+const RELATED = [
+  {
+    year: 2025,
+    title: "Estimating crop biophysical parameters from satellite-based SAR and optical observations using self-supervised learning with geospatial foundation models",
+    venue: "Hashemi, M.G., Alemohammad, H., Jalilvand, E., et al. Remote Sensing of Environment, 327, 114825",
+    doi: "10.1016/j.rse.2025.114825"
+  },
+  {
+    year: 2024,
+    title: "Harnessing SMAP satellite soil moisture product to optimize soil properties to improve water resource management for agriculture",
+    venue: "Nanda, A., Das, N.N., Jalilvand, E., et al. Agricultural Water Management",
+    note: "Six years of SMAP soil moisture used to calibrate soil properties, improving streamflow and agricultural drought estimates.",
+    doi: "10.1016/j.agwat.2024.109065"
+  },
+  {
+    year: 2024,
+    title: "Review of synthetic aperture radar with deep learning in agricultural applications",
+    venue: "Hashemi, M.G., Jalilvand, E., Alemohammad, H., Tan, P.N., & Das, N.N. ISPRS Journal of Photogrammetry and Remote Sensing, 218, 20–49",
+    doi: "10.1016/j.isprsjprs.2024.08.018"
+  },
+  {
+    year: 2024,
+    title: "Yield estimation from SAR data using patch-based deep learning and machine learning techniques",
+    venue: "Hashemi, M.G., Tan, P.N., Jalilvand, E., et al. Computers and Electronics in Agriculture, 226, 109340",
+    doi: "10.1016/j.compag.2024.109340"
+  },
+  {
+    year: 2022,
+    title: "Assessing the impact of Sentinel-1 derived planting dates on rice crop yield modeling",
+    venue: "Hashemi, M.G., Abhishek, A., Jalilvand, E., et al. International Journal of Applied Earth Observation and Geoinformation, 114, 103047",
+    note: "Rice planting dates in Cambodia estimated from Sentinel-1 differed from the fixed crop calendar by up to ±75 days.",
+    doi: "10.1016/j.jag.2022.103047"
+  }
+];
+
+const METHODS = {
+  sm: "Soil moisture",
+  da: "Data assimilation",
+  thermal: "Thermal remote sensing",
+  ml: "Machine learning"
+};
+
+const SCALES = {
+  coarse: { label: "Tens of km", level: 1 },
+  "9km":  { label: "9 km",       level: 4 },
+  "1km":  { label: "1 km",       level: 16 },
+  field:  { label: "Field scale", level: "field" }
+};
+
+const ME = "Jalilvand, E.";
+
+/* ---------------------------------------------------------------------
+   Everything below renders the page. You should not need to edit it.
+   --------------------------------------------------------------------- */
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function linkFor(item) { return item.url || ("https://doi.org/" + item.doi); }
+function citation(s) {
+  return `${s.authors} (${s.year}). ${s.title}. ${s.journal}, ${s.details}. ${linkFor(s)}`;
+}
+
+/* A synthetic landscape used for the resolution illustrations.
+   Background soil is dry; center-pivot fields are wet unless fallow. */
+function makeRng(seed) { return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+const rnd = makeRng(2019);
+/* Square farm sections; each pivot sits in the middle of one. */
+const SEC = 0.165, SX0 = 0.4175 - 3 * SEC, SY0 = 0.3875 - 3 * SEC, NS = 8;
+const SECTIONS = Array.from({ length: NS * NS }, () => 0.08 + rnd() * 0.2);
+function sectionIndex(x, y) {
+  const i = Math.max(0, Math.min(NS - 1, Math.floor((x - SX0) / SEC)));
+  const j = Math.max(0, Math.min(NS - 1, Math.floor((y - SY0) / SEC)));
+  return j * NS + i;
+}
+function bgAt(x, y) { return SECTIONS[sectionIndex(x, y)]; }
+const PIVOTS = [];
+[0.47, 0.635, 0.80].forEach((y, j) => [0.50, 0.665, 0.83].forEach((x, i) => {
+  PIVOTS.push({ x, y, r: 0.074, wet: !((i === 2 && j === 0) || (i === 0 && j === 2)), a: rnd() * Math.PI * 2 });
+}));
+PIVOTS.push({ x: 0.17, y: 0.30, r: 0.074, wet: true, a: rnd() * Math.PI * 2 });
+PIVOTS.push({ x: 0.17, y: 0.135, r: 0.074, wet: false, a: rnd() * Math.PI * 2 });
+const WET = 0.86, FALLOW = 0.04;
+function moisture(x, y) {
+  for (const p of PIVOTS) if (Math.hypot(x - p.x, y - p.y) < p.r) return p.wet ? WET : FALLOW;
+  return bgAt(x, y);
+}
+
+function hex2rgb(h) { h = h.trim().replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function rampColors() {
+  const cs = getComputedStyle(document.documentElement);
+  return ["--r0", "--r1", "--r2", "--r3", "--r4"].map(n => hex2rgb(cs.getPropertyValue(n)));
+}
+function colorFor(v, stops) {
+  const t = Math.max(0, Math.min(1, (v - FALLOW) / (WET - FALLOW))) * (stops.length - 1);
+  const i = Math.min(stops.length - 2, Math.floor(t)), f = t - i;
+  const c = stops[i].map((a, k) => Math.round(a + (stops[i + 1][k] - a) * f));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+function panelSVG(level, stops) {
+  let out = "";
+  if (level === "field") {
+    // Roads between sections, then each section as a plot of dry soil.
+    out += `<rect width="100" height="100" fill="${colorFor(0.24, stops)}"/>`;
+    const s = SEC * 100, gap = 0.7;
+    for (let j = 0; j < NS; j++) for (let i = 0; i < NS; i++) {
+      const x = (SX0 * 100) + i * s + gap / 2, y = (SY0 * 100) + j * s + gap / 2;
+      out += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(s - gap).toFixed(2)}" height="${(s - gap).toFixed(2)}" fill="${colorFor(SECTIONS[j * NS + i], stops)}"/>`;
+    }
+    for (const p of PIVOTS) {
+      const cx = p.x * 100, cy = p.y * 100, r = p.r * 100;
+      out += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${r.toFixed(2)}" fill="${colorFor(p.wet ? WET : FALLOW, stops)}"/>`;
+      if (p.wet) {
+        out += `<line x1="${cx.toFixed(2)}" y1="${cy.toFixed(2)}" x2="${(cx + Math.cos(p.a) * r).toFixed(2)}" y2="${(cy + Math.sin(p.a) * r).toFixed(2)}" stroke="var(--arm)" stroke-width=".6" stroke-linecap="round"/>`;
+        out += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r=".8" fill="var(--arm)"/>`;
+      }
+    }
+    return out;
+  }
+  const n = level, w = 100 / n, S = Math.max(4, Math.round(64 / n));
+  out += `<g shape-rendering="crispEdges">`;
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    let sum = 0;
+    for (let b = 0; b < S; b++) for (let a = 0; a < S; a++) sum += moisture((i + (a + 0.5) / S) / n, (j + (b + 0.5) / S) / n);
+    out += `<rect x="${(i * w).toFixed(3)}" y="${(j * w).toFixed(3)}" width="${(w + 0.2).toFixed(3)}" height="${(w + 0.2).toFixed(3)}" fill="${colorFor(sum / (S * S), stops)}"/>`;
+  }
+  return out + `</g>`;
+}
+
+function drawPanels() {
+  const stops = rampColors();
+  document.querySelectorAll("svg[data-level]").forEach(svg => {
+    const lv = svg.dataset.level;
+    svg.innerHTML = panelSVG(lv === "field" ? "field" : Number(lv), stops);
+  });
+}
+
+function studyHTML(s, idx) {
+  const sc = SCALES[s.scale] || SCALES.field;
+  const authors = esc(s.authors).replace(esc(ME), `<strong>${esc(ME)}</strong>`);
+  const tags = s.methods.map(m => `<li class="tag">${esc(METHODS[m] || m)}</li>`).join("");
+  const findings = (s.findings || []).map(f => `<li>${esc(f)}</li>`).join("");
+  let fig;
+  if (s.image && s.image.src) {
+    fig = `<figure class="study-fig">
+        <a href="${esc(s.image.src)}" target="_blank" rel="noopener"><img src="${esc(s.image.src)}" alt="${esc(s.image.alt || "")}" referrerpolicy="no-referrer" data-level="${sc.level}" data-scale="${esc(s.scaleNote || sc.label)}"></a>
+        ${s.image.caption ? `<figcaption>${esc(s.image.caption)}</figcaption>` : ""}
+      </figure>`;
+  } else {
+    fig = `<figure class="study-fig"><svg viewBox="0 0 100 100" data-level="${sc.level}" role="img" aria-label="Illustration of a ${esc(sc.label)} grid"></svg>
+        <figcaption>Illustration of the study's resolution: ${esc((s.scaleNote || sc.label).toLowerCase())}</figcaption></figure>`;
+  }
+  return `<li class="study" data-methods="${s.methods.join(" ")}">
+      <div class="study-when"><span class="yr">${s.year}</span><span class="sc">${esc(s.scaleNote || sc.label)}</span></div>
+      <div class="study-body">
+        <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
+        <p class="venue"><em>${esc(s.journal)}</em>, ${esc(s.details)}</p>
+        <p class="authors">${authors}</p>
+        <p class="summary">${esc(s.summary)}</p>
+        ${findings ? `<ul class="findings">${findings}</ul>` : ""}
+        <div class="study-foot">
+          <ul class="tags" aria-label="Methods">${tags}</ul>
+          <div class="actions">
+            <a href="${esc(linkFor(s))}">Read the paper</a>
+            <button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button>
+          </div>
+        </div>
+      </div>
+      ${fig}
+    </li>`;
+}
+
+const sorted = STUDIES.map((s, i) => ({ s, i })).sort((a, b) => b.s.year - a.s.year || a.i - b.i).map(o => o.s);
+
+function renderStudies() {
+  document.getElementById("study-list").innerHTML = sorted.map(studyHTML).join("");
+  // If a figure fails to load, swap in the resolution illustration.
+  document.querySelectorAll(".study-fig img").forEach(img => {
+    img.addEventListener("error", () => {
+      const fig = img.closest("figure");
+      const lv = img.dataset.level;
+      fig.innerHTML = `<svg viewBox="0 0 100 100" data-level="${lv}" role="img" aria-label="Resolution illustration"></svg>
+        <figcaption>Illustration of the study's resolution: ${esc(img.dataset.scale.toLowerCase())}</figcaption>`;
+      drawPanels();
+    }, { once: true });
+  });
+}
+
+function renderFilters() {
+  const box = document.getElementById("filters");
+  const counts = { all: STUDIES.length };
+  STUDIES.forEach(s => s.methods.forEach(m => counts[m] = (counts[m] || 0) + 1));
+  const keys = ["all", ...Object.keys(METHODS).filter(k => counts[k])];
+  box.insertAdjacentHTML("beforeend", keys.map(k =>
+    `<button type="button" data-filter="${k}" aria-pressed="${k === "all"}">${k === "all" ? "All" : esc(METHODS[k])}<span class="n">${counts[k]}</span></button>`
+  ).join(""));
+  box.addEventListener("click", e => {
+    const b = e.target.closest("button[data-filter]");
+    if (!b) return;
+    box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    applyFilter(b.dataset.filter);
+  });
+}
+
+function applyFilter(f) {
+  let shown = 0;
+  document.querySelectorAll(".study").forEach(el => {
+    const on = f === "all" || el.dataset.methods.split(" ").includes(f);
+    el.hidden = !on;
+    if (on) shown++;
+  });
+  const label = f === "all" ? "" : ` using ${METHODS[f].toLowerCase()}`;
+  document.getElementById("count").textContent = `Showing ${shown} ${shown === 1 ? "study" : "studies"}${label}`;
+}
+
+function renderRelated() {
+  document.getElementById("related").innerHTML = RELATED.slice().sort((a, b) => b.year - a.year).map(r => `
+    <li><span class="yr">${r.year}</span>
+      <div><div class="t"><a href="${esc(linkFor(r))}">${esc(r.title)}</a></div>
+        <p>${esc(r.venue).replace(esc(ME), `<strong>${esc(ME)}</strong>`)}</p>
+        ${r.note ? `<p>${esc(r.note)}</p>` : ""}
+      </div></li>`).join("");
+}
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button[data-cite]");
+  if (!b) return;
+  const text = citation(sorted[Number(b.dataset.cite)]);
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (err) {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "absolute"; ta.style.left = "-9999px";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (_) {}
+    ta.remove();
+  }
+  toast("Citation copied");
+});
+
+renderStudies();
+renderFilters();
+applyFilter("all");
+renderRelated();
+drawPanels();
+document.getElementById("scales").classList.add("animate");
+try {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawPanels);
+} catch (_) {}
+</script>
+
+<script>
+/* ======================================================================
+   RESEARCH LANDSCAPE TABLE
+   The rows live in data/papers.json. The paper-finding agent adds new
+   rows there (through a pull request you approve), and you can edit
+   that file by hand too. Nothing below needs editing.
+   ====================================================================== */
+
+const LIT_DATA_URL = "data/papers.json";
+const LIT_SUGGEST = "mailto:ehsan.jalilvand@gmail.com?subject=" + encodeURIComponent("Paper suggestion for the irrigation table");
+const LIT_PAGE = 15;          // rows shown before "Show all"
+const LIT_NEW_DAYS = 90;      // "New" badge window
+
+const Q_LABELS = { where: "Where", when: "When", how_much: "How much" };
+const METHOD_LABELS = {
+  sm: "Satellite soil moisture",
+  et: "ET and thermal",
+  imagery: "Optical and radar imagery",
+  model: "Land surface models",
+  da: "Data assimilation",
+  ml: "Machine learning"
+};
+const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
+
+const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "year", sortDir: -1, showAll: false, open: new Set() };
+const $ = id => document.getElementById(id);
+
+function litLink(p) { return p.doi ? "https://doi.org/" + p.doi : (p.url || "#"); }
+function litPeriod(p) {
+  if (!p.period || p.period.start == null) return "";
+  const { start, end } = p.period;
+  return end == null || end === start ? String(start) : `${start}–${end}`;
+}
+function litIsNew(p) {
+  if (!p.date) return false;
+  const d = new Date(p.date + "T00:00:00");
+  return !isNaN(d) && (Date.now() - d.getTime()) / 864e5 <= LIT_NEW_DAYS;
+}
+function litQs(p) { return Object.keys(Q_LABELS).filter(k => p.questions && p.questions[k]); }
+function litHay(p) {
+  return [p.title, p.authors, p.venue, p.domain, p.region, p.scale, p.approach, p.summary,
+    (p.keywords || []).join(" "), (p.data || []).join(" "), (p.methods || []).map(m => METHOD_LABELS[m] || m).join(" "),
+    litPeriod(p), String(p.year)].join(" ").toLowerCase();
+}
+
+function litMatches(p) {
+  const qs = litQs(p);
+  if (lit.q === "all" && qs.length < 3) return false;
+  if (lit.q !== "any" && lit.q !== "all" && !qs.includes(lit.q)) return false;
+  if (lit.status !== "any" && p.status !== lit.status) return false;
+  if (lit.method !== "any" && !(p.methods || []).includes(lit.method)) return false;
+  if (lit.region !== "any" && p.region !== lit.region) return false;
+  if (lit.text) {
+    const hay = p._hay;
+    if (!lit.text.split(/\s+/).every(t => hay.includes(t))) return false;
+  }
+  return true;
+}
+
+function litCompare(a, b) {
+  const dir = lit.sortDir;
+  const val = p => {
+    switch (lit.sortKey) {
+      case "author": return (p.first_author || p.authors || "").toLowerCase();
+      case "area": return (p.domain || "￿").toLowerCase();
+      case "period": return p.period && p.period.start != null ? (p.period.end || p.period.start) : null;
+      default: return p.year * 10000 + (p.date ? Number(p.date.slice(5, 7)) * 100 + Number(p.date.slice(8, 10)) : 0);
+    }
+  };
+  const va = val(a), vb = val(b);
+  if (va == null && vb == null) return b.year - a.year;
+  if (va == null) return 1;
+  if (vb == null) return -1;
+  if (va < vb) return -1 * dir;
+  if (va > vb) return 1 * dir;
+  return b.year - a.year;
+}
+
+function litRow(p, i) {
+  const qs = litQs(p);
+  const qText = qs.length ? "Answers " + qs.map(k => Q_LABELS[k].toLowerCase()).join(", ") : "Question not classified yet";
+  const status = p.status === "preprint"
+    ? `<span class="st st-pre"><span class="pulse" aria-hidden="true"></span>Preprint</span><span class="st-sub">Not yet peer reviewed</span>`
+    : `<span class="st st-pub"><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>`;
+  const isOpen = lit.open.has(p.id);
+  const area = p.domain ? esc(p.domain) : `<span class="muted">Not stated</span>`;
+  const areaSub = [p.scale ? p.scale[0].toUpperCase() + p.scale.slice(1) + " scale" : "", p.region && p.region !== p.domain ? (p.region === "Multiple" ? "several regions" : p.region) : ""].filter(Boolean).join(", ");
+  const period = litPeriod(p);
+  const kw = (p.keywords || []).slice(0, 4);
+  const firstAuthor = p.first_author ? `${esc(p.first_author)}${/et al\.|,.*,/.test(p.authors || "") || (p.authors || "").split(",").length > 2 ? " et al." : ""}` : esc(p.authors || "");
+  return `<tr class="row${isOpen ? " open" : ""}" data-id="${esc(p.id)}">
+      <td class="c-status">${status}${litIsNew(p) ? `<span class="new">New</span>` : ""}</td>
+      <td class="c-year yr-cell">${p.year}</td>
+      <td class="c-study">
+        <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
+        <p class="by">${firstAuthor}, <em>${esc(p.venue || "")}</em></p>
+        <button type="button" class="more-btn" aria-expanded="${isOpen}" aria-controls="d-${i}">Details<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+      </td>
+      <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="${qs.includes(k) ? "on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
+      <td class="c-area" data-label="Study area">${area}${areaSub ? `<span class="sub">${esc(areaSub)}</span>` : ""}</td>
+      <td class="c-period" data-label="Period">${period ? esc(period) : `<span class="muted">Not stated</span>`}</td>
+      <td class="c-approach" data-label="Approach">${esc(p.approach || "")}${kw.length ? `<span class="kw">${esc(kw.join(", "))}</span>` : ""}</td>
+    </tr>
+    <tr class="detail" id="d-${i}"${isOpen ? "" : " hidden"}><td colspan="7"><div>
+      <div>
+        ${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
+        ${p.status === "preprint" ? `<p class="note">This is a preprint. It has not been peer reviewed yet, so its results may change.</p>` : ""}
+        ${p.note ? `<p class="muted">${esc(p.note)}</p>` : ""}
+        <div class="acts"><a href="${esc(litLink(p))}" target="_blank" rel="noopener">Read the paper</a><button type="button" class="linkbtn" data-litcite="${esc(p.id)}">Copy citation</button></div>
+      </div>
+      <dl>
+        <dt>Authors</dt><dd>${esc(p.authors || "")}</dd>
+        ${(p.methods || []).length ? `<dt>Methods</dt><dd>${esc(p.methods.map(m => METHOD_LABELS[m] || m).join(", "))}</dd>` : ""}
+        ${(p.data || []).length ? `<dt>Data and models</dt><dd>${esc(p.data.join(", "))}</dd>` : ""}
+        ${(p.keywords || []).length ? `<dt>Keywords</dt><dd>${esc(p.keywords.join(", "))}</dd>` : ""}
+        <dt>${p.doi ? "DOI" : "Link"}</dt><dd>${p.doi ? esc(p.doi) : `<a href="${esc(litLink(p))}">${esc(litLink(p))}</a>`}</dd>
+      </dl>
+    </div></td></tr>`;
+}
+
+function litRender() {
+  const rows = lit.all.filter(litMatches).sort(litCompare);
+  const shown = lit.showAll ? rows : rows.slice(0, LIT_PAGE);
+  const body = $("lit-body");
+  body.innerHTML = shown.length
+    ? shown.map(litRow).join("")
+    : `<tr class="lit-empty"><td colspan="7">No studies match these filters. <button type="button" class="lit-reset" data-reset>Clear filters</button></td></tr>`;
+  const filtered = rows.length !== lit.all.length;
+  $("lit-count").textContent = filtered
+    ? `${rows.length} of ${lit.all.length} studies match`
+    : `${lit.all.length} studies`;
+  const more = $("lit-more");
+  more.hidden = rows.length <= LIT_PAGE;
+  more.textContent = lit.showAll ? "Show fewer" : `Show all ${rows.length} studies`;
+  $("lit-reset").hidden = !(lit.q !== "any" || lit.status !== "any" || lit.method !== "any" || lit.region !== "any" || lit.text);
+  document.querySelectorAll("#lit th[data-key]").forEach(th => {
+    if (th.dataset.key === lit.sortKey) th.setAttribute("aria-sort", lit.sortDir === -1 ? "descending" : "ascending");
+    else th.removeAttribute("aria-sort");
+  });
+  const sel = $("lit-sort"), v = `${lit.sortKey}:${lit.sortDir}`;
+  if ([...sel.options].some(o => o.value === v)) sel.value = v;
+}
+
+function litToggle(id) {
+  if (lit.open.has(id)) lit.open.delete(id); else lit.open.add(id);
+  const row = document.querySelector(`#lit-body tr.row[data-id="${CSS.escape(id)}"]`);
+  if (!row) return;
+  const open = lit.open.has(id);
+  row.classList.toggle("open", open);
+  row.querySelector(".more-btn").setAttribute("aria-expanded", String(open));
+  row.nextElementSibling.hidden = !open;
+}
+
+function litResetFilters() {
+  Object.assign(lit, { q: "any", status: "any", method: "any", region: "any", text: "" });
+  $("lit-q").value = ""; $("lit-status").value = "any"; $("lit-method").value = "any"; $("lit-region").value = "any";
+  document.querySelectorAll("#lit-qseg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.q === "any")));
+  litRender();
+}
+
+function litCitation(p) {
+  return `${p.authors} (${p.year}). ${p.title}. ${p.venue}${p.status === "preprint" ? " [preprint, not peer reviewed]" : ""}. ${litLink(p)}`;
+}
+
+function litCSV() {
+  const cols = ["Status", "Year", "Title", "Authors", "Venue", "Link", "Where", "When", "How much", "Study area", "Region", "Scale", "Period", "Approach", "Methods", "Data and models", "Keywords"];
+  const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+  const rows = lit.all.filter(litMatches).sort(litCompare).map(p => [
+    p.status === "preprint" ? "Preprint" : "Peer reviewed", p.year, p.title, p.authors, p.venue, litLink(p),
+    p.questions && p.questions.where ? "yes" : "", p.questions && p.questions.when ? "yes" : "", p.questions && p.questions.how_much ? "yes" : "",
+    p.domain, p.region, p.scale, litPeriod(p), p.approach,
+    (p.methods || []).map(m => METHOD_LABELS[m] || m).join("; "), (p.data || []).join("; "), (p.keywords || []).join("; ")
+  ].map(cell).join(","));
+  const blob = new Blob(["﻿" + [cols.map(cell).join(","), ...rows].join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "irrigation-studies.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function litInit(data) {
+  lit.all = (data.papers || []).filter(p => p && p.title && p.year).map(p => Object.assign({}, p, { _hay: litHay(p) }));
+
+  const methods = Object.keys(METHOD_LABELS).filter(m => lit.all.some(p => (p.methods || []).includes(m)));
+  $("lit-method").insertAdjacentHTML("beforeend", methods.map(m => `<option value="${m}">${esc(METHOD_LABELS[m])}</option>`).join(""));
+  const regions = REGION_ORDER.filter(r => lit.all.some(p => p.region === r));
+  $("lit-region").insertAdjacentHTML("beforeend", regions.map(r => `<option value="${esc(r)}">${esc(r)}</option>`).join(""));
+
+  if (data.updated) {
+    const d = new Date(data.updated + "T00:00:00");
+    $("lit-updated").textContent = `Last updated ${d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Preprints are flagged until a peer-reviewed version appears.`;
+  }
+  $("lit-suggest").href = LIT_SUGGEST;
+  litRender();
+}
+
+function litWire() {
+  let t;
+  $("lit-q").addEventListener("input", e => {
+    clearTimeout(t);
+    t = setTimeout(() => { lit.text = e.target.value.trim().toLowerCase(); litRender(); }, 120);
+  });
+  $("lit-qseg").addEventListener("click", e => {
+    const b = e.target.closest("button[data-q]");
+    if (!b) return;
+    lit.q = b.dataset.q;
+    document.querySelectorAll("#lit-qseg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    litRender();
+  });
+  $("lit-status").addEventListener("change", e => { lit.status = e.target.value; litRender(); });
+  $("lit-method").addEventListener("change", e => { lit.method = e.target.value; litRender(); });
+  $("lit-region").addEventListener("change", e => { lit.region = e.target.value; litRender(); });
+  $("lit-sort").addEventListener("change", e => {
+    const [k, d] = e.target.value.split(":");
+    lit.sortKey = k; lit.sortDir = Number(d); litRender();
+  });
+  $("lit-reset").addEventListener("click", litResetFilters);
+  $("lit-more").addEventListener("click", () => { lit.showAll = !lit.showAll; litRender(); });
+  $("lit-csv").addEventListener("click", litCSV);
+
+  document.querySelector("#lit thead").addEventListener("click", e => {
+    const th = e.target.closest("th[data-key]");
+    if (!th || !e.target.closest("button")) return;
+    const k = th.dataset.key;
+    if (lit.sortKey === k) lit.sortDir *= -1;
+    else { lit.sortKey = k; lit.sortDir = (k === "year" || k === "period") ? -1 : 1; }
+    litRender();
+  });
+
+  $("lit-body").addEventListener("click", async e => {
+    if (e.target.closest("[data-reset]")) { litResetFilters(); return; }
+    const cite = e.target.closest("button[data-litcite]");
+    if (cite) {
+      const p = lit.all.find(x => x.id === cite.dataset.litcite);
+      const text = litCitation(p);
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        const ta = document.createElement("textarea");
+        ta.value = text; ta.style.position = "absolute"; ta.style.left = "-9999px";
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        ta.remove();
+      }
+      toast("Citation copied");
+      return;
+    }
+    if (e.target.closest("a")) return;
+    const row = e.target.closest("tr.row");
+    if (row && (e.target.closest(".more-btn") || !window.getSelection().toString())) litToggle(row.dataset.id);
+  });
+}
+
+litWire();
+fetch(LIT_DATA_URL, { cache: "no-cache" })
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(litInit)
+  .catch(() => {
+    $("lit-count").textContent = "";
+    $("lit-body").innerHTML = `<tr class="lit-empty"><td colspan="7">The table could not load. It reads from data/papers.json, which browsers block when you open the page straight from your computer. It works once the page is on GitHub Pages.</td></tr>`;
+  });
+</script>
+</body>
+</html>

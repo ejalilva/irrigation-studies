@@ -1,0 +1,24 @@
+{
+  "_help": "Settings for agent/find_papers.py. Edit the search phrases to change what the agent looks for.",
+  "lookback_days": 60,
+  "results_per_query": 25,
+  "max_new_per_run": 20,
+  "queries": [
+    "irrigation satellite soil moisture",
+    "irrigation water use remote sensing",
+    "irrigation quantification satellite",
+    "irrigated area mapping satellite",
+    "irrigation timing detection Sentinel-1",
+    "irrigation evapotranspiration thermal remote sensing",
+    "irrigation land surface model",
+    "irrigation data assimilation",
+    "irrigation Earth system model"
+  ],
+  "must_mention_any": [
+    "satellite", "remote sensing", "remotely sensed", "earth observation",
+    "smap", "smos", "ascat", "amsr", "sentinel", "landsat", "modis", "ecostress", "grace",
+    "land surface model", "earth system model", "hydrological model", "hydrologic model",
+    "data assimilation", "noah", "community land model", "lpjml", "vic model"
+  ],
+  "claude_model": "claude-haiku-5-5"
+}
