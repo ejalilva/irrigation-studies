@@ -1,0 +1,178 @@
+{
+  "papers": [
+    {
+      "id": "10.1016/j.agwat.2026.110830",
+      "title": "Satellite-based mapping of evapotranspiration, water stress, and crop productivity in mixed irrigated–rainfed agricultural watersheds of central minnesota",
+      "authors": "Rahimzadegan, M., MULLA, D.J., Runck, B.C., et al.",
+      "first_author": "Rahimzadegan",
+      "year": 2026,
+      "date": "2026-10-07",
+      "venue": "Agricultural Water Management",
+      "doi": "10.1016/j.agwat.2026.110830",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Clearwater–Elk and Sauk watersheds, central Minnesota, USA",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 2021,
+        "end": 2024
+      },
+      "approach": "Google Earth Engine SEBAL evapotranspiration, water stress index, and MVI-based yield disaggregation",
+      "methods": [
+        "et",
+        "imagery",
+        "model"
+      ],
+      "data": [
+        "Landsat",
+        "Sentinel-2",
+        "OpenET geeSEBAL",
+        "SEBAL"
+      ],
+      "keywords": [
+        "evapotranspiration",
+        "SEBAL",
+        "water stress index",
+        "crop water productivity",
+        "irrigated-rainfed systems"
+      ],
+      "summary": "The study uses a Google Earth Engine SEBAL framework to estimate actual evapotranspiration, water stress, and crop water productivity in mixed irrigated-rainfed Minnesota watersheds from 2021 to 2024.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
+    },
+    {
+      "id": "10.25919/mjrc-jy47",
+      "title": "Remote sensing characterisation of agricultural and water use practices in salinity affected canal commands in the Indus Basin Irrigated System (IBIS)",
+      "authors": "CSIRO",
+      "first_author": "CSIRO",
+      "year": 2026,
+      "date": "2026-10-14",
+      "venue": "CSIRO",
+      "doi": "10.25919/mjrc-jy47",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Indus Basin Irrigated System, Pakistan",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Remote sensing characterisation of cropping and water use in salinity-affected canal commands",
+      "methods": [
+        "imagery",
+        "et"
+      ],
+      "data": [],
+      "keywords": [
+        "Indus Basin Irrigated System",
+        "remote sensing",
+        "canal commands",
+        "salinity",
+        "water use"
+      ],
+      "summary": "Uses remote sensing to characterise agricultural and water use practices in salinity-affected canal commands of the Indus Basin Irrigated System.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
+    },
+    {
+      "id": "10.1016/j.ejrh.2026.103768",
+      "title": "Regionalising a global gridded crop model using satellite-based phenology for water footprint analysis in the Upper Syr Darya Basin",
+      "authors": "Baviskar, G.i., Foster, T., Hogeboom, R.J., et al.",
+      "first_author": "Baviskar",
+      "year": 2026,
+      "date": "2026-07-25",
+      "venue": "Journal of Hydrology Regional Studies",
+      "doi": "10.1016/j.ejrh.2026.103768",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Upper Syr Darya Basin, Central Asia",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Regionalised global gridded crop model (AquaCrop-Earth@lternatives) with satellite-derived phenology",
+      "methods": [
+        "model",
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "AquaCrop-Earth@lternatives (ACEA)",
+        "satellite-derived phenometrics",
+        "satellite-based ET estimates"
+      ],
+      "keywords": [
+        "water footprint",
+        "crop phenology",
+        "AquaCrop",
+        "cotton",
+        "Syr Darya"
+      ],
+      "summary": "Regionalises a global crop model's cotton calendar using satellite phenology, showing that planting and season length changes alter simulated evapotranspiration and blue water footprints in the Upper Syr Darya Basin.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
+    },
+    {
+      "id": "10.3390/rs18081183",
+      "title": "Alternate Wetting and Drying Irrigated Rice Paddy Field Water Status Monitoring with ALOS-2 Three Components and IoT Sensors",
+      "authors": "Islam, M.R., Oyoshi, K., Takeuchi, W.",
+      "first_author": "Islam",
+      "year": 2026,
+      "date": "2026-04-15",
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs18081183",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Naogaon District, Bangladesh",
+      "region": "Asia",
+      "scale": "field",
+      "period": null,
+      "approach": "Freeman-Durden decomposition of PALSAR-2 polarimetry with Random Forest classification",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "ALOS-2 PALSAR-2 full polarimetric",
+        "IoT water level sensors",
+        "field survey data"
+      ],
+      "keywords": [
+        "alternate wetting and drying",
+        "rice paddy",
+        "PALSAR-2",
+        "polarimetric decomposition",
+        "irrigation monitoring"
+      ],
+      "summary": "Uses L-band PALSAR-2 polarimetric decomposition and IoT water-level sensors with Random Forest to classify alternate wetting and drying versus continuous flooding in rice paddies in Bangladesh.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
+    }
+  ]
+}
