@@ -6,6 +6,8 @@ What it does, in order:
   1. Reads the table (data/papers.json) and its settings (agent/config.json).
   2. Searches OpenAlex, a free index of scholarly papers that also covers
      preprint servers, for recent studies matching the search phrases.
+     In backfill mode it also searches one past year (agent/backfill.json),
+     keeping only papers above a citation bar that rises with age.
   3. Keeps only papers about irrigation that use satellite data or models.
   4. Fills in the table columns for each new paper. With a Claude API key,
      Claude reads the abstract and fills every column. Without a key,
@@ -40,6 +42,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "papers.json"
 CONFIG_PATH = ROOT / "agent" / "config.json"
 SEEN_PATH = ROOT / "agent" / "seen.json"
+BACKFILL_PATH = ROOT / "agent" / "backfill.json"
 
 OPENALEX = "https://api.openalex.org/works"
 DATACITE = "https://api.datacite.org/dois"
@@ -147,31 +150,61 @@ def openalex_url(params, cfg):
     return OPENALEX + "?" + urllib.parse.urlencode(params, safe=":,|")
 
 
-def openalex_search(query, since, cfg):
-    """Return every work matching the query since the given date, newest first."""
+# Only the fields the agent reads, to keep responses small.
+OPENALEX_FIELDS = ("id,doi,title,display_name,publication_year,publication_date,type,"
+                   "primary_location,authorships,abstract_inverted_index,cited_by_count")
+SEARCH_STATUS = {"truncated": []}
+
+
+def openalex_search(query, since, cfg, until=None, min_citations=0):
+    """Return every work matching the query published between since and until.
+
+    Uses cursor paging, so long result lists are read to the end. The only
+    limit is max_results_per_query, a safety net; hitting it is reported.
+    """
     per_page = 100
-    max_pages = int(cfg.get("max_pages_per_query", 5))
+    limit = int(cfg.get("max_results_per_query", 20000))
+    filters = [f"from_publication_date:{since}"]
+    if until:
+        filters.append(f"to_publication_date:{until}")
+    if min_citations > 0:
+        filters.append(f"cited_by_count:>{min_citations - 1}")
     params = {
         "search": query,
-        "filter": f"from_publication_date:{since},type:article|preprint|review",
+        "filter": ",".join(filters + ["type:article|preprint|review"]),
+        "select": OPENALEX_FIELDS,
         "sort": "publication_date:desc",
         "per_page": str(per_page),
     }
-    results = []
-    for page in range(1, max_pages + 1):
-        params["page"] = str(page)
+    results, cursor = [], "*"
+    while cursor:
+        params["cursor"] = cursor
         try:
-            batch = http_json(openalex_url(dict(params), cfg)).get("results", [])
+            resp = http_json(openalex_url(dict(params), cfg))
         except urllib.error.HTTPError as e:
-            if e.code != 400 or "type:" not in params["filter"]:
+            if e.code != 400 or "select" not in params:
                 raise
-            # Retry without the type filter in case OpenAlex renamed a type.
-            params["filter"] = f"from_publication_date:{since}"
-            batch = http_json(openalex_url(dict(params), cfg)).get("results", [])
+            # Retry plainly in case OpenAlex renamed a work type or a field.
+            params = {"search": query, "filter": ",".join(filters), "sort": "publication_date:desc", "per_page": str(per_page)}
+            continue
+        batch = resp.get("results", [])
         results.extend(batch)
+        cursor = (resp.get("meta") or {}).get("next_cursor")
         if len(batch) < per_page:
             break
+        if len(results) >= limit:
+            SEARCH_STATUS["truncated"].append(f"'{query}' ({since} to {until or 'today'})")
+            break
     return results
+
+
+def citation_bar(year, cfg, this_year):
+    """Minimum citations for a backfilled paper from the given year."""
+    rule = cfg.get("citations_for_older_papers") or {}
+    age = this_year - year
+    if age <= int(rule.get("free_years", 1)):
+        return 0
+    return min(int(rule.get("max", 50)), int(rule.get("per_year", 3)) * age)
 
 
 def abstract_text(inverted):
@@ -623,6 +656,8 @@ def main():
     ap = argparse.ArgumentParser(description="Find new irrigation papers for the research table.")
     ap.add_argument("--dry-run", action="store_true", help="show what would change without saving anything")
     ap.add_argument("--days", type=int, help="how many days back to search (overrides config.json)")
+    ap.add_argument("--backfill", action="store_true", help="also search one past year (progress in agent/backfill.json)")
+    ap.add_argument("--year", type=int, help="backfill this year instead of the one in agent/backfill.json")
     args = ap.parse_args()
 
     cfg = load_json(CONFIG_PATH, {})
@@ -630,64 +665,119 @@ def main():
     seen = set(load_json(SEEN_PATH, {"ids": []}).get("ids", []))
     papers = data.get("papers", [])
 
-    today = dt.date.today().isoformat()
-    days = args.days or int(os.environ.get("LOOKBACK_DAYS") or 0) or cfg.get("lookback_days", 60)
-    since = (dt.date.today() - dt.timedelta(days=days)).isoformat()
+    today_d = dt.date.today()
+    today = today_d.isoformat()
+    days = args.days or int(os.environ.get("LOOKBACK_DAYS") or 0)
+    if days:
+        since_d = today_d - dt.timedelta(days=days)
+    else:
+        since_d = today_d - dt.timedelta(days=int(cfg.get("lookback_days", 60)))
+        # Never leave a gap after the last saved run. The overlap catches
+        # papers that OpenAlex indexes a little after they are published.
+        try:
+            since_d = min(since_d, dt.date.fromisoformat(data.get("updated") or "") - dt.timedelta(days=14))
+        except ValueError:
+            pass
+    since = since_d.isoformat()
     claude_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    backfill = bool(args.backfill or args.year or os.environ.get("BACKFILL", "").strip().lower() in ("1", "true", "yes"))
+    bf_state = load_json(BACKFILL_PATH, {"next_year": today_d.year, "first_year": 2010})
 
     known_ids = {(p.get("id") or "").lower() for p in papers} | {(p.get("doi") or "").lower() for p in papers}
     known_ids.discard("")
     known_titles = {norm_title(p.get("title")) for p in papers}
 
-    log(f"Searching OpenAlex for papers published since {since}.")
     log("Classifier: " + ("Claude (" + cfg.get("claude_model", "claude-haiku-5-5") + ")" if claude_key else "keyword rules (add ANTHROPIC_API_KEY for full classification)"))
 
-    added, skipped, newly_seen, deferred, unclassified = [], 0, set(), set(), set()
-    max_new = cfg.get("max_new_per_run", 20)
-    for query in cfg.get("queries", []):
-        try:
-            works = openalex_search(query, since, cfg)
-        except Exception as e:
-            log(f"Search failed for '{query}': {e}")
-            continue
-        log(f"'{query}': {len(works)} results")
-        for w in works:
-            c = candidate_from(w)
-            if not c["id"] or not c["title"] or not c["year"]:
+    stats = {"skipped": 0, "classified": 0}
+    newly_seen, unclassified, handled = set(), set(), set()
+    max_calls = int(cfg.get("max_classifications_per_run", 2000))
+
+    def collect(since, until, cap, min_citations=0):
+        """Search one date window. Returns (added, deferred, complete)."""
+        added, deferred, complete = [], set(), True
+        failed_before = len(unclassified)
+        for query in cfg.get("queries", []):
+            try:
+                works = openalex_search(query, since, cfg, until=until, min_citations=min_citations)
+            except Exception as e:
+                log(f"Search failed for '{query}': {e}")
+                SEARCH_STATUS.setdefault("failed", []).append(query)
+                complete = False
                 continue
-            if c["id"] in known_ids or c["id"] in seen or c["id"] in newly_seen or norm_title(c["title"]) in known_titles:
-                continue
-            if not looks_relevant(c, cfg, strict=not claude_key):
-                newly_seen.add(c["id"])
-                skipped += 1
-                continue
-            if len(added) >= max_new:
-                # Leave it unseen so a later run can propose it.
-                deferred.add(c["id"])
-                continue
-            newly_seen.add(c["id"])
-            cls = classify_with_claude(c, cfg, claude_key) if claude_key else None
-            if cls is not None and not any(cls.get(q) for q in QUESTIONS):
-                cls["relevant"] = False   # the table is organized by where / when / how much
-            if cls is None:
-                if claude_key:
-                    # Claude was meant to judge this one but failed; leave it
-                    # unseen so a later run can classify it properly.
-                    newly_seen.discard(c["id"])
-                    unclassified.add(c["id"])
+            log(f"'{query}': {len(works)} results")
+            for w in works:
+                c = candidate_from(w)
+                if not c["id"] or not c["title"] or not c["year"] or c["id"] in handled:
                     continue
-                cls = classify_with_rules(c)
-            if not cls.get("relevant"):
-                skipped += 1
-                continue
-            entry = build_entry(c, cls, today)
-            if cfg.get("find_data_links", True):
-                entry["resources"] = find_resources(entry["doi"], c["abstract"])
-                entry["resources_checked"] = today
-            added.append(entry)
-            known_ids.add(entry["id"])
-            known_titles.add(norm_title(entry["title"]))
-            log(f"  + {entry['first_author']} {entry['year']}: {entry['title'][:80]}")
+                if c["id"] in known_ids or c["id"] in seen or norm_title(c["title"]) in known_titles:
+                    continue
+                handled.add(c["id"])
+                if not looks_relevant(c, cfg, strict=not claude_key):
+                    # Not marked as seen: this check is free to repeat, and an
+                    # abstract added to OpenAlex later may change the answer.
+                    stats["skipped"] += 1
+                    continue
+                if len(added) >= cap or (claude_key and stats["classified"] >= max_calls):
+                    # Leave it unseen so a later run can propose it.
+                    deferred.add(c["id"])
+                    continue
+                newly_seen.add(c["id"])
+                cls = None
+                if claude_key:
+                    stats["classified"] += 1
+                    cls = classify_with_claude(c, cfg, claude_key)
+                if cls is not None and not any(cls.get(q) for q in QUESTIONS):
+                    cls["relevant"] = False   # the table is organized by where / when / how much
+                if cls is None:
+                    if claude_key:
+                        # Claude was meant to judge this one but failed; leave it
+                        # unseen so a later run can classify it properly.
+                        newly_seen.discard(c["id"])
+                        unclassified.add(c["id"])
+                        continue
+                    cls = classify_with_rules(c)
+                if not cls.get("relevant"):
+                    stats["skipped"] += 1
+                    continue
+                entry = build_entry(c, cls, today)
+                if cfg.get("find_data_links", True):
+                    entry["resources"] = find_resources(entry["doi"], c["abstract"])
+                    entry["resources_checked"] = today
+                added.append(entry)
+                known_ids.add(entry["id"])
+                known_titles.add(norm_title(entry["title"]))
+                log(f"  + {entry['first_author']} {entry['year']}: {entry['title'][:80]}")
+        if deferred or len(unclassified) > failed_before:
+            complete = False
+        return added, deferred, complete
+
+    # Recent papers.
+    log(f"Searching OpenAlex for papers published since {since}.")
+    max_new = int(cfg.get("max_new_per_run", 20))
+    added, deferred, _ = collect(since, None, max_new)
+
+    # Backfill: one past year per pull request, newest first.
+    years, backfill_added = [], []
+    first_year = int(bf_state.get("first_year", 2010))
+    next_year = int(bf_state.get("next_year", today_d.year))
+    if backfill:
+        year = args.year or next_year
+        per_year = int(cfg.get("backfill_max_per_year", 120))
+        while year >= first_year and len(years) < int(cfg.get("backfill_years_per_run", 4)):
+            bar = citation_bar(year, cfg, today_d.year)
+            log(f"Backfill: papers from {year}" + (f" with at least {bar} citations." if bar else ", all citation counts."))
+            got, left, complete = collect(f"{year}-01-01", f"{year}-12-31", per_year, bar)
+            years.append({"year": year, "bar": bar, "added": got, "left": len(left), "complete": complete})
+            backfill_added += got
+            if not complete or got:
+                break      # one year of papers per pull request
+            year -= 1      # nothing found that year: move straight on to the next
+        if years and not args.year:
+            last = years[-1]
+            next_year = last["year"] - 1 if last["complete"] else last["year"]
+    backfill_moved = backfill and not args.year and next_year != int(bf_state.get("next_year", today_d.year))
+    backfill_more = next_year >= first_year
 
     # Preprints that have since been published.
     upgraded = []
@@ -727,34 +817,67 @@ def main():
                 time.sleep(0.2)
 
     # Report, used as the pull request description.
+    all_added = added + backfill_added
     preview = site_url(cfg)
     lines = [f"## Paper agent report, {today}", ""]
-    if added and preview:
+    if all_added and preview:
         lines += [f"**[Preview these papers on the page]({preview}?preview#landscape)**", ""]
-    lines.append(f"Searched papers published since {since}. "
-                 f"{len(added)} new, {len(upgraded)} preprint(s) now peer reviewed, {skipped} skipped as off-topic.")
+    lines.append(f"Searched papers published since {since}: {len(added)} new. "
+                 f"{len(upgraded)} preprint(s) now peer reviewed. {stats['skipped']} skipped as off-topic in total.")
+    for y in years:
+        bar = f"with at least {y['bar']} citations" if y["bar"] else "with any number of citations"
+        lines += ["", f"**Backfill, {y['year']}:** searched papers from {y['year']} {bar}. {len(y['added'])} found."]
+        if y["left"]:
+            lines.append(f"{y['left']} more possibly relevant paper(s) from {y['year']} are waiting "
+                         f"(limit: {cfg.get('backfill_max_per_year', 120)} per pull request). Merging this pull request continues with {y['year']}.")
+        elif not y["complete"]:
+            lines.append(f"Some searches for {y['year']} did not finish, so {y['year']} will be searched again.")
+    if backfill and not args.year:
+        if backfill_more:
+            lines += ["", f"Merging this pull request starts the backfill of **{next_year}** automatically."]
+        elif years or backfill_moved:
+            lines += ["", f"**The backfill is complete:** every year back to {first_year} has been searched."]
+        else:
+            lines += ["", f"The backfill was already complete (back to {first_year}). To run it again, lower `first_year` or raise `next_year` in `agent/backfill.json`."]
+    if SEARCH_STATUS["truncated"]:
+        lines += ["", f"Some searches reached the safety limit of {cfg.get('max_results_per_query', 20000)} results and were cut short: "
+                  + "; ".join(SEARCH_STATUS["truncated"]) + ". Raise `max_results_per_query` in `agent/config.json` if this matters."]
     if claude_key and CLAUDE_STATUS["errors"]:
         lines += ["", f"**Claude could not classify {len(unclassified)} paper(s)** "
                       f"({CLAUDE_STATUS['ok']} classified successfully). They were not added and will be tried "
                       f"again on the next run. First error:", "", "```", CLAUDE_STATUS["errors"][0], "```"]
     elif not claude_key:
         lines += ["", "Classified with keyword rules (no `ANTHROPIC_API_KEY` secret was available to this run)."]
+    if claude_key and stats["classified"]:
+        # Haiku 5.5 at about 1,300 input and 250 output tokens per abstract.
+        lines += ["", f"Claude read {stats['classified']} abstract(s) in this run, roughly ${stats['classified'] * 0.00026:.2f} of API credit."]
+    if claude_key and stats["classified"] >= max_calls:
+        lines += ["", f"This run reached its limit of {max_calls} Claude classifications; the rest wait for the next run."]
     if deferred:
-        lines.append("")
-        lines.append(f"{len(deferred)} more possibly relevant paper(s) were left for the next run "
-                     f"(limit: {max_new} per run). Merge this pull request, then run the workflow again with the same number of days.")
-    if added:
-        lines += ["", "### New papers", "",
-                  "Untick a paper to reject it. It is removed from this pull request within a minute "
-                  "and won't be suggested again. Tick it again to bring it back.", "",
-                  "To make a paper an editor's pick, tick **Editor's pick** under it. To add your note, "
-                  "edit this description and type it after `Note:` on that line.", ""]
-        for e in added:
+        lines += ["", f"{len(deferred)} more possibly relevant recent paper(s) were left for the next run "
+                      f"(limit: {max_new} per run)."]
+
+    def checklist(heading, entries):
+        out = ["", f"### {heading}", ""]
+        for e in entries:
             flag = " (preprint)" if e["status"] == "preprint" else ""
             review = " *Some details missing.*" if e["needs_review"] else ""
             link = f"https://doi.org/{e['doi']}" if e["doi"] else e["url"]
-            lines.append(f"- [x] [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review} <!-- id:{e['id']} -->")
-            lines.append(f"  - [ ] Editor's pick. Note: <!-- pick:{e['id']} -->")
+            out.append(f"- [x] [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review} <!-- id:{e['id']} -->")
+            out.append(f"  - [ ] Editor's pick. Note: <!-- pick:{e['id']} -->")
+        return out
+
+    if all_added:
+        lines += ["", "### How to review", "",
+                  "Untick a paper to reject it. It is removed from this pull request within a minute "
+                  "and won't be suggested again. Tick it again to bring it back.", "",
+                  "To make a paper an editor's pick, tick **Editor's pick** under it. To add your note, "
+                  "edit this description and type it after `Note:` on that line."]
+    if added:
+        lines += checklist("New papers", added)
+    for y in years:
+        if y["added"]:
+            lines += checklist(f"Papers from {y['year']}", y["added"])
     if upgraded:
         lines += ["", "### Preprints that are now published", ""]
         lines += [f"- {p['title']} ({p['venue']}, {p['year']})" for p in upgraded]
@@ -772,25 +895,41 @@ def main():
 
     # Check dates are saved along with other changes; a run that only re-checked
     # papers and found no links does not open a pull request.
-    changed = bool(added or upgraded or linked)
+    changed = bool(all_added or upgraded or linked or backfill_moved)
+    chain = backfill and not args.year and backfill_more
+    if years:
+        span = f"{years[0]['year']}" if len(years) == 1 else f"{years[-1]['year']}–{years[0]['year']}"
+        title = f"Papers from {span}" + (" and new papers" if added else "") + " found by the agent"
+    else:
+        title = "New irrigation papers found by the agent"
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
             f.write(f"changed={'true' if changed else 'false'}\n")
+            f.write(f"title={title}\n")
+            f.write(f"labels={'paper-agent,backfill' if chain else 'paper-agent'}\n")
 
     if args.dry_run or not changed:
         log("No files changed." if not changed else "Dry run: nothing saved.")
         if claude_key and CLAUDE_STATUS["errors"] and not changed:
             log("Failing the run so the Claude error is visible: " + CLAUDE_STATUS["errors"][0])
             return 1
+        if years and not years[-1]["complete"] and not changed:
+            # No pull request means nothing would start the next backfill run.
+            log(f"Failing the run: the backfill of {years[-1]['year']} did not finish. Run the workflow again with backfill ticked.")
+            return 1
         return 0
 
-    papers.extend(added)
+    papers.extend(all_added)
     papers.sort(key=lambda p: (-(p.get("year") or 0), p.get("first_author") or ""))
     data["papers"] = papers
     data["updated"] = today
     save_json(DATA_PATH, data)
     save_json(SEEN_PATH, {"ids": sorted(seen | newly_seen)})
-    log(f"Saved {DATA_PATH.relative_to(ROOT)} and {SEEN_PATH.relative_to(ROOT)}.")
+    if backfill_moved:
+        bf_state["next_year"] = next_year
+        save_json(BACKFILL_PATH, bf_state)
+    log(f"Saved {DATA_PATH.relative_to(ROOT)} and {SEEN_PATH.relative_to(ROOT)}"
+        + (f", and set the next backfill year to {next_year}." if backfill_moved else "."))
     return 0
 
 

@@ -4,6 +4,11 @@
 # edits on the review branch are never overwritten. A manual run (Actions tab >
 # Find new irrigation papers > Run workflow) always runs and replaces any open
 # review.
+#
+# Backfill: tick "backfill" on a manual run to also search one past year
+# (agent/backfill.json keeps track of which). Each backfill pull request is
+# labelled "backfill"; merging it starts the next year automatically, until
+# the first year in agent/backfill.json is done.
 
 name: Find new irrigation papers
 
@@ -13,16 +18,28 @@ on:
   workflow_dispatch:
     inputs:
       days:
-        description: "How many days back to search (leave empty for the default 60)"
+        description: "How many days back to search (leave empty for the default)"
         required: false
         default: ""
+      backfill:
+        description: "Also search one past year, one pull request per year"
+        type: boolean
+        default: false
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: find-papers
+  cancel-in-progress: false
+
 jobs:
   check-open-review:
+    if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     outputs:
       open: ${{ steps.count.outputs.open }}
@@ -35,22 +52,35 @@ jobs:
 
   find-papers:
     needs: check-open-review
-    if: github.event_name != 'schedule' || needs.check-open-review.outputs.open == '0'
+    if: >-
+      always() && (
+        (github.event_name == 'schedule' && needs.check-open-review.outputs.open == '0') ||
+        github.event_name == 'workflow_dispatch' ||
+        (github.event_name == 'pull_request' &&
+         github.event.pull_request.merged == true &&
+         github.event.pull_request.head.ref == 'agent/new-papers' &&
+         contains(github.event.pull_request.labels.*.name, 'backfill'))
+      )
     runs-on: ubuntu-latest
+    timeout-minutes: 300
     steps:
       - name: Get the website files
         uses: actions/checkout@v6
+        with:
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
-      - name: Search for new papers
+      - name: Search for papers
+        id: find
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # optional
           OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}     # optional
           LOOKBACK_DAYS: ${{ github.event.inputs.days }}
+          BACKFILL: ${{ github.event_name == 'pull_request' || github.event.inputs.backfill == 'true' }}
           REPORT_PATH: ${{ runner.temp }}/report.md
         run: python agent/find_papers.py
 
@@ -62,7 +92,8 @@ jobs:
           add-paths: |
             data/papers.json
             agent/seen.json
-          commit-message: "Agent: add new irrigation papers"
-          title: "New irrigation papers found by the agent"
+            agent/backfill.json
+          commit-message: "Agent: add irrigation papers"
+          title: ${{ steps.find.outputs.title || 'New irrigation papers found by the agent' }}
           body-path: ${{ runner.temp }}/report.md
-          labels: paper-agent
+          labels: ${{ steps.find.outputs.labels || 'paper-agent' }}
