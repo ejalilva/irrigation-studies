@@ -1,0 +1,47 @@
+# When you untick (or re-tick) a paper in the agent's pull request description,
+# this removes (or restores) it on the review branch.
+
+name: Apply paper review
+
+on:
+  pull_request:
+    types: [edited]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-review
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.ref == 'agent/new-papers' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the review branch
+        uses: actions/checkout@v6
+        with:
+          ref: agent/new-papers
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Apply the checklist
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: python agent/apply_review.py
+
+      - name: Save the changes to the branch
+        run: |
+          git add data/papers.json agent/seen.json agent/rejected.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Nothing to change."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Apply paper review checklist"
+          git push

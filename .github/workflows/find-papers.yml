@@ -1,7 +1,9 @@
-# Runs the paper-finding agent every Monday and opens a pull request with
-# any new papers. Nothing changes on your site until you merge that pull
-# request. You can also start it by hand: Actions tab > Find new irrigation
-# papers > Run workflow.
+# Runs the paper-finding agent every Monday and opens a pull request with any
+# new papers. Nothing changes on the site until that pull request is merged.
+# The Monday run is skipped while a previous review is still open, so your
+# edits on the review branch are never overwritten. A manual run (Actions tab >
+# Find new irrigation papers > Run workflow) always runs and replaces any open
+# review.
 
 name: Find new irrigation papers
 
@@ -20,7 +22,20 @@ permissions:
   pull-requests: write
 
 jobs:
+  check-open-review:
+    runs-on: ubuntu-latest
+    outputs:
+      open: ${{ steps.count.outputs.open }}
+    steps:
+      - name: Count open reviews
+        id: count
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: echo "open=$(gh pr list --repo "$GITHUB_REPOSITORY" --head agent/new-papers --state open --json number --jq length)" >> "$GITHUB_OUTPUT"
+
   find-papers:
+    needs: check-open-review
+    if: github.event_name != 'schedule' || needs.check-open-review.outputs.open == '0'
     runs-on: ubuntu-latest
     steps:
       - name: Get the website files
