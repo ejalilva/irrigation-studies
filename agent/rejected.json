@@ -130,6 +130,49 @@
       "added": "2026-10-21",
       "needs_review": false,
       "source": "agent"
+    },
+    {
+      "id": "10.3390/rs18081183",
+      "title": "Alternate Wetting and Drying Irrigated Rice Paddy Field Water Status Monitoring with ALOS-2 Three Components and IoT Sensors",
+      "authors": "Islam, M.R., Oyoshi, K., Takeuchi, W.",
+      "first_author": "Islam",
+      "year": 2026,
+      "date": "2026-04-15",
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs18081183",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Naogaon District, Bangladesh",
+      "region": "Asia",
+      "scale": "field",
+      "period": null,
+      "approach": "Freeman-Durden decomposition of PALSAR-2 polarimetry with Random Forest classification",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "ALOS-2 PALSAR-2 full polarimetric",
+        "IoT water level sensors",
+        "field survey data"
+      ],
+      "keywords": [
+        "alternate wetting and drying",
+        "rice paddy",
+        "PALSAR-2",
+        "polarimetric decomposition",
+        "irrigation monitoring"
+      ],
+      "summary": "Uses L-band PALSAR-2 polarimetric decomposition and IoT water-level sensors with Random Forest to classify alternate wetting and drying versus continuous flooding in rice paddies in Bangladesh.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
     }
   ]
 }
