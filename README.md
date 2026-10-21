@@ -74,7 +74,7 @@ Each paper is one object in `papers`:
 Each run, the agent:
 
 1. Searches [OpenAlex](https://openalex.org) for works published in the last `lookback_days` that match the phrases in `agent/config.json`.
-2. Skips known and previously seen IDs, then drops papers that don't mention irrigation or any term in `must_mention_any`.
+2. Skips known and previously seen IDs, Zenodo and figshare copies, and papers that don't mention any term in `must_mention_any`. Without an API key it also requires "irrigation" in the title; with a key, Claude judges relevance from the abstract.
 3. Classifies each remaining paper. With `ANTHROPIC_API_KEY` set, Claude Haiku 5.5 reads the abstract and fills every column. Without a key, keyword rules fill the questions, methods, data and period, and the row is marked `needs_review`.
 4. Checks every preprint in the table for a peer-reviewed version with a near-identical title and the same first author. If it finds one, the row switches to the published DOI and venue, and a `note` records the change.
 5. Writes `data/papers.json` and `agent/seen.json` only if something changed, and prints a Markdown report.
@@ -96,8 +96,8 @@ Environment variables: `ANTHROPIC_API_KEY` and `OPENALEX_API_KEY` (both optional
 |---|---|---|
 | `queries` | 9 phrases | OpenAlex search phrases, one request each. |
 | `lookback_days` | 60 | Search window per run. |
-| `results_per_query` | 25 | Newest results returned per phrase. |
-| `max_new_per_run` | 20 | Cap on papers proposed in one pull request. |
+| `max_pages_per_query` | 5 | Pages of 100 results read per phrase; enough for a one-year backfill. |
+| `max_new_per_run` | 20 | Cap on papers proposed in one pull request. Extra relevant papers stay unseen and are proposed by the next run. |
 | `must_mention_any` | satellite and model terms | A paper must mention at least one term. |
 | `claude_model` | `claude-haiku-5-5` | Model used when an API key is set. |
 
