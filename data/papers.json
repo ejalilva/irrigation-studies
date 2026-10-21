@@ -1705,49 +1705,6 @@
       "resources_checked": "2026-10-21"
     },
     {
-      "id": "10.5194/gmd-19-6879-2026",
-      "title": "Integrating reservoirs and lakes in the CoSWAT global hydrological model",
-      "authors": "Teran, J.P., Chawanda, C.J., Nkwasa, A., et al.",
-      "first_author": "Teran",
-      "year": 2026,
-      "date": "2026-07-29",
-      "venue": "Geoscientific model development",
-      "doi": "10.5194/gmd-19-6879-2026",
-      "url": null,
-      "status": "published",
-      "type": "article",
-      "questions": {
-        "where": false,
-        "when": false,
-        "how_much": true
-      },
-      "domain": "Global (selected regions worldwide)",
-      "region": "Global",
-      "scale": "global",
-      "period": null,
-      "approach": "SWAT+ global model extended with reservoir and lake schemes; topological irrigation demand estimatio",
-      "methods": [
-        "model"
-      ],
-      "data": [
-        "CoSWAT global water model",
-        "SWAT+"
-      ],
-      "keywords": [
-        "global hydrological model",
-        "SWAT+",
-        "reservoirs",
-        "lakes",
-        "irrigation demand"
-      ],
-      "summary": "The CoSWAT global hydrological model is extended with reservoir and lake schemes, including irrigation demand for reservoirs, and improves streamflow at 70% of evaluated stations.",
-      "added": "2026-10-21",
-      "needs_review": false,
-      "source": "agent",
-      "resources": [],
-      "resources_checked": "2026-10-21"
-    },
-    {
       "id": "10.20900/jsr20260069",
       "title": "Sustainable Irrigation in Central Asia: A Review of Historical Development, Water Governance, Climate Change, and Digital Transformation",
       "authors": "Tulindinova, Z., Pulatov, B., Bаtykova, A., et al.",
