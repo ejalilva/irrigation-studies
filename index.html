@@ -306,6 +306,13 @@
   .lit-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .88rem; color: var(--ink-2); }
   .lit-foot p { margin: 0; max-width: 70ch; }
   .lit-foot .acts { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+  .lit-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 18px; font-size: .9rem; }
+  .lit-suggest label { font-weight: 500; margin-right: 4px; }
+  .lit-suggest input { flex: 1 1 12rem; max-width: 19rem; min-width: 0; font: 400 .9rem/1.2 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; }
+  .lit-suggest input::placeholder { color: var(--ink-2); opacity: .85; }
+  .lit-suggest input[aria-invalid="true"] { border-color: var(--warn); }
+  .lit-suggest-msg { flex-basis: 100%; margin: 0; font-size: .84rem; color: var(--ink-2); }
+  .lit-suggest-msg:empty { display: none; }
   .btn { font: 500 .9rem/1 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; }
   .btn:hover { border-color: var(--ink-2); }
   .btn[hidden] { display: none; }
@@ -611,9 +618,14 @@
           <div class="acts">
             <button type="button" class="btn" id="lit-more" hidden>Show all studies</button>
             <button type="button" class="btn" id="lit-csv">Download as CSV</button>
-            <a id="lit-suggest" href="#">Suggest a paper</a>
           </div>
         </div>
+        <form class="lit-suggest" id="lit-suggest" novalidate>
+          <label for="lit-doi">Know a paper that's missing?</label>
+          <input id="lit-doi" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste its DOI, e.g. 10.1029/2022WR033342" aria-describedby="lit-suggest-msg">
+          <button type="submit" class="btn">Suggest</button>
+          <p class="lit-suggest-msg" id="lit-suggest-msg" aria-live="polite"></p>
+        </form>
       </div>
     </section>
 
@@ -1044,7 +1056,7 @@ const LIT_DATA_URL = "data/papers.json";
 const LIT_REPO = "ejalilva/irrigation-studies";
 const LIT_REVIEW_BRANCH = "agent/new-papers";
 const LIT_PREVIEW = new URLSearchParams(location.search).has("preview");
-const LIT_SUGGEST = "mailto:ehsan.jalilvand@gmail.com?subject=" + encodeURIComponent("Paper suggestion for the irrigation table");
+const LIT_SUGGEST_TO = "ehsan.jalilvand@gmail.com";
 const LIT_PAGE = 10;          // rows shown before "Show all"
 const LIT_NEW_DAYS = 90;      // "New" badge window
 
@@ -1257,6 +1269,32 @@ function litCSV() {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
+// Accepts a bare DOI, "doi:10...", or a doi.org link.
+function litParseDOI(v) {
+  const d = String(v || "").trim().replace(/^doi:\s*/i, "").replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").trim();
+  return /^10\.\d{4,9}\/\S+$/.test(d) ? d : null;
+}
+
+function litSuggest(e) {
+  e.preventDefault();
+  const input = $("lit-doi"), msg = $("lit-suggest-msg");
+  const doi = litParseDOI(input.value);
+  if (!doi) {
+    input.setAttribute("aria-invalid", "true");
+    msg.textContent = "That doesn't look like a DOI. A DOI starts with 10., for example 10.1029/2022WR033342.";
+    return;
+  }
+  if (lit.all.some(p => (p.doi || "").toLowerCase() === doi.toLowerCase() || p.id === doi.toLowerCase())) {
+    msg.textContent = "That paper is already in the table. Search for it above.";
+    return;
+  }
+  const subject = `Paper suggestion: ${doi}`;
+  const body = `Suggested for the irrigation research table:\nhttps://doi.org/${doi}\n`;
+  location.href = `mailto:${LIT_SUGGEST_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  msg.textContent = `Thank you. Your email app should open with the DOI filled in; just press send. If nothing opens, email the DOI to ${LIT_SUGGEST_TO}.`;
+  input.value = "";
+}
+
 function litAuthorShort(a) {
   const parts = (a || "").split(",").map(x => x.trim()).filter(Boolean);
   return parts.length ? parts[0] + (parts.length > 2 || /et al/.test(a) ? " et al." : "") : "";
@@ -1314,7 +1352,6 @@ function litInit(data) {
     const d = new Date(data.updated + "T00:00:00");
     $("lit-updated").textContent = `Last updated ${d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Preprints are flagged until a peer-reviewed version appears.`;
   }
-  $("lit-suggest").href = LIT_SUGGEST;
   lit.picks = new Map(((data._picks || {}).picks || []).filter(k => k && k.id).map(k => [k.id, k]));
   $("lit-legend-pick").hidden = !lit.picks.size;
   if (lit.picks.size) {
@@ -1370,6 +1407,8 @@ function litWire() {
   $("lit-reset").addEventListener("click", litResetFilters);
   $("lit-more").addEventListener("click", () => { lit.showAll = !lit.showAll; litRender(); });
   $("lit-csv").addEventListener("click", litCSV);
+  $("lit-suggest").addEventListener("submit", litSuggest);
+  $("lit-doi").addEventListener("input", () => { $("lit-doi").removeAttribute("aria-invalid"); $("lit-suggest-msg").textContent = ""; });
   $("picks-all").addEventListener("click", () => {
     lit.status = "pick"; $("lit-status").value = "pick"; litRender();
     $("lit").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });

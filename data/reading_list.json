@@ -29,6 +29,15 @@
       "title": "Where: mapping irrigated land",
       "items": [
         {
+          "id": "10.1038/s41467-021-24508-8",
+          "title": "Irrigated areas drive irrigation water withdrawals",
+          "authors": "Puy, A., Borgonovo, E., Lo Piano, S., et al.",
+          "year": 2021,
+          "venue": "Nature Communications",
+          "doi": "10.1038/s41467-021-24508-8",
+          "why": "Finds that global estimates of irrigation water withdrawals depend mostly on irrigated area and its uncertainty. That is why mapping where irrigation happens matters for knowing how much water it uses."
+        },
+        {
           "id": "10.5194/hess-22-1119-2018",
           "title": "A global approach to estimate irrigated areas – a comparison between different data and statistics",
           "authors": "Meier, J., Zabel, F., Mauser, W.",
@@ -68,6 +77,15 @@
           "venue": "Geophysical Research Letters",
           "doi": "10.1002/2017GL075733",
           "why": "A short paper showing that SMAP soil moisture does carry an irrigation signal over US farmland."
+        },
+        {
+          "id": "10.1109/jstars.2021.3119228",
+          "title": "Evaluation of SMAP/Sentinel 1 high-resolution soil moisture data to detect irrigation over agricultural domain",
+          "authors": "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., Das, N.N.",
+          "year": 2021,
+          "venue": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+          "doi": "10.1109/JSTARS.2021.3119228",
+          "why": "Shows that resolution decides whether satellite soil moisture can see irrigation: the 9 km SMAP product misses it over an irrigated plain, while 1 and 3 km SMAP/Sentinel-1 data pick it up."
         }
       ]
     },
@@ -75,22 +93,13 @@
       "title": "How much water",
       "items": [
         {
-          "id": "10.1016/j.jag.2018.08.023",
-          "title": "How much water is used for irrigation? A new approach exploiting coarse resolution satellite soil moisture products",
-          "authors": "Brocca, L., Tarpanelli, A., Filippucci, P., et al.",
-          "year": 2018,
-          "venue": "International Journal of Applied Earth Observation and Geoinformation",
-          "doi": "10.1016/j.jag.2018.08.023",
-          "why": "Introduces the soil-moisture inversion idea (SM2RAIN) behind many later estimates of irrigation water use."
-        },
-        {
           "id": "10.1016/j.rse.2019.111226",
           "title": "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
           "authors": "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., Brocca, L.",
           "year": 2019,
           "venue": "Remote Sensing of Environment",
           "doi": "10.1016/j.rse.2019.111226",
-          "why": "Applies the same inversion to coarse satellite soil moisture (AMSR2) in a semi-arid region and compares the estimates with observed irrigation. A clear case of what works, and of where coarse pixels fall short over small fields."
+          "why": "Estimates irrigation water by inverting the soil water balance (SM2RAIN) on coarse satellite soil moisture (AMSR2) in a semi-arid region, and compares the estimates with observed irrigation. A clear case of what works, and of where coarse pixels fall short over small fields."
         },
         {
           "id": "10.5194/hess-23-897-2019",
