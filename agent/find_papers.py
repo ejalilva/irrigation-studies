@@ -273,14 +273,14 @@ def looks_relevant(c, cfg, strict):
 
 PROMPT = """You maintain a public literature table of irrigation research that uses satellite observations and/or land surface, Earth system or hydrological models.
 
-Read this paper's metadata and abstract, then answer with ONE JSON object and nothing else.
+Read this paper's metadata and abstract, then record your answer with the record_classification tool.
 
 Title: {title}
 Venue: {venue}
 Year: {year}
 Abstract: {abstract}
 
-JSON keys:
+Fields:
 - "relevant": true only if BOTH hold:
   (1) the study detects, maps, times or quantifies irrigation itself (where irrigation happens, when it happens, or how much water is applied, used or required), or represents irrigation in a land surface, Earth system or hydrological model; and
   (2) it uses satellite observations or such a model.
@@ -306,6 +306,47 @@ CLAUDE_STATUS = {"ok": 0, "errors": [], "disabled": False, "in_a_row": 0, "last_
 CLAUDE_MAX_FAILURES_IN_A_ROW = 3
 
 
+# Claude answers through this tool, so the reply is always structured data.
+# (Forcing the tool also skips Claude Haiku 5.5's default thinking step.)
+CLASSIFY_TOOL = {
+    "name": "record_classification",
+    "description": "Record how this paper fits the irrigation literature table.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "relevant": {"type": "boolean"},
+            "where": {"type": "boolean"},
+            "when": {"type": "boolean"},
+            "how_much": {"type": "boolean"},
+            "domain": {"type": ["string", "null"]},
+            "region": {"type": ["string", "null"], "enum": list(REGIONS) + [None]},
+            "scale": {"type": ["string", "null"], "enum": list(SCALES) + [None]},
+            "period_start": {"type": ["integer", "null"]},
+            "period_end": {"type": ["integer", "null"]},
+            "approach": {"type": ["string", "null"]},
+            "methods": {"type": "array", "items": {"type": "string", "enum": list(METHODS)}},
+            "data": {"type": "array", "items": {"type": "string"}},
+            "keywords": {"type": "array", "items": {"type": "string"}},
+            "summary": {"type": ["string", "null"]},
+            "type": {"type": "string", "enum": ["article", "review", "dataset"]},
+        },
+        "required": ["relevant", "where", "when", "how_much", "domain", "region", "scale", "period_start",
+                     "period_end", "approach", "methods", "data", "keywords", "summary", "type"],
+    },
+}
+
+
+def parse_classification(resp):
+    """Pull the classification out of a Messages API response."""
+    for b in resp.get("content", []):
+        if b.get("type") == "tool_use" and b.get("name") == CLASSIFY_TOOL["name"]:
+            return b.get("input") or {}
+    text = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
+    if "{" in text and "}" in text:
+        return json.loads(text[text.index("{"): text.rindex("}") + 1])
+    raise ValueError(f"no classification in Claude's reply (stop_reason: {resp.get('stop_reason')})")
+
+
 def classify_with_claude(c, cfg, key):
     prompt = PROMPT.format(
         title=c["title"], venue=c["venue"], year=c["year"],
@@ -314,7 +355,9 @@ def classify_with_claude(c, cfg, key):
     )
     body = {
         "model": cfg.get("claude_model", "claude-haiku-5-5"),
-        "max_tokens": 700,
+        "max_tokens": 2000,
+        "tools": [CLASSIFY_TOOL],
+        "tool_choice": {"type": "tool", "name": CLASSIFY_TOOL["name"]},
         "messages": [{"role": "user", "content": prompt}],
     }
     if CLAUDE_STATUS["disabled"]:
@@ -327,8 +370,7 @@ def classify_with_claude(c, cfg, key):
     headers = {"x-api-key": key, "anthropic-version": "2023-06-01"}
     try:
         resp = http_json(ANTHROPIC, body=body, headers=headers, tries=5)
-        text = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
-        result = json.loads(text[text.index("{"): text.rindex("}") + 1])
+        result = parse_classification(resp)
         CLAUDE_STATUS["ok"] += 1
         CLAUDE_STATUS["in_a_row"] = 0
         return result
