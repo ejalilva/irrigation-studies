@@ -225,11 +225,15 @@ def authors_str(work, n=3):
     return shown, names[0].split(",")[0]
 
 
+# OpenAlex spells a few journal names oddly.
+VENUE_FIXES = {"Earth s Future": "Earth's Future"}
+
+
 def candidate_from(work):
     doi = doi_of(work)
     authors, first = authors_str(work)
     pre = is_preprint(work)
-    venue = source_name(work)
+    venue = VENUE_FIXES.get(source_name(work), source_name(work))
     if pre and venue and "preprint" not in venue.lower():
         venue += " (preprint)"
     loc = work.get("primary_location") or {}
@@ -608,12 +612,15 @@ def main():
     if added:
         lines += ["", "### New papers", "",
                   "Untick a paper to reject it. It is removed from this pull request within a minute "
-                  "and won't be suggested again. Tick it again to bring it back.", ""]
+                  "and won't be suggested again. Tick it again to bring it back.", "",
+                  "To make a paper an editor's pick, tick **Editor's pick** under it. To add your note, "
+                  "edit this description and type it after `Note:` on that line.", ""]
         for e in added:
             flag = " (preprint)" if e["status"] == "preprint" else ""
             review = " *Some details missing.*" if e["needs_review"] else ""
             link = f"https://doi.org/{e['doi']}" if e["doi"] else e["url"]
             lines.append(f"- [x] [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review} <!-- id:{e['id']} -->")
+            lines.append(f"  - [ ] Editor's pick. Note: <!-- pick:{e['id']} -->")
     if upgraded:
         lines += ["", "### Preprints that are now published", ""]
         lines += [f"- {p['title']} ({p['venue']}, {p['year']})" for p in upgraded]
