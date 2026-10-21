@@ -1617,50 +1617,6 @@
       "resources_checked": "2026-10-21"
     },
     {
-      "id": "10.1017/irq.2025.10037",
-      "title": "LANDSCAPE ARCHAEOLOGY OF THE ERIDU REGION: DISCOVERING THE IRRIGATION SYSTEMS OF ANCIENT FARMS",
-      "authors": "Rayne, L., Gruchy, M.d., Jotheri, J., et al.",
-      "first_author": "Rayne",
-      "year": 2026,
-      "date": "2026-09-21",
-      "venue": "Iraq",
-      "doi": "10.1017/irq.2025.10037",
-      "url": null,
-      "status": "published",
-      "type": "article",
-      "questions": {
-        "where": true,
-        "when": true,
-        "how_much": false
-      },
-      "domain": "Eridu region, southern Iraq",
-      "region": "Asia",
-      "scale": "field",
-      "period": null,
-      "approach": "High-resolution satellite imagery mapping of ancient canals, combined with fieldwork and AMS radioca",
-      "methods": [
-        "imagery"
-      ],
-      "data": [
-        "VISION-1",
-        "Google Earth imagery",
-        "AMS radiocarbon dating"
-      ],
-      "keywords": [
-        "archaeology",
-        "irrigation history",
-        "Eridu",
-        "Euphrates",
-        "remote sensing"
-      ],
-      "summary": "Uses high-resolution satellite imagery, fieldwork and radiocarbon dating to map and date ancient irrigation canals near Eridu in southern Iraq.",
-      "added": "2026-10-21",
-      "needs_review": false,
-      "source": "agent",
-      "resources": [],
-      "resources_checked": "2026-10-21"
-    },
-    {
       "id": "10.1029/2025wr041530",
       "title": "Irrigation Use in a Changing Landscape: A Combined Economic and Hydrologic Approach",
       "authors": "Rizwan, N., Jalali, J., Sears, M., et al.",
