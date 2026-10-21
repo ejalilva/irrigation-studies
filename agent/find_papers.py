@@ -652,6 +652,25 @@ def site_url(cfg):
     return url and url.rstrip("/") + "/"
 
 
+def checklist_line(e, ticked=True):
+    """One paper in the review checklist: linked title, journal tag and year, authors underneath.
+
+    Everything stays on one line, ending with the id comment that
+    apply_review.py reads.
+    """
+    def clean(t):
+        return re.sub(r"\s+", " ", str(t or "")).replace("<", "&lt;").replace(">", "&gt;").strip()
+    link = f"https://doi.org/{e['doi']}" if e.get("doi") else (e.get("url") or "")
+    title = clean(e.get("title")).replace("[", "(").replace("]", ")")
+    venue = clean(e.get("venue")).replace("`", "'")
+    if e.get("status") == "preprint" and "preprint" not in venue.lower():
+        venue = f"{venue} (preprint)" if venue else "Preprint"
+    meta = [f"`{venue}`" if venue else "", str(e.get("year") or ""), "*some details missing*" if e.get("needs_review") else ""]
+    authors = clean(e.get("authors") or e.get("first_author"))
+    return (f"- [{'x' if ticked else ' '}] **[{title}]({link})** " + " · ".join(m for m in meta if m)
+            + (f"<br><sub>{authors}</sub>" if authors else "") + f" <!-- id:{e['id']} -->")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Find new irrigation papers for the research table.")
     ap.add_argument("--dry-run", action="store_true", help="show what would change without saving anything")
@@ -860,10 +879,7 @@ def main():
     def checklist(heading, entries):
         out = ["", f"### {heading}", ""]
         for e in entries:
-            flag = " (preprint)" if e["status"] == "preprint" else ""
-            review = " *Some details missing.*" if e["needs_review"] else ""
-            link = f"https://doi.org/{e['doi']}" if e["doi"] else e["url"]
-            out.append(f"- [x] [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review} <!-- id:{e['id']} -->")
+            out.append(checklist_line(e))
             out.append(f"  - [ ] Rising. Note: <!-- pick:{e['id']} -->")
         return out
 

@@ -6,7 +6,7 @@ Runs on the agent/new-papers branch whenever the pull request description is
 edited (see .github/workflows/apply-review.yml). Each proposed paper is a line
 like
 
-    - [x] [Title](link), Author et al., 2026. <!-- id:10.1234/abcd -->
+    - [x] **[Title](link)** `Journal` · 2026<br><sub>Authors</sub> <!-- id:10.1234/abcd -->
 
 Unticked papers are moved from data/papers.json to agent/rejected.json; their
 IDs stay in agent/seen.json, so the agent never proposes them again. Ticking a
