@@ -1620,6 +1620,59 @@
       "source": "seed"
     },
     {
+      "id": "10.5194/essd-13-5689-2021",
+      "title": "Landsat-based Irrigation Dataset (LANID): 30 m resolution maps of irrigation distribution, frequency, and change for the US, 1997–2017",
+      "authors": "Xie, Y., Gibbs, H.K., Lark, T.J.",
+      "first_author": "Xie",
+      "year": 2021,
+      "date": "2021-12-08",
+      "venue": "Earth System Science Data",
+      "doi": "10.5194/essd-13-5689-2021",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Conterminous United States",
+      "region": "North America",
+      "scale": "national",
+      "period": {
+        "start": 1997,
+        "end": 2017
+      },
+      "approach": "Annual random forest classification of Landsat imagery in Google Earth Engine, mapping irrigated cropland, pasture and hay",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Landsat",
+        "Google Earth Engine"
+      ],
+      "keywords": [
+        "LANID",
+        "irrigated area mapping",
+        "irrigation frequency",
+        "Landsat",
+        "conterminous US"
+      ],
+      "summary": "Annual 30 m maps of irrigated cropland, pasture and hay across the conterminous US for 1997–2017, with layers for maximum extent, frequency and change.",
+      "note": null,
+      "resources": [
+        {
+          "type": "data",
+          "url": "https://doi.org/10.5281/zenodo.5548555",
+          "label": "Zenodo"
+        }
+      ],
+      "added": null,
+      "needs_review": false,
+      "source": "seed"
+    },
+    {
       "id": "10.3390/rs13091727",
       "title": "Detection and quantification of irrigation water amounts at 500 m using Sentinel-1 surface soil moisture",
       "authors": "Zappa, L., Schlaffer, S., Bauer-Marschallinger, B., et al.",

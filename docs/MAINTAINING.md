@@ -163,7 +163,7 @@ Rising papers live in `data/editor_picks.json`, separate from the table data:
 
 ## Essential reading list
 
-`data/reading_list.json` holds the ordered reading path shown above the table. It is a list of `stages`, each with a `title` and `items`; items are numbered in order across stages. Each item needs `title`, `authors`, `year`, `venue`, `doi` (or `url`) and a one-sentence `why`. Reorder, add or remove items freely; the page renumbers itself.
+`data/reading_list.json` holds the reading list, shown as a grid of small cards with tabs for each group. It is a list of `stages`, each with a `key` (`big`, `where`, `when` or `how_much`, which sets the group's color to match the question colors) and a `title`, plus its `items`. Items are numbered in order across stages. Each item needs `title`, `authors`, `year`, `venue`, a short journal name for the card (`venue_short`, for example `RSE` or `HESS`), a `doi` (or `url`) and a one-sentence `why`, which appears when the card is opened. Reorder, add or remove items freely; the page renumbers itself, and every item that is also in the table is tagged Essential there.
 
 ## Repository settings
 
