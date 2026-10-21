@@ -276,7 +276,10 @@ Year: {year}
 Abstract: {abstract}
 
 JSON keys:
-- "relevant": true only if irrigation is a main focus AND the study uses satellite observations or a land surface / Earth system / hydrological model.
+- "relevant": true only if BOTH hold:
+  (1) the study detects, maps, times or quantifies irrigation itself (where irrigation happens, when it happens, or how much water is applied, used or required), or represents irrigation in a land surface, Earth system or hydrological model; and
+  (2) it uses satellite observations or such a model.
+  Studies that only use irrigated land as a setting are NOT relevant: for example crop mapping or yield, soil salinity, irrigation suitability or site selection, canal or infrastructure monitoring, wastewater irrigation effects, glacier or snow water supply, or smart-irrigation sensor and IoT systems.
 - "where": true if it maps the location or extent of irrigated land.
 - "when": true if it detects the timing, dates or frequency of irrigation events or seasons.
 - "how_much": true if it estimates irrigation amounts, water use or water requirements.
@@ -306,7 +309,6 @@ def classify_with_claude(c, cfg, key):
     body = {
         "model": cfg.get("claude_model", "claude-haiku-5-5"),
         "max_tokens": 700,
-        "temperature": 0,
         "messages": [{"role": "user", "content": prompt}],
     }
     if CLAUDE_STATUS["disabled"]:
@@ -481,6 +483,8 @@ def main():
                 continue
             newly_seen.add(c["id"])
             cls = classify_with_claude(c, cfg, claude_key) if claude_key else None
+            if cls is not None and not any(cls.get(q) for q in QUESTIONS):
+                cls["relevant"] = False   # the table is organized by where / when / how much
             if cls is None:
                 if claude_key and "irrigat" not in c["title"].lower():
                     # Claude was meant to judge this one but failed; leave it
