@@ -22,5 +22,8 @@
     "data assimilation", "noah", "community land model", "lpjml", "vic model"
   ],
   "claude_model": "claude-haiku-5-5",
-  "claude_seconds_between_calls": 1.5
+  "claude_seconds_between_calls": 1.5,
+  "find_data_links": true,
+  "data_links_per_run": 80,
+  "data_links_recheck_days": 180
 }

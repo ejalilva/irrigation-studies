@@ -52,6 +52,11 @@ Each paper is one object in `papers`:
   "keywords": ["SM2RAIN", "irrigation water use", "AMSR2", "semi-arid"],
   "summary": "One plain-language sentence.",
   "note": null,
+  "resources": [
+    { "type": "data", "label": "Zenodo", "url": "https://doi.org/10.5281/zenodo.0000000" },
+    { "type": "code", "label": "GitHub", "url": "https://github.com/owner/repo" }
+  ],
+  "resources_checked": "2026-10-21",
   "added": null,
   "needs_review": false,
   "source": "seed"
@@ -69,6 +74,9 @@ Each paper is one object in `papers`:
 | `period` | First and last year of data analysed, or `null`. |
 | `methods` | Any of `sm` (satellite soil moisture), `et` (ET or thermal), `imagery` (optical or radar), `model` (land surface or Earth system model), `da` (data assimilation), `ml` (machine learning). Drives the approach filter. |
 | `note` | Optional extra line in the row's details, such as a preprint's earlier title. |
+| `resources` | Optional list of datasets (`"type": "data"`) and software (`"type": "code"`) published with the paper, at most four. Shown as **Data** and **Code** links in the "Data & code" column, and listed in full in the row's details. Add, fix or remove entries by hand at any time. |
+| `resources_checked` | Date the agent last looked for data and code links for this paper. Delete it to have the agent look again on its next run. |
+| `added` | Date the agent added the row. The default "Picks and new first" order shows editor's picks first, then the most recently added rows. |
 | `needs_review` | Set by the agent when it could not fill every column. Shown as "Check details" in the review preview only. |
 | `source` | `seed` (added by hand) or `agent`. |
 
@@ -80,7 +88,8 @@ Each run, the agent:
 2. Skips known and previously seen IDs, Zenodo and figshare copies, and papers that don't mention any term in `must_mention_any`. Without an API key it also requires "irrigation" in the title; with a key, Claude judges relevance from the abstract.
 3. Classifies each remaining paper. With `ANTHROPIC_API_KEY` set, Claude Haiku 5.5 reads the abstract and fills every column; papers Claude can't classify (for example after repeated rate-limit errors) are left for the next run, and the error is shown in the pull request description, or the run fails if nothing could be proposed. Without a key, keyword rules fill the questions, methods, data and period, and the row is marked `needs_review`.
 4. Checks every preprint in the table for a peer-reviewed version with a near-identical title and the same first author. If it finds one, the row switches to the published DOI and venue, and a `note` records the change.
-5. Writes `data/papers.json` and `agent/seen.json` only if something changed, and prints a Markdown report.
+5. Looks for datasets and software linked to each new paper, and to existing papers not checked in the last `data_links_recheck_days`. Sources: [DataCite](https://datacite.org) records (Zenodo, PANGAEA, figshare, Mendeley Data and others) that cite the paper's DOI, the publisher's "is supplemented by" links in Crossref, and repository links (GitHub, Zenodo, HydroShare, Earth Engine and similar) written in the abstract. Links found for existing papers are listed in the pull request description so they can be checked before merging.
+6. Writes `data/papers.json` and `agent/seen.json` only if something changed, and prints a Markdown report. A run that only re-checked papers for links and found none opens no pull request.
 
 The workflow runs every Monday at 13:17 UTC, and can also be started from the Actions tab with an optional `days` input (for example `365` for a first backfill). When there are changes, it opens a pull request from `agent/new-papers`, with the report as its description. The Monday run is skipped while a review is still open, so edits on the review branch are never overwritten; a manual run always runs and replaces any open review.
 
@@ -112,6 +121,9 @@ Environment variables: `ANTHROPIC_API_KEY` and `OPENALEX_API_KEY` (both optional
 | `must_mention_any` | satellite and model terms | A paper must mention at least one term. |
 | `claude_model` | `claude-haiku-5-5` | Model used when an API key is set. |
 | `claude_seconds_between_calls` | 1.5 | Pause between Claude requests, to stay under the API's per-minute rate limit. Lower it if your API tier allows more requests. |
+| `find_data_links` | `true` | Look for data and code links (step 5). |
+| `data_links_per_run` | 80 | Cap on existing papers checked for links in one run. |
+| `data_links_recheck_days` | 180 | How long before an existing paper is checked for links again. |
 
 ## Editor's picks
 
@@ -125,7 +137,7 @@ Picks live in `data/editor_picks.json`, separate from the table data:
 }
 ```
 
-`id` must match a paper's `id` in `data/papers.json`. The six most recent picks appear as cards above the table; every pick gets a star badge in its row and can be filtered with "Editor's picks" in the status menu. To pick a paper that is already published, edit this file on `main` directly.
+`id` must match a paper's `id` in `data/papers.json`. The six most recent picks appear as cards above the table. In the table, picks come first in the default order, get a star **Pick** badge, show the note in their details, and can be filtered with "Editor's picks" in the status menu. To pick a paper that is already published, edit this file on `main` directly.
 
 ## Essential reading list
 

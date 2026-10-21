@@ -42,6 +42,8 @@ CONFIG_PATH = ROOT / "agent" / "config.json"
 SEEN_PATH = ROOT / "agent" / "seen.json"
 
 OPENALEX = "https://api.openalex.org/works"
+DATACITE = "https://api.datacite.org/dois"
+CROSSREF = "https://api.crossref.org/works/"
 ANTHROPIC = "https://api.anthropic.com/v1/messages"
 USER_AGENT = "irrigation-table-agent/1.0 (+https://github.com)"
 
@@ -498,6 +500,116 @@ def find_published_version(p, cfg):
 
 # -------------------------------------------------------------------- main
 
+# --------------------------------------------------------- data and code
+
+# DataCite resource types we show, and how.
+RESOURCE_TYPES = {"dataset": "data", "datapaper": "data", "collection": "data",
+                  "software": "code", "computationalnotebook": "code", "workflow": "code"}
+
+# Links to data or code that authors often write into abstracts.
+LINK_PATTERNS = [
+    (r"(?:https?://)?github\.com/[\w.-]+/[\w.-]+", "code", "GitHub"),
+    (r"(?:https?://)?gitlab\.com/[\w.-]+/[\w./-]+", "code", "GitLab"),
+    (r"(?:https?://)?code\.earthengine\.google\.com/[\w?=&/.-]+", "code", "Earth Engine"),
+    (r"(?:https?://)?(?:dx\.)?(?:doi\.org/)?10\.5281/zenodo\.\d+", "data", "Zenodo"),
+    (r"(?:https?://)?zenodo\.org/(?:records?|doi)/[\w./-]+", "data", "Zenodo"),
+    (r"(?:https?://)?(?:doi\.org/)?10\.6084/m9\.figshare\.[\w.]+", "data", "figshare"),
+    (r"(?:https?://)?(?:doi\.org/)?10\.1594/pangaea\.\d+", "data", "PANGAEA"),
+    (r"(?:https?://)?(?:doi\.org/)?10\.4211/hs\.\w+", "data", "HydroShare"),
+    (r"(?:https?://)?(?:www\.)?hydroshare\.org/resource/\w+", "data", "HydroShare"),
+    (r"(?:https?://)?(?:doi\.org/)?10\.17632/[\w.]+", "data", "Mendeley Data"),
+    (r"(?:https?://)?osf\.io/\w{5}\b", "data", "OSF"),
+]
+
+
+def _plain_doi(x):
+    return re.sub(r"^https?://(dx\.)?doi\.org/", "", (x or "").strip(), flags=re.I).lower()
+
+
+def _publisher(attrs):
+    p = attrs.get("publisher")
+    return (p.get("name") if isinstance(p, dict) else p) or "Repository"
+
+
+def find_resources(doi, abstract=""):
+    """Datasets, software and supplements linked to a paper.
+
+    Looks in three places: DataCite records (Zenodo, figshare, PANGAEA and most
+    other repositories register there) that list the paper as related; the
+    paper's Crossref record ("is supplemented by"); and links written in the
+    abstract. Returns up to four {"type": "data"|"code", "url", "label"}.
+    """
+    found = {}
+    paper = _plain_doi(doi)
+
+    def add(kind, url, label):
+        url = url.rstrip(".,;)]")
+        if not url.startswith("http"):
+            url = "https://" + ("doi.org/" + url if url.startswith("10.") else url)
+        if label in ("Supplement", "Repository"):
+            label = next((lab for pat, _, lab in LINK_PATTERNS if re.search(pat, url, re.I)), label)
+        key = re.sub(r"^https?://(www\.)?", "", url.lower())
+        if paper and _plain_doi(url) == paper:
+            return
+        found.setdefault(key, {"type": kind, "url": url, "label": label})
+
+    if paper:
+        for form in (paper, "https://doi.org/" + paper):
+            q = urllib.parse.urlencode({"query": f'relatedIdentifiers.relatedIdentifier:"{form}"', "page[size]": "25"})
+            try:
+                records = http_json(f"{DATACITE}?{q}").get("data", [])
+            except Exception as e:
+                log(f"  DataCite lookup failed for {paper}: {e}")
+                break
+            for rec in records:
+                a = rec.get("attributes") or {}
+                related = {_plain_doi(r.get("relatedIdentifier")) for r in a.get("relatedIdentifiers") or []}
+                kind = RESOURCE_TYPES.get(((a.get("types") or {}).get("resourceTypeGeneral") or "").lower())
+                if paper in related and kind and a.get("doi"):
+                    add(kind, "https://doi.org/" + a["doi"], _publisher(a))
+        try:
+            msg = http_json(CROSSREF + urllib.parse.quote(paper, safe="/")).get("message", {})
+            for rel in (msg.get("relation") or {}).get("is-supplemented-by", []):
+                rid = rel.get("id") or ""
+                if rid:
+                    add("data", ("https://doi.org/" + rid) if rel.get("id-type") == "doi" else rid, "Supplement")
+        except Exception as e:
+            log(f"  Crossref lookup failed for {paper}: {e}")
+
+    for pattern, kind, label in LINK_PATTERNS:
+        for m in re.finditer(pattern, abstract or "", re.I):
+            add(kind, m.group(0), label)
+
+    items = list(found.values())
+    items.sort(key=lambda r: (r["type"] != "data", r["label"] == "Supplement"))
+    return items[:4]
+
+
+def openalex_abstracts(dois, cfg):
+    """Abstracts for a list of DOIs, fetched 50 at a time."""
+    out = {}
+    dois = [d for d in dois if d]
+    for i in range(0, len(dois), 50):
+        chunk = dois[i:i + 50]
+        params = {"filter": "doi:" + "|".join(chunk), "per_page": "50"}
+        try:
+            for w in http_json(openalex_url(params, cfg)).get("results", []):
+                out[_plain_doi(doi_of(w))] = abstract_text(w.get("abstract_inverted_index"))
+        except Exception as e:
+            log(f"  Could not fetch abstracts: {e}")
+    return out
+
+
+def resources_due(p, today, recheck_days):
+    last = p.get("resources_checked")
+    if not last:
+        return True
+    try:
+        return (dt.date.fromisoformat(today) - dt.date.fromisoformat(last)).days >= recheck_days
+    except ValueError:
+        return True
+
+
 def site_url(cfg):
     """Address of the published page, used for the preview link."""
     url = (cfg.get("site_url") or "").strip()
@@ -569,6 +681,9 @@ def main():
                 skipped += 1
                 continue
             entry = build_entry(c, cls, today)
+            if cfg.get("find_data_links", True):
+                entry["resources"] = find_resources(entry["doi"], c["abstract"])
+                entry["resources_checked"] = today
             added.append(entry)
             known_ids.add(entry["id"])
             known_titles.add(norm_title(entry["title"]))
@@ -591,6 +706,25 @@ def main():
         })
         upgraded.append(p)
         log(f"  ^ now published: {p['title'][:80]}")
+
+    # Data and code links for papers already in the table.
+    linked = []
+    if cfg.get("find_data_links", True):
+        due = [p for p in papers if p.get("doi") and resources_due(p, today, int(cfg.get("data_links_recheck_days", 180)))]
+        due = due[: int(cfg.get("data_links_per_run", 80))]
+        if due:
+            log(f"Looking for data and code links for {len(due)} paper(s) already in the table.")
+            abstracts = openalex_abstracts([_plain_doi(p["doi"]) for p in due], cfg)
+            for p in due:
+                before = {r["url"] for r in p.get("resources") or []}
+                found = find_resources(p["doi"], abstracts.get(_plain_doi(p["doi"]), ""))
+                merged = (p.get("resources") or []) + [r for r in found if r["url"] not in before]
+                if merged:
+                    p["resources"] = merged[:4]
+                p["resources_checked"] = today
+                if len(merged) > len(before):
+                    linked.append(p)
+                time.sleep(0.2)
 
     # Report, used as the pull request description.
     preview = site_url(cfg)
@@ -624,13 +758,21 @@ def main():
     if upgraded:
         lines += ["", "### Preprints that are now published", ""]
         lines += [f"- {p['title']} ({p['venue']}, {p['year']})" for p in upgraded]
+    if linked:
+        lines += ["", "### Data and code links found for papers already in the table", ""]
+        for p in linked:
+            links = ", ".join(f"[{r['label']} ({r['type']})]({r['url']})" for r in p["resources"])
+            lines.append(f"- {p['title']}: {links}")
+        lines += ["", "To drop a wrong link, delete it from the paper's `resources` list in `data/papers.json` before merging."]
     lines += ["", "Merge this pull request to publish the ticked papers."]
     report = "\n".join(lines) + "\n"
     print("\n" + report)
     if os.environ.get("REPORT_PATH"):
         Path(os.environ["REPORT_PATH"]).write_text(report, encoding="utf-8")
 
-    changed = bool(added or upgraded)
+    # Check dates are saved along with other changes; a run that only re-checked
+    # papers and found no links does not open a pull request.
+    changed = bool(added or upgraded or linked)
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
             f.write(f"changed={'true' if changed else 'false'}\n")
