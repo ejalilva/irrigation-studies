@@ -27,6 +27,11 @@
     --arm: rgba(255,255,255,.8);
     --warn: #D08A12; --warn-ink: #8A5300;
     --new-bg: #DCEAF2; --new-ink: #1E5C86;
+    /* Question colors from matplotlib's tab20c: where = blue, when = orange, how much = green.
+       Text on each is white or black, whichever the fill needs. */
+    --q-where: #3182BD; --q-when: #FD8D3C; --q-how: #74C476;
+    /* Essential: tab20c green for the mark, a darker green for readable text */
+    --ess: #23793B; --ess-mark: #31A354;
     --shadow: rgba(21,36,44,.28);
     --gutter: 24px;
     --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
@@ -41,6 +46,7 @@
       --arm: rgba(255,255,255,.7);
       --warn: #E9A23B; --warn-ink: #F2B85C;
       --new-bg: #1B3747; --new-ink: #A9D3EC;
+      --ess: #74C476; --ess-mark: #74C476;
       --shadow: rgba(0,0,0,.6);
       color-scheme: dark;
     }
@@ -52,6 +58,7 @@
     --arm: rgba(255,255,255,.7);
     --warn: #E9A23B; --warn-ink: #F2B85C;
     --new-bg: #1B3747; --new-ink: #A9D3EC;
+    --ess: #74C476; --ess-mark: #74C476;
     --shadow: rgba(0,0,0,.6);
     color-scheme: dark;
   }
@@ -263,6 +270,9 @@
   .dot-pub { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-2); }
   .new { display: inline-block; font: 600 .7rem/1 var(--sans); padding: 3px 6px; border-radius: 4px; background: var(--new-bg); color: var(--new-ink); }
   .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 5px; }
+  .ess { display: inline-flex; align-items: center; gap: 4px; font: 600 .76rem/1 var(--sans); color: var(--ess); white-space: nowrap; }
+  .ess svg { flex: none; width: 12px; height: 12px; color: var(--ess-mark); }
+  .ess-link { font-weight: 500; color: var(--ess); }
 
   .ti { font: 500 1.04rem/1.3 var(--head); color: var(--ink); text-decoration: none; }
   .ti:hover { text-decoration: underline; }
@@ -273,9 +283,16 @@
   .by em { font-style: italic; }
 
   .q { display: flex; flex-wrap: wrap; gap: 4px; }
-  .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--line); white-space: nowrap; }
+  .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--q-c, var(--line)); background: var(--q-tint, transparent); white-space: nowrap; }
   .lit .q span { font-size: .7rem; padding: 4px 6px; }
-  .q span.on { background: var(--r4); border: 1px solid var(--r4); color: #fff; }
+  /* Each question keeps its color: solid when the study answers it, a faint outline when it doesn't. */
+  .q-where { --q-c: var(--q-where); --q-t: #FFFFFF; --q-tint: rgba(49, 130, 189, .08); }
+  .q-when { --q-c: var(--q-when); --q-t: #10222E; --q-tint: rgba(253, 141, 60, .10); }
+  .q-how_much { --q-c: var(--q-how); --q-t: #10222E; --q-tint: rgba(116, 196, 118, .12); }
+  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: var(--q-t, #fff); font-weight: 600; }
+  .seg button[class^="q-"][aria-pressed="true"] { background: var(--q-c); color: var(--q-t); }
+  .seg button[class^="q-"][aria-pressed="true"] .qdot { box-shadow: 0 0 0 1.5px var(--q-t); }
+  .qdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; background: var(--q-c); vertical-align: 0; }
   .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
   .muted { color: var(--ink-2); }
 
@@ -554,9 +571,9 @@
           </label>
           <div class="seg" role="group" aria-label="Question the study answers" id="lit-qseg">
             <button type="button" data-q="any" aria-pressed="true">Any question</button>
-            <button type="button" data-q="where" aria-pressed="false">Where</button>
-            <button type="button" data-q="when" aria-pressed="false">When</button>
-            <button type="button" data-q="how_much" aria-pressed="false">How much</button>
+            <button type="button" class="q-where" data-q="where" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>Where</button>
+            <button type="button" class="q-when" data-q="when" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>When</button>
+            <button type="button" class="q-how_much" data-q="how_much" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>How much</button>
             <button type="button" data-q="all" aria-pressed="false">All three</button>
           </div>
           <label class="lit-select"><span class="sr">Review status</span>
@@ -593,6 +610,7 @@
             <span><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>
             <span><span class="pulse" aria-hidden="true"></span>Preprint, not yet peer reviewed</span>
             <span><span class="new">New</span>Published or posted in the last 90 days</span>
+            <span id="lit-legend-ess" hidden><span class="ess" id="lit-legend-ess-mark"></span>On the Essential reading list</span>
             <span id="lit-legend-pick" hidden><span class="pickb"><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Pick</span>Editor&rsquo;s pick</span>
           </div>
         </div>
@@ -1071,7 +1089,8 @@ const METHOD_LABELS = {
 };
 const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
 
-const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "featured", sortDir: -1, showAll: false, open: new Set(), picks: new Map() };
+const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "featured", sortDir: -1, showAll: false, open: new Set(), picks: new Map(), essential: new Map() };
+const SEAL = `<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="currentColor"/><path d="M3.4 6.2l1.7 1.7 3.5-3.6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const STAR = `<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>`;
 const $ = id => document.getElementById(id);
 
@@ -1100,6 +1119,7 @@ function litMatches(p) {
   if (lit.q !== "any" && lit.q !== "all" && !qs.includes(lit.q)) return false;
   if (lit.status === "proposed") { if (!p._proposed) return false; }
   else if (lit.status === "pick") { if (!lit.picks.has(p.id)) return false; }
+  else if (lit.status === "essential") { if (!lit.essential.has(p.id)) return false; }
   else if (lit.status !== "any" && p.status !== lit.status) return false;
   if (lit.method !== "any" && !(p.methods || []).includes(lit.method)) return false;
   if (lit.region !== "any" && p.region !== lit.region) return false;
@@ -1163,7 +1183,9 @@ function litRow(p, i) {
   const status = p.status === "preprint"
     ? `<span class="st st-pre" title="Not yet peer reviewed"><span class="pulse" aria-hidden="true"></span>Preprint</span>`
     : `<span class="st st-pub"><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>`;
+  const essN = lit.essential.get(p.id);
   const badges = [
+    essN ? `<span class="ess" title="Number ${essN} on the Essential reading list">${SEAL}Essential</span>` : "",
     litIsNew(p) ? `<span class="new">New</span>` : "",
     lit.picks.has(p.id) ? `<span class="pickb" title="Editor&rsquo;s pick">${STAR}Pick</span>` : "",
     p._proposed ? `<span class="prop">Proposed</span>` : "",
@@ -1182,13 +1204,14 @@ function litRow(p, i) {
         <button type="button" class="lt one" aria-expanded="${isOpen}" aria-controls="d-${i}">${esc(p.title)}</button>
         <span class="by one">${esc(litAuthorShort(p.authors) || p.first_author || "")}, <em>${esc(p.venue || "")}</em></span>
       </td>
-      <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="${qs.includes(k) ? "on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
+      <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="q-${k}${qs.includes(k) ? " on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
       <td class="c-area"><span class="one">${area}</span>${areaSub ? `<span class="sub one">${esc(areaSub)}</span>` : ""}</td>
       <td class="c-period">${period ? esc(period) : `<span class="muted">&ndash;</span>`}</td>
       ${litResCell(p)}
     </tr>
     <tr class="detail" id="d-${i}"${isOpen ? "" : " hidden"}><td colspan="7"><div>
       <div>
+        ${essN ? `<p><a class="ess-link" href="#reading">Number ${essN} on the Essential reading list</a></p>` : ""}
         ${pick && pick.note ? `<p><strong>Editor&rsquo;s note.</strong> ${esc(pick.note)}</p>` : ""}
         ${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
         ${p.status === "preprint" ? `<p class="note">This is a preprint. It has not been peer reviewed yet, so its results may change.</p>` : ""}
@@ -1316,7 +1339,7 @@ function picksRender() {
       <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
       <p class="by">${esc(litAuthorShort(p.authors))}, ${p.year}, <em>${esc(p.venue || "")}</em>${p.status === "preprint" && !/preprint/i.test(p.venue || "") ? " (preprint)" : ""}</p>
       ${k.note ? `<p class="note">${esc(k.note)}</p>` : ""}
-      <div class="q" role="img" aria-label="${esc(qs.length ? "Answers " + qs.map(x => Q_LABELS[x].toLowerCase()).join(", ") : "")}">${Object.keys(Q_LABELS).map(x => `<span class="${qs.includes(x) ? "on" : ""}">${Q_LABELS[x]}</span>`).join("")}</div>
+      <div class="q" role="img" aria-label="${esc(qs.length ? "Answers " + qs.map(x => Q_LABELS[x].toLowerCase()).join(", ") : "")}">${Object.keys(Q_LABELS).map(x => `<span class="q-${x}${qs.includes(x) ? " on" : ""}">${Q_LABELS[x]}</span>`).join("")}</div>
     </article>`;
   }).join("");
 }
@@ -1339,6 +1362,25 @@ function readingRender(r) {
     return `<li class="stage"><h3>${esc(st.title || "")}</h3><ol start="${start}">${items}</ol></li>`;
   }).join("");
   $("reading").hidden = false;
+  // Papers on the reading list are tagged Essential in the table.
+  let k = 0;
+  lit.essential = new Map();
+  r.stages.forEach(st => (st.items || []).forEach(it => { k++; const id = String(it.id || it.doi || "").toLowerCase(); if (id) lit.essential.set(id, k); }));
+  litEssentialReady();
+}
+
+function litEssentialReady() {
+  if (!lit.all.length || !lit.essential.size) return;
+  const n = lit.all.filter(p => lit.essential.has(p.id)).length;
+  if (!n) return;
+  $("lit-legend-ess-mark").innerHTML = SEAL + "Essential";
+  $("lit-legend-ess").hidden = false;
+  if (!$("lit-status").querySelector('option[value="essential"]')) {
+    const opt = document.createElement("option");
+    opt.value = "essential"; opt.textContent = `Essential (${n})`;
+    $("lit-status").insertBefore(opt, $("lit-status").options[1] || null);
+  }
+  litRender();
 }
 
 function litInit(data) {
@@ -1363,6 +1405,7 @@ function litInit(data) {
   if (LIT_PREVIEW) litShowReview(data);
   picksRender();
   litRender();
+  litEssentialReady();
 }
 
 function litShowReview(data) {
