@@ -96,11 +96,11 @@ The workflow runs every Monday at 13:17 UTC, and can also be started from the Ac
 
 ### Backfill
 
-The backfill fills the table with older papers, one publication year per pull request, newest year first. `agent/backfill.json` holds the next year to search (`next_year`) and the last one (`first_year`, 2010).
+The backfill fills the table with older papers, one publication year per pull request, newest year first. `agent/backfill.json` holds the next year to search (`next_year`) and the last one (`first_year`, 2015).
 
 - **Start it** from the Actions tab: Find new irrigation papers > Run workflow > tick **backfill**.
 - **Each run** searches the recent window as usual, plus all of `next_year`. A year with no new papers is skipped straight to the year before, up to `backfill_years_per_run` years per run.
-- **Citation bar.** Papers from the current and previous year (`free_years`) are included whatever their citations. Older papers need at least `per_year` citations per year of age, up to `max`: with the defaults, 6 citations for a paper from 2024, 18 for 2020 and 48 for 2010. Change `citations_for_older_papers` in `agent/config.json` to raise or lower the bar.
+- **Citation bar.** Papers from the current and previous year (`free_years`) are included whatever their citations. Older papers need at least `per_year` citations per year of age, up to `max`: with the defaults, 6 citations for a paper from 2024, 18 for 2020 and 33 for 2015. Change `citations_for_older_papers` in `agent/config.json` to raise or lower the bar.
 - **Chaining.** Backfill pull requests carry the `backfill` label. Merging one starts the next year automatically, so you only review and merge. If a year has more than `backfill_max_per_year` relevant papers, it continues over several pull requests before moving on.
 - **Restarting.** Edit `next_year` in `agent/backfill.json` to search a year again. Papers already judged are remembered in `seen.json`, so a repeat run costs little. When `next_year` is below `first_year`, the backfill is finished and stops.
 - **Failures.** If a search fails and the run has nothing to propose, the run is marked failed, because no pull request means nothing would start the next year. Run the workflow again with backfill ticked.

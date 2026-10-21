@@ -681,7 +681,7 @@ def main():
     since = since_d.isoformat()
     claude_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     backfill = bool(args.backfill or args.year or os.environ.get("BACKFILL", "").strip().lower() in ("1", "true", "yes"))
-    bf_state = load_json(BACKFILL_PATH, {"next_year": today_d.year, "first_year": 2010})
+    bf_state = load_json(BACKFILL_PATH, {"next_year": today_d.year, "first_year": 2015})
 
     known_ids = {(p.get("id") or "").lower() for p in papers} | {(p.get("doi") or "").lower() for p in papers}
     known_ids.discard("")
@@ -759,7 +759,7 @@ def main():
 
     # Backfill: one past year per pull request, newest first.
     years, backfill_added = [], []
-    first_year = int(bf_state.get("first_year", 2010))
+    first_year = int(bf_state.get("first_year", 2015))
     next_year = int(bf_state.get("next_year", today_d.year))
     if backfill:
         year = args.year or next_year
