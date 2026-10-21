@@ -216,6 +216,188 @@
       "added": "2026-10-21",
       "needs_review": false,
       "source": "agent"
+    },
+    {
+      "id": "10.1017/irq.2025.10037",
+      "title": "LANDSCAPE ARCHAEOLOGY OF THE ERIDU REGION: DISCOVERING THE IRRIGATION SYSTEMS OF ANCIENT FARMS",
+      "authors": "Rayne, L., Gruchy, M.d., Jotheri, J., et al.",
+      "first_author": "Rayne",
+      "year": 2026,
+      "date": "2026-09-21",
+      "venue": "Iraq",
+      "doi": "10.1017/irq.2025.10037",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Eridu region, southern Iraq",
+      "region": "Asia",
+      "scale": "field",
+      "period": null,
+      "approach": "High-resolution satellite imagery mapping of ancient canals, combined with fieldwork and AMS radioca",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "VISION-1",
+        "Google Earth imagery",
+        "AMS radiocarbon dating"
+      ],
+      "keywords": [
+        "archaeology",
+        "irrigation history",
+        "Eridu",
+        "Euphrates",
+        "remote sensing"
+      ],
+      "summary": "Uses high-resolution satellite imagery, fieldwork and radiocarbon dating to map and date ancient irrigation canals near Eridu in southern Iraq.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.67048/qxju2026ai128iss7m1033",
+      "title": "ZAMONAVIY USLUBDA G‘O‘ZANI SUVGA BO‘LGAN TALABINI ANIQLASH",
+      "authors": "Bekmetov, I., Matyakubov, B.",
+      "first_author": "Bekmetov",
+      "year": 2026,
+      "date": "2026-09-19",
+      "venue": "Agro ilm",
+      "doi": "10.67048/qxju2026ai128iss7m1033",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Irrigated cotton fields, Uzbekistan",
+      "region": "Asia",
+      "scale": "field",
+      "period": null,
+      "approach": "GIS and satellite NDVI with FAO ETc calculation for cotton water requirements",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "satellite imagery (NDVI)",
+        "meteorological data for ETo"
+      ],
+      "keywords": [
+        "cotton",
+        "irrigation water requirement",
+        "NDVI",
+        "evapotranspiration",
+        "GIS"
+      ],
+      "summary": "The study uses GIS, satellite NDVI and FAO-method crop evapotranspiration to estimate cotton water demand for irrigation scheduling in irrigated fields.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.2166/wcc.2026.026",
+      "title": "On the determination of pixel-based groundwater withdrawals using SWEO water accounting procedures. Part 2: validation",
+      "authors": "Hessels, T., Bastiaanssen, W.G.M., Stigter, T.Y., et al.",
+      "first_author": "Hessels",
+      "year": 2026,
+      "date": "2026-08-06",
+      "venue": "Journal of Water and Climate Change",
+      "doi": "10.2166/wcc.2026.026",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Aconcagua (Chile), Upper North Platte and Upper San Joaquin (USA)",
+      "region": "Multiple",
+      "scale": "regional",
+      "period": {
+        "start": 2003,
+        "end": 2019
+      },
+      "approach": "Satellite-based water balance (SWEO) validated against GRACE, in situ and USGS reports",
+      "methods": [
+        "et",
+        "imagery",
+        "model"
+      ],
+      "data": [
+        "GRACE",
+        "USGS groundwater withdrawal reports",
+        "USDA snow observations",
+        "USGS streamflow",
+        "SWEO water balance framework"
+      ],
+      "keywords": [
+        "groundwater withdrawals",
+        "water accounting",
+        "remote sensing",
+        "GRACE validation",
+        "water balance"
+      ],
+      "summary": "Validates a satellite-driven water balance framework at 250 m resolution, estimating county-level groundwater withdrawals in three contrasting basins over 2003–2019.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.5194/gmd-19-6879-2026",
+      "title": "Integrating reservoirs and lakes in the CoSWAT global hydrological model",
+      "authors": "Teran, J.P., Chawanda, C.J., Nkwasa, A., et al.",
+      "first_author": "Teran",
+      "year": 2026,
+      "date": "2026-07-29",
+      "venue": "Geoscientific model development",
+      "doi": "10.5194/gmd-19-6879-2026",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Global (selected regions worldwide)",
+      "region": "Global",
+      "scale": "global",
+      "period": null,
+      "approach": "SWAT+ global model extended with reservoir and lake schemes; topological irrigation demand estimatio",
+      "methods": [
+        "model"
+      ],
+      "data": [
+        "CoSWAT global water model",
+        "SWAT+"
+      ],
+      "keywords": [
+        "global hydrological model",
+        "SWAT+",
+        "reservoirs",
+        "lakes",
+        "irrigation demand"
+      ],
+      "summary": "The CoSWAT global hydrological model is extended with reservoir and lake schemes, including irrigation demand for reservoirs, and improves streamflow at 70% of evaluated stations.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-21"
     }
   ]
 }

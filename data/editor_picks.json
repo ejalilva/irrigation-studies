@@ -1,4 +1,25 @@
 {
   "_help": "Editor's picks. Add {\"id\": <paper id from papers.json>, \"note\": <your one or two sentences>, \"picked\": \"YYYY-MM-DD\"}. Newest picks show first.",
-  "picks": []
+  "picks": [
+    {
+      "id": "10.3389/frsen.2026.1895172",
+      "picked": "2026-10-21",
+      "note": ""
+    },
+    {
+      "id": "10.1186/s12302-026-01480-y",
+      "picked": "2026-10-21",
+      "note": ""
+    },
+    {
+      "id": "10.1088/1748-9326/ae7e0c",
+      "picked": "2026-10-21",
+      "note": ""
+    },
+    {
+      "id": "10.1016/j.envsoft.2026.107056",
+      "picked": "2026-10-21",
+      "note": ""
+    }
+  ]
 }
