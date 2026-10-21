@@ -1,0 +1,53 @@
+# Runs the paper-finding agent every Monday and opens a pull request with
+# any new papers. Nothing changes on your site until you merge that pull
+# request. You can also start it by hand: Actions tab > Find new irrigation
+# papers > Run workflow.
+
+name: Find new irrigation papers
+
+on:
+  schedule:
+    - cron: "17 13 * * 1"   # Mondays 13:17 UTC (9:17 am in New York during daylight time)
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "How many days back to search (leave empty for the default 60)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  find-papers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the website files
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Search for new papers
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # optional
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}     # optional
+          LOOKBACK_DAYS: ${{ github.event.inputs.days }}
+          REPORT_PATH: ${{ runner.temp }}/report.md
+        run: python agent/find_papers.py
+
+      - name: Propose the changes as a pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: agent/new-papers
+          delete-branch: true
+          add-paths: |
+            data/papers.json
+            agent/seen.json
+          commit-message: "Agent: add new irrigation papers"
+          title: "New irrigation papers found by the agent"
+          body-path: ${{ runner.temp }}/report.md
+          labels: paper-agent
