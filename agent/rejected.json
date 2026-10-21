@@ -47,6 +47,45 @@
       "added": "2026-10-21",
       "needs_review": false,
       "source": "agent"
+    },
+    {
+      "id": "10.25919/mjrc-jy47",
+      "title": "Remote sensing characterisation of agricultural and water use practices in salinity affected canal commands in the Indus Basin Irrigated System (IBIS)",
+      "authors": "CSIRO",
+      "first_author": "CSIRO",
+      "year": 2026,
+      "date": "2026-10-14",
+      "venue": "CSIRO",
+      "doi": "10.25919/mjrc-jy47",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Indus Basin Irrigated System, Pakistan",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Remote sensing characterisation of cropping and water use in salinity-affected canal commands",
+      "methods": [
+        "imagery",
+        "et"
+      ],
+      "data": [],
+      "keywords": [
+        "Indus Basin Irrigated System",
+        "remote sensing",
+        "canal commands",
+        "salinity",
+        "water use"
+      ],
+      "summary": "Uses remote sensing to characterise agricultural and water use practices in salinity-affected canal commands of the Indus Basin Irrigated System.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
     }
   ]
 }
