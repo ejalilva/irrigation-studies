@@ -1,5 +1,5 @@
 {
   "_help": "Progress of the backfill of older papers. Each backfill run searches next_year (newest first) and, once that year is done, moves to the year before. Set next_year to start again from a given year. The backfill stops after first_year.",
   "next_year": 2026,
-  "first_year": 2010
+  "first_year": 2015
 }
