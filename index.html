@@ -27,8 +27,9 @@
     --arm: rgba(255,255,255,.8);
     --warn: #D08A12; --warn-ink: #8A5300;
     --new-bg: #DCEAF2; --new-ink: #1E5C86;
-    /* Question colors from matplotlib's tab20c: where = blue, when = orange, how much = green */
-    --q-where: #6BAED6; --q-when: #FD8D3C; --q-how: #74C476;
+    /* Question colors from matplotlib's tab20c: where = blue, when = orange, how much = green.
+       Text on each is white or black, whichever the fill needs. */
+    --q-where: #3182BD; --q-when: #FD8D3C; --q-how: #74C476;
     /* Essential: tab20c green for the mark, a darker green for readable text */
     --ess: #23793B; --ess-mark: #31A354;
     /* Rising: tab20c purple for the star, a darker purple for readable text */
@@ -286,12 +287,15 @@
   .by em { font-style: italic; }
 
   .q { display: flex; flex-wrap: wrap; gap: 4px; }
-  .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--line); white-space: nowrap; }
+  .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--q-c, var(--line)); background: var(--q-tint, transparent); white-space: nowrap; }
   .lit .q span { font-size: .7rem; padding: 4px 6px; }
-  .q-where { --q-c: var(--q-where); --q-t: #10222E; }
-  .q-when { --q-c: var(--q-when); --q-t: #10222E; }
-  .q-how_much { --q-c: var(--q-how); --q-t: #10222E; }
-  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: var(--q-t, #fff); }
+  /* Each question keeps its color: solid when the study answers it, a faint outline when it doesn't. */
+  .q-where { --q-c: var(--q-where); --q-t: #FFFFFF; --q-tint: rgba(49, 130, 189, .08); }
+  .q-when { --q-c: var(--q-when); --q-t: #10222E; --q-tint: rgba(253, 141, 60, .10); }
+  .q-how_much { --q-c: var(--q-how); --q-t: #10222E; --q-tint: rgba(116, 196, 118, .12); }
+  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: var(--q-t, #fff); font-weight: 600; }
+  .seg button[class^="q-"][aria-pressed="true"] { background: var(--q-c); color: var(--q-t); }
+  .seg button[class^="q-"][aria-pressed="true"] .qdot { box-shadow: 0 0 0 1.5px var(--q-t); }
   .qdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; background: var(--q-c); vertical-align: 0; }
   .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
   .muted { color: var(--ink-2); }
@@ -574,9 +578,9 @@
           </label>
           <div class="seg" role="group" aria-label="Question the study answers" id="lit-qseg">
             <button type="button" data-q="any" aria-pressed="true">Any question</button>
-            <button type="button" data-q="where" aria-pressed="false"><span class="qdot q-where" aria-hidden="true"></span>Where</button>
-            <button type="button" data-q="when" aria-pressed="false"><span class="qdot q-when" aria-hidden="true"></span>When</button>
-            <button type="button" data-q="how_much" aria-pressed="false"><span class="qdot q-how_much" aria-hidden="true"></span>How much</button>
+            <button type="button" class="q-where" data-q="where" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>Where</button>
+            <button type="button" class="q-when" data-q="when" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>When</button>
+            <button type="button" class="q-how_much" data-q="how_much" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>How much</button>
             <button type="button" data-q="all" aria-pressed="false">All three</button>
           </div>
           <label class="lit-select"><span class="sr">Review status</span>
