@@ -260,6 +260,50 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.67048/qxju2026ai128iss7m1033",
+      "title": "ZAMONAVIY USLUBDA G‘O‘ZANI SUVGA BO‘LGAN TALABINI ANIQLASH",
+      "authors": "Bekmetov, I., Matyakubov, B.",
+      "first_author": "Bekmetov",
+      "year": 2026,
+      "date": "2026-09-19",
+      "venue": "Agro ilm",
+      "doi": "10.67048/qxju2026ai128iss7m1033",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Irrigated cotton fields, Uzbekistan",
+      "region": "Asia",
+      "scale": "field",
+      "period": null,
+      "approach": "GIS and satellite NDVI with FAO ETc calculation for cotton water requirements",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "satellite imagery (NDVI)",
+        "meteorological data for ETo"
+      ],
+      "keywords": [
+        "cotton",
+        "irrigation water requirement",
+        "NDVI",
+        "evapotranspiration",
+        "GIS"
+      ],
+      "summary": "The study uses GIS, satellite NDVI and FAO-method crop evapotranspiration to estimate cotton water demand for irrigation scheduling in irrigated fields.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-21"
     }
   ]
 }
