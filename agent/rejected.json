@@ -173,6 +173,49 @@
       "added": "2026-10-21",
       "needs_review": false,
       "source": "agent"
+    },
+    {
+      "id": "10.53550/ijsc.v54.i2.224",
+      "title": "Satellite-Based Spatiotemporal Variability and Mapping the Irrigation Water Requirements of Wheat Crop in Ludhiana District, Punjab",
+      "authors": "Vullaganti, N., Vashisht, B.B., Kaur, H., et al.",
+      "first_author": "Vullaganti",
+      "year": 2026,
+      "date": "2026-08-24",
+      "venue": "Indian Journal of Soil Conservation",
+      "doi": "10.53550/ijsc.v54.i2.224",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Ludhiana district, Punjab, India",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "MODIS ET and WorldClim rainfall, IDW interpolation, Sentinel-2 wheat masks, IWR calculation, ANOVA",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "MODIS evapotranspiration",
+        "WorldClim rainfall",
+        "Sentinel-2A"
+      ],
+      "keywords": [
+        "evapotranspiration",
+        "irrigation water requirement",
+        "wheat",
+        "MODIS",
+        "Sentinel-2"
+      ],
+      "summary": "Satellite-derived evapotranspiration and rainfall are used to map wheat irrigation water requirements across Ludhiana district, Punjab, to support irrigation scheduling.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
     }
   ]
 }
