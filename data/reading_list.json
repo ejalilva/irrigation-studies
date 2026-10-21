@@ -1,9 +1,10 @@
 {
-  "_help": "Essential reading list shown on the page, in order. Edit, reorder or replace items freely; each needs a title, authors, year, venue, doi (or url) and a 'why' sentence.",
-  "intro": "Read these in order if you are starting out in irrigation research with satellites and models. They move from why irrigation matters, to finding it, to measuring how much water is used and when.",
+  "_help": "Essential reading list shown on the page as cards, in order. Each stage has a key (big, where, when or how_much, which sets its color) and a title. Each item needs a title, authors, year, venue, a short venue name for the card (venue_short), a doi (or url) and a 'why' sentence. Every item that is also in the table is tagged Essential there.",
+  "intro": "Start here if you are new to irrigation research with satellites and models. Read them in order: the big picture, then where, when and how much. Select a card for why it matters.",
   "stages": [
     {
-      "title": "The big picture",
+      "key": "big",
+      "title": "Big picture",
       "items": [
         {
           "id": "10.1038/s43017-023-00438-5",
@@ -11,6 +12,7 @@
           "authors": "McDermid, S., Nocco, M., Lawston-Parker, P., et al.",
           "year": 2023,
           "venue": "Nature Reviews Earth & Environment",
+          "venue_short": "Nat. Rev. Earth Environ.",
           "doi": "10.1038/s43017-023-00438-5",
           "why": "Start here for the big picture: how irrigation changes temperature, rainfall and the carbon and nitrogen cycles, and which questions are still open."
         },
@@ -20,13 +22,15 @@
           "authors": "Massari, C., Modanesi, S., Dari, J., et al.",
           "year": 2021,
           "venue": "Remote Sensing",
+          "venue_short": "Remote Sensing",
           "doi": "10.3390/rs13204112",
           "why": "A map of the field: the satellite data and methods used to map and quantify irrigation, set against what water managers actually need."
         }
       ]
     },
     {
-      "title": "Where: mapping irrigated land",
+      "key": "where",
+      "title": "Where",
       "items": [
         {
           "id": "10.1038/s41467-021-24508-8",
@@ -34,6 +38,7 @@
           "authors": "Puy, A., Borgonovo, E., Lo Piano, S., et al.",
           "year": 2021,
           "venue": "Nature Communications",
+          "venue_short": "Nature Communications",
           "doi": "10.1038/s41467-021-24508-8",
           "why": "Finds that global estimates of irrigation water withdrawals depend mostly on irrigated area and its uncertainty. That is why mapping where irrigation happens matters for knowing how much water it uses."
         },
@@ -43,6 +48,7 @@
           "authors": "Meier, J., Zabel, F., Mauser, W.",
           "year": 2018,
           "venue": "Hydrology and Earth System Sciences",
+          "venue_short": "HESS",
           "doi": "10.5194/hess-22-1119-2018",
           "why": "Shows why irrigated-area maps disagree, by comparing a satellite-based global map with irrigation statistics."
         },
@@ -52,22 +58,29 @@
           "authors": "Deines, J.M., Kendall, A.D., Crowley, M.A., et al.",
           "year": 2019,
           "venue": "Remote Sensing of Environment",
+          "venue_short": "RSE",
           "doi": "10.1016/j.rse.2019.111400",
           "why": "A practical template for long, field-scale irrigation maps built from Landsat, machine learning and Google Earth Engine."
-        }
-      ]
-    },
-    {
-      "title": "Seeing irrigation in satellite soil moisture",
-      "items": [
+        },
         {
-          "id": "10.5194/hess-19-4463-2015",
-          "title": "Evaluating the utility of satellite soil moisture retrievals over irrigated areas and the ability of land data assimilation methods to correct for unmodeled processes",
-          "authors": "Kumar, S.V., Peters-Lidard, C.D., Santanello, J.A., et al.",
-          "year": 2015,
-          "venue": "Hydrology and Earth System Sciences",
-          "doi": "10.5194/hess-19-4463-2015",
-          "why": "Explains why irrigation is hard for land models and data assimilation: it is a process most models leave out, yet it shows up in the observations."
+          "id": "10.3390/rs12142328",
+          "title": "IrrMapper: A Machine Learning Approach for High Resolution Mapping of Irrigated Agriculture Across the Western U.S.",
+          "authors": "Ketchum, D., Jencso, K., Maneta, M.P., et al.",
+          "year": 2020,
+          "venue": "Remote Sensing",
+          "venue_short": "Remote Sensing",
+          "doi": "10.3390/rs12142328",
+          "why": "Annual 30 m maps of irrigated land across 11 western US states since 1986, from a random forest on Landsat, climate and terrain data in Google Earth Engine, where the maps are available as IrrMapper."
+        },
+        {
+          "id": "10.5194/essd-13-5689-2021",
+          "title": "Landsat-based Irrigation Dataset (LANID): 30 m resolution maps of irrigation distribution, frequency, and change for the US, 1997–2017",
+          "authors": "Xie, Y., Gibbs, H.K., Lark, T.J.",
+          "year": 2021,
+          "venue": "Earth System Science Data",
+          "venue_short": "ESSD",
+          "doi": "10.5194/essd-13-5689-2021",
+          "why": "LANID: annual 30 m maps of irrigated cropland, pasture and hay for the whole conterminous US from 1997 to 2017, with layers for irrigation frequency and change. The data are open on Zenodo."
         },
         {
           "id": "10.1002/2017gl075733",
@@ -75,6 +88,7 @@
           "authors": "Lawston, P.M., Santanello, J.A., Kumar, S.V.",
           "year": 2017,
           "venue": "Geophysical Research Letters",
+          "venue_short": "GRL",
           "doi": "10.1002/2017GL075733",
           "why": "A short paper showing that SMAP soil moisture does carry an irrigation signal over US farmland."
         },
@@ -84,45 +98,15 @@
           "authors": "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., Das, N.N.",
           "year": 2021,
           "venue": "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+          "venue_short": "IEEE JSTARS",
           "doi": "10.1109/JSTARS.2021.3119228",
           "why": "Shows that resolution decides whether satellite soil moisture can see irrigation: the 9 km SMAP product misses it over an irrigated plain, while 1 and 3 km SMAP/Sentinel-1 data pick it up."
         }
       ]
     },
     {
-      "title": "How much water",
-      "items": [
-        {
-          "id": "10.1016/j.rse.2019.111226",
-          "title": "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
-          "authors": "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., Brocca, L.",
-          "year": 2019,
-          "venue": "Remote Sensing of Environment",
-          "doi": "10.1016/j.rse.2019.111226",
-          "why": "Estimates irrigation water by inverting the soil water balance (SM2RAIN) on coarse satellite soil moisture (AMSR2) in a semi-arid region, and compares the estimates with observed irrigation. A clear case of what works, and of where coarse pixels fall short over small fields."
-        },
-        {
-          "id": "10.5194/hess-23-897-2019",
-          "title": "Estimating irrigation water use over the contiguous United States by combining satellite and reanalysis soil moisture data",
-          "authors": "Zaussinger, F., Dorigo, W., Gruber, A., et al.",
-          "year": 2019,
-          "venue": "Hydrology and Earth System Sciences",
-          "doi": "10.5194/hess-23-897-2019",
-          "why": "Scales the idea up: compares satellite soil moisture with a reanalysis that has no irrigation to estimate water use across the US."
-        },
-        {
-          "id": "10.1029/2019ms001797",
-          "title": "Soil moisture data assimilation to estimate irrigation water use",
-          "authors": "Abolafia-Rosenzweig, R., Livneh, B., Small, E. E., et al.",
-          "year": 2019,
-          "venue": "Journal of Advances in Modeling Earth Systems",
-          "doi": "10.1029/2019MS001797",
-          "why": "The data assimilation route: synthetic experiments showing how assimilating soil moisture can recover irrigation amounts."
-        }
-      ]
-    },
-    {
-      "title": "When, and how well",
+      "key": "when",
+      "title": "When",
       "items": [
         {
           "id": "10.1016/j.jag.2022.102979",
@@ -130,6 +114,7 @@
           "authors": "Zappa, L., Schlaffer, S., Brocca, L., et al.",
           "year": 2022,
           "venue": "International Journal of Applied Earth Observation and Geoinformation",
+          "venue_short": "JAG",
           "doi": "10.1016/j.jag.2022.102979",
           "why": "Tests how resolution, revisit time and noise limit what satellite soil moisture can tell us about irrigation timing and amounts."
         },
@@ -139,22 +124,55 @@
           "authors": "Jalilvand, E., Kumar, S.V., Truong, C., et al.",
           "year": 2026,
           "venue": "Remote Sensing of Environment",
+          "venue_short": "RSE",
           "doi": "10.1016/j.rse.2025.115153",
           "why": "Moves from how much to when: reads the timing of irrigation from thermal satellite observations of the fields themselves, rather than from modeled crop demand."
         }
       ]
     },
     {
-      "title": "Where the field is now",
+      "key": "how_much",
+      "title": "How much",
       "items": [
         {
-          "id": "10.5194/essd-18-4833-2026",
-          "title": "Long-term irrigation water use datasets from multiple Earth Observation-based methods in major irrigated regions",
-          "authors": "Laluet, P., Dari, J., Busschaert, L., et al.",
-          "year": 2026,
-          "venue": "Earth System Science Data",
-          "doi": "10.5194/essd-18-4833-2026",
-          "why": "Long-term irrigation water use datasets from several satellite methods and a land surface model, ready to download and compare."
+          "id": "10.5194/hess-19-4463-2015",
+          "title": "Evaluating the utility of satellite soil moisture retrievals over irrigated areas and the ability of land data assimilation methods to correct for unmodeled processes",
+          "authors": "Kumar, S.V., Peters-Lidard, C.D., Santanello, J.A., et al.",
+          "year": 2015,
+          "venue": "Hydrology and Earth System Sciences",
+          "venue_short": "HESS",
+          "doi": "10.5194/hess-19-4463-2015",
+          "why": "Explains why irrigation is hard for land models and data assimilation: it is a process most models leave out, yet it shows up in the observations."
+        },
+        {
+          "id": "10.1016/j.rse.2019.111226",
+          "title": "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
+          "authors": "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., Brocca, L.",
+          "year": 2019,
+          "venue": "Remote Sensing of Environment",
+          "venue_short": "RSE",
+          "doi": "10.1016/j.rse.2019.111226",
+          "why": "Estimates irrigation water by inverting the soil water balance (SM2RAIN) on coarse satellite soil moisture (AMSR2) in a semi-arid region, and compares the estimates with observed irrigation. A clear case of what works, and of where coarse pixels fall short over small fields."
+        },
+        {
+          "id": "10.5194/hess-23-897-2019",
+          "title": "Estimating irrigation water use over the contiguous United States by combining satellite and reanalysis soil moisture data",
+          "authors": "Zaussinger, F., Dorigo, W., Gruber, A., et al.",
+          "year": 2019,
+          "venue": "Hydrology and Earth System Sciences",
+          "venue_short": "HESS",
+          "doi": "10.5194/hess-23-897-2019",
+          "why": "Scales the idea up: compares satellite soil moisture with a reanalysis that has no irrigation to estimate water use across the US."
+        },
+        {
+          "id": "10.1029/2019ms001797",
+          "title": "Soil moisture data assimilation to estimate irrigation water use",
+          "authors": "Abolafia-Rosenzweig, R., Livneh, B., Small, E. E., et al.",
+          "year": 2019,
+          "venue": "Journal of Advances in Modeling Earth Systems",
+          "venue_short": "JAMES",
+          "doi": "10.1029/2019MS001797",
+          "why": "The data assimilation route: synthetic experiments showing how assimilating soil moisture can recover irrigation amounts."
         }
       ]
     }
