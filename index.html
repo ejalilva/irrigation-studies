@@ -27,8 +27,10 @@
     --arm: rgba(255,255,255,.8);
     --warn: #D08A12; --warn-ink: #8A5300;
     --new-bg: #DCEAF2; --new-ink: #1E5C86;
-    /* Question colors: where = earth, when = time, how much = water */
-    --q-where: #8A5A1F; --q-when: #6B4C9A; --q-how: #1E5C86;
+    /* Question colors from matplotlib's tab20c blues, light to dark: where, when, how much */
+    --q-where: #9ECAE1; --q-when: #6BAED6; --q-how: #3182BD;
+    /* Essential: tab20c green for the mark, a darker green for readable text */
+    --ess: #23793B; --ess-mark: #31A354;
     --shadow: rgba(21,36,44,.28);
     --gutter: 24px;
     --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
@@ -43,7 +45,7 @@
       --arm: rgba(255,255,255,.7);
       --warn: #E9A23B; --warn-ink: #F2B85C;
       --new-bg: #1B3747; --new-ink: #A9D3EC;
-      --q-where: #9C6628; --q-when: #7656AC; --q-how: #2F6E9E;
+      --ess: #74C476; --ess-mark: #74C476;
       --shadow: rgba(0,0,0,.6);
       color-scheme: dark;
     }
@@ -55,7 +57,7 @@
     --arm: rgba(255,255,255,.7);
     --warn: #E9A23B; --warn-ink: #F2B85C;
     --new-bg: #1B3747; --new-ink: #A9D3EC;
-    --q-where: #9C6628; --q-when: #7656AC; --q-how: #2F6E9E;
+    --ess: #74C476; --ess-mark: #74C476;
     --shadow: rgba(0,0,0,.6);
     color-scheme: dark;
   }
@@ -267,6 +269,9 @@
   .dot-pub { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-2); }
   .new { display: inline-block; font: 600 .7rem/1 var(--sans); padding: 3px 6px; border-radius: 4px; background: var(--new-bg); color: var(--new-ink); }
   .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 5px; }
+  .ess { display: inline-flex; align-items: center; gap: 4px; font: 600 .76rem/1 var(--sans); color: var(--ess); white-space: nowrap; }
+  .ess svg { flex: none; width: 12px; height: 12px; color: var(--ess-mark); }
+  .ess-link { font-weight: 500; color: var(--ess); }
 
   .ti { font: 500 1.04rem/1.3 var(--head); color: var(--ink); text-decoration: none; }
   .ti:hover { text-decoration: underline; }
@@ -279,10 +284,10 @@
   .q { display: flex; flex-wrap: wrap; gap: 4px; }
   .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--line); white-space: nowrap; }
   .lit .q span { font-size: .7rem; padding: 4px 6px; }
-  .q-where { --q-c: var(--q-where); }
-  .q-when { --q-c: var(--q-when); }
-  .q-how_much { --q-c: var(--q-how); }
-  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: #fff; }
+  .q-where { --q-c: var(--q-where); --q-t: #10222E; }
+  .q-when { --q-c: var(--q-when); --q-t: #10222E; }
+  .q-how_much { --q-c: var(--q-how); --q-t: #FFFFFF; }
+  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: var(--q-t, #fff); }
   .qdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; background: var(--q-c); vertical-align: 0; }
   .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
   .muted { color: var(--ink-2); }
@@ -601,6 +606,7 @@
             <span><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>
             <span><span class="pulse" aria-hidden="true"></span>Preprint, not yet peer reviewed</span>
             <span><span class="new">New</span>Published or posted in the last 90 days</span>
+            <span id="lit-legend-ess" hidden><span class="ess" id="lit-legend-ess-mark"></span>On the Essential reading list</span>
             <span id="lit-legend-pick" hidden><span class="pickb"><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Pick</span>Editor&rsquo;s pick</span>
           </div>
         </div>
@@ -1079,7 +1085,8 @@ const METHOD_LABELS = {
 };
 const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
 
-const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "featured", sortDir: -1, showAll: false, open: new Set(), picks: new Map() };
+const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "featured", sortDir: -1, showAll: false, open: new Set(), picks: new Map(), essential: new Map() };
+const SEAL = `<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="currentColor"/><path d="M3.4 6.2l1.7 1.7 3.5-3.6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const STAR = `<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>`;
 const $ = id => document.getElementById(id);
 
@@ -1108,6 +1115,7 @@ function litMatches(p) {
   if (lit.q !== "any" && lit.q !== "all" && !qs.includes(lit.q)) return false;
   if (lit.status === "proposed") { if (!p._proposed) return false; }
   else if (lit.status === "pick") { if (!lit.picks.has(p.id)) return false; }
+  else if (lit.status === "essential") { if (!lit.essential.has(p.id)) return false; }
   else if (lit.status !== "any" && p.status !== lit.status) return false;
   if (lit.method !== "any" && !(p.methods || []).includes(lit.method)) return false;
   if (lit.region !== "any" && p.region !== lit.region) return false;
@@ -1171,7 +1179,9 @@ function litRow(p, i) {
   const status = p.status === "preprint"
     ? `<span class="st st-pre" title="Not yet peer reviewed"><span class="pulse" aria-hidden="true"></span>Preprint</span>`
     : `<span class="st st-pub"><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>`;
+  const essN = lit.essential.get(p.id);
   const badges = [
+    essN ? `<span class="ess" title="Number ${essN} on the Essential reading list">${SEAL}Essential</span>` : "",
     litIsNew(p) ? `<span class="new">New</span>` : "",
     lit.picks.has(p.id) ? `<span class="pickb" title="Editor&rsquo;s pick">${STAR}Pick</span>` : "",
     p._proposed ? `<span class="prop">Proposed</span>` : "",
@@ -1197,6 +1207,7 @@ function litRow(p, i) {
     </tr>
     <tr class="detail" id="d-${i}"${isOpen ? "" : " hidden"}><td colspan="7"><div>
       <div>
+        ${essN ? `<p><a class="ess-link" href="#reading">Number ${essN} on the Essential reading list</a></p>` : ""}
         ${pick && pick.note ? `<p><strong>Editor&rsquo;s note.</strong> ${esc(pick.note)}</p>` : ""}
         ${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
         ${p.status === "preprint" ? `<p class="note">This is a preprint. It has not been peer reviewed yet, so its results may change.</p>` : ""}
@@ -1347,6 +1358,25 @@ function readingRender(r) {
     return `<li class="stage"><h3>${esc(st.title || "")}</h3><ol start="${start}">${items}</ol></li>`;
   }).join("");
   $("reading").hidden = false;
+  // Papers on the reading list are tagged Essential in the table.
+  let k = 0;
+  lit.essential = new Map();
+  r.stages.forEach(st => (st.items || []).forEach(it => { k++; const id = String(it.id || it.doi || "").toLowerCase(); if (id) lit.essential.set(id, k); }));
+  litEssentialReady();
+}
+
+function litEssentialReady() {
+  if (!lit.all.length || !lit.essential.size) return;
+  const n = lit.all.filter(p => lit.essential.has(p.id)).length;
+  if (!n) return;
+  $("lit-legend-ess-mark").innerHTML = SEAL + "Essential";
+  $("lit-legend-ess").hidden = false;
+  if (!$("lit-status").querySelector('option[value="essential"]')) {
+    const opt = document.createElement("option");
+    opt.value = "essential"; opt.textContent = `Essential (${n})`;
+    $("lit-status").insertBefore(opt, $("lit-status").options[1] || null);
+  }
+  litRender();
 }
 
 function litInit(data) {
@@ -1371,6 +1401,7 @@ function litInit(data) {
   if (LIT_PREVIEW) litShowReview(data);
   picksRender();
   litRender();
+  litEssentialReady();
 }
 
 function litShowReview(data) {
