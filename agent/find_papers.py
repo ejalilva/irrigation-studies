@@ -864,14 +864,14 @@ def main():
             review = " *Some details missing.*" if e["needs_review"] else ""
             link = f"https://doi.org/{e['doi']}" if e["doi"] else e["url"]
             out.append(f"- [x] [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review} <!-- id:{e['id']} -->")
-            out.append(f"  - [ ] Editor's pick. Note: <!-- pick:{e['id']} -->")
+            out.append(f"  - [ ] Rising. Note: <!-- pick:{e['id']} -->")
         return out
 
     if all_added:
         lines += ["", "### How to review", "",
                   "Untick a paper to reject it. It is removed from this pull request within a minute "
                   "and won't be suggested again. Tick it again to bring it back.", "",
-                  "To make a paper an editor's pick, tick **Editor's pick** under it. To add your note, "
+                  "To mark a paper as Rising (your pick: worth reading now), tick **Rising** under it. To add your note, "
                   "edit this description and type it after `Note:` on that line."]
     if added:
         lines += checklist("New papers", added)

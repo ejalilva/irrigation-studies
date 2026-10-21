@@ -8,11 +8,11 @@ Technical notes for running the page, the paper-finding agent and the review wor
 |---|---|
 | `index.html` | The page: overview, my studies, the research landscape table, related work. Self-contained HTML, CSS and JS. |
 | `data/papers.json` | Rows of the research landscape table. |
-| `data/editor_picks.json` | Editor's picks and notes, shown above the table and badged in it. |
+| `data/editor_picks.json` | Rising papers (editor's picks) and their notes, shown above the table and tagged in it. |
 | `data/reading_list.json` | The ordered essential reading list. |
 | `agent/find_papers.py` | Paper-finding agent (Python 3.9+, standard library only). |
 | `agent/config.json` | Search phrases and agent settings. |
-| `agent/apply_review.py` | Applies the tickboxes in the agent's pull request: removes or restores papers, records editor's picks. |
+| `agent/apply_review.py` | Applies the tickboxes in the agent's pull request: removes or restores papers, records Rising papers. |
 | `agent/seen.json` | IDs of every paper Claude (or the keyword rules) has judged, so rejected papers are not proposed or paid for again. Created on the first run. |
 | `agent/backfill.json` | Progress of the backfill of older papers: the next year to search and the year to stop after. |
 | `agent/rejected.json` | Papers you unticked during review. Created on the first rejection. |
@@ -77,7 +77,7 @@ Each paper is one object in `papers`:
 | `note` | Optional extra line in the row's details, such as a preprint's earlier title. |
 | `resources` | Optional list of datasets (`"type": "data"`) and software (`"type": "code"`) published with the paper, at most four. Shown as **Data** and **Code** links in the "Data & code" column, and listed in full in the row's details. Add, fix or remove entries by hand at any time. |
 | `resources_checked` | Date the agent last looked for data and code links for this paper. Delete it to have the agent look again on its next run. |
-| `added` | Date the agent added the row. The default "Picks and new first" order shows editor's picks first, then the most recently added rows. |
+| `added` | Date the agent added the row. The default "Rising and new first" order shows Rising papers first, then the most recently published ones. |
 | `needs_review` | Set by the agent when it could not fill every column. Shown as "Check details" in the review preview only. |
 | `source` | `seed` (added by hand) or `agent`. |
 
@@ -109,7 +109,7 @@ The backfill fills the table with older papers, one publication year per pull re
 
 1. **Preview it.** The pull request description starts with a link to `https://ejalilva.github.io/irrigation-studies/?preview#landscape`. The preview shows the proposed papers on the real page, badged **Proposed**, with **Check details** on rows that have empty columns. Adding `?preview` to the page address works at any time; with no open review it shows the published table.
 2. **Untick papers to reject them.** Each paper is a tickbox in the description. Unticking one makes `apply-review.yml` move it to `agent/rejected.json` within a minute; it stays in `seen.json` and is never proposed again. Ticking it again restores it. The preview can lag a few minutes behind because GitHub caches raw files.
-3. **Choose editor's picks.** Under each paper is an **Editor's pick** tickbox. Tick it to feature the paper. To add your note, edit the pull request description and type it after `Note:` on that line; it appears on the pick's card. Unticking removes the pick.
+3. **Mark Rising papers.** Under each paper is a **Rising** tickbox. Tick it to feature the paper as your pick. To add your note, edit the pull request description and type it after `Note:` on that line; it appears on the pick's card. Unticking removes the pick.
 4. **Fix details if needed.** Edit `data/papers.json` on the `agent/new-papers` branch (the preview has an "Edit details on GitHub" link), and set `needs_review` to `false` on rows you complete.
 5. **Merge.** The site updates about a minute later.
 
@@ -143,9 +143,13 @@ Environment variables: `ANTHROPIC_API_KEY` and `OPENALEX_API_KEY` (both optional
 | `data_links_per_run` | 80 | Cap on existing papers checked for links in one run. |
 | `data_links_recheck_days` | 180 | How long before an existing paper is checked for links again. |
 
-## Editor's picks
+## Essential and Rising
 
-Picks live in `data/editor_picks.json`, separate from the table data:
+**Essential** comes from the reading list: every paper in `data/reading_list.json` that is also in the table gets a green Essential tag, an "Essential" status filter and a link to its place in the list. To tag a paper Essential, add it to the reading list.
+
+**Rising** papers are your picks among recent work: not essential yet, but worth reading now.
+
+Rising papers live in `data/editor_picks.json`, separate from the table data:
 
 ```json
 {
@@ -155,7 +159,7 @@ Picks live in `data/editor_picks.json`, separate from the table data:
 }
 ```
 
-`id` must match a paper's `id` in `data/papers.json`. The six most recent picks appear as cards above the table. In the table, picks come first in the default order, get a star **Pick** badge, show the note in their details, and can be filtered with "Editor's picks" in the status menu. To pick a paper that is already published, edit this file on `main` directly.
+`id` must match a paper's `id` in `data/papers.json`. The six most recently picked appear as cards in the Rising section above the table. In the table, Rising papers come first in the default order, get a purple star **Rising** tag, show your note in their details, and can be filtered with "Rising" in the status menu. To mark a paper that is already in the table, add it to this file on `main` directly, or ask for it in a pull request.
 
 ## Essential reading list
 

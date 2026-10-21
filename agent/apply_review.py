@@ -14,10 +14,11 @@ paper again moves it back.
 
 Under each paper is a nested line
 
-      - [ ] Editor's pick. Note: <your note> <!-- pick:10.1234/abcd -->
+      - [ ] Rising. Note: <your note> <!-- pick:10.1234/abcd -->
 
-Ticking it adds the paper (and the note, if any) to data/editor_picks.json;
-unticking it removes the pick.
+Ticking it marks the paper as Rising (an editor's pick) and adds it, with the
+note if any, to data/editor_picks.json; unticking it removes it. Lines that
+say "Editor's pick" instead of "Rising", from older pull requests, also work.
 
 Reads the description from the PR_BODY environment variable.
 """
@@ -36,7 +37,7 @@ REJECTED_PATH = ROOT / "agent" / "rejected.json"
 PICKS_PATH = ROOT / "data" / "editor_picks.json"
 
 LINE = re.compile(r"^\s*[-*]\s+\[( |x|X)\]\s.*<!--\s*id:(.+?)\s*-->\s*$")
-PICK = re.compile(r"^\s*[-*]\s+\[( |x|X)\]\s*Editor'?s pick\.?\s*(?:Note:)?(.*?)<!--\s*pick:(.+?)\s*-->\s*$", re.I)
+PICK = re.compile(r"^\s*[-*]\s+\[( |x|X)\]\s*(?:Editor'?s pick|Rising)\.?\s*(?:Note:)?(.*?)<!--\s*pick:(.+?)\s*-->\s*$", re.I)
 
 
 def load(path, default):
@@ -95,7 +96,7 @@ def apply_picks(body, rejected_ids, today):
     save(PICKS_PATH, store)
     for pid in picked:
         if pid in picks:
-            print(f"Editor's pick: {pid}" + (f" ({picked[pid]})" if picked[pid] else ""))
+            print(f"Rising: {pid}" + (f" ({picked[pid]})" if picked[pid] else ""))
     return True
 
 

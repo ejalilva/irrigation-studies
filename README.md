@@ -10,13 +10,13 @@ A living guide to research that uses satellites and Earth system models to find 
 - **My own irrigation studies**, from coarse satellite soil moisture down to field-scale thermal observations.
 - **Essential reading**: an ordered list of the papers to start with if you are new to the field.
 - **The research landscape**: a searchable table of studies from across the field. Each row shows which questions a study answers (where, when, how much), its study area and period, whether it has been peer reviewed, and links to any dataset or code published with it. Preprints are clearly flagged. Select a title for the full details.
-- **Editor's picks**: recent papers I think move the field forward, with a short note on why.
+- **Essential and Rising**: papers on the essential reading list are tagged **Essential** in the table. **Rising** marks my picks among recent papers: not essential reading yet, but worth reading now, each with a short note on why.
 
 ## How the table stays up to date
 
 1. **Search.** Every week a small program searches [OpenAlex](https://openalex.org), an open index of scholarly papers and preprints, for new irrigation studies. It is also working back through earlier years, one year at a time, to 2010. For older years it keeps papers that have been cited a reasonable number of times for their age, so the table favors studies the field has taken up.
 2. **Read and sort.** For each candidate, [Claude](https://www.anthropic.com/claude), an AI model by Anthropic, reads the abstract and fills in the table's columns: is it really about detecting or measuring irrigation, which questions it answers, where and when the study was done, and how.
-3. **Human review.** The program proposes new rows as a pull request. I check each one, reject what doesn't belong, mark editor's picks, and only then publish. Nothing appears in the table without that review.
+3. **Human review.** The program proposes new rows as a pull request. I check each one, reject what doesn't belong, mark Rising papers, and only then publish. Nothing appears in the table without that review.
 4. **Follow-up.** Preprints are checked every week, and a row switches to the peer-reviewed version once it appears. The program also looks for datasets and software linked to each paper in open registries such as [DataCite](https://datacite.org) and [Crossref](https://www.crossref.org).
 
 The descriptions are AI-assisted and reviewed by hand, but mistakes can slip through. Corrections are welcome.
