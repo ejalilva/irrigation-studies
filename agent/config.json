@@ -1,7 +1,7 @@
 {
   "_help": "Settings for agent/find_papers.py. Edit the search phrases to change what the agent looks for.",
   "lookback_days": 60,
-  "results_per_query": 25,
+  "max_pages_per_query": 5,
   "max_new_per_run": 20,
   "queries": [
     "irrigation satellite soil moisture",

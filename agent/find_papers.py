@@ -141,20 +141,30 @@ def openalex_url(params, cfg):
 
 
 def openalex_search(query, since, cfg):
+    """Return every work matching the query since the given date, newest first."""
+    per_page = 100
+    max_pages = int(cfg.get("max_pages_per_query", 5))
     params = {
         "search": query,
         "filter": f"from_publication_date:{since},type:article|preprint|review",
         "sort": "publication_date:desc",
-        "per_page": str(cfg.get("results_per_query", 25)),
+        "per_page": str(per_page),
     }
-    try:
-        return http_json(openalex_url(params, cfg)).get("results", [])
-    except urllib.error.HTTPError as e:
-        if e.code != 400:
-            raise
-        # Retry without the type filter in case OpenAlex renamed a type.
-        params["filter"] = f"from_publication_date:{since}"
-        return http_json(openalex_url(params, cfg)).get("results", [])
+    results = []
+    for page in range(1, max_pages + 1):
+        params["page"] = str(page)
+        try:
+            batch = http_json(openalex_url(dict(params), cfg)).get("results", [])
+        except urllib.error.HTTPError as e:
+            if e.code != 400 or "type:" not in params["filter"]:
+                raise
+            # Retry without the type filter in case OpenAlex renamed a type.
+            params["filter"] = f"from_publication_date:{since}"
+            batch = http_json(openalex_url(dict(params), cfg)).get("results", [])
+        results.extend(batch)
+        if len(batch) < per_page:
+            break
+    return results
 
 
 def abstract_text(inverted):
@@ -233,10 +243,23 @@ def candidate_from(work):
     }
 
 
-def looks_relevant(c, cfg):
-    """Cheap first filter so only plausible papers reach the classifier."""
+# Copies of papers posted to general-purpose repositories, not the papers themselves.
+SKIP_DOI_PREFIXES = ("10.5281/zenodo", "10.6084/m9.figshare")
+
+
+def looks_relevant(c, cfg, strict):
+    """Cheap first filter so only plausible papers reach the classifier.
+
+    strict (used when there is no Claude key, so nothing else checks the
+    paper) requires "irrigation" in the title itself.
+    """
+    if (c["doi"] or "").lower().startswith(SKIP_DOI_PREFIXES):
+        return False
     title, text = c["title"].lower(), (c["title"] + " " + c["abstract"]).lower()
-    if "irrigat" not in title and text.count("irrigat") < 2:
+    if strict:
+        if "irrigat" not in title:
+            return False
+    elif "irrigat" not in title and text.count("irrigat") < 2:
         return False
     return any(term in text for term in cfg.get("must_mention_any", []))
 
@@ -270,6 +293,10 @@ JSON keys:
 Use null when the abstract does not say. Never guess numbers or places."""
 
 
+# Tracks Claude API results for the run report.
+CLAUDE_STATUS = {"ok": 0, "errors": [], "disabled": False}
+
+
 def classify_with_claude(c, cfg, key):
     prompt = PROMPT.format(
         title=c["title"], venue=c["venue"], year=c["year"],
@@ -282,13 +309,30 @@ def classify_with_claude(c, cfg, key):
         "temperature": 0,
         "messages": [{"role": "user", "content": prompt}],
     }
+    if CLAUDE_STATUS["disabled"]:
+        return None
     headers = {"x-api-key": key, "anthropic-version": "2023-06-01"}
     try:
         resp = http_json(ANTHROPIC, body=body, headers=headers)
         text = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
+        CLAUDE_STATUS["ok"] += 1
         return json.loads(text[text.index("{"): text.rindex("}") + 1])
-    except Exception as e:  # keep going with the rules instead
-        log(f"  Claude could not classify this paper ({e}); using keyword rules instead.")
+    except urllib.error.HTTPError as e:
+        try:
+            detail = e.read().decode("utf-8", "replace").strip()[:300]
+        except Exception:
+            detail = ""
+        msg = f"HTTP {e.code} from the Claude API: {detail or e.reason}"
+        CLAUDE_STATUS["errors"].append(msg)
+        # Key, billing or model problems affect every call, so stop trying.
+        if e.code in (400, 401, 403, 404):
+            CLAUDE_STATUS["disabled"] = True
+        log(f"  {msg}")
+        return None
+    except Exception as e:
+        msg = f"Claude call failed: {e}"
+        CLAUDE_STATUS["errors"].append(msg)
+        log(f"  {msg}")
         return None
 
 
@@ -412,7 +456,7 @@ def main():
     log(f"Searching OpenAlex for papers published since {since}.")
     log("Classifier: " + ("Claude (" + cfg.get("claude_model", "claude-haiku-5-5") + ")" if claude_key else "keyword rules (add ANTHROPIC_API_KEY for full classification)"))
 
-    added, skipped, newly_seen = [], 0, set()
+    added, skipped, newly_seen, deferred = [], 0, set(), set()
     max_new = cfg.get("max_new_per_run", 20)
     for query in cfg.get("queries", []):
         try:
@@ -427,11 +471,23 @@ def main():
                 continue
             if c["id"] in known_ids or c["id"] in seen or c["id"] in newly_seen or norm_title(c["title"]) in known_titles:
                 continue
-            newly_seen.add(c["id"])
-            if len(added) >= max_new or not looks_relevant(c, cfg):
+            if not looks_relevant(c, cfg, strict=not claude_key):
+                newly_seen.add(c["id"])
                 skipped += 1
                 continue
-            cls = (classify_with_claude(c, cfg, claude_key) if claude_key else None) or classify_with_rules(c)
+            if len(added) >= max_new:
+                # Leave it unseen so a later run can propose it.
+                deferred.add(c["id"])
+                continue
+            newly_seen.add(c["id"])
+            cls = classify_with_claude(c, cfg, claude_key) if claude_key else None
+            if cls is None:
+                if claude_key and "irrigat" not in c["title"].lower():
+                    # Claude was meant to judge this one but failed; leave it
+                    # unseen so a later run with a working key can decide.
+                    newly_seen.discard(c["id"])
+                    continue
+                cls = classify_with_rules(c)
             if not cls.get("relevant"):
                 skipped += 1
                 continue
@@ -463,6 +519,16 @@ def main():
     lines = [f"## Paper agent report, {today}", ""]
     lines.append(f"Searched papers published since {since}. "
                  f"{len(added)} new, {len(upgraded)} preprint(s) now peer reviewed, {skipped} skipped as off-topic.")
+    if claude_key and CLAUDE_STATUS["errors"]:
+        lines += ["", f"**Claude classification failed** ({len(CLAUDE_STATUS['errors'])} error(s); "
+                      f"{CLAUDE_STATUS['ok']} paper(s) classified by Claude). Rows without a study area or summary "
+                      f"were filled with keyword rules. First error:", "", "```", CLAUDE_STATUS["errors"][0], "```"]
+    elif not claude_key:
+        lines += ["", "Classified with keyword rules (no `ANTHROPIC_API_KEY` secret was available to this run)."]
+    if deferred:
+        lines.append("")
+        lines.append(f"{len(deferred)} more possibly relevant paper(s) were left for the next run "
+                     f"(limit: {max_new} per run). Merge this pull request, then run the workflow again with the same number of days.")
     if added:
         lines += ["", "### New papers", ""]
         for e in added:
