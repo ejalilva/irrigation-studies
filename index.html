@@ -1115,9 +1115,10 @@ function litCompare(a, b) {
   const val = p => {
     switch (lit.sortKey) {
       case "featured": {
-        // Editor's picks first (newest pick first), then the most recently added rows.
+        // Editor's picks first (newest pick first), then the most recently published papers.
+        // Publication date, not the date a row was added, so backfilled older papers don't crowd the top.
         const k = lit.picks.get(p.id);
-        return (k ? "1" + (k.picked || "") : "0") + "|" + (p.added || "0000-00-00") + "|" + (p.date || String(p.year));
+        return (k ? "1" + (k.picked || "") : "0") + "|" + (p.date || `${p.year}-00-00`) + "|" + (p.added || "");
       }
       case "author": return (p.first_author || p.authors || "").toLowerCase();
       case "area": return (p.domain || "￿").toLowerCase();

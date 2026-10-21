@@ -13,9 +13,10 @@ Technical notes for running the page, the paper-finding agent and the review wor
 | `agent/find_papers.py` | Paper-finding agent (Python 3.9+, standard library only). |
 | `agent/config.json` | Search phrases and agent settings. |
 | `agent/apply_review.py` | Applies the tickboxes in the agent's pull request: removes or restores papers, records editor's picks. |
-| `agent/seen.json` | IDs of every paper the agent has evaluated, so rejected papers are not proposed again. Created on the first run. |
+| `agent/seen.json` | IDs of every paper Claude (or the keyword rules) has judged, so rejected papers are not proposed or paid for again. Created on the first run. |
+| `agent/backfill.json` | Progress of the backfill of older papers: the next year to search and the year to stop after. |
 | `agent/rejected.json` | Papers you unticked during review. Created on the first rejection. |
-| `.github/workflows/find-papers.yml` | Weekly search, opens the review pull request. |
+| `.github/workflows/find-papers.yml` | Weekly search and the year-by-year backfill; opens the review pull request. |
 | `.github/workflows/apply-review.yml` | Runs when you tick or untick a paper in the pull request description. |
 
 ## Research landscape table
@@ -84,14 +85,25 @@ Each paper is one object in `papers`:
 
 Each run, the agent:
 
-1. Searches [OpenAlex](https://openalex.org) for works published in the last `lookback_days` that match the phrases in `agent/config.json`.
-2. Skips known and previously seen IDs, Zenodo and figshare copies, and papers that don't mention any term in `must_mention_any`. Without an API key it also requires "irrigation" in the title; with a key, Claude judges relevance from the abstract.
+1. Searches [OpenAlex](https://openalex.org) for works that match the phrases in `agent/config.json`, published in the last `lookback_days`, or since 14 days before the table's last update if that is earlier, so no stretch of time is ever skipped. In a backfill run it also searches one past year (see [Backfill](#backfill)). Every result is read, using cursor paging; `max_results_per_query` is only a safety limit, and the report says if it was reached.
+2. Skips known and previously seen IDs, Zenodo and figshare copies, and papers that don't mention "irrigation" and any term in `must_mention_any`. Without an API key it also requires "irrigation" in the title; with a key, Claude judges relevance from the abstract. Papers dropped by this cheap check are not stored in `seen.json`, so they are re-checked for free on later runs.
 3. Classifies each remaining paper. With `ANTHROPIC_API_KEY` set, Claude Haiku 5.5 reads the abstract and fills every column; papers Claude can't classify (for example after repeated rate-limit errors) are left for the next run, and the error is shown in the pull request description, or the run fails if nothing could be proposed. Without a key, keyword rules fill the questions, methods, data and period, and the row is marked `needs_review`.
 4. Checks every preprint in the table for a peer-reviewed version with a near-identical title and the same first author. If it finds one, the row switches to the published DOI and venue, and a `note` records the change.
 5. Looks for datasets and software linked to each new paper, and to existing papers not checked in the last `data_links_recheck_days`. Sources: [DataCite](https://datacite.org) records (Zenodo, PANGAEA, figshare, Mendeley Data and others) that cite the paper's DOI, the publisher's "is supplemented by" links in Crossref, and repository links (GitHub, Zenodo, HydroShare, Earth Engine and similar) written in the abstract. Links found for existing papers are listed in the pull request description so they can be checked before merging.
 6. Writes `data/papers.json` and `agent/seen.json` only if something changed, and prints a Markdown report. A run that only re-checked papers for links and found none opens no pull request.
 
-The workflow runs every Monday at 13:17 UTC, and can also be started from the Actions tab with an optional `days` input (for example `365` for a first backfill). When there are changes, it opens a pull request from `agent/new-papers`, with the report as its description. The Monday run is skipped while a review is still open, so edits on the review branch are never overwritten; a manual run always runs and replaces any open review.
+The workflow runs every Monday at 13:17 UTC, and can also be started from the Actions tab, with an optional `days` input and a **backfill** tickbox. When there are changes, it opens a pull request from `agent/new-papers`, with the report as its description. The Monday run is skipped while a review is still open, so edits on the review branch are never overwritten; a manual run always runs and replaces any open review. The report ends with how many abstracts Claude read and the approximate API cost.
+
+### Backfill
+
+The backfill fills the table with older papers, one publication year per pull request, newest year first. `agent/backfill.json` holds the next year to search (`next_year`) and the last one (`first_year`, 2010).
+
+- **Start it** from the Actions tab: Find new irrigation papers > Run workflow > tick **backfill**.
+- **Each run** searches the recent window as usual, plus all of `next_year`. A year with no new papers is skipped straight to the year before, up to `backfill_years_per_run` years per run.
+- **Citation bar.** Papers from the current and previous year (`free_years`) are included whatever their citations. Older papers need at least `per_year` citations per year of age, up to `max`: with the defaults, 6 citations for a paper from 2024, 18 for 2020 and 48 for 2010. Change `citations_for_older_papers` in `agent/config.json` to raise or lower the bar.
+- **Chaining.** Backfill pull requests carry the `backfill` label. Merging one starts the next year automatically, so you only review and merge. If a year has more than `backfill_max_per_year` relevant papers, it continues over several pull requests before moving on.
+- **Restarting.** Edit `next_year` in `agent/backfill.json` to search a year again. Papers already judged are remembered in `seen.json`, so a repeat run costs little. When `next_year` is below `first_year`, the backfill is finished and stops.
+- **Failures.** If a search fails and the run has nothing to propose, the run is marked failed, because no pull request means nothing would start the next year. Run the workflow again with backfill ticked.
 
 ### Reviewing a pull request
 
@@ -106,18 +118,24 @@ Run it locally:
 ```bash
 python agent/find_papers.py --dry-run             # report only, no files written
 python agent/find_papers.py --days 365            # wider window, writes files
+python agent/find_papers.py --backfill            # also search the next backfill year
+python agent/find_papers.py --year 2015 --dry-run # search one year without touching backfill.json
 ```
 
-Environment variables: `ANTHROPIC_API_KEY` and `OPENALEX_API_KEY` (both optional), `LOOKBACK_DAYS` (overrides the config), and `REPORT_PATH` (writes the report to a file).
+Environment variables: `ANTHROPIC_API_KEY` and `OPENALEX_API_KEY` (both optional), `LOOKBACK_DAYS` (overrides the config), `BACKFILL` (`true` to backfill), and `REPORT_PATH` (writes the report to a file).
 
 ### Configuration (`agent/config.json`)
 
 | Key | Default | Purpose |
 |---|---|---|
 | `queries` | 9 phrases | OpenAlex search phrases, one request each. |
-| `lookback_days` | 60 | Search window per run. |
-| `max_pages_per_query` | 5 | Pages of 100 results read per phrase; enough for a one-year backfill. |
-| `max_new_per_run` | 20 | Cap on papers proposed in one pull request. Extra relevant papers stay unseen and are proposed by the next run. |
+| `lookback_days` | 60 | Minimum search window for recent papers. |
+| `max_results_per_query` | 20000 | Safety limit on results read per phrase and window. |
+| `max_new_per_run` | 20 | Cap on recent papers proposed in one pull request. Extra relevant papers stay unseen and are proposed by the next run. |
+| `backfill_max_per_year` | 120 | Cap on backfilled papers in one pull request. |
+| `backfill_years_per_run` | 4 | How many empty years one backfill run may move through. |
+| `citations_for_older_papers` | 1 free year, 3 per year, max 50 | Citation bar for backfilled papers (see [Backfill](#backfill)). |
+| `max_classifications_per_run` | 2000 | Cap on Claude calls in one run, which bounds its cost and run time. |
 | `must_mention_any` | satellite and model terms | A paper must mention at least one term. |
 | `claude_model` | `claude-haiku-5-5` | Model used when an API key is set. |
 | `claude_seconds_between_calls` | 1.5 | Pause between Claude requests, to stay under the API's per-minute rate limit. Lower it if your API tier allows more requests. |
