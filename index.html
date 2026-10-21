@@ -27,8 +27,8 @@
     --arm: rgba(255,255,255,.8);
     --warn: #D08A12; --warn-ink: #8A5300;
     --new-bg: #DCEAF2; --new-ink: #1E5C86;
-    /* Question colors from matplotlib's tab20c blues, light to dark: where, when, how much */
-    --q-where: #9ECAE1; --q-when: #6BAED6; --q-how: #3182BD;
+    /* Question colors from matplotlib's tab20c: where = blue, when = orange, how much = green */
+    --q-where: #6BAED6; --q-when: #FD8D3C; --q-how: #74C476;
     /* Essential: tab20c green for the mark, a darker green for readable text */
     --ess: #23793B; --ess-mark: #31A354;
     --shadow: rgba(21,36,44,.28);
@@ -286,7 +286,7 @@
   .lit .q span { font-size: .7rem; padding: 4px 6px; }
   .q-where { --q-c: var(--q-where); --q-t: #10222E; }
   .q-when { --q-c: var(--q-when); --q-t: #10222E; }
-  .q-how_much { --q-c: var(--q-how); --q-t: #FFFFFF; }
+  .q-how_much { --q-c: var(--q-how); --q-t: #10222E; }
   .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: var(--q-t, #fff); }
   .qdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; background: var(--q-c); vertical-align: 0; }
   .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
