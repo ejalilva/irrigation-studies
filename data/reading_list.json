@@ -84,6 +84,15 @@
           "why": "Introduces the soil-moisture inversion idea (SM2RAIN) behind many later estimates of irrigation water use."
         },
         {
+          "id": "10.1016/j.rse.2019.111226",
+          "title": "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
+          "authors": "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., Brocca, L.",
+          "year": 2019,
+          "venue": "Remote Sensing of Environment",
+          "doi": "10.1016/j.rse.2019.111226",
+          "why": "Applies the same inversion to coarse satellite soil moisture (AMSR2) in a semi-arid region and compares the estimates with observed irrigation. A clear case of what works, and of where coarse pixels fall short over small fields."
+        },
+        {
           "id": "10.5194/hess-23-897-2019",
           "title": "Estimating irrigation water use over the contiguous United States by combining satellite and reanalysis soil moisture data",
           "authors": "Zaussinger, F., Dorigo, W., Gruber, A., et al.",
@@ -114,6 +123,15 @@
           "venue": "International Journal of Applied Earth Observation and Geoinformation",
           "doi": "10.1016/j.jag.2022.102979",
           "why": "Tests how resolution, revisit time and noise limit what satellite soil moisture can tell us about irrigation timing and amounts."
+        },
+        {
+          "id": "10.1016/j.rse.2025.115153",
+          "title": "Characterization of irrigation timing using thermal satellite observations, a data-driven approach",
+          "authors": "Jalilvand, E., Kumar, S.V., Truong, C., et al.",
+          "year": 2026,
+          "venue": "Remote Sensing of Environment",
+          "doi": "10.1016/j.rse.2025.115153",
+          "why": "Moves from how much to when: reads the timing of irrigation from thermal satellite observations of the fields themselves, rather than from modeled crop demand."
         }
       ]
     },

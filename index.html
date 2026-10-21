@@ -11,30 +11,31 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23CDB47E'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%231E5C86'/%3E%3Cline x1='16' y1='16' x2='26' y2='11' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-  /* Colors follow a soil-moisture map: dry soil (ochre) to wet (deep blue). */
+  /* Accent colors follow a soil-moisture map: dry soil (ochre) to wet (deep blue). */
   :root {
-    --paper: #EEF2F0;
+    --paper: #FFFFFF;
     --surface: #FFFFFF;
-    --ink: #15242C;
-    --ink-2: #4A5A60;
-    --line: #CDD6D3;
+    --hover: #F3F5F6;
+    --ink: #172026;
+    --ink-2: #505B61;
+    --line: #DCE1E3;
     --link: #1E5C86;
-    --tag-bg: #DFE7E5;
+    --tag-bg: #EDF0F1;
     --r0: #B07A3B; --r1: #CDB47E; --r2: #A9C3AE; --r3: #4F93A3; --r4: #1E5C86;
     --arm: rgba(255,255,255,.8);
     --warn: #D08A12; --warn-ink: #8A5300;
     --new-bg: #DCEAF2; --new-ink: #1E5C86;
     --shadow: rgba(21,36,44,.28);
     --gutter: 24px;
-    --serif: "Newsreader", Georgia, "Times New Roman", serif;
-    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
+    --head: var(--sans);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #0F1A1F; --surface: #15232A; --ink: #E3EAE8; --ink-2: #9DAEB2;
+      --paper: #0F1A1F; --surface: #15232A; --hover: #18282F; --ink: #E3EAE8; --ink-2: #9DAEB2;
       --line: #2B3C43; --link: #8BC2E0; --tag-bg: #1E3038;
       --r0: #A57540; --r1: #BFA670; --r2: #86A898; --r3: #3F86A0; --r4: #2F72A3;
       --arm: rgba(255,255,255,.7);
@@ -45,7 +46,7 @@
     }
   }
   :root[data-theme="dark"] {
-    --paper: #0F1A1F; --surface: #15232A; --ink: #E3EAE8; --ink-2: #9DAEB2;
+    --paper: #0F1A1F; --surface: #15232A; --hover: #18282F; --ink: #E3EAE8; --ink-2: #9DAEB2;
     --line: #2B3C43; --link: #8BC2E0; --tag-bg: #1E3038;
     --r0: #A57540; --r1: #BFA670; --r2: #86A898; --r3: #3F86A0; --r4: #2F72A3;
     --arm: rgba(255,255,255,.7);
@@ -74,7 +75,7 @@
 
   /* Header */
   .site-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
-  .site-name { font: 500 1.2rem/1.2 var(--serif); color: var(--ink); text-decoration: none; }
+  .site-name { font: 500 1.2rem/1.2 var(--head); color: var(--ink); text-decoration: none; }
   .site-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
   .site-nav a { color: var(--ink-2); text-decoration: none; }
   .site-nav a:hover { color: var(--ink); text-decoration: underline; }
@@ -83,7 +84,7 @@
   /* Hero */
   .hero { padding-top: 72px; }
   h1 {
-    font: 500 clamp(2.5rem, 6.2vw, 4.4rem)/1.02 var(--serif);
+    font: 500 clamp(2.5rem, 6.2vw, 4.4rem)/1.02 var(--head);
     letter-spacing: -0.015em;
     margin: 0;
     max-width: 13ch;
@@ -94,7 +95,7 @@
   .scale { margin: 0; }
   .scale svg { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 4px; }
   .scale figcaption { margin-top: 12px; }
-  .scale strong { display: block; font: 500 1.2rem/1.2 var(--serif); }
+  .scale strong { display: block; font: 500 1.2rem/1.2 var(--head); }
   .scale span { display: block; font-size: .875rem; color: var(--ink-2); margin-top: 2px; }
   .scales-note { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 20px; font-size: .9rem; color: var(--ink-2); }
   .scales-note p { margin: 0; max-width: 62ch; }
@@ -110,18 +111,18 @@
 
   /* Sections */
   section { padding-top: 96px; }
-  h2 { font: 500 2rem/1.15 var(--serif); letter-spacing: -0.01em; margin: 0; }
-  h3 { font: 500 1.35rem/1.25 var(--serif); margin: 0; }
+  h2 { font: 500 2rem/1.15 var(--head); letter-spacing: -0.01em; margin: 0; }
+  h3 { font: 500 1.35rem/1.25 var(--head); margin: 0; }
   .intro { color: var(--ink-2); max-width: 62ch; margin: 12px 0 0; }
 
   .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; margin-top: 32px; }
   .fact { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 18px; padding: 22px 0; border-top: 1px solid var(--line); }
-  .fact-num { font: 500 2.3rem/1 var(--serif); color: var(--link); }
+  .fact-num { font: 500 2.3rem/1 var(--head); color: var(--link); }
   .fact p { margin: 0; }
   .fact .src { display: block; font-size: .85rem; margin-top: 6px; color: var(--ink-2); }
 
   details.more { margin-top: 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  details.more summary { cursor: pointer; list-style: none; padding: 18px 0; font: 500 1.15rem/1.3 var(--serif); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  details.more summary { cursor: pointer; list-style: none; padding: 18px 0; font: 500 1.15rem/1.3 var(--head); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
   details.more summary::-webkit-details-marker { display: none; }
   details.more summary::after { content: "+"; font: 400 1.5rem/1 var(--sans); color: var(--ink-2); }
   details.more[open] summary::after { content: "\2212"; }
@@ -134,7 +135,7 @@
   .gap-grid ul { margin: 12px 0 0; padding-left: 1.2em; }
   .gap-grid li { margin: 8px 0; }
   .gap-grid li::marker, .findings li::marker { color: var(--r3); }
-  .bridge { font: 400 1.6rem/1.35 var(--serif); max-width: 34ch; margin: 56px 0 0; padding-left: 20px; border-left: 3px solid var(--r3); }
+  .bridge { font: 400 1.6rem/1.35 var(--head); max-width: 34ch; margin: 56px 0 0; padding-left: 20px; border-left: 3px solid var(--r3); }
 
   /* Studies */
   .studies-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px 32px; }
@@ -152,9 +153,9 @@
   .study-list { list-style: none; margin: 16px 0 0; padding: 0; }
   .study { display: grid; grid-template-columns: 6rem minmax(0, 1fr) minmax(0, 300px); gap: 32px; padding: 40px 0; border-top: 1px solid var(--line); }
   .study[hidden] { display: none; }
-  .study-when .yr { display: block; font: 500 1.75rem/1 var(--serif); }
+  .study-when .yr { display: block; font: 500 1.75rem/1 var(--head); }
   .study-when .sc { display: block; font-size: .85rem; color: var(--ink-2); margin-top: 8px; }
-  .study-title { font: 500 1.4rem/1.25 var(--serif); margin: 0; }
+  .study-title { font: 500 1.4rem/1.25 var(--head); margin: 0; }
   .study-title a { color: inherit; text-decoration: none; }
   .study-title a:hover { text-decoration: underline; }
   .venue { margin: 8px 0 0; font-size: .95rem; color: var(--ink-2); }
@@ -180,8 +181,8 @@
   /* Related */
   .related { list-style: none; margin: 24px 0 0; padding: 0; }
   .related li { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 32px; padding: 18px 0; border-top: 1px solid var(--line); }
-  .related .yr { font: 500 1.15rem/1.4 var(--serif); color: var(--ink-2); }
-  .related .t { font: 500 1.1rem/1.35 var(--serif); }
+  .related .yr { font: 500 1.15rem/1.4 var(--head); color: var(--ink-2); }
+  .related .t { font: 500 1.1rem/1.35 var(--head); }
   .related .t a { color: var(--ink); text-decoration: none; }
   .related .t a:hover { text-decoration: underline; }
   .related p { margin: 4px 0 0; font-size: .92rem; color: var(--ink-2); max-width: 70ch; }
@@ -212,7 +213,6 @@
     content: ""; position: absolute; right: 14px; top: 50%; width: 6px; height: 6px; pointer-events: none;
     border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: translateY(-70%) rotate(45deg);
   }
-  .lit-sort-mobile { display: none; }
   .lit-reset { font: 500 .88rem/1 var(--sans); color: var(--link); background: none; border: 0; padding: 8px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
   .lit-reset[hidden] { display: none; }
 
@@ -220,58 +220,74 @@
   .lit-meta p { margin: 0; }
   .lit-legend { display: flex; flex-wrap: wrap; gap: 6px 22px; }
   .lit-legend > span { display: inline-flex; align-items: center; gap: 8px; }
+  .lit-legend > span[hidden] { display: none; }
+  .lit-meta-l { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+  .lit-sort { display: inline-flex; align-items: center; gap: 8px; }
+  .lit-sort select { padding: 6px 30px 6px 10px; font-size: .84rem; }
+  .lit-sort .lit-select::after { right: 12px; }
 
-  .lit { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; margin-top: 10px; font-size: .92rem; line-height: 1.45; }
-  .lit th { text-align: left; vertical-align: bottom; font: 500 .8rem/1.3 var(--sans); color: var(--ink-2); padding: 10px 12px; border-bottom: 1px solid var(--ink-2); white-space: nowrap; }
+  .lit { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; margin-top: 10px; font-size: .9rem; line-height: 1.4; }
+  .lit th { text-align: left; vertical-align: bottom; font: 500 .8rem/1.3 var(--sans); color: var(--ink-2); padding: 10px; border-bottom: 1px solid var(--ink-2); white-space: nowrap; }
   .lit th .sort { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
   .lit th .sort:hover { color: var(--ink); }
   .lit th .arrow { width: 8px; height: 8px; opacity: .35; }
   .lit th[aria-sort] .arrow { opacity: 1; }
   .lit th[aria-sort="ascending"] .arrow { transform: rotate(180deg); }
-  .lit td { padding: 14px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+  .lit td { padding: 10px; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
   .lit tbody tr:first-child td { border-top: 0; }
-  .lit .c-status { width: 118px; }
-  .lit .c-year { width: 58px; }
-  .lit .c-q { width: 214px; }
-  .lit .c-area { width: 15%; }
-  .lit .c-period { width: 104px; white-space: nowrap; }
-  .lit .c-approach { width: 22%; }
-  .lit td { overflow-wrap: anywhere; }
+  .lit tr[hidden] { display: none; }
+  .lit .c-status { width: 116px; }
+  .lit .c-year { width: 58px; white-space: nowrap; }
+  .lit .c-q { width: 190px; }
+  .lit .c-area { width: 14%; }
+  .lit .c-period { width: 92px; white-space: nowrap; }
+  .lit .c-res { width: 140px; }
+  .one { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .lit tr.open .one { white-space: normal; overflow: visible; }
 
+  /* A closed row lifts on hover. An open row and its details form one flat block. */
   .lit tr.row { cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
-  .lit tr.row:hover { transform: scale(1.014); box-shadow: 0 14px 30px -18px var(--shadow); position: relative; z-index: 2; }
-  .lit tr.row:hover, .lit tr.row.open { background: var(--surface); }
-  .lit tr.row:hover td { border-top-color: transparent; }
-  .lit tr.row:hover + tr td { border-top-color: transparent; }
+  .lit tr.row:not(.open):hover { transform: scale(1.01); box-shadow: 0 12px 28px -18px var(--shadow); position: relative; z-index: 2; background: var(--surface); }
+  .lit tr.row:not(.open):hover td,
+  .lit tr.row:not(.open):hover + tr.detail[hidden] + tr.row td { border-top-color: transparent; }
+  .lit tr.row.open, .lit tr.detail { background: var(--hover); }
+  .lit tr.row.open > td:first-child, .lit tr.detail > td { box-shadow: inset 3px 0 0 var(--r4); }
 
-  .yr-cell { font: 500 1.05rem/1.3 var(--serif); }
-  .st { display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; line-height: 1.2; white-space: nowrap; }
+  .yr-cell { font: 500 1rem/1.35 var(--head); font-variant-numeric: tabular-nums; }
+  .st { display: inline-flex; align-items: center; gap: 7px; font-size: .8rem; line-height: 1.35; white-space: nowrap; }
   .st-pub { color: var(--ink-2); }
   .st-pre { color: var(--warn-ink); font-weight: 600; }
-  .st-sub { display: block; font-size: .76rem; color: var(--ink-2); margin-top: 3px; }
   .pulse { position: relative; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
   .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--warn); animation: ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
   @keyframes ping { 0% { transform: scale(1); opacity: .75; } 80%, 100% { transform: scale(2.7); opacity: 0; } }
   .dot-pub { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-2); }
-  .new { display: inline-block; margin-top: 7px; font: 600 .72rem/1 var(--sans); padding: 4px 7px; border-radius: 4px; background: var(--new-bg); color: var(--new-ink); }
+  .new { display: inline-block; font: 600 .7rem/1 var(--sans); padding: 3px 6px; border-radius: 4px; background: var(--new-bg); color: var(--new-ink); }
+  .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 5px; }
 
-  .ti { font: 500 1.04rem/1.3 var(--serif); color: var(--ink); text-decoration: none; }
+  .ti { font: 500 1.04rem/1.3 var(--head); color: var(--ink); text-decoration: none; }
   .ti:hover { text-decoration: underline; }
+  .lt { width: 100%; margin: 0; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; font: 500 .97rem/1.35 var(--head); color: var(--ink); }
+  .lt:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   .by { margin: 4px 0 0; font-size: .84rem; color: var(--ink-2); }
+  .lit .by { margin-top: 2px; font-size: .82rem; }
   .by em { font-style: italic; }
-  .more-btn { margin-top: 8px; font: 500 .82rem/1 var(--sans); color: var(--link); background: none; border: 0; padding: 4px 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-  .more-btn svg { transition: transform .18s ease; }
-  .more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 
   .q { display: flex; flex-wrap: wrap; gap: 4px; }
   .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--line); white-space: nowrap; }
+  .lit .q span { font-size: .7rem; padding: 4px 6px; }
   .q span.on { background: var(--r4); border: 1px solid var(--r4); color: #fff; }
-  .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 3px; }
+  .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
   .muted { color: var(--ink-2); }
-  .kw { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 5px; }
 
-  .lit tr.detail td { padding: 4px 12px 26px; border-top: 0; background: var(--surface); }
-  .lit tr.detail td > div { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px 40px; padding-left: calc(118px + 58px); }
+  .res-list { display: flex; flex-wrap: wrap; gap: 4px; }
+  .res { display: inline-flex; align-items: center; gap: 4px; font: 500 .74rem/1 var(--sans); padding: 4px 6px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); color: var(--link); text-decoration: none; white-space: nowrap; }
+  .res:hover { border-color: var(--link); }
+  .res svg { flex: none; width: 11px; height: 11px; }
+  .res-links { margin: 0; padding: 0; list-style: none; }
+  .res-links li + li { margin-top: 3px; }
+
+  .lit tr.detail td { padding: 2px 10px 22px; border-top: 0; }
+  .lit tr.detail td > div { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px 40px; padding-left: calc(116px + 58px); }
   .lit tr.detail p { margin: 0 0 10px; max-width: 64ch; }
   .lit tr.detail .note { font-size: .86rem; color: var(--warn-ink); }
   .lit tr.detail dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; font-size: .86rem; }
@@ -284,8 +300,8 @@
   .lit-review p + p { margin-top: 8px; }
   .lit-review strong { font-weight: 600; }
   .lit-review .acts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; font-weight: 500; }
-  .prop { display: inline-block; margin-top: 7px; font: 600 .72rem/1 var(--sans); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--link); color: var(--link); }
-  .chk { display: block; margin-top: 6px; font-size: .74rem; color: var(--warn-ink); }
+  .prop { display: inline-block; font: 600 .7rem/1 var(--sans); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--link); color: var(--link); }
+  .chk { font-size: .74rem; color: var(--warn-ink); }
   .lit-empty td { padding: 40px 12px; text-align: center; color: var(--ink-2); }
   .lit-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .88rem; color: var(--ink-2); }
   .lit-foot p { margin: 0; max-width: 70ch; }
@@ -296,61 +312,61 @@
 
   @media (prefers-reduced-motion: reduce) {
     .pulse::after { animation: none; }
-    .lit tr.row, .more-btn svg { transition: none; }
+    .lit tr.row { transition: none; }
   }
 
-  @media (max-width: 900px) {
-    .lit-sort-mobile { display: inline-block; }
+  @media (max-width: 980px) {
     .lit thead { display: none; }
     .lit, .lit tbody { display: block; }
     .lit tr.row {
-      display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); column-gap: 10px;
-      grid-template-areas: "year status" "study study" "q q" "area area" "period period" "approach approach";
-      padding: 18px 4px; border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 12px;
+      grid-template-areas: "year status status" "study study study" "q q q" "area area period" "res res res";
+      padding: 14px 10px; border-top: 1px solid var(--line);
     }
     .lit tbody tr.row:first-child { border-top: 0; }
-    .lit tr.row:hover { transform: none; box-shadow: none; }
-    .lit tr.row td, .lit tr.row:hover td, .lit tr.row.open td { display: block; width: auto; padding: 0; border: 0; background: none; border-radius: 0; }
-    .lit tr.row.open { background: var(--surface); }
+    .lit tr.row:not(.open):hover { transform: none; box-shadow: none; background: var(--hover); }
+    .lit tr.row td { display: block; width: auto; padding: 0; border: 0; }
+    .lit tr.row.open > td:first-child { box-shadow: none; }
+    .lit tr.row.open { box-shadow: inset 3px 0 0 var(--r4); }
     .lit .c-year { grid-area: year; }
-    .lit .c-status { grid-area: status; align-self: center; }
-    .lit .c-status { display: flex !important; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
-    .lit .c-status .st-sub, .lit .c-status .new { margin: 0; }
-    .lit .c-study { grid-area: study; margin-top: 8px !important; }
-    .lit .c-q { grid-area: q; margin-top: 12px !important; }
-    .lit .c-area { grid-area: area; margin-top: 12px !important; }
-    .lit .c-period { grid-area: period; margin-top: 12px !important; }
-    .lit .c-approach { grid-area: approach; margin-top: 12px !important; }
-    .lit td[data-label]::before { content: attr(data-label); display: block; font-size: .74rem; color: var(--ink-2); margin-bottom: 2px; }
-    .lit .c-q::before, .lit .c-study::before, .lit .c-year::before, .lit .c-status::before { display: none !important; }
-    .lit tr.detail { display: block; }
-    .lit tr.detail td { display: block; padding: 0 4px 22px; }
+    .lit tr.row .c-status { grid-area: status; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+    .lit .c-status .badges { margin: 0; }
+    .lit .c-study { grid-area: study; }
+    .lit .c-q { grid-area: q; margin-top: 2px; }
+    .lit .c-area { grid-area: area; }
+    .lit .c-area .sub { display: none; }
+    .lit .c-period { grid-area: period; color: var(--ink-2); }
+    .lit .c-res { grid-area: res; }
+    .lit tr.row .c-res.empty { display: none; }
+    .lit .lt.one { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    .lit tr.open .lt.one { display: block; -webkit-line-clamp: unset; }
+    .lit tr.detail:not([hidden]) { display: block; }
+    .lit tr.detail td { display: block; padding: 0 10px 20px; }
     .lit tr.detail td > div { grid-template-columns: minmax(0, 1fr); padding-left: 0; }
-    .lit-empty { display: block; }
-    .lit-empty td { display: block; }
+    .lit-empty, .lit-empty td { display: block; }
   }
 
   /* Essential reading */
   .path { list-style: none; margin: 28px 0 0; padding: 0; }
   .stage { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: 12px 48px; padding: 28px 0; border-top: 1px solid var(--line); }
-  .stage h3 { font: 500 1.2rem/1.3 var(--serif); text-wrap: balance; }
+  .stage h3 { font: 500 1.2rem/1.3 var(--head); text-wrap: balance; }
   .stage ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
   .read { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 0 14px; }
-  .read .num { font: 500 1.7rem/1.05 var(--serif); color: var(--link); font-variant-numeric: tabular-nums; }
+  .read .num { font: 500 1.7rem/1.05 var(--head); color: var(--link); font-variant-numeric: tabular-nums; }
   .read .ti { font-size: 1.18rem; }
   .read .why { margin: 8px 0 0; max-width: 64ch; color: var(--ink-2); }
 
   /* Editor's picks */
   .picks { margin-top: 32px; }
   .picks-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; }
-  .picks h3 { display: flex; align-items: center; gap: 10px; font: 500 1.35rem/1.25 var(--serif); }
+  .picks h3 { display: flex; align-items: center; gap: 10px; font: 500 1.35rem/1.25 var(--head); }
   .picks .intro { margin-top: 6px; }
   .star { flex: none; width: 1em; height: 1em; color: var(--link); }
   .pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 18px; }
   .pick { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-  .pick .note { margin: 4px 0 0; font: italic 400 1.02rem/1.5 var(--serif); }
+  .pick .note { margin: 4px 0 0; font: italic 400 1.02rem/1.5 var(--head); }
   .pick .q { margin-top: auto; padding-top: 8px; }
-  .pickb { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font: 600 .74rem/1 var(--sans); color: var(--link); white-space: nowrap; }
+  .pickb { display: inline-flex; align-items: center; gap: 4px; font: 600 .74rem/1 var(--sans); color: var(--link); white-space: nowrap; }
 
   @media (max-width: 760px) {
     .stage { grid-template-columns: minmax(0, 1fr); }
@@ -549,39 +565,42 @@
           <label class="lit-select"><span class="sr">Region</span>
             <select id="lit-region"><option value="any">Any region</option></select>
           </label>
-          <label class="lit-select lit-sort-mobile"><span class="sr">Sort</span>
-            <select id="lit-sort">
-              <option value="added:-1">Recently added</option>
-              <option value="year:-1">Newest first</option>
-              <option value="year:1">Oldest first</option>
-              <option value="author:1">First author A to Z</option>
-              <option value="area:1">Study area A to Z</option>
-              <option value="period:-1">Most recent study period</option>
-            </select>
-          </label>
           <button type="button" class="lit-reset" id="lit-reset" hidden>Clear filters</button>
         </div>
 
         <div class="lit-meta">
-          <p id="lit-count" aria-live="polite">Loading studies</p>
+          <div class="lit-meta-l">
+            <p id="lit-count" aria-live="polite">Loading studies</p>
+            <label class="lit-sort">Sort
+              <span class="lit-select"><select id="lit-sort">
+                <option value="featured:-1">Picks and new first</option>
+                <option value="year:-1">Newest first</option>
+                <option value="year:1">Oldest first</option>
+                <option value="author:1">First author A to Z</option>
+                <option value="area:1">Study area A to Z</option>
+                <option value="period:-1">Latest study period</option>
+              </select></span>
+            </label>
+          </div>
           <div class="lit-legend">
             <span><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>
             <span><span class="pulse" aria-hidden="true"></span>Preprint, not yet peer reviewed</span>
-            <span><span class="new" style="margin:0">New</span>Published or posted in the last 90 days</span>
+            <span><span class="new">New</span>Published or posted in the last 90 days</span>
+            <span id="lit-legend-pick" hidden><span class="pickb"><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Pick</span>Editor&rsquo;s pick</span>
           </div>
         </div>
 
         <table class="lit" id="lit">
-          <caption class="sr">Irrigation studies using satellite data or Earth system models. Select a row to see details.</caption>
+          <caption class="sr">Irrigation studies using satellite data or Earth system models. Select a title to see the full details.</caption>
           <thead>
             <tr>
               <th scope="col" class="c-status">Status</th>
-              <th scope="col" class="c-year" data-key="year" aria-sort="descending"><button type="button" class="sort">Year<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-year" data-key="year"><button type="button" class="sort">Year<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
               <th scope="col" class="c-study" data-key="author"><button type="button" class="sort">Study<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
               <th scope="col" class="c-q">Questions answered</th>
               <th scope="col" class="c-area" data-key="area"><button type="button" class="sort">Study area<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
               <th scope="col" class="c-period" data-key="period"><button type="button" class="sort">Period<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
-              <th scope="col" class="c-approach">Approach and keywords</th>
+              <th scope="col" class="c-res">Data &amp; code</th>
             </tr>
           </thead>
           <tbody id="lit-body"></tbody>
@@ -1026,7 +1045,7 @@ const LIT_REPO = "ejalilva/irrigation-studies";
 const LIT_REVIEW_BRANCH = "agent/new-papers";
 const LIT_PREVIEW = new URLSearchParams(location.search).has("preview");
 const LIT_SUGGEST = "mailto:ehsan.jalilvand@gmail.com?subject=" + encodeURIComponent("Paper suggestion for the irrigation table");
-const LIT_PAGE = 15;          // rows shown before "Show all"
+const LIT_PAGE = 10;          // rows shown before "Show all"
 const LIT_NEW_DAYS = 90;      // "New" badge window
 
 const Q_LABELS = { where: "Where", when: "When", how_much: "How much" };
@@ -1040,7 +1059,7 @@ const METHOD_LABELS = {
 };
 const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
 
-const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "added", sortDir: -1, showAll: false, open: new Set(), picks: new Map() };
+const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "featured", sortDir: -1, showAll: false, open: new Set(), picks: new Map() };
 const STAR = `<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>`;
 const $ = id => document.getElementById(id);
 
@@ -1059,6 +1078,7 @@ function litQs(p) { return Object.keys(Q_LABELS).filter(k => p.questions && p.qu
 function litHay(p) {
   return [p.title, p.authors, p.venue, p.domain, p.region, p.scale, p.approach, p.summary,
     (p.keywords || []).join(" "), (p.data || []).join(" "), (p.methods || []).map(m => METHOD_LABELS[m] || m).join(" "),
+    (p.resources || []).map(r => r && r.label).join(" "),
     litPeriod(p), String(p.year)].join(" ").toLowerCase();
 }
 
@@ -1082,7 +1102,11 @@ function litCompare(a, b) {
   const dir = lit.sortDir;
   const val = p => {
     switch (lit.sortKey) {
-      case "added": return (p.added || "0000-00-00") + "|" + (p.date || String(p.year));
+      case "featured": {
+        // Editor's picks first (newest pick first), then the most recently added rows.
+        const k = lit.picks.get(p.id);
+        return (k ? "1" + (k.picked || "") : "0") + "|" + (p.added || "0000-00-00") + "|" + (p.date || String(p.year));
+      }
       case "author": return (p.first_author || p.authors || "").toLowerCase();
       case "area": return (p.domain || "￿").toLowerCase();
       case "period": return p.period && p.period.start != null ? (p.period.end || p.period.start) : null;
@@ -1098,33 +1122,61 @@ function litCompare(a, b) {
   return b.year - a.year;
 }
 
+const RES_ICON = {
+  data: `<svg viewBox="0 0 12 12" aria-hidden="true"><ellipse cx="6" cy="2.6" rx="4.4" ry="1.7" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 2.6v6.8c0 .9 2 1.7 4.4 1.7s4.4-.8 4.4-1.7V2.6M1.6 6c0 .9 2 1.7 4.4 1.7s4.4-.8 4.4-1.7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>`,
+  code: `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4 3L1 6l3 3M8 3l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+const RES_NAME = { data: "Data", code: "Code" };
+
+function litResources(p) {
+  return (p.resources || []).filter(r => r && /^https?:\/\//.test(r.url || "") && RES_NAME[r.type]);
+}
+
+function litResCell(p) {
+  const res = litResources(p);
+  if (!res.length) return `<td class="c-res empty"><span class="muted" aria-label="None found">&ndash;</span></td>`;
+  const chips = ["data", "code"].map(t => {
+    const of = res.filter(r => r.type === t);
+    if (!of.length) return "";
+    const tip = of.map(r => r.label || RES_NAME[t]).join(", ");
+    return `<a class="res" href="${esc(of[0].url)}" target="_blank" rel="noopener" title="${esc(`${RES_NAME[t]}: ${tip}`)}">${RES_ICON[t]}${RES_NAME[t]}${of.length > 1 ? ` (${of.length})` : ""}</a>`;
+  }).join("");
+  return `<td class="c-res"><div class="res-list">${chips}</div></td>`;
+}
+
 function litRow(p, i) {
   const qs = litQs(p);
   const qText = qs.length ? "Answers " + qs.map(k => Q_LABELS[k].toLowerCase()).join(", ") : "Question not classified yet";
   const status = p.status === "preprint"
-    ? `<span class="st st-pre"><span class="pulse" aria-hidden="true"></span>Preprint</span><span class="st-sub">Not yet peer reviewed</span>`
+    ? `<span class="st st-pre" title="Not yet peer reviewed"><span class="pulse" aria-hidden="true"></span>Preprint</span>`
     : `<span class="st st-pub"><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>`;
+  const badges = [
+    litIsNew(p) ? `<span class="new">New</span>` : "",
+    lit.picks.has(p.id) ? `<span class="pickb" title="Editor&rsquo;s pick">${STAR}Pick</span>` : "",
+    p._proposed ? `<span class="prop">Proposed</span>` : "",
+    LIT_PREVIEW && p._proposed && p.needs_review ? `<span class="chk">Check details</span>` : ""
+  ].join("");
   const isOpen = lit.open.has(p.id);
   const area = p.domain ? esc(p.domain) : `<span class="muted">Not stated</span>`;
   const areaSub = [p.scale ? p.scale[0].toUpperCase() + p.scale.slice(1) + " scale" : "", p.region && p.region !== p.domain ? (p.region === "Multiple" ? "several regions" : p.region) : ""].filter(Boolean).join(", ");
   const period = litPeriod(p);
-  const kw = (p.keywords || []).slice(0, 4);
-  const firstAuthor = p.first_author ? `${esc(p.first_author)}${/et al\.|,.*,/.test(p.authors || "") || (p.authors || "").split(",").length > 2 ? " et al." : ""}` : esc(p.authors || "");
+  const res = litResources(p);
+  const pick = lit.picks.get(p.id);
   return `<tr class="row${isOpen ? " open" : ""}" data-id="${esc(p.id)}">
-      <td class="c-status">${status}${litIsNew(p) ? `<span class="new">New</span>` : ""}${lit.picks.has(p.id) ? `<span class="pickb">${STAR}Editor&rsquo;s pick</span>` : ""}${p._proposed ? `<span class="prop">Proposed</span>` : ""}${LIT_PREVIEW && p._proposed && p.needs_review ? `<span class="chk">Check details</span>` : ""}</td>
+      <td class="c-status">${status}${badges ? `<span class="badges">${badges}</span>` : ""}</td>
       <td class="c-year yr-cell">${p.year}</td>
       <td class="c-study">
-        <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
-        <p class="by">${firstAuthor}, <em>${esc(p.venue || "")}</em></p>
-        <button type="button" class="more-btn" aria-expanded="${isOpen}" aria-controls="d-${i}">Details<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
+        <button type="button" class="lt one" aria-expanded="${isOpen}" aria-controls="d-${i}">${esc(p.title)}</button>
+        <span class="by one">${esc(litAuthorShort(p.authors) || p.first_author || "")}, <em>${esc(p.venue || "")}</em></span>
       </td>
       <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="${qs.includes(k) ? "on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
-      <td class="c-area" data-label="Study area">${area}${areaSub ? `<span class="sub">${esc(areaSub)}</span>` : ""}</td>
-      <td class="c-period" data-label="Period">${period ? esc(period) : `<span class="muted">Not stated</span>`}</td>
-      <td class="c-approach" data-label="Approach">${esc(p.approach || "")}${kw.length ? `<span class="kw">${esc(kw.join(", "))}</span>` : ""}</td>
+      <td class="c-area"><span class="one">${area}</span>${areaSub ? `<span class="sub one">${esc(areaSub)}</span>` : ""}</td>
+      <td class="c-period">${period ? esc(period) : `<span class="muted">&ndash;</span>`}</td>
+      ${litResCell(p)}
     </tr>
     <tr class="detail" id="d-${i}"${isOpen ? "" : " hidden"}><td colspan="7"><div>
       <div>
+        ${pick && pick.note ? `<p><strong>Editor&rsquo;s note.</strong> ${esc(pick.note)}</p>` : ""}
         ${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
         ${p.status === "preprint" ? `<p class="note">This is a preprint. It has not been peer reviewed yet, so its results may change.</p>` : ""}
         ${p.note ? `<p class="muted">${esc(p.note)}</p>` : ""}
@@ -1132,10 +1184,12 @@ function litRow(p, i) {
       </div>
       <dl>
         <dt>Authors</dt><dd>${esc(p.authors || "")}</dd>
+        ${p.approach ? `<dt>Approach</dt><dd>${esc(p.approach)}</dd>` : ""}
         ${(p.methods || []).length ? `<dt>Methods</dt><dd>${esc(p.methods.map(m => METHOD_LABELS[m] || m).join(", "))}</dd>` : ""}
         ${(p.data || []).length ? `<dt>Data and models</dt><dd>${esc(p.data.join(", "))}</dd>` : ""}
         ${(p.keywords || []).length ? `<dt>Keywords</dt><dd>${esc(p.keywords.join(", "))}</dd>` : ""}
-        <dt>${p.doi ? "DOI" : "Link"}</dt><dd>${p.doi ? esc(p.doi) : `<a href="${esc(litLink(p))}">${esc(litLink(p))}</a>`}</dd>
+        ${res.length ? `<dt>Data &amp; code</dt><dd><ul class="res-links">${res.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label || RES_NAME[r.type])}</a> <span class="muted">(${RES_NAME[r.type].toLowerCase()})</span></li>`).join("")}</ul></dd>` : ""}
+        <dt>${p.doi ? "DOI" : "Link"}</dt><dd>${p.doi ? `<a href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.doi)}</a>` : `<a href="${esc(litLink(p))}">${esc(litLink(p))}</a>`}</dd>
       </dl>
     </div></td></tr>`;
 }
@@ -1148,9 +1202,10 @@ function litRender() {
     ? shown.map(litRow).join("")
     : `<tr class="lit-empty"><td colspan="7">No studies match these filters. <button type="button" class="lit-reset" data-reset>Clear filters</button></td></tr>`;
   const filtered = rows.length !== lit.all.length;
-  $("lit-count").textContent = (filtered
-    ? `${rows.length} of ${lit.all.length} studies match`
-    : `${lit.all.length} studies`) + (lit.sortKey === "added" ? ", most recently added first" : "");
+  const all = lit.all.length;
+  $("lit-count").textContent = shown.length < rows.length
+    ? (filtered ? `Showing ${shown.length} of ${rows.length} matching studies (${all} in all)` : `Showing ${shown.length} of ${all} studies`)
+    : (filtered ? `${rows.length} of ${all} studies match` : `All ${all} studies`);
   const more = $("lit-more");
   more.hidden = rows.length <= LIT_PAGE;
   more.textContent = lit.showAll ? "Show fewer" : `Show all ${rows.length} studies`;
@@ -1169,7 +1224,7 @@ function litToggle(id) {
   if (!row) return;
   const open = lit.open.has(id);
   row.classList.toggle("open", open);
-  row.querySelector(".more-btn").setAttribute("aria-expanded", String(open));
+  row.querySelector(".lt").setAttribute("aria-expanded", String(open));
   row.nextElementSibling.hidden = !open;
 }
 
@@ -1185,13 +1240,14 @@ function litCitation(p) {
 }
 
 function litCSV() {
-  const cols = ["Status", "Year", "Title", "Authors", "Venue", "Link", "Where", "When", "How much", "Study area", "Region", "Scale", "Period", "Approach", "Methods", "Data and models", "Keywords"];
+  const cols = ["Status", "Year", "Title", "Authors", "Venue", "Link", "Where", "When", "How much", "Study area", "Region", "Scale", "Period", "Approach", "Methods", "Data and models", "Keywords", "Data and code links"];
   const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
   const rows = lit.all.filter(litMatches).sort(litCompare).map(p => [
     p.status === "preprint" ? "Preprint" : "Peer reviewed", p.year, p.title, p.authors, p.venue, litLink(p),
     p.questions && p.questions.where ? "yes" : "", p.questions && p.questions.when ? "yes" : "", p.questions && p.questions.how_much ? "yes" : "",
     p.domain, p.region, p.scale, litPeriod(p), p.approach,
-    (p.methods || []).map(m => METHOD_LABELS[m] || m).join("; "), (p.data || []).join("; "), (p.keywords || []).join("; ")
+    (p.methods || []).map(m => METHOD_LABELS[m] || m).join("; "), (p.data || []).join("; "), (p.keywords || []).join("; "),
+    litResources(p).map(r => r.url).join("; ")
   ].map(cell).join(","));
   const blob = new Blob(["﻿" + [cols.map(cell).join(","), ...rows].join("\r\n")], { type: "text/csv;charset=utf-8" });
   const a = document.createElement("a");
@@ -1260,6 +1316,7 @@ function litInit(data) {
   }
   $("lit-suggest").href = LIT_SUGGEST;
   lit.picks = new Map(((data._picks || {}).picks || []).filter(k => k && k.id).map(k => [k.id, k]));
+  $("lit-legend-pick").hidden = !lit.picks.size;
   if (lit.picks.size) {
     const opt = document.createElement("option");
     opt.value = "pick"; opt.textContent = `Editor's picks (${lit.picks.size})`;
@@ -1346,7 +1403,7 @@ function litWire() {
     }
     if (e.target.closest("a")) return;
     const row = e.target.closest("tr.row");
-    if (row && (e.target.closest(".more-btn") || !window.getSelection().toString())) litToggle(row.dataset.id);
+    if (row && (e.target.closest(".lt") || !window.getSelection().toString())) litToggle(row.dataset.id);
   });
 }
 
