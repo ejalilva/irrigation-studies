@@ -1011,54 +1011,6 @@
       "source": "agent"
     },
     {
-      "id": "10.1016/j.agwat.2026.110830",
-      "title": "Satellite-based mapping of evapotranspiration, water stress, and crop productivity in mixed irrigated–rainfed agricultural watersheds of central minnesota",
-      "authors": "Rahimzadegan, M., MULLA, D.J., Runck, B.C., et al.",
-      "first_author": "Rahimzadegan",
-      "year": 2026,
-      "date": "2026-10-07",
-      "venue": "Agricultural Water Management",
-      "doi": "10.1016/j.agwat.2026.110830",
-      "url": null,
-      "status": "published",
-      "type": "article",
-      "questions": {
-        "where": false,
-        "when": false,
-        "how_much": true
-      },
-      "domain": "Clearwater–Elk and Sauk watersheds, central Minnesota, USA",
-      "region": "North America",
-      "scale": "regional",
-      "period": {
-        "start": 2021,
-        "end": 2024
-      },
-      "approach": "Google Earth Engine SEBAL evapotranspiration, water stress index, and MVI-based yield disaggregation",
-      "methods": [
-        "et",
-        "imagery",
-        "model"
-      ],
-      "data": [
-        "Landsat",
-        "Sentinel-2",
-        "OpenET geeSEBAL",
-        "SEBAL"
-      ],
-      "keywords": [
-        "evapotranspiration",
-        "SEBAL",
-        "water stress index",
-        "crop water productivity",
-        "irrigated-rainfed systems"
-      ],
-      "summary": "The study uses a Google Earth Engine SEBAL framework to estimate actual evapotranspiration, water stress, and crop water productivity in mixed irrigated-rainfed Minnesota watersheds from 2021 to 2024.",
-      "added": "2026-10-21",
-      "needs_review": false,
-      "source": "agent"
-    },
-    {
       "id": "10.1029/2025wr041530",
       "title": "Irrigation Use in a Changing Landscape: A Combined Economic and Hydrologic Approach",
       "authors": "Rizwan, N., Jalali, J., Sears, M., et al.",
