@@ -32,6 +32,8 @@
     --q-where: #3182BD; --q-when: #FD8D3C; --q-how: #74C476;
     /* Essential: tab20c green for the mark, a darker green for readable text */
     --ess: #23793B; --ess-mark: #31A354;
+    /* Rising: tab20c purple for the star, a darker purple for readable text */
+    --rise: #5B4F9E; --rise-mark: #756BB1;
     --shadow: rgba(21,36,44,.28);
     --gutter: 24px;
     --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
@@ -47,6 +49,7 @@
       --warn: #E9A23B; --warn-ink: #F2B85C;
       --new-bg: #1B3747; --new-ink: #A9D3EC;
       --ess: #74C476; --ess-mark: #74C476;
+      --rise: #BCBDDC; --rise-mark: #9E9AC8;
       --shadow: rgba(0,0,0,.6);
       color-scheme: dark;
     }
@@ -59,6 +62,7 @@
     --warn: #E9A23B; --warn-ink: #F2B85C;
     --new-bg: #1B3747; --new-ink: #A9D3EC;
     --ess: #74C476; --ess-mark: #74C476;
+    --rise: #BCBDDC; --rise-mark: #9E9AC8;
     --shadow: rgba(0,0,0,.6);
     color-scheme: dark;
   }
@@ -380,7 +384,7 @@
   .read .ti { font-size: 1.18rem; }
   .read .why { margin: 8px 0 0; max-width: 64ch; color: var(--ink-2); }
 
-  /* Editor's picks */
+  /* Rising (editor's picks) */
   .picks { margin-top: 32px; }
   .picks-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; }
   .picks h3 { display: flex; align-items: center; gap: 10px; font: 500 1.35rem/1.25 var(--head); }
@@ -390,7 +394,10 @@
   .pick { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
   .pick .note { margin: 4px 0 0; font: italic 400 1.02rem/1.5 var(--head); }
   .pick .q { margin-top: auto; padding-top: 8px; }
-  .pickb { display: inline-flex; align-items: center; gap: 4px; font: 600 .74rem/1 var(--sans); color: var(--link); white-space: nowrap; }
+  .pickb { display: inline-flex; align-items: center; gap: 4px; font: 600 .76rem/1 var(--sans); color: var(--rise); white-space: nowrap; }
+  .pickb .star, .picks h3 .star { color: var(--rise-mark); }
+  .pickb .star { width: 12px; height: 12px; }
+  .pick { border-top: 3px solid var(--rise-mark); }
 
   @media (max-width: 760px) {
     .stage { grid-template-columns: minmax(0, 1fr); }
@@ -557,10 +564,10 @@
         <div class="lit-review" id="lit-review" hidden></div>
         <div class="picks" id="picks" hidden>
           <div class="picks-head">
-            <h3><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Editor&rsquo;s picks</h3>
-            <button type="button" class="linkbtn" id="picks-all">Show all picks in the table</button>
+            <h3><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Rising</h3>
+            <button type="button" class="linkbtn" id="picks-all">Show all Rising papers in the table</button>
           </div>
-          <p class="intro">Recent papers I think move the field forward, with a note on why.</p>
+          <p class="intro">My picks among recent papers: not essential reading yet, but worth reading now. Each comes with a note on why.</p>
           <div class="pick-grid" id="pick-grid"></div>
         </div>
         <div class="lit-controls" role="search" aria-label="Filter the research table">
@@ -597,7 +604,7 @@
             <p id="lit-count" aria-live="polite">Loading studies</p>
             <label class="lit-sort">Sort
               <span class="lit-select"><select id="lit-sort">
-                <option value="featured:-1">Picks and new first</option>
+                <option value="featured:-1">Rising and new first</option>
                 <option value="year:-1">Newest first</option>
                 <option value="year:1">Oldest first</option>
                 <option value="author:1">First author A to Z</option>
@@ -611,7 +618,7 @@
             <span><span class="pulse" aria-hidden="true"></span>Preprint, not yet peer reviewed</span>
             <span><span class="new">New</span>Published or posted in the last 90 days</span>
             <span id="lit-legend-ess" hidden><span class="ess" id="lit-legend-ess-mark"></span>On the Essential reading list</span>
-            <span id="lit-legend-pick" hidden><span class="pickb"><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Pick</span>Editor&rsquo;s pick</span>
+            <span id="lit-legend-pick" hidden><span class="pickb"><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Rising</span>My pick: worth reading now</span>
           </div>
         </div>
 
@@ -1135,7 +1142,7 @@ function litCompare(a, b) {
   const val = p => {
     switch (lit.sortKey) {
       case "featured": {
-        // Editor's picks first (newest pick first), then the most recently published papers.
+        // Rising papers (editor's picks) first, newest pick first, then the most recently published papers.
         // Publication date, not the date a row was added, so backfilled older papers don't crowd the top.
         const k = lit.picks.get(p.id);
         return (k ? "1" + (k.picked || "") : "0") + "|" + (p.date || `${p.year}-00-00`) + "|" + (p.added || "");
@@ -1187,7 +1194,7 @@ function litRow(p, i) {
   const badges = [
     essN ? `<span class="ess" title="Number ${essN} on the Essential reading list">${SEAL}Essential</span>` : "",
     litIsNew(p) ? `<span class="new">New</span>` : "",
-    lit.picks.has(p.id) ? `<span class="pickb" title="Editor&rsquo;s pick">${STAR}Pick</span>` : "",
+    lit.picks.has(p.id) ? `<span class="pickb" title="Rising: my pick, worth reading now">${STAR}Rising</span>` : "",
     p._proposed ? `<span class="prop">Proposed</span>` : "",
     LIT_PREVIEW && p._proposed && p.needs_review ? `<span class="chk">Check details</span>` : ""
   ].join("");
@@ -1399,7 +1406,7 @@ function litInit(data) {
   $("lit-legend-pick").hidden = !lit.picks.size;
   if (lit.picks.size) {
     const opt = document.createElement("option");
-    opt.value = "pick"; opt.textContent = `Editor's picks (${lit.picks.size})`;
+    opt.value = "pick"; opt.textContent = `Rising (${lit.picks.size})`;
     $("lit-status").insertBefore(opt, $("lit-status").options[1] || null);
   }
   if (LIT_PREVIEW) litShowReview(data);
