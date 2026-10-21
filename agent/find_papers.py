@@ -121,7 +121,12 @@ def http_json(url, body=None, headers=None, tries=3):
         except urllib.error.HTTPError as e:
             # 400-level errors other than rate limits will not fix themselves.
             if e.code in (429, 500, 502, 503, 504, 529) and attempt < tries:
-                time.sleep(5 * attempt)
+                wait = 5 * attempt
+                try:
+                    wait = max(wait, min(60, int(e.headers.get("retry-after", 0))))
+                except (TypeError, ValueError, AttributeError):
+                    pass
+                time.sleep(wait)
                 continue
             raise
         except (urllib.error.URLError, TimeoutError):
@@ -297,7 +302,8 @@ Use null when the abstract does not say. Never guess numbers or places."""
 
 
 # Tracks Claude API results for the run report.
-CLAUDE_STATUS = {"ok": 0, "errors": [], "disabled": False}
+CLAUDE_STATUS = {"ok": 0, "errors": [], "disabled": False, "in_a_row": 0, "last_call": 0.0}
+CLAUDE_MAX_FAILURES_IN_A_ROW = 3
 
 
 def classify_with_claude(c, cfg, key):
@@ -313,29 +319,40 @@ def classify_with_claude(c, cfg, key):
     }
     if CLAUDE_STATUS["disabled"]:
         return None
+    # Pace requests to stay under the API's per-minute rate limit.
+    gap = float(cfg.get("claude_seconds_between_calls", 1.5)) - (time.monotonic() - CLAUDE_STATUS["last_call"])
+    if gap > 0:
+        time.sleep(gap)
+    CLAUDE_STATUS["last_call"] = time.monotonic()
     headers = {"x-api-key": key, "anthropic-version": "2023-06-01"}
     try:
-        resp = http_json(ANTHROPIC, body=body, headers=headers)
+        resp = http_json(ANTHROPIC, body=body, headers=headers, tries=5)
         text = "".join(b.get("text", "") for b in resp.get("content", []) if b.get("type") == "text")
+        result = json.loads(text[text.index("{"): text.rindex("}") + 1])
         CLAUDE_STATUS["ok"] += 1
-        return json.loads(text[text.index("{"): text.rindex("}") + 1])
+        CLAUDE_STATUS["in_a_row"] = 0
+        return result
     except urllib.error.HTTPError as e:
         try:
             detail = e.read().decode("utf-8", "replace").strip()[:300]
         except Exception:
             detail = ""
         msg = f"HTTP {e.code} from the Claude API: {detail or e.reason}"
-        CLAUDE_STATUS["errors"].append(msg)
-        # Key, billing or model problems affect every call, so stop trying.
-        if e.code in (400, 401, 403, 404):
-            CLAUDE_STATUS["disabled"] = True
-        log(f"  {msg}")
+        _claude_failed(msg, permanent=e.code in (400, 401, 403, 404))
         return None
     except Exception as e:
-        msg = f"Claude call failed: {e}"
-        CLAUDE_STATUS["errors"].append(msg)
-        log(f"  {msg}")
+        _claude_failed(f"Claude call failed: {e}")
         return None
+
+
+def _claude_failed(msg, permanent=False):
+    CLAUDE_STATUS["errors"].append(msg)
+    CLAUDE_STATUS["in_a_row"] += 1
+    # Key, billing or model problems affect every call, and repeated failures
+    # mean the service is unavailable for now: stop calling it this run.
+    if permanent or CLAUDE_STATUS["in_a_row"] >= CLAUDE_MAX_FAILURES_IN_A_ROW:
+        CLAUDE_STATUS["disabled"] = True
+    log(f"  {msg}")
 
 
 def classify_with_rules(c):
@@ -435,6 +452,15 @@ def find_published_version(p, cfg):
 
 # -------------------------------------------------------------------- main
 
+def site_url(cfg):
+    """Address of the published page, used for the preview link."""
+    url = (cfg.get("site_url") or "").strip()
+    if not url and "/" in os.environ.get("GITHUB_REPOSITORY", ""):
+        owner, repo = os.environ["GITHUB_REPOSITORY"].split("/", 1)
+        url = f"https://{owner.lower()}.github.io/{repo}/"
+    return url and url.rstrip("/") + "/"
+
+
 def main():
     ap = argparse.ArgumentParser(description="Find new irrigation papers for the research table.")
     ap.add_argument("--dry-run", action="store_true", help="show what would change without saving anything")
@@ -458,7 +484,7 @@ def main():
     log(f"Searching OpenAlex for papers published since {since}.")
     log("Classifier: " + ("Claude (" + cfg.get("claude_model", "claude-haiku-5-5") + ")" if claude_key else "keyword rules (add ANTHROPIC_API_KEY for full classification)"))
 
-    added, skipped, newly_seen, deferred = [], 0, set(), set()
+    added, skipped, newly_seen, deferred, unclassified = [], 0, set(), set(), set()
     max_new = cfg.get("max_new_per_run", 20)
     for query in cfg.get("queries", []):
         try:
@@ -486,10 +512,11 @@ def main():
             if cls is not None and not any(cls.get(q) for q in QUESTIONS):
                 cls["relevant"] = False   # the table is organized by where / when / how much
             if cls is None:
-                if claude_key and "irrigat" not in c["title"].lower():
+                if claude_key:
                     # Claude was meant to judge this one but failed; leave it
-                    # unseen so a later run with a working key can decide.
+                    # unseen so a later run can classify it properly.
                     newly_seen.discard(c["id"])
+                    unclassified.add(c["id"])
                     continue
                 cls = classify_with_rules(c)
             if not cls.get("relevant"):
@@ -520,13 +547,16 @@ def main():
         log(f"  ^ now published: {p['title'][:80]}")
 
     # Report, used as the pull request description.
+    preview = site_url(cfg)
     lines = [f"## Paper agent report, {today}", ""]
+    if added and preview:
+        lines += [f"**[Preview these papers on the page]({preview}?preview#landscape)**", ""]
     lines.append(f"Searched papers published since {since}. "
                  f"{len(added)} new, {len(upgraded)} preprint(s) now peer reviewed, {skipped} skipped as off-topic.")
     if claude_key and CLAUDE_STATUS["errors"]:
-        lines += ["", f"**Claude classification failed** ({len(CLAUDE_STATUS['errors'])} error(s); "
-                      f"{CLAUDE_STATUS['ok']} paper(s) classified by Claude). Rows without a study area or summary "
-                      f"were filled with keyword rules. First error:", "", "```", CLAUDE_STATUS["errors"][0], "```"]
+        lines += ["", f"**Claude could not classify {len(unclassified)} paper(s)** "
+                      f"({CLAUDE_STATUS['ok']} classified successfully). They were not added and will be tried "
+                      f"again on the next run. First error:", "", "```", CLAUDE_STATUS["errors"][0], "```"]
     elif not claude_key:
         lines += ["", "Classified with keyword rules (no `ANTHROPIC_API_KEY` secret was available to this run)."]
     if deferred:
@@ -534,17 +564,18 @@ def main():
         lines.append(f"{len(deferred)} more possibly relevant paper(s) were left for the next run "
                      f"(limit: {max_new} per run). Merge this pull request, then run the workflow again with the same number of days.")
     if added:
-        lines += ["", "### New papers", ""]
+        lines += ["", "### New papers", "",
+                  "Untick a paper to reject it. It is removed from this pull request within a minute "
+                  "and won't be suggested again. Tick it again to bring it back.", ""]
         for e in added:
             flag = " (preprint)" if e["status"] == "preprint" else ""
-            review = " **Please complete the empty columns.**" if e["needs_review"] else ""
+            review = " *Some details missing.*" if e["needs_review"] else ""
             link = f"https://doi.org/{e['doi']}" if e["doi"] else e["url"]
-            lines.append(f"- [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review}")
+            lines.append(f"- [x] [{e['title']}]({link}), {e['first_author']} et al., {e['year']}{flag}.{review} <!-- id:{e['id']} -->")
     if upgraded:
         lines += ["", "### Preprints that are now published", ""]
         lines += [f"- {p['title']} ({p['venue']}, {p['year']})" for p in upgraded]
-    lines += ["", "To approve, merge this pull request. To reject a paper, delete its block in "
-              "`data/papers.json` before merging; it won't be suggested again."]
+    lines += ["", "Merge this pull request to publish the ticked papers."]
     report = "\n".join(lines) + "\n"
     print("\n" + report)
     if os.environ.get("REPORT_PATH"):
@@ -557,6 +588,9 @@ def main():
 
     if args.dry_run or not changed:
         log("No files changed." if not changed else "Dry run: nothing saved.")
+        if claude_key and CLAUDE_STATUS["errors"] and not changed:
+            log("Failing the run so the Claude error is visible: " + CLAUDE_STATUS["errors"][0])
+            return 1
         return 0
 
     papers.extend(added)
