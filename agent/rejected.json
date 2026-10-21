@@ -86,6 +86,50 @@
       "added": "2026-10-21",
       "needs_review": false,
       "source": "agent"
+    },
+    {
+      "id": "10.1016/j.ejrh.2026.103768",
+      "title": "Regionalising a global gridded crop model using satellite-based phenology for water footprint analysis in the Upper Syr Darya Basin",
+      "authors": "Baviskar, G.i., Foster, T., Hogeboom, R.J., et al.",
+      "first_author": "Baviskar",
+      "year": 2026,
+      "date": "2026-07-25",
+      "venue": "Journal of Hydrology Regional Studies",
+      "doi": "10.1016/j.ejrh.2026.103768",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Upper Syr Darya Basin, Central Asia",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "Regionalised global gridded crop model (AquaCrop-Earth@lternatives) with satellite-derived phenology",
+      "methods": [
+        "model",
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "AquaCrop-Earth@lternatives (ACEA)",
+        "satellite-derived phenometrics",
+        "satellite-based ET estimates"
+      ],
+      "keywords": [
+        "water footprint",
+        "crop phenology",
+        "AquaCrop",
+        "cotton",
+        "Syr Darya"
+      ],
+      "summary": "Regionalises a global crop model's cotton calendar using satellite phenology, showing that planting and season length changes alter simulated evapotranspiration and blue water footprints in the Upper Syr Darya Basin.",
+      "added": "2026-10-21",
+      "needs_review": false,
+      "source": "agent"
     }
   ]
 }
