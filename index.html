@@ -27,6 +27,8 @@
     --arm: rgba(255,255,255,.8);
     --warn: #D08A12; --warn-ink: #8A5300;
     --new-bg: #DCEAF2; --new-ink: #1E5C86;
+    /* Question colors: where = earth, when = time, how much = water */
+    --q-where: #8A5A1F; --q-when: #6B4C9A; --q-how: #1E5C86;
     --shadow: rgba(21,36,44,.28);
     --gutter: 24px;
     --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
@@ -41,6 +43,7 @@
       --arm: rgba(255,255,255,.7);
       --warn: #E9A23B; --warn-ink: #F2B85C;
       --new-bg: #1B3747; --new-ink: #A9D3EC;
+      --q-where: #9C6628; --q-when: #7656AC; --q-how: #2F6E9E;
       --shadow: rgba(0,0,0,.6);
       color-scheme: dark;
     }
@@ -52,6 +55,7 @@
     --arm: rgba(255,255,255,.7);
     --warn: #E9A23B; --warn-ink: #F2B85C;
     --new-bg: #1B3747; --new-ink: #A9D3EC;
+    --q-where: #9C6628; --q-when: #7656AC; --q-how: #2F6E9E;
     --shadow: rgba(0,0,0,.6);
     color-scheme: dark;
   }
@@ -275,7 +279,11 @@
   .q { display: flex; flex-wrap: wrap; gap: 4px; }
   .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--line); white-space: nowrap; }
   .lit .q span { font-size: .7rem; padding: 4px 6px; }
-  .q span.on { background: var(--r4); border: 1px solid var(--r4); color: #fff; }
+  .q-where { --q-c: var(--q-where); }
+  .q-when { --q-c: var(--q-when); }
+  .q-how_much { --q-c: var(--q-how); }
+  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: #fff; }
+  .qdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; background: var(--q-c); vertical-align: 0; }
   .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
   .muted { color: var(--ink-2); }
 
@@ -554,9 +562,9 @@
           </label>
           <div class="seg" role="group" aria-label="Question the study answers" id="lit-qseg">
             <button type="button" data-q="any" aria-pressed="true">Any question</button>
-            <button type="button" data-q="where" aria-pressed="false">Where</button>
-            <button type="button" data-q="when" aria-pressed="false">When</button>
-            <button type="button" data-q="how_much" aria-pressed="false">How much</button>
+            <button type="button" data-q="where" aria-pressed="false"><span class="qdot q-where" aria-hidden="true"></span>Where</button>
+            <button type="button" data-q="when" aria-pressed="false"><span class="qdot q-when" aria-hidden="true"></span>When</button>
+            <button type="button" data-q="how_much" aria-pressed="false"><span class="qdot q-how_much" aria-hidden="true"></span>How much</button>
             <button type="button" data-q="all" aria-pressed="false">All three</button>
           </div>
           <label class="lit-select"><span class="sr">Review status</span>
@@ -1182,7 +1190,7 @@ function litRow(p, i) {
         <button type="button" class="lt one" aria-expanded="${isOpen}" aria-controls="d-${i}">${esc(p.title)}</button>
         <span class="by one">${esc(litAuthorShort(p.authors) || p.first_author || "")}, <em>${esc(p.venue || "")}</em></span>
       </td>
-      <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="${qs.includes(k) ? "on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
+      <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="q-${k}${qs.includes(k) ? " on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
       <td class="c-area"><span class="one">${area}</span>${areaSub ? `<span class="sub one">${esc(areaSub)}</span>` : ""}</td>
       <td class="c-period">${period ? esc(period) : `<span class="muted">&ndash;</span>`}</td>
       ${litResCell(p)}
@@ -1316,7 +1324,7 @@ function picksRender() {
       <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
       <p class="by">${esc(litAuthorShort(p.authors))}, ${p.year}, <em>${esc(p.venue || "")}</em>${p.status === "preprint" && !/preprint/i.test(p.venue || "") ? " (preprint)" : ""}</p>
       ${k.note ? `<p class="note">${esc(k.note)}</p>` : ""}
-      <div class="q" role="img" aria-label="${esc(qs.length ? "Answers " + qs.map(x => Q_LABELS[x].toLowerCase()).join(", ") : "")}">${Object.keys(Q_LABELS).map(x => `<span class="${qs.includes(x) ? "on" : ""}">${Q_LABELS[x]}</span>`).join("")}</div>
+      <div class="q" role="img" aria-label="${esc(qs.length ? "Answers " + qs.map(x => Q_LABELS[x].toLowerCase()).join(", ") : "")}">${Object.keys(Q_LABELS).map(x => `<span class="q-${x}${qs.includes(x) ? " on" : ""}">${Q_LABELS[x]}</span>`).join("")}</div>
     </article>`;
   }).join("");
 }
