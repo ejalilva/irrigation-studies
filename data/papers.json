@@ -757,57 +757,6 @@
       "resources_checked": "2026-10-21"
     },
     {
-      "id": "10.2166/wcc.2026.026",
-      "title": "On the determination of pixel-based groundwater withdrawals using SWEO water accounting procedures. Part 2: validation",
-      "authors": "Hessels, T., Bastiaanssen, W.G.M., Stigter, T.Y., et al.",
-      "first_author": "Hessels",
-      "year": 2026,
-      "date": "2026-08-06",
-      "venue": "Journal of Water and Climate Change",
-      "doi": "10.2166/wcc.2026.026",
-      "url": null,
-      "status": "published",
-      "type": "article",
-      "questions": {
-        "where": true,
-        "when": false,
-        "how_much": true
-      },
-      "domain": "Aconcagua (Chile), Upper North Platte and Upper San Joaquin (USA)",
-      "region": "Multiple",
-      "scale": "regional",
-      "period": {
-        "start": 2003,
-        "end": 2019
-      },
-      "approach": "Satellite-based water balance (SWEO) validated against GRACE, in situ and USGS reports",
-      "methods": [
-        "et",
-        "imagery",
-        "model"
-      ],
-      "data": [
-        "GRACE",
-        "USGS groundwater withdrawal reports",
-        "USDA snow observations",
-        "USGS streamflow",
-        "SWEO water balance framework"
-      ],
-      "keywords": [
-        "groundwater withdrawals",
-        "water accounting",
-        "remote sensing",
-        "GRACE validation",
-        "water balance"
-      ],
-      "summary": "Validates a satellite-driven water balance framework at 250 m resolution, estimating county-level groundwater withdrawals in three contrasting basins over 2003–2019.",
-      "added": "2026-10-21",
-      "needs_review": false,
-      "source": "agent",
-      "resources": [],
-      "resources_checked": "2026-10-21"
-    },
-    {
       "id": "10.1088/1748-9326/ae7e0c",
       "title": "Satellite soil moisture as an additional observational constraint for machine learning-based irrigation water use modeling",
       "authors": "Huang, X., He, Q., Hanasaki, N., et al.",
