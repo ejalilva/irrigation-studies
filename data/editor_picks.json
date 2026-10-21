@@ -1,0 +1,4 @@
+{
+  "_help": "Editor's picks. Add {\"id\": <paper id from papers.json>, \"note\": <your one or two sentences>, \"picked\": \"YYYY-MM-DD\"}. Newest picks show first.",
+  "picks": []
+}

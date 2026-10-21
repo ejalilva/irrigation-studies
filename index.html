@@ -279,6 +279,13 @@
   .lit tr.detail dd { margin: 0; }
   .lit tr.detail .acts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .88rem; font-weight: 500; margin-top: 4px; }
 
+  .lit-review { margin-top: 28px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); font-size: .92rem; }
+  .lit-review p { margin: 0; max-width: 78ch; }
+  .lit-review p + p { margin-top: 8px; }
+  .lit-review strong { font-weight: 600; }
+  .lit-review .acts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; font-weight: 500; }
+  .prop { display: inline-block; margin-top: 7px; font: 600 .72rem/1 var(--sans); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--link); color: var(--link); }
+  .chk { display: block; margin-top: 6px; font-size: .74rem; color: var(--warn-ink); }
   .lit-empty td { padding: 40px 12px; text-align: center; color: var(--ink-2); }
   .lit-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .88rem; color: var(--ink-2); }
   .lit-foot p { margin: 0; max-width: 70ch; }
@@ -321,6 +328,32 @@
     .lit tr.detail td > div { grid-template-columns: minmax(0, 1fr); padding-left: 0; }
     .lit-empty { display: block; }
     .lit-empty td { display: block; }
+  }
+
+  /* Essential reading */
+  .path { list-style: none; margin: 28px 0 0; padding: 0; }
+  .stage { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: 12px 48px; padding: 28px 0; border-top: 1px solid var(--line); }
+  .stage h3 { font: 500 1.2rem/1.3 var(--serif); text-wrap: balance; }
+  .stage ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
+  .read { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 0 14px; }
+  .read .num { font: 500 1.7rem/1.05 var(--serif); color: var(--link); font-variant-numeric: tabular-nums; }
+  .read .ti { font-size: 1.18rem; }
+  .read .why { margin: 8px 0 0; max-width: 64ch; color: var(--ink-2); }
+
+  /* Editor's picks */
+  .picks { margin-top: 32px; }
+  .picks-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; }
+  .picks h3 { display: flex; align-items: center; gap: 10px; font: 500 1.35rem/1.25 var(--serif); }
+  .picks .intro { margin-top: 6px; }
+  .star { flex: none; width: 1em; height: 1em; color: var(--link); }
+  .pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 18px; }
+  .pick { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  .pick .note { margin: 4px 0 0; font: italic 400 1.02rem/1.5 var(--serif); }
+  .pick .q { margin-top: auto; padding-top: 8px; }
+  .pickb { display: inline-flex; align-items: center; gap: 5px; margin-top: 7px; font: 600 .74rem/1 var(--sans); color: var(--link); white-space: nowrap; }
+
+  @media (max-width: 760px) {
+    .stage { grid-template-columns: minmax(0, 1fr); }
   }
 
   /* Footer */
@@ -470,11 +503,26 @@
       <noscript><p>See the full list on the <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications page</a>.</p></noscript>
     </section>
 
+    <section id="reading" aria-labelledby="reading-h" hidden>
+      <h2 id="reading-h">Essential reading</h2>
+      <p class="intro" id="reading-intro"></p>
+      <ol class="path" id="reading-path"></ol>
+    </section>
+
     <section id="landscape" aria-labelledby="landscape-h">
       <h2 id="landscape-h">The research landscape</h2>
       <p class="intro">Studies from across the field that use satellite data or Earth system models to find where, when and how much farms irrigate. A small agent looks for new papers every week, and I review each one before it is added.</p>
 
       <div class="bleed">
+        <div class="lit-review" id="lit-review" hidden></div>
+        <div class="picks" id="picks" hidden>
+          <div class="picks-head">
+            <h3><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Editor&rsquo;s picks</h3>
+            <button type="button" class="linkbtn" id="picks-all">Show all picks in the table</button>
+          </div>
+          <p class="intro">Recent papers I think move the field forward, with a note on why.</p>
+          <div class="pick-grid" id="pick-grid"></div>
+        </div>
         <div class="lit-controls" role="search" aria-label="Filter the research table">
           <label class="lit-search">
             <span class="sr">Search studies</span>
@@ -503,6 +551,7 @@
           </label>
           <label class="lit-select lit-sort-mobile"><span class="sr">Sort</span>
             <select id="lit-sort">
+              <option value="added:-1">Recently added</option>
               <option value="year:-1">Newest first</option>
               <option value="year:1">Oldest first</option>
               <option value="author:1">First author A to Z</option>
@@ -972,6 +1021,10 @@ try {
    ====================================================================== */
 
 const LIT_DATA_URL = "data/papers.json";
+// Review preview: add ?preview to the page address to see the agent's open pull request.
+const LIT_REPO = "ejalilva/irrigation-studies";
+const LIT_REVIEW_BRANCH = "agent/new-papers";
+const LIT_PREVIEW = new URLSearchParams(location.search).has("preview");
 const LIT_SUGGEST = "mailto:ehsan.jalilvand@gmail.com?subject=" + encodeURIComponent("Paper suggestion for the irrigation table");
 const LIT_PAGE = 15;          // rows shown before "Show all"
 const LIT_NEW_DAYS = 90;      // "New" badge window
@@ -987,7 +1040,8 @@ const METHOD_LABELS = {
 };
 const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
 
-const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "year", sortDir: -1, showAll: false, open: new Set() };
+const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "added", sortDir: -1, showAll: false, open: new Set(), picks: new Map() };
+const STAR = `<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>`;
 const $ = id => document.getElementById(id);
 
 function litLink(p) { return p.doi ? "https://doi.org/" + p.doi : (p.url || "#"); }
@@ -1012,7 +1066,9 @@ function litMatches(p) {
   const qs = litQs(p);
   if (lit.q === "all" && qs.length < 3) return false;
   if (lit.q !== "any" && lit.q !== "all" && !qs.includes(lit.q)) return false;
-  if (lit.status !== "any" && p.status !== lit.status) return false;
+  if (lit.status === "proposed") { if (!p._proposed) return false; }
+  else if (lit.status === "pick") { if (!lit.picks.has(p.id)) return false; }
+  else if (lit.status !== "any" && p.status !== lit.status) return false;
   if (lit.method !== "any" && !(p.methods || []).includes(lit.method)) return false;
   if (lit.region !== "any" && p.region !== lit.region) return false;
   if (lit.text) {
@@ -1026,6 +1082,7 @@ function litCompare(a, b) {
   const dir = lit.sortDir;
   const val = p => {
     switch (lit.sortKey) {
+      case "added": return (p.added || "0000-00-00") + "|" + (p.date || String(p.year));
       case "author": return (p.first_author || p.authors || "").toLowerCase();
       case "area": return (p.domain || "￿").toLowerCase();
       case "period": return p.period && p.period.start != null ? (p.period.end || p.period.start) : null;
@@ -1054,7 +1111,7 @@ function litRow(p, i) {
   const kw = (p.keywords || []).slice(0, 4);
   const firstAuthor = p.first_author ? `${esc(p.first_author)}${/et al\.|,.*,/.test(p.authors || "") || (p.authors || "").split(",").length > 2 ? " et al." : ""}` : esc(p.authors || "");
   return `<tr class="row${isOpen ? " open" : ""}" data-id="${esc(p.id)}">
-      <td class="c-status">${status}${litIsNew(p) ? `<span class="new">New</span>` : ""}</td>
+      <td class="c-status">${status}${litIsNew(p) ? `<span class="new">New</span>` : ""}${lit.picks.has(p.id) ? `<span class="pickb">${STAR}Editor&rsquo;s pick</span>` : ""}${p._proposed ? `<span class="prop">Proposed</span>` : ""}${LIT_PREVIEW && p._proposed && p.needs_review ? `<span class="chk">Check details</span>` : ""}</td>
       <td class="c-year yr-cell">${p.year}</td>
       <td class="c-study">
         <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
@@ -1091,9 +1148,9 @@ function litRender() {
     ? shown.map(litRow).join("")
     : `<tr class="lit-empty"><td colspan="7">No studies match these filters. <button type="button" class="lit-reset" data-reset>Clear filters</button></td></tr>`;
   const filtered = rows.length !== lit.all.length;
-  $("lit-count").textContent = filtered
+  $("lit-count").textContent = (filtered
     ? `${rows.length} of ${lit.all.length} studies match`
-    : `${lit.all.length} studies`;
+    : `${lit.all.length} studies`) + (lit.sortKey === "added" ? ", most recently added first" : "");
   const more = $("lit-more");
   more.hidden = rows.length <= LIT_PAGE;
   more.textContent = lit.showAll ? "Show fewer" : `Show all ${rows.length} studies`;
@@ -1144,6 +1201,51 @@ function litCSV() {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
+function litAuthorShort(a) {
+  const parts = (a || "").split(",").map(x => x.trim()).filter(Boolean);
+  return parts.length ? parts[0] + (parts.length > 2 || /et al/.test(a) ? " et al." : "") : "";
+}
+
+function picksRender() {
+  const box = $("picks");
+  const cards = [...lit.picks.values()]
+    .map(k => ({ k, p: lit.all.find(x => x.id === k.id) }))
+    .filter(o => o.p)
+    .sort((a, b) => String(b.k.picked || "").localeCompare(String(a.k.picked || "")))
+    .slice(0, 6);
+  box.hidden = !cards.length;
+  if (!cards.length) return;
+  $("pick-grid").innerHTML = cards.map(({ k, p }) => {
+    const qs = litQs(p);
+    return `<article class="pick">
+      <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
+      <p class="by">${esc(litAuthorShort(p.authors))}, ${p.year}, <em>${esc(p.venue || "")}</em>${p.status === "preprint" && !/preprint/i.test(p.venue || "") ? " (preprint)" : ""}</p>
+      ${k.note ? `<p class="note">${esc(k.note)}</p>` : ""}
+      <div class="q" role="img" aria-label="${esc(qs.length ? "Answers " + qs.map(x => Q_LABELS[x].toLowerCase()).join(", ") : "")}">${Object.keys(Q_LABELS).map(x => `<span class="${qs.includes(x) ? "on" : ""}">${Q_LABELS[x]}</span>`).join("")}</div>
+    </article>`;
+  }).join("");
+}
+
+function readingRender(r) {
+  if (!r || !Array.isArray(r.stages) || !r.stages.length) return;
+  let n = 0;
+  $("reading-intro").textContent = r.intro || "";
+  $("reading-path").innerHTML = r.stages.map(st => {
+    const start = n + 1;
+    const items = (st.items || []).map(it => {
+      n++;
+      const link = it.doi ? "https://doi.org/" + it.doi : (it.url || "#");
+      return `<li class="read"><span class="num" aria-hidden="true">${n}</span><div>
+        <a class="ti" href="${esc(link)}" target="_blank" rel="noopener">${esc(it.title)}</a>
+        <p class="by">${esc(litAuthorShort(it.authors))}, ${esc(String(it.year || ""))}, <em>${esc(it.venue || "")}</em></p>
+        ${it.why ? `<p class="why">${esc(it.why)}</p>` : ""}
+      </div></li>`;
+    }).join("");
+    return `<li class="stage"><h3>${esc(st.title || "")}</h3><ol start="${start}">${items}</ol></li>`;
+  }).join("");
+  $("reading").hidden = false;
+}
+
 function litInit(data) {
   lit.all = (data.papers || []).filter(p => p && p.title && p.year).map(p => Object.assign({}, p, { _hay: litHay(p) }));
 
@@ -1157,7 +1259,35 @@ function litInit(data) {
     $("lit-updated").textContent = `Last updated ${d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Preprints are flagged until a peer-reviewed version appears.`;
   }
   $("lit-suggest").href = LIT_SUGGEST;
+  lit.picks = new Map(((data._picks || {}).picks || []).filter(k => k && k.id).map(k => [k.id, k]));
+  if (lit.picks.size) {
+    const opt = document.createElement("option");
+    opt.value = "pick"; opt.textContent = `Editor's picks (${lit.picks.size})`;
+    $("lit-status").insertBefore(opt, $("lit-status").options[1] || null);
+  }
+  if (LIT_PREVIEW) litShowReview(data);
+  picksRender();
   litRender();
+}
+
+function litShowReview(data) {
+  const box = $("lit-review");
+  const pulls = `https://github.com/${LIT_REPO}/pulls`;
+  const edit = `https://github.com/${LIT_REPO}/edit/${LIT_REVIEW_BRANCH}/data/papers.json`;
+  const n = lit.all.filter(p => p._proposed).length;
+  box.hidden = false;
+  if (data._previewError) {
+    box.innerHTML = `<p><strong>No papers are waiting for review.</strong> This is the published table. The preview shows the agent's pull request while one is open.</p>
+      <div class="acts"><a href="${pulls}">Pull requests</a></div>`;
+    return;
+  }
+  const opt = document.createElement("option");
+  opt.value = "proposed"; opt.textContent = `Proposed for review (${n})`;
+  $("lit-status").prepend(opt);
+  if (n) { lit.status = "proposed"; $("lit-status").value = "proposed"; lit.showAll = true; }
+  box.innerHTML = `<p><strong>Review preview.</strong> ${n ? `${n} ${n === 1 ? "paper is" : "papers are"} proposed in the agent's pull request and shown here as they would appear once merged.` : "The pull request adds no new papers."} The published page is unchanged until you merge.</p>
+    <p>To reject a paper, untick it in the pull request description; it leaves this preview within a few minutes. To fix a detail, edit the file on the review branch.</p>
+    <div class="acts"><a href="${pulls}">Open the pull request</a><a href="${edit}">Edit details on GitHub</a><a href="${location.pathname}#landscape">Exit preview</a></div>`;
 }
 
 function litWire() {
@@ -1183,6 +1313,10 @@ function litWire() {
   $("lit-reset").addEventListener("click", litResetFilters);
   $("lit-more").addEventListener("click", () => { lit.showAll = !lit.showAll; litRender(); });
   $("lit-csv").addEventListener("click", litCSV);
+  $("picks-all").addEventListener("click", () => {
+    lit.status = "pick"; $("lit-status").value = "pick"; litRender();
+    $("lit").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  });
 
   document.querySelector("#lit thead").addEventListener("click", e => {
     const th = e.target.closest("th[data-key]");
@@ -1216,9 +1350,28 @@ function litWire() {
   });
 }
 
+function litFetch(url) {
+  return fetch(url, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+}
+
+function litLoad() {
+  const raw = f => `https://raw.githubusercontent.com/${LIT_REPO}/refs/heads/${LIT_REVIEW_BRANCH}/data/${f}?t=${Date.now()}`;
+  const main = litFetch(LIT_DATA_URL);
+  const picks = litFetch("data/editor_picks.json").catch(() => ({ picks: [] }));
+  if (!LIT_PREVIEW) return Promise.all([main, picks]).then(([d, k]) => Object.assign(d, { _picks: k }));
+  return Promise.all([main, picks, litFetch(raw("papers.json")).catch(() => null), litFetch(raw("editor_picks.json")).catch(() => null)])
+    .then(([pub, pubPicks, review, reviewPicks]) => {
+      if (!review) return Object.assign({}, pub, { _previewError: true, _picks: pubPicks });
+      const published = new Set((pub.papers || []).map(p => p.id));
+      review.papers = (review.papers || []).map(p => Object.assign(p, { _proposed: !published.has(p.id) }));
+      return Object.assign(review, { _picks: reviewPicks || pubPicks });
+    });
+}
+
+litFetch("data/reading_list.json").then(readingRender).catch(() => {});
+
 litWire();
-fetch(LIT_DATA_URL, { cache: "no-cache" })
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+litLoad()
   .then(litInit)
   .catch(() => {
     $("lit-count").textContent = "";
