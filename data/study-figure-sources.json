@@ -1,0 +1,54 @@
+[
+  {
+    "file": "assets/studies/irrigation-2019-study-area.webp",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceImage": "https://lh7-us.googleusercontent.com/sitesv-images-rt/AMxu72u-v8KD4AwU-IAImuv0VkWK0t7DGQkCToBBiKQt-SltbOGeTOGV_7-vTGpJ83Mz9cfzpGYNC9rgNe_L0-3i8GDY6GJGgjDFtLMa9hPti_YSGHvK6UhoRYweYuYNP89aylw4zNGOZwHxc_BAq6ucJ52EVcH5bed9YhnXhrbGotGjC1zkgOI20YYJMNkVAD8gMOdiwWqLB_CL8CcB46vPWA6TCQPbDzsdEBZbGlAE=w1280",
+    "encoding": "Lossless WebP; original pixels and transparency retained",
+    "retrieved": "2026-10-22",
+    "doi": "10.1016/j.rse.2019.111226"
+  },
+  {
+    "file": "assets/studies/smap-sentinel-2021-irrigation-signal.webp",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceImage": "https://lh7-us.googleusercontent.com/sitesv-images-rt/AMxu72uAmUyRkUHvBMIjgCzJ_LOoiy_nvU5H0zaX18foPB7URwxfzI-qU_HqXpHVtiRQvLyv2yR1LYFl_lSq9W-nkjp-v08IaMr1O2QPXAK4U1tk0O5JydgxXVFs8T67IqdNBlGlNhKoXU5nSbFsEG-kFCEH2ZK44HSgLlVMzRo4laiNEa2SC9neMZ6S9QFGHvjvOwzC26yRyxHO3J-vv8Cugdu8uAgt1Qf_KHOK0zXTX0k=w1280",
+    "encoding": "Lossless WebP; original pixels and transparency retained",
+    "retrieved": "2026-10-22",
+    "doi": "10.1109/JSTARS.2021.3119228"
+  },
+  {
+    "file": "assets/studies/irrigation-assimilation-2023.webp",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceImage": "https://lh7-us.googleusercontent.com/sitesv-images-rt/AMxu72tAwzL3fqCjghF8wXXo4dDrURnY4sRLty6P9c0U0KNUN-ZOJpa5zTRGQkFSC_8ndWSa93kwOORcpZSGADfPMokliiU3lDDWvmwx7-14ji5miStndl--xsyR2G9-H22xeV9O1XmPXXgGt3Cj29rTWbuhcpEFIZB9Mj7q52mmkKwHQjgM0CqLyTGOhjGyrZHNuo0OiLd5hhb3RpaTZ0mldGAq8WFbUoPiQgj5_B6Fk1g=w1280",
+    "encoding": "Lossless WebP; original pixels and transparency retained",
+    "retrieved": "2026-10-22",
+    "doi": "10.1029/2022WR033342"
+  },
+  {
+    "file": "assets/studies/rabiei-2021-figure13-original.webp",
+    "doi": "10.3390/su132011355",
+    "sourcePage": "https://www.mdpi.com/2071-1050/13/20/11355",
+    "sourceImage": "https://pub.mdpi-res.com/sustainability/sustainability-13-11355/article_deploy/html/images/sustainability-13-11355-g013.png?1634539361",
+    "license": "CC BY",
+    "note": "Not found on the personal irrigation page. Retained the existing journal Figure 13; downloaded successfully through browser.",
+    "encoding": "Original downloaded WebP preserved without re-encoding",
+    "retrieved": "2026-10-22"
+  },
+  {
+    "file": "assets/studies/agrotrack-2021.png",
+    "doi": "10.1016/j.rse.2025.115153",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceEmbed": "https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=a20bfd9a-b054-11ef-9397-d93975fe8866",
+    "sourceImage": "https://dl.dropboxusercontent.com/scl/fi/yvh2e25gpyxhc7gvvrqbn/2021_ir_area.png?rlkey=i2pr218p4bvx8gtv3faezu1qu&dl=0",
+    "encoding": "Original PNG preserved without re-encoding",
+    "retrieved": "2026-10-22"
+  },
+  {
+    "file": "assets/studies/agrotrack-2022.png",
+    "doi": "10.1016/j.rse.2025.115153",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceEmbed": "https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=a20bfd9a-b054-11ef-9397-d93975fe8866",
+    "sourceImage": "https://dl.dropboxusercontent.com/scl/fi/uvua8ucirvronskhj56pt/2022_ir_area.png?rlkey=op8hkgjb9tgk5al0e258vwzm3&dl=0",
+    "encoding": "Original PNG preserved without re-encoding",
+    "retrieved": "2026-10-22"
+  }
+]

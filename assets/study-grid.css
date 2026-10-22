@@ -1,0 +1,40 @@
+/* Compact paper cards; figures stay uncropped and expand to a readable size. */
+#studies .study-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start;margin-top:22px}
+#studies .study{display:flex;flex-direction:column;gap:0;padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;min-width:0;background:var(--surface)}
+#studies .study[hidden]{display:none}
+#studies .study-fig{margin:0;padding:16px 16px 12px;max-width:none;border-bottom:1px solid var(--line)}
+#studies .study-figure-open{position:relative;display:block;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff}
+#studies .study-fig img{height:240px;object-fit:contain;object-position:center;width:100%;border:0;border-radius:0;background:#fff;padding:10px}
+#studies .figure-enlarge{position:absolute;bottom:8px;right:8px;border:1px solid #d6dee1;background:#fffffff2;color:#1e5c86;border-radius:4px;padding:4px 8px;font-size:.73rem;line-height:1.4;box-shadow:0 1px 5px #17202615}
+#studies .study-figure-open:hover{outline:2px solid var(--link);outline-offset:1px}
+#studies .study-fig figcaption{font-size:.76rem;line-height:1.4;min-height:2.8em;margin-top:8px}
+#studies .study-body{padding:16px 20px 18px;min-width:0}
+#studies .study-meta{display:flex;justify-content:space-between;gap:12px;font-size:.77rem;line-height:1.4;color:var(--ink-2);margin-bottom:10px}
+#studies .study-meta span:first-child{font-weight:600;color:var(--link)}
+#studies .study-title{font-size:1.16rem;line-height:1.35;letter-spacing:-.01em}
+#studies .venue{font-size:.78rem;line-height:1.4;margin-top:8px}
+#studies .summary{font-size:.88rem;line-height:1.55;margin:12px 0}
+#studies .tags{gap:5px;margin:0 0 13px}
+#studies .tag{font-size:.71rem;padding:5px 8px}
+#studies .study-details{border:0;border-top:1px solid var(--line);border-radius:0;padding:12px 0 0;background:none;margin:0}
+#studies .study-details summary{font-size:.83rem;font-weight:500;cursor:pointer;color:var(--link);padding:0;display:list-item}
+#studies .study-details .authors,#studies .study-details .citation-details{font-size:.8rem;line-height:1.5;margin:12px 0 0;color:var(--ink-2)}
+#studies .study-details .findings{font-size:.84rem;line-height:1.55}
+#studies .study-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:15px;font-size:.81rem;line-height:1.4}
+#studies .missing-figure{height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:28px;text-align:center;border:1px dashed var(--line);border-radius:4px;background:var(--hover);color:var(--ink-2)}
+#studies .missing-figure span{font-size:.76rem;text-transform:uppercase;letter-spacing:.12em}
+#studies .missing-figure p{font-size:.94rem;max-width:28ch;margin:0;color:var(--ink)}
+.study-figure-dialog{border:1px solid var(--line);border-radius:8px;padding:24px;width:min(1100px,calc(100% - 32px));max-width:1100px;max-height:94dvh;overflow:auto;background:var(--surface);color:var(--ink);box-shadow:0 24px 90px #0005}
+.study-figure-dialog::backdrop{background:#10232bd9}
+.figure-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:0 0 18px}
+.figure-dialog-head h2{font-size:1.15rem;line-height:1.4;margin:0;max-width:80ch}
+#figure-close{flex-shrink:0;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--ink);font-size:1.6rem;cursor:pointer;line-height:1}
+.study-figure-dialog figure{margin:0}
+#figure-image{display:block;width:100%;height:auto;max-height:66dvh;object-fit:contain;background:#fff;border-radius:3px}
+#figure-caption{font-size:.84rem;color:var(--ink-2);margin-top:12px}
+.figure-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;padding-top:16px;font-size:.82rem}
+@media(max-width:680px){#studies .study-list{grid-template-columns:1fr;gap:20px}#studies .study-fig img,#studies .missing-figure{height:220px}#studies .study-body{padding:16px}#studies .study-title{font-size:1.12rem}.study-figure-dialog{padding:16px}.figure-dialog-head h2{font-size:1rem}}
+
+#studies .study-image-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#studies .study-image-pair img{padding:4px}
+#studies .study-image-pair .figure-enlarge{font-size:.65rem}
