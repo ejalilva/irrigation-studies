@@ -6,7 +6,7 @@ Technical notes for running the page, the paper-finding agent and the review wor
 
 | Path | Contents |
 |---|---|
-| `index.html` | The page: overview, my studies, the research landscape table, related work. Self-contained HTML, CSS and JS. |
+| `index.html` | The water-cycle opening, irrigation studies, research landscape table and related work. |\n| `human.html` | Human-driven processes landscape, linked from the farm on the main map. |\n| `assets/site.css` | Shared page typography, layout and light/dark theme. |\n| `assets/water-cycle.css` | Explorer layout and hover/focus animations. |\n| `assets/water-cycle.js` | Map research descriptions and accessible interaction controller. |
 | `data/papers.json` | Rows of the research landscape table. |
 | `data/editor_picks.json` | Rising papers (editor's picks) and their notes, shown above the table and tagged in it. |
 | `data/reading_list.json` | The ordered essential reading list. |
@@ -181,3 +181,8 @@ The page is linked from the main site's navigation (Pages → New link → `http
 ## Figures
 
 Three figures in the Studies section load from Google Sites image URLs, which can change. To make them permanent, move them into `img/` and update each study's `image.src` in `index.html`. If an image fails to load, the page draws a resolution illustration instead.
+
+## Water-cycle explorer
+
+The two landscapes are inline SVG in `index.html` and `human.html`, so they work under the GitHub Pages repository path without an iframe or external hosting. Update project text and status labels in the `topics` object in `assets/water-cycle.js`. The controller is isolated from the existing studies and literature scripts. Animations run on hover or keyboard focus and respect reduced-motion settings and the Motion toggle. On touchscreens, one tap highlights a map area and a second tap opens it; the text buttons open it directly. The pivot rotates in the field plane about its central well, and the pumping path runs upward from groundwater to the surface. The earlier resolution illustration is retained in the expandable “Seeing irrigation at different scales” section.
+
