@@ -1,0 +1,93 @@
+/* Shared explorer styling uses the research library's existing theme tokens. */
+.water-cycle {padding-top:42px; --muted:var(--ink-2); --green:var(--link); --accent:var(--r0);}
+.cycle-heading {display:flex;justify-content:space-between;align-items:end;gap:40px;}
+.cycle-eyebrow {font:500 .72rem/1.5 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px;}
+.water-cycle h1 {font-size:clamp(2rem,4.4vw,3.35rem);line-height:1.1;max-width:19ch;}
+.cycle-intro {max-width:39ch;font-size:.95rem;line-height:1.65;color:var(--ink-2);margin:0;}
+.explorer-toolbar {display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
+.motion-toggle {font:inherit;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
+.motion-toggle:hover {background:var(--hover);}
+.explorer {position:relative;margin:0;}
+.landscape {display:block;width:100%;height:auto;overflow:visible;}
+.scene-item {cursor:pointer;outline:none;}
+.scene-item .object {transition:filter .2s;}
+.scene-item .hover-ring {opacity:0;transition:opacity .2s;}
+.scene-item:is(:hover,:focus-visible,.active) .hover-ring {opacity:1;}
+.scene-item:focus-visible .object {filter:drop-shadow(0 0 6px var(--link));}
+.scene-item .number {fill:var(--paper);stroke:var(--line);stroke-width:1;}
+.scene-item:is(:hover,:focus-visible,.active) .number {fill:var(--link);stroke:var(--link);}
+.scene-item:is(:hover,:focus-visible,.active) .numtext {fill:var(--paper);}
+.numtext {font:11px var(--sans);fill:var(--ink-2);text-anchor:middle;}
+.maplabel {font:12px var(--sans);fill:var(--ink-2);}
+.process-label {font:italic 12px var(--sans);fill:#506b5c;}
+.irrigation-label {font:10px var(--sans);fill:#415948;}
+.hint-panel {position:absolute;left:0;top:48%;width:19%;pointer-events:none;}
+.hint-num {font-size:.7rem;color:var(--link);}
+.hint-title {font:500 1.3rem/1.2 var(--sans);margin:8px 0;}
+.hint-copy {font-size:.75rem;line-height:1.6;color:var(--ink-2);margin:0 0 10px;}
+.hint-link {font-size:.65rem;color:var(--link);}
+.topic-nav {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 20px;border-block:1px solid var(--line);padding:16px 0;}
+.topic-nav button,.topic-nav a {font:400 .8rem/1.4 var(--sans);text-align:left;color:var(--ink);border:0;background:none;padding:5px 0;cursor:pointer;text-decoration:none;display:flex;align-items:baseline;gap:8px;}
+.topic-nav span {font-size:.65rem;color:var(--ink-2);}
+.topic-nav :is(button,a):hover {color:var(--link);text-decoration:underline;}
+.cycle-note {font-size:.72rem;line-height:1.6;color:var(--ink-2);margin:12px 0;}
+.cycle-back {display:inline-block;margin-top:24px;font-size:.8rem;}
+.human-page .water-cycle {padding-top:24px;}
+.human-page .topic-nav {grid-template-columns:repeat(3,1fr);}
+.cycle-links {display:flex;flex-wrap:wrap;gap:12px 28px;margin:32px 0;font-size:.9rem;}
+#research-dialog {border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:0;width:min(680px,calc(100% - 32px));max-height:88dvh;border-radius:6px;box-shadow:0 24px 90px var(--shadow);}
+#research-dialog::backdrop {background:rgba(15,26,31,.55);backdrop-filter:blur(3px);}
+#research-dialog .dialog-body {padding:38px;}
+#research-dialog .close {position:sticky;float:right;top:12px;margin:12px 12px 0 0;width:34px;height:34px;font-size:24px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:50%;cursor:pointer;z-index:1;}
+#research-dialog .eyebrow {font-size:.7rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.07em;}
+#research-dialog h2 {font-size:1.9rem;}
+#research-dialog .dialog-intro {font-size:.95rem;color:var(--ink-2);}
+#research-dialog .project {padding:20px 0;border-top:1px solid var(--line);}
+#research-dialog .project h3 {font-size:1.2rem;margin:8px 0;}
+#research-dialog .project p {font-size:.9rem;color:var(--ink-2);margin:8px 0;}
+#research-dialog .status {font-size:.7rem;color:var(--link);}
+#research-dialog .status.planned {color:var(--warn-ink);}
+#research-dialog .project a,#research-dialog .dialog-related {font-size:.85rem;}
+#research-dialog .dialog-note {font-size:.7rem;color:var(--ink-2);}
+@keyframes flow {to {stroke-dashoffset:-68;}}
+@media(max-width:750px) {
+ .cycle-heading {display:block;} .cycle-intro {max-width:54ch;margin-top:16px;}
+ .water-cycle {padding-top:32px;}
+ .explorer {display:flex;flex-direction:column;}
+ .hint-panel {position:static;width:auto;max-width:none;min-height:112px;margin:8px 0 20px;}
+ .hint-title {font-size:1.1rem;} .hint-copy {margin:5px 0;max-width:65ch;}
+ .hint-link {display:none;}
+ .topic-nav {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;}
+ .human-page .topic-nav {gap:8px;}
+ .topic-nav button,.topic-nav a {min-height:44px;}
+ #research-dialog .dialog-body {padding:28px 22px;}
+}
+@media(prefers-reduced-motion:reduce) {
+ .scene-item .anim {animation:none!important;transition:none!important;}
+}
+/* Motion belongs to the element being explored. All animations begin paused. */
+.scene-item .object{transform:none!important}.scene-item.active .object,.scene-item:hover .object,.scene-item:focus-visible .object{filter:drop-shadow(0 0 7px #d5b57799)}
+.scene-item .anim{animation-play-state:paused!important}.scene-item.active .anim,.scene-item:hover .anim,.scene-item:focus-visible .anim{animation-play-state:running!important}
+body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-play-state:paused!important}
+.anim{transform-box:fill-box;transform-origin:center}.waterline{stroke-dasharray:9 13;stroke-linecap:round;stroke-width:3;opacity:.95;animation:river-current 1.5s linear infinite}.river-fall{animation:river-cascade 1s linear infinite}.vapor{animation:evaporate 3s ease-in-out infinite}.rainfall{animation:rain 1.2s linear infinite}.snowflake{animation:snowfall 2.8s linear infinite}.snowcap{animation:thaw 6s ease-in-out infinite;transform-origin:50% 0}.meltwater,.drainflow,.pipeflow{animation:downstream 2s linear infinite}.wet-soil{animation:wetting 3.8s ease-in-out infinite}.ripple{animation:rippling 3s ease-in-out infinite}.crop-grow{animation:growth 4s ease-in-out infinite;transform-origin:50% 100%}.spray{animation:sprinkle 1.5s linear infinite;opacity:.7}.floodplain{animation:river-rise 5s ease-in-out infinite}.field-outline{animation:outline-flow 3s linear infinite}
+@keyframes rain{0%{transform:translate(2px,-4px);opacity:.25}25%{opacity:.8}100%{transform:translate(-10px,23px);opacity:.05}}
+@keyframes snowfall{0%{transform:translate(-3px,-8px);opacity:.25}20%,65%{opacity:1}100%{transform:translate(5px,31px);opacity:.15}}
+@keyframes thaw{0%,100%{transform:scaleY(1);opacity:1}60%{transform:scaleY(.78);opacity:.83}}
+@keyframes evaporate{0%{transform:translateY(4px);opacity:.2}50%{opacity:.85}100%{transform:translateY(-13px);opacity:.15}}
+@keyframes downstream{to{stroke-dashoffset:-60}}
+@keyframes wetting{0%,100%{opacity:.09}55%{opacity:.28}}
+@keyframes rippling{0%,100%{transform:scale(.75);opacity:.3}50%{transform:scale(1.25);opacity:.85}}
+@keyframes growth{0%,100%{transform:scaleY(.82)}60%{transform:scaleY(1.12)}}
+@keyframes sprinkle{to{stroke-dashoffset:-40}}
+@keyframes river-rise{0%,100%{opacity:.05;stroke-width:12}55%{opacity:.2;stroke-width:22}}
+@keyframes outline-flow{to{stroke-dashoffset:-60}}
+
+/* Rotation happens before isometric projection, about the stationary center well. */
+.pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 12s linear infinite}
+.pumpflow{animation:pumping 2s linear infinite}
+@keyframes pivot-turn{from{transform:rotate(-20deg)}to{transform:rotate(340deg)}}
+@keyframes pumping{to{stroke-dashoffset:-72}}
+
+/* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
+@keyframes river-current{from{stroke-dashoffset:0}to{stroke-dashoffset:-44}}
+@keyframes river-cascade{from{stroke-dashoffset:0}to{stroke-dashoffset:-24}}
