@@ -3,496 +3,50 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Irrigation research | Ehsan Jalilvand</title>
-<meta name="description" content="Ehsan Jalilvand's research on measuring farm irrigation from space using satellite soil moisture, thermal observations, land surface models and data assimilation.">
-<meta property="og:title" content="Measuring farm irrigation from space">
+<title>Water-cycle research | Ehsan Jalilvand</title>
+<meta name="description" content="Explore Ehsan Jalilvand's research through an interactive water-cycle landscape, with irrigation studies, satellite observations and data assimilation.">
+<meta property="og:title" content="Exploring the water cycle | Ehsan Jalilvand">
 <meta property="og:description" content="Studies on detecting where, when and how much farmers irrigate, using satellite soil moisture, thermal data and land surface models.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23CDB47E'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%231E5C86'/%3E%3Cline x1='16' y1='16' x2='26' y2='11' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<style>
-  /* Accent colors follow a soil-moisture map: dry soil (ochre) to wet (deep blue). */
-  :root {
-    --paper: #FFFFFF;
-    --surface: #FFFFFF;
-    --hover: #F3F5F6;
-    --ink: #172026;
-    --ink-2: #505B61;
-    --line: #DCE1E3;
-    --link: #1E5C86;
-    --tag-bg: #EDF0F1;
-    --r0: #B07A3B; --r1: #CDB47E; --r2: #A9C3AE; --r3: #4F93A3; --r4: #1E5C86;
-    --arm: rgba(255,255,255,.8);
-    --warn: #D08A12; --warn-ink: #8A5300;
-    --new-bg: #DCEAF2; --new-ink: #1E5C86;
-    /* Question colors from matplotlib's tab20c: where = blue, when = orange, how much = green.
-       Text on each is white or black, whichever the fill needs. */
-    --q-where: #3182BD; --q-when: #FD8D3C; --q-how: #74C476;
-    /* Essential: tab20c green for the mark, a darker green for readable text */
-    --ess: #23793B; --ess-mark: #31A354;
-    /* Rising: tab20c purple for the star, a darker purple for readable text */
-    --rise: #5B4F9E; --rise-mark: #756BB1;
-    --shadow: rgba(21,36,44,.28);
-    --gutter: 24px;
-    --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
-    --head: var(--sans);
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper: #0F1A1F; --surface: #15232A; --hover: #18282F; --ink: #E3EAE8; --ink-2: #9DAEB2;
-      --line: #2B3C43; --link: #8BC2E0; --tag-bg: #1E3038;
-      --r0: #A57540; --r1: #BFA670; --r2: #86A898; --r3: #3F86A0; --r4: #2F72A3;
-      --arm: rgba(255,255,255,.7);
-      --warn: #E9A23B; --warn-ink: #F2B85C;
-      --new-bg: #1B3747; --new-ink: #A9D3EC;
-      --ess: #74C476; --ess-mark: #74C476;
-      --rise: #BCBDDC; --rise-mark: #9E9AC8;
-      --shadow: rgba(0,0,0,.6);
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #0F1A1F; --surface: #15232A; --hover: #18282F; --ink: #E3EAE8; --ink-2: #9DAEB2;
-    --line: #2B3C43; --link: #8BC2E0; --tag-bg: #1E3038;
-    --r0: #A57540; --r1: #BFA670; --r2: #86A898; --r3: #3F86A0; --r4: #2F72A3;
-    --arm: rgba(255,255,255,.7);
-    --warn: #E9A23B; --warn-ink: #F2B85C;
-    --new-bg: #1B3747; --new-ink: #A9D3EC;
-    --ess: #74C476; --ess-mark: #74C476;
-    --rise: #BCBDDC; --rise-mark: #9E9AC8;
-    --shadow: rgba(0,0,0,.6);
-    color-scheme: dark;
-  }
-
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font: 400 1.0625rem/1.6 var(--sans);
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  a:hover { text-decoration-thickness: 2px; }
-  :focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
-  .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: var(--paper); padding: 8px 12px; border-radius: 4px; }
-  .skip:focus { left: 16px; }
-
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-
-  /* Header */
-  .site-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
-  .site-name { font: 500 1.2rem/1.2 var(--head); color: var(--ink); text-decoration: none; }
-  .site-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
-  .site-nav a { color: var(--ink-2); text-decoration: none; }
-  .site-nav a:hover { color: var(--ink); text-decoration: underline; }
-  .site-nav a[aria-current="page"] { color: var(--ink); font-weight: 500; }
-
-  /* Hero */
-  .hero { padding-top: 72px; }
-  h1 {
-    font: 500 clamp(2.5rem, 6.2vw, 4.4rem)/1.02 var(--head);
-    letter-spacing: -0.015em;
-    margin: 0;
-    max-width: 13ch;
-  }
-  .lede { font-size: 1.2rem; line-height: 1.55; color: var(--ink-2); max-width: 58ch; margin: 24px 0 0; }
-
-  .scales { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin: 56px 0 0; padding: 0; }
-  .scale { margin: 0; }
-  .scale svg { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 4px; }
-  .scale figcaption { margin-top: 12px; }
-  .scale strong { display: block; font: 500 1.2rem/1.2 var(--head); }
-  .scale span { display: block; font-size: .875rem; color: var(--ink-2); margin-top: 2px; }
-  .scales-note { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 20px; font-size: .9rem; color: var(--ink-2); }
-  .scales-note p { margin: 0; max-width: 62ch; }
-  .legend { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
-  .legend .ramp { width: 120px; height: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--r0), var(--r1), var(--r2), var(--r3), var(--r4)); }
-
-  .scales.animate .scale svg { animation: resolve 1s cubic-bezier(.2,.7,.2,1) both; }
-  .scales.animate .scale:nth-child(2) svg { animation-delay: .3s; }
-  .scales.animate .scale:nth-child(3) svg { animation-delay: .6s; }
-  .scales.animate .scale:nth-child(4) svg { animation-delay: .9s; }
-  @keyframes resolve { from { filter: blur(10px); opacity: 0; } to { filter: blur(0); opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) { .scales.animate .scale svg { animation: none; } }
-
-  /* Sections */
-  section { padding-top: 96px; }
-  h2 { font: 500 2rem/1.15 var(--head); letter-spacing: -0.01em; margin: 0; }
-  h3 { font: 500 1.35rem/1.25 var(--head); margin: 0; }
-  .intro { color: var(--ink-2); max-width: 62ch; margin: 12px 0 0; }
-
-  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; margin-top: 32px; }
-  .fact { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 18px; padding: 22px 0; border-top: 1px solid var(--line); }
-  .fact-num { font: 500 2.3rem/1 var(--head); color: var(--link); }
-  .fact p { margin: 0; }
-  .fact .src { display: block; font-size: .85rem; margin-top: 6px; color: var(--ink-2); }
-
-  details.more { margin-top: 28px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  details.more summary { cursor: pointer; list-style: none; padding: 18px 0; font: 500 1.15rem/1.3 var(--head); display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  details.more summary::-webkit-details-marker { display: none; }
-  details.more summary::after { content: "+"; font: 400 1.5rem/1 var(--sans); color: var(--ink-2); }
-  details.more[open] summary::after { content: "\2212"; }
-  details.more ul { margin: 0 0 8px; padding-left: 1.2em; max-width: 72ch; }
-  details.more li { margin: 8px 0; }
-  details.more .credit { font-size: .85rem; color: var(--ink-2); margin: 12px 0 22px; }
-
-  .gap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 56px; margin-top: 32px; }
-  .gap-grid ul, .findings, details.more ul { list-style: disc; }
-  .gap-grid ul { margin: 12px 0 0; padding-left: 1.2em; }
-  .gap-grid li { margin: 8px 0; }
-  .gap-grid li::marker, .findings li::marker { color: var(--r3); }
-  .bridge { font: 400 1.6rem/1.35 var(--head); max-width: 34ch; margin: 56px 0 0; padding-left: 20px; border-left: 3px solid var(--r3); }
-
-  /* Studies */
-  .studies-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px 32px; }
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; border: 0; }
-  .filters legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .filters button {
-    font: 500 .9rem/1 var(--sans); color: var(--ink); background: transparent;
-    border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer;
-  }
-  .filters button:hover { border-color: var(--ink-2); }
-  .filters button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  .filters .n { opacity: .65; margin-left: 4px; font-weight: 400; }
-  .count { font-size: .9rem; color: var(--ink-2); margin: 16px 0 0; }
-
-  .study-list { list-style: none; margin: 16px 0 0; padding: 0; }
-  .study { display: grid; grid-template-columns: 6rem minmax(0, 1fr) minmax(0, 300px); gap: 32px; padding: 40px 0; border-top: 1px solid var(--line); }
-  .study[hidden] { display: none; }
-  .study-when .yr { display: block; font: 500 1.75rem/1 var(--head); }
-  .study-when .sc { display: block; font-size: .85rem; color: var(--ink-2); margin-top: 8px; }
-  .study-title { font: 500 1.4rem/1.25 var(--head); margin: 0; }
-  .study-title a { color: inherit; text-decoration: none; }
-  .study-title a:hover { text-decoration: underline; }
-  .venue { margin: 8px 0 0; font-size: .95rem; color: var(--ink-2); }
-  .venue em { font-style: italic; color: var(--ink); }
-  .authors { margin: 2px 0 0; font-size: .9rem; color: var(--ink-2); }
-  .authors strong { color: var(--ink); font-weight: 600; }
-  .summary { margin: 18px 0 0; max-width: 62ch; }
-  .findings { margin: 10px 0 0; padding-left: 1.2em; max-width: 62ch; }
-  .findings li { margin: 6px 0; }
-  .study-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 20px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
-  .tag { font-size: .8rem; line-height: 1; padding: 6px 10px; border-radius: 999px; background: var(--tag-bg); }
-  .actions { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .92rem; font-weight: 500; }
-  .linkbtn { font: inherit; color: var(--link); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  .linkbtn:hover { text-decoration-thickness: 2px; }
-
-  .study-fig { margin: 0; }
-  .study-fig a { display: block; }
-  .study-fig img, .study-fig svg { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); }
-  .study-fig svg { aspect-ratio: 1; max-width: 220px; }
-  .study-fig figcaption { font-size: .8rem; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
-
-  /* Related */
-  .related { list-style: none; margin: 24px 0 0; padding: 0; }
-  .related li { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: 32px; padding: 18px 0; border-top: 1px solid var(--line); }
-  .related .yr { font: 500 1.15rem/1.4 var(--head); color: var(--ink-2); }
-  .related .t { font: 500 1.1rem/1.35 var(--head); }
-  .related .t a { color: var(--ink); text-decoration: none; }
-  .related .t a:hover { text-decoration: underline; }
-  .related p { margin: 4px 0 0; font-size: .92rem; color: var(--ink-2); max-width: 70ch; }
-
-  /* Research landscape table */
-  .bleed { width: min(1280px, calc(100vw - 2 * var(--gutter))); margin-left: calc(50% - min(640px, 50vw - var(--gutter))); }
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-  .lit-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 32px; }
-  .lit-search { position: relative; flex: 1 1 240px; max-width: 340px; }
-  .lit-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-2); pointer-events: none; }
-  .lit-search input {
-    width: 100%; font: 400 .95rem/1.2 var(--sans); color: var(--ink); background: var(--surface);
-    border: 1px solid var(--line); border-radius: 8px; padding: 11px 12px 11px 36px;
-  }
-  .lit-search input::placeholder { color: var(--ink-2); opacity: .85; }
-  .seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
-  .seg button { font: 500 .88rem/1 var(--sans); color: var(--ink); background: transparent; border: 0; border-left: 1px solid var(--line); padding: 11px 13px; cursor: pointer; }
-  .seg button:first-child { border-left: 0; }
-  .seg button:hover { background: var(--tag-bg); }
-  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-  .lit-select { position: relative; display: inline-block; }
-  .lit-select select {
-    appearance: none; -webkit-appearance: none; font: 500 .88rem/1.2 var(--sans); color: var(--ink);
-    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 34px 10px 12px; cursor: pointer;
-  }
-  .lit-select::after {
-    content: ""; position: absolute; right: 14px; top: 50%; width: 6px; height: 6px; pointer-events: none;
-    border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: translateY(-70%) rotate(45deg);
-  }
-  .lit-reset { font: 500 .88rem/1 var(--sans); color: var(--link); background: none; border: 0; padding: 8px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-  .lit-reset[hidden] { display: none; }
-
-  .lit-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-top: 20px; font-size: .88rem; color: var(--ink-2); }
-  .lit-meta p { margin: 0; }
-  .lit-legend { display: flex; flex-wrap: wrap; gap: 6px 22px; }
-  .lit-legend > span { display: inline-flex; align-items: center; gap: 8px; }
-  .lit-legend > span[hidden] { display: none; }
-  .lit-meta-l { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
-  .lit-sort { display: inline-flex; align-items: center; gap: 8px; }
-  .lit-sort select { padding: 6px 30px 6px 10px; font-size: .84rem; }
-  .lit-sort .lit-select::after { right: 12px; }
-
-  .lit { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; margin-top: 10px; font-size: .9rem; line-height: 1.4; }
-  .lit th { text-align: left; vertical-align: bottom; font: 500 .8rem/1.3 var(--sans); color: var(--ink-2); padding: 10px; border-bottom: 1px solid var(--ink-2); white-space: nowrap; }
-  .lit th .sort { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-  .lit th .sort:hover { color: var(--ink); }
-  .lit th .arrow { width: 8px; height: 8px; opacity: .35; }
-  .lit th[aria-sort] .arrow { opacity: 1; }
-  .lit th[aria-sort="ascending"] .arrow { transform: rotate(180deg); }
-  .lit td { padding: 10px; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
-  .lit tbody tr:first-child td { border-top: 0; }
-  .lit tr[hidden] { display: none; }
-  .lit .c-status { width: 116px; }
-  .lit .c-year { width: 58px; white-space: nowrap; }
-  .lit .c-q { width: 190px; }
-  .lit .c-area { width: 14%; }
-  .lit .c-period { width: 92px; white-space: nowrap; }
-  .lit .c-res { width: 140px; }
-  .one { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  .lit tr.open .one { white-space: normal; overflow: visible; }
-
-  /* A closed row lifts on hover. An open row and its details form one flat block. */
-  .lit tr.row { cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
-  .lit tr.row:not(.open):hover { transform: scale(1.01); box-shadow: 0 12px 28px -18px var(--shadow); position: relative; z-index: 2; background: var(--surface); }
-  .lit tr.row:not(.open):hover td,
-  .lit tr.row:not(.open):hover + tr.detail[hidden] + tr.row td { border-top-color: transparent; }
-  .lit tr.row.open, .lit tr.detail { background: var(--hover); }
-  .lit tr.row.open > td:first-child, .lit tr.detail > td { box-shadow: inset 3px 0 0 var(--r4); }
-
-  .yr-cell { font: 500 1rem/1.35 var(--head); font-variant-numeric: tabular-nums; }
-  .st { display: inline-flex; align-items: center; gap: 7px; font-size: .8rem; line-height: 1.35; white-space: nowrap; }
-  .st-pub { color: var(--ink-2); }
-  .st-pre { color: var(--warn-ink); font-weight: 600; }
-  .pulse { position: relative; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
-  .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--warn); animation: ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
-  @keyframes ping { 0% { transform: scale(1); opacity: .75; } 80%, 100% { transform: scale(2.7); opacity: 0; } }
-  .dot-pub { flex: none; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--ink-2); }
-  .new { display: inline-block; font: 600 .7rem/1 var(--sans); padding: 3px 6px; border-radius: 4px; background: var(--new-bg); color: var(--new-ink); }
-  .badges { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-top: 5px; }
-  .ess { display: inline-flex; align-items: center; gap: 4px; font: 600 .76rem/1 var(--sans); color: var(--ess); white-space: nowrap; }
-  .ess svg { flex: none; width: 12px; height: 12px; color: var(--ess-mark); }
-  .ess-link { font-weight: 500; color: var(--ess); }
-
-  .ti { font: 500 1.04rem/1.3 var(--head); color: var(--ink); text-decoration: none; }
-  .ti:hover { text-decoration: underline; }
-  .lt { width: 100%; margin: 0; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; font: 500 .97rem/1.35 var(--head); color: var(--ink); }
-  .lt:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  .by { margin: 4px 0 0; font-size: .84rem; color: var(--ink-2); }
-  .lit .by { margin-top: 2px; font-size: .82rem; }
-  .by em { font-style: italic; }
-
-  .q { display: flex; flex-wrap: wrap; gap: 4px; }
-  .q span { font: 500 .74rem/1 var(--sans); padding: 5px 7px; border-radius: 4px; color: var(--ink-2); border: 1px dashed var(--q-c, var(--line)); background: var(--q-tint, transparent); white-space: nowrap; }
-  .lit .q span { font-size: .7rem; padding: 4px 6px; }
-  /* Each question keeps its color: solid when the study answers it, a faint outline when it doesn't. */
-  .q-where { --q-c: var(--q-where); --q-t: #FFFFFF; --q-tint: rgba(49, 130, 189, .08); }
-  .q-when { --q-c: var(--q-when); --q-t: #10222E; --q-tint: rgba(253, 141, 60, .10); }
-  .q-how_much { --q-c: var(--q-how); --q-t: #10222E; --q-tint: rgba(116, 196, 118, .12); }
-  .q span.on { background: var(--q-c, var(--r4)); border: 1px solid var(--q-c, var(--r4)); color: var(--q-t, #fff); font-weight: 600; }
-  .seg button[class^="q-"][aria-pressed="true"] { background: var(--q-c); color: var(--q-t); }
-  .seg button[class^="q-"][aria-pressed="true"] .qdot { box-shadow: 0 0 0 1.5px var(--q-t); }
-  .qdot { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; background: var(--q-c); vertical-align: 0; }
-  .sub { display: block; font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
-  .muted { color: var(--ink-2); }
-
-  .res-list { display: flex; flex-wrap: wrap; gap: 4px; }
-  .res { display: inline-flex; align-items: center; gap: 4px; font: 500 .74rem/1 var(--sans); padding: 4px 6px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); color: var(--link); text-decoration: none; white-space: nowrap; }
-  .res:hover { border-color: var(--link); }
-  .res svg { flex: none; width: 11px; height: 11px; }
-  .res-links { margin: 0; padding: 0; list-style: none; }
-  .res-links li + li { margin-top: 3px; }
-
-  .lit tr.detail td { padding: 2px 10px 22px; border-top: 0; }
-  .lit tr.detail td > div { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px 40px; padding-left: calc(116px + 58px); }
-  .lit tr.detail p { margin: 0 0 10px; max-width: 64ch; }
-  .lit tr.detail .note { font-size: .86rem; color: var(--warn-ink); }
-  .lit tr.detail dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 14px; font-size: .86rem; }
-  .lit tr.detail dt { color: var(--ink-2); }
-  .lit tr.detail dd { margin: 0; }
-  .lit tr.detail .acts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .88rem; font-weight: 500; margin-top: 4px; }
-
-  .lit-review { margin-top: 28px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); font-size: .92rem; }
-  .lit-review p { margin: 0; max-width: 78ch; }
-  .lit-review p + p { margin-top: 8px; }
-  .lit-review strong { font-weight: 600; }
-  .lit-review .acts { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 10px; font-weight: 500; }
-  .prop { display: inline-block; font: 600 .7rem/1 var(--sans); padding: 2px 5px; border-radius: 4px; border: 1px solid var(--link); color: var(--link); }
-  .chk { font-size: .74rem; color: var(--warn-ink); }
-  .lit-empty td { padding: 40px 12px; text-align: center; color: var(--ink-2); }
-  .lit-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px 28px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .88rem; color: var(--ink-2); }
-  .lit-foot p { margin: 0; max-width: 70ch; }
-  .lit-foot .acts { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
-  .lit-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 18px; font-size: .9rem; }
-  .lit-suggest label { font-weight: 500; margin-right: 4px; }
-  .lit-suggest input { flex: 1 1 12rem; max-width: 19rem; min-width: 0; font: 400 .9rem/1.2 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; }
-  .lit-suggest input::placeholder { color: var(--ink-2); opacity: .85; }
-  .lit-suggest input[aria-invalid="true"] { border-color: var(--warn); }
-  .lit-suggest-msg { flex-basis: 100%; margin: 0; font-size: .84rem; color: var(--ink-2); }
-  .lit-suggest-msg:empty { display: none; }
-  .btn { font: 500 .9rem/1 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; }
-  .btn:hover { border-color: var(--ink-2); }
-  .btn[hidden] { display: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .pulse::after { animation: none; }
-    .lit tr.row { transition: none; }
-  }
-
-  @media (max-width: 980px) {
-    .lit thead { display: none; }
-    .lit, .lit tbody { display: block; }
-    .lit tr.row {
-      display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 12px;
-      grid-template-areas: "year status status" "study study study" "q q q" "area area period" "res res res";
-      padding: 14px 10px; border-top: 1px solid var(--line);
-    }
-    .lit tbody tr.row:first-child { border-top: 0; }
-    .lit tr.row:not(.open):hover { transform: none; box-shadow: none; background: var(--hover); }
-    .lit tr.row td { display: block; width: auto; padding: 0; border: 0; }
-    .lit tr.row.open > td:first-child { box-shadow: none; }
-    .lit tr.row.open { box-shadow: inset 3px 0 0 var(--r4); }
-    .lit .c-year { grid-area: year; }
-    .lit tr.row .c-status { grid-area: status; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
-    .lit .c-status .badges { margin: 0; }
-    .lit .c-study { grid-area: study; }
-    .lit .c-q { grid-area: q; margin-top: 2px; }
-    .lit .c-area { grid-area: area; }
-    .lit .c-area .sub { display: none; }
-    .lit .c-period { grid-area: period; color: var(--ink-2); }
-    .lit .c-res { grid-area: res; }
-    .lit tr.row .c-res.empty { display: none; }
-    .lit .lt.one { white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-    .lit tr.open .lt.one { display: block; -webkit-line-clamp: unset; }
-    .lit tr.detail:not([hidden]) { display: block; }
-    .lit tr.detail td { display: block; padding: 0 10px 20px; }
-    .lit tr.detail td > div { grid-template-columns: minmax(0, 1fr); padding-left: 0; }
-    .lit-empty, .lit-empty td { display: block; }
-  }
-
-  /* Essential reading: tabs and journal-first cards, colored by question */
-  .g-big { --g: #636363; --gt: #FFFFFF; }
-  .g-where { --g: var(--q-where); --gt: #FFFFFF; }
-  .g-when { --g: var(--q-when); --gt: #10222E; }
-  .g-how_much { --g: var(--q-how); --gt: #10222E; }
-  .rtabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-  .rtab { display: inline-flex; align-items: center; gap: 8px; font: 500 .9rem/1 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 9px 13px; cursor: pointer; }
-  .rtab:hover { border-color: var(--ink-2); }
-  .rtab i { width: 9px; height: 9px; border-radius: 2px; background: var(--g, var(--ink)); }
-  .rtab small { font-size: .8rem; opacity: .75; }
-  .rtab[aria-pressed="true"] { background: var(--g, var(--ink)); border-color: var(--g, var(--ink)); color: var(--gt, var(--paper)); }
-  .rtab[aria-pressed="true"] i { box-shadow: 0 0 0 1.5px var(--gt, var(--paper)); }
-  .rgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); align-items: start; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
-  .rc { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); transition: border-color .15s, box-shadow .15s; }
-  .rc:hover, .rc.open { border-color: var(--g); }
-  .rc:hover { box-shadow: 0 8px 20px -16px var(--shadow); }
-  .rc-btn { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 0 14px 13px; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-  .rc-band { display: flex; justify-content: space-between; margin: 0 -14px 6px; padding: 6px 14px; background: var(--g); color: var(--gt); font: 600 .72rem/1.2 var(--sans); }
-  .rc-jr { font: 600 .98rem/1.2 var(--sans); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  .rc-t { font: 500 .92rem/1.32 var(--sans); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
-  .rc.open .rc-t { -webkit-line-clamp: unset; }
-  .rc-by { font-size: .78rem; color: var(--ink-2); }
-  .rc-more { padding: 0 14px 14px; }
-  .rc-more[hidden] { display: none; }
-  .rc-more p { margin: 0 0 8px; font-size: .84rem; line-height: 1.45; color: var(--ink-2); }
-  .rc-more a { font: 500 .86rem/1 var(--sans); }
-  @media (prefers-reduced-motion: reduce) { .rc { transition: none; } }
-
-  /* Rising (editor's picks) */
-  .picks { margin-top: 32px; }
-  .picks-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 24px; }
-  .picks h3 { display: flex; align-items: center; gap: 10px; font: 500 1.35rem/1.25 var(--head); }
-  .picks .intro { margin-top: 6px; }
-  .star { flex: none; width: 1em; height: 1em; color: var(--link); }
-  .pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; margin-top: 18px; }
-  .pick { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-  .pick .note { margin: 4px 0 0; font: italic 400 1.02rem/1.5 var(--head); }
-  .pick .q { margin-top: auto; padding-top: 8px; }
-  .pickb { display: inline-flex; align-items: center; gap: 4px; font: 600 .76rem/1 var(--sans); color: var(--rise); white-space: nowrap; }
-  .pickb .star, .picks h3 .star { color: var(--rise-mark); }
-  .pickb .star { width: 12px; height: 12px; }
-  .pick { border-top: 3px solid var(--rise-mark); }
-
-  @media (max-width: 760px) {
-  }
-
-  /* Footer */
-  .site-foot { margin-top: 112px; border-top: 1px solid var(--line); padding: 32px 0 56px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; font-size: .9rem; color: var(--ink-2); }
-  .site-foot p { margin: 0; max-width: 56ch; }
-  .site-foot nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
-
-  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 6px; font-size: .92rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
-  .toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-  @media (max-width: 860px) {
-    .study { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 32px 0; }
-    .study-when { display: flex; align-items: baseline; gap: 12px; }
-    .study-when .sc { margin-top: 0; }
-    .study-fig { max-width: 440px; }
-    .facts, .gap-grid { grid-template-columns: minmax(0, 1fr); }
-    .related li { grid-template-columns: 4rem minmax(0, 1fr); gap: 16px; }
-  }
-  @media (max-width: 640px) {
-    :root { --gutter: 16px; }
-    .wrap { padding: 0 16px; }
-    .hero { padding-top: 48px; }
-    section { padding-top: 72px; }
-    .scales { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
-    .fact { grid-template-columns: 4.6rem minmax(0, 1fr); }
-    .fact-num { font-size: 1.9rem; }
-    .bridge { font-size: 1.35rem; }
-  }
-</style>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/water-cycle.css">
+<script src="assets/water-cycle.js" defer></script>
 </head>
-<body>
+<body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
 
 <div class="wrap">
   <header class="site-head">
-    <a class="site-name" href="https://www.ehsanjalilvand.com/home">Ehsan Jalilvand</a>
+    <a class="site-name" href="index.html">Ehsan Jalilvand</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="https://www.ehsanjalilvand.com/home">Home</a>
-      <a href="https://www.ehsanjalilvand.com/research" aria-current="page">Research</a>
-      <a href="https://www.ehsanjalilvand.com/research/permafrost">Permafrost</a>
+      <a href="#explore">Water cycle</a>
+      <a href="#studies">Irrigation studies</a>
+      <a href="#landscape">Research library</a>
       <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </header>
 
   <main>
-    <div class="hero">
-      <h1>Measuring farm irrigation from space</h1>
-      <p class="lede">Irrigation is the largest use of fresh water on Earth, yet almost no one measures it directly. I combine satellite soil moisture and thermal observations with land surface models and data assimilation to detect where, when and how much farmers irrigate.</p>
-
-      <div class="scales" id="scales">
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="1" role="img" aria-label="One coarse pixel: the irrigation signal is averaged away"></svg>
-          <figcaption><strong>Tens of kilometers</strong><span>Passive microwave (AMSR2)</span></figcaption>
-        </figure>
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="4" role="img" aria-label="A 4 by 4 grid: wetter cells begin to appear in one corner"></svg>
-          <figcaption><strong>9 km</strong><span>SMAP enhanced</span></figcaption>
-        </figure>
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="16" role="img" aria-label="A 16 by 16 grid: wet patches line up with fields"></svg>
-          <figcaption><strong>1 km</strong><span>SMAP/Sentinel-1</span></figcaption>
-        </figure>
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="field" role="img" aria-label="Field scale: individual center-pivot fields, most irrigated, two fallow"></svg>
-          <figcaption><strong>Field scale</strong><span>Sentinel-1/2 and thermal</span></figcaption>
-        </figure>
-      </div>
-      <div class="scales-note">
-        <div class="legend" aria-hidden="true"><span>Drier</span><span class="ramp"></span><span>Wetter</span></div>
-        <p>Illustration: one landscape at four resolutions. The irrigation signal that a coarse pixel averages away becomes visible at field scale.</p>
-      </div>
-    </div>
-
+<section class="water-cycle" aria-labelledby="cycle-title">
+ <div class="cycle-heading"><div><p class="cycle-eyebrow">Ehsan Jalilvand · Hydrology & Earth observation</p><h1 id="cycle-title">Explore the water cycle.</h1></div><p class="cycle-intro">I study how water moves through landscapes, how people reshape its journey, and what satellites reveal about both.</p></div>
+ <div class="explorer-toolbar"><span>Hover to animate · Select to explore</span><button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="true">Motion on</button></div>
+ <div class="explorer" id="explore"><svg class="landscape" xmlns="http://www.w3.org/2000/svg" viewBox="0 65 1200 640" aria-labelledby="scene-title scene-desc">
+<title id="scene-title">A watershed, seen through my research</title><desc id="scene-desc">An isometric watershed with eight interactive areas: snow and frozen ground, rain, a lake, vegetation, soil moisture, drainage, rivers, and separate groundwater-fed center-pivot and river-fed rectangular fields linking to a second landscape. Tab to each area and press Enter, or choose the matching buttons below.</desc>
+<defs><linearGradient id="ground" x2=".2" y2="1"><stop stop-color="#c9d4ad"/><stop offset="1" stop-color="#dce0bf"/></linearGradient><linearGradient id="water" x2=".6" y2="1"><stop stop-color="#a4cccb"/><stop offset="1" stop-color="#63a6b2"/></linearGradient><linearGradient id="beam" x2="0" y2="1"><stop stop-color="#adc5bb" stop-opacity=".15"/><stop offset="1" stop-color="#adc5bb" stop-opacity="0"/></linearGradient><pattern id="soilgrain" width="23" height="21" patternUnits="userSpaceOnUse"><circle cx="3" cy="7" r=".8" fill="#fff" opacity=".23"/><path d="M13 16h3" stroke="#6e694e" opacity=".18"/></pattern><filter id="shadow" x="-.3" y="-.3" width="1.6" height="1.6"><feGaussianBlur stdDeviation="13"/></filter><marker id="arrow" viewBox="0 0 6 6" refX="5" refY="3" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L6 3L0 6" fill="none" stroke="#94a99b" stroke-width="1"/></marker></defs>
+<ellipse cx="654" cy="630" rx="380" ry="47" fill="#667852" opacity=".10" filter="url(#shadow)"/>
+<path d="M280 390L550 155L1050 405L630 643Z" fill="url(#ground)"/>
+<path d="M280 390L630 570L1050 405L630 643Z" fill="#d2d6b3" opacity=".5"/>
+<g class="scene-item" data-topic="soil" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Soil moisture and data assimilation"><title>Soil moisture and data assimilation</title><g class="object"><polygon points="280,390 630,569 630,643 280,462" fill="#b09a72" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="630,569 1050,405 1050,479 630,643" fill="#8c8965" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M280 412L630 592L1050 428" fill="none" stroke="#c9b18a" stroke-width="13"/><path d="M280 442L630 621L1050 457" fill="none" stroke="#797c61" stroke-width="19" opacity=".6"/><polygon points="280,390 630,569 1050,405 1050,479 630,643 280,462" fill="url(#soilgrain)" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M365 438l4 18m-4-9l-11 4m15 0l10 12m51-1l3 23m-4-11l-11-2m15 8l13-1m58 21l-3 19m0-11l-10 2m13 0l8 7" stroke="#e5d3a9" stroke-width="2" fill="none"/><path class="hover-ring" d="M280 390L630 569L1050 405M280 462L630 643L1050 479" fill="none" stroke="#d8ae62" stroke-width="3"/><path class="wet-soil anim" d="M280 400L630 579V605L280 426Z" fill="#679caa" opacity=".09"/><g transform="translate(450 550)"><circle r="13" class="number"/><text y="4" class="numtext">05</text><text x="23" y="4" class="maplabel">Soil moisture</text></g></g></g><polygon points="280,390 396,309 519,345 609,392 491,446" fill="#becb9b" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M353 398Q429 356 498 381T598 410" fill="none" stroke="#eef0d9" stroke-width="4" opacity=".65"/><path d="M714 313L961 430M744 300L992 416M714 313L639 354" fill="none" stroke="#f0ead1" stroke-width="7"/><g class="scene-item" data-topic="snow" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Snow and cold-region hydrology"><title>Snow and cold-region hydrology</title><g class="object"><ellipse cx="479" cy="304" rx="120" ry="40" fill="#708158" opacity=".13"/><polygon points="343,293 422,143 537,321" fill="#a6b293" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="422,143 537,321 440,277" fill="#788e7b" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon class="snowcap anim" points="384,216 422,143 469,216 437,201 423,218 408,200" fill="#f2f4e8" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="431,311 533,94 655,310 562,359" fill="#b7c3a9" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="533,94 655,310 562,359 544,237" fill="#889d8d" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon class="snowcap anim" points="491,183 533,94 585,187 559,176 541,195 524,174 512,190" fill="#fffef3" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon class="snowcap anim" points="533,94 585,187 559,176 541,195 536,151" fill="#d6e4dc" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="545,322 613,204 704,343 627,379" fill="#a2b594" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="613,204 704,343 627,379" fill="#829b7c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="588,248 613,204 643,250 621,242 613,255 604,241" fill="#e8efdd" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M545 240Q528 273 552 298T584 342" fill="none" stroke="#c9e2d9" stroke-width="7" stroke-linecap="round"/><path class="meltwater anim" d="M545 240Q528 273 552 298T584 342" fill="none" stroke="#72b3bb" stroke-dasharray="4 15" stroke-width="3"/><circle class="snowflake anim" cx="473" cy="143" r="2.5" fill="#fffef2" style="animation-delay:-2s"/><circle class="snowflake anim" cx="499" cy="116" r="2.5" fill="#fffef2" style="animation-delay:-1s"/><circle class="snowflake anim" cx="555" cy="137" r="2.5" fill="#fffef2" style="animation-delay:-0s"/><circle class="snowflake anim" cx="571" cy="156" r="2.5" fill="#fffef2" style="animation-delay:-1s"/><path d="M468 314l90 42 15-8-93-41Z" fill="#dae9df" opacity=".65"/><g transform="translate(365 159)"><circle r="13" class="number"/><text y="4" class="numtext">01</text><text x="-151" y="4" class="maplabel">Snow &amp; frozen ground</text></g></g></g><g transform="translate(320 355) scale(0.65)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(340 341) scale(0.8)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(364 361) scale(0.72)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(382 334) scale(0.63)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(408 357) scale(0.8)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(386 383) scale(0.65)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(680 336) scale(0.7)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(700 350) scale(0.7)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(940 455) scale(0.75)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g transform="translate(880 476) scale(0.65)"><ellipse cy="3" rx="16" ry="7" fill="#536744" opacity=".13"/><path d="M0 3V-33" stroke="#7c7254" stroke-width="4"/><polygon points="-19,-20 0,-66 19,-20" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-66 19,-20 0,-27" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="-22,-9 0,-51 22,-9" fill="#71865a" stroke="none" stroke-width="1" stroke-linejoin="round"/><polygon points="0,-51 22,-9 0,-17" fill="#526e4c" stroke="none" stroke-width="1" stroke-linejoin="round"/></g><g class="scene-item" data-topic="flood" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Floods and hydrological extremes"><title>Floods and hydrological extremes</title><g class="object"><path d="M582 340C600 362 668 354 659 384C651 410 591 399 596 425C601 454 717 441 754 474C785 501 701 520 695 543L660 557C646 526 738 503 727 483C714 463 580 479 566 432C554 392 631 395 632 377C632 368 597 378 573 345Z" fill="#eef0d5" stroke="#e7e7c9" stroke-width="10"/><path d="M582 340C600 362 668 354 659 384C651 410 591 399 596 425C601 454 717 441 754 474C785 501 701 520 695 543L660 557C646 526 738 503 727 483C714 463 580 479 566 432C554 392 631 395 632 377C632 368 597 378 573 345Z" fill="url(#water)"/><path class="waterline anim" d="M581 346C607 369 650 356 646 381S573 400 581 429S717 453 741 479S676 520 679 548" fill="none" stroke="#e4f3e9" stroke-width="2" opacity=".8"/><path d="M660 557L695 543V587L660 603Z" fill="#75aeb5"/><path d="M669 561v32m9-38v34m9-39v29" stroke="#d3e6da" stroke-width="2" opacity=".7"/><ellipse class="hover-ring" cx="754" cy="480" rx="40" ry="24" fill="none" stroke="#d6ab65" stroke-width="2"/><path class="floodplain anim" d="M600 435Q637 469 732 470Q786 501 720 519" fill="none" stroke="#85b6b7" stroke-width="18" opacity=".08"/><g transform="translate(813 525)"><circle r="13" class="number"/><text y="4" class="numtext">07</text><text x="23" y="4" class="maplabel">Runoff &amp; rivers</text></g></g></g><g class="scene-item" data-topic="human" tabindex="0" role="link" aria-label="Explore Human-driven processes: groundwater-fed center pivot and river-fed rectangular fields; open the agricultural landscape"><title>Human-driven processes: groundwater-fed center pivot and river-fed rectangular fields; open the agricultural landscape</title><g class="object"><polygon points="715,375 795,414 759,433 679,394" fill="#eee5c4" stroke="#f3eed5" stroke-width="3" stroke-linejoin="round"/><polygon points="715,375.0 738,386.2 706,403.2 683,392.0" fill="#b9b777" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M708.6 378.4l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M702.2 381.8l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M695.8 385.2l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M689.4 388.6l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><polygon points="743,388.65 766,399.84999999999997 734,416.84999999999997 711,405.65" fill="#9aaa6c" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M736.6 392.04999999999995l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M730.2 395.45l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M723.8 398.84999999999997l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M717.4 402.25l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><polygon points="771,402.3 794,413.5 762,430.5 739,419.3" fill="#a9b77c" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M764.6 405.7l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M758.2 409.1l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M751.8 412.5l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M745.4 415.90000000000003l23 11.2" stroke="#e2e1af" stroke-width="1.1"/><path d="M646 397L671 411L704 392L777 428" fill="none" stroke="#778c79" stroke-width="5" stroke-linejoin="round"/><path class="pipeflow anim" d="M646 397L671 411L704 392L777 428" fill="none" stroke="#c3e2de" stroke-width="2" stroke-dasharray="4 6"/><circle cx="646" cy="397" r="4" fill="#547f85" stroke="#e5eee0" stroke-width="1.5"/><text x="694" y="364" class="irrigation-label">River-fed fields</text><polygon points="862,499 931,472 931,494 862,521" fill="#75a9b1" stroke="none" stroke-width="1" stroke-linejoin="round"/><path d="M867 507l59-23m-59 31l59-23" fill="none" stroke="#b4d5d1" stroke-width="1.5"/><path d="M897 511V403" fill="none" stroke="#e0e1ca" stroke-width="10"/><path d="M897 511V403" fill="none" stroke="#667d73" stroke-width="6"/><path class="pumpflow anim" d="M897 511V403" fill="none" stroke="#d5eeea" stroke-width="2.5" stroke-dasharray="5 7"/><path d="M892 510v-14m10 14v-14M893 479l4-6 4 6" fill="none" stroke="#e2eee3" stroke-width="1.6"/><ellipse cx="897" cy="403" rx="79" ry="36" fill="#8ca568" stroke="#eee5c4" stroke-width="4"/><ellipse cx="897" cy="403" rx="65" ry="29.6" fill="none" stroke="#c3ce8d" stroke-width="1.4"/><ellipse cx="897" cy="403" rx="50" ry="22.8" fill="none" stroke="#c3ce8d" stroke-width="1.4"/><ellipse cx="897" cy="403" rx="35" ry="15.9" fill="none" stroke="#c3ce8d" stroke-width="1.4"/><ellipse cx="897" cy="403" rx="20" ry="9.1" fill="none" stroke="#c3ce8d" stroke-width="1.4"/><ellipse class="hover-ring" cx="897" cy="403" rx="81" ry="38" fill="none" stroke="#d9aa5c" stroke-width="2"/><ellipse cx="897" cy="403" rx="7" ry="3.2" fill="#e7e6ca" stroke="#5c7c72"/><path d="M897 403v-6" stroke="#526f65" stroke-width="4"/><g transform="translate(897 397) scale(1 .4556962)"><g class="pivot-rotor anim"><path d="M0 0H73" fill="none" stroke="#526f65" stroke-width="3.2"/><path d="M5 0l10-7 12 7 12-7 12 7 12-7 10 7" fill="none" stroke="#dce7ca" stroke-width="1.5"/><path d="M27 0v9m-5 0h10" fill="none" stroke="#526f65" stroke-width="2"/><ellipse cx="22" cy="9" rx="2" ry="4" fill="#49645a"/><ellipse cx="32" cy="9" rx="2" ry="4" fill="#49645a"/><path d="M56 0v9m-5 0h10" fill="none" stroke="#526f65" stroke-width="2"/><ellipse cx="51" cy="9" rx="2" ry="4" fill="#49645a"/><ellipse cx="61" cy="9" rx="2" ry="4" fill="#49645a"/><g class="spray anim" fill="none" stroke="#629fa8" stroke-width="1.8" stroke-dasharray="2 4"><path d="M18 0q0 17 12 23M38 0q0 17 12 23M58 0q0 17 12 23"/></g></g></g><circle cx="897" cy="397" r="3.5" fill="#f8eed1" stroke="#607d68"/><path d="M845 433l-20 9" fill="none" stroke="#80966b" stroke-width="1"/><text x="794" y="453" class="irrigation-label">Center pivot</text><path d="M915 504l50 14" fill="none" stroke="#6a9398" stroke-width="1"/><text x="971" y="526" class="irrigation-label">Groundwater</text><g transform="translate(1003 364)"><circle r="13" class="number"/><text y="4" class="numtext">08</text><text x="-192" y="4" class="maplabel">Human-driven processes ↗</text></g></g></g><g class="scene-item" data-topic="vegetation" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Vegetation water and land-atmosphere exchange"><title>Vegetation water and land-atmosphere exchange</title><g class="object"><ellipse cx="459" cy="441" rx="80" ry="31" fill="#738b55" opacity=".11"/><ellipse cx="459" cy="435" rx="67" ry="22" fill="#c3d0a4"/><g transform="translate(419 419) scale(0.65)"><path class="crop-grow anim" d="M0 6V-27m0 13q-17 0-15-14q14 0 15 14m0-9q16 1 16-13q-15-1-16 13" stroke="#617e4c" stroke-width="3" fill="#8eaa62"/></g><g transform="translate(450 431) scale(0.7)"><path class="crop-grow anim" d="M0 6V-27m0 13q-17 0-15-14q14 0 15 14m0-9q16 1 16-13q-15-1-16 13" stroke="#617e4c" stroke-width="3" fill="#8eaa62"/></g><g transform="translate(480 444) scale(0.65)"><path class="crop-grow anim" d="M0 6V-27m0 13q-17 0-15-14q14 0 15 14m0-9q16 1 16-13q-15-1-16 13" stroke="#617e4c" stroke-width="3" fill="#8eaa62"/></g><g class="vapor anim" fill="none" stroke="#9cbbb1" stroke-width="2" stroke-linecap="round"><path d="M437 368q-12-15 1-30t0-29" marker-end="url(#arrow)"/><path d="M465 383q-12-15 1-30t0-29" marker-end="url(#arrow)"/><path d="M492 394q-12-15 1-30t0-29" marker-end="url(#arrow)"/></g><text x="375" y="313" class="process-label">evapotranspiration</text><g transform="translate(355 443)"><circle r="13" class="number"/><text y="4" class="numtext">04</text><text x="-112" y="4" class="maplabel">Vegetation &amp; ET</text></g></g></g><g class="scene-item" data-topic="rain" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Precipitation"><title>Precipitation</title><g class="object"><path d="M670 171C651 166 653 142 673 141C671 118 703 114 713 130C730 116 756 128 753 146C775 144 781 169 760 175Z" fill="#e1e6dc"/><path d="M673 161C658 150 671 136 686 141C689 123 711 125 715 139C733 128 750 141 743 152C762 150 766 167 751 169Z" fill="#fffef5"/><path class="rainfall anim" d="M681 184l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.0s"/><path class="rainfall anim" d="M691 193l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.15s"/><path class="rainfall anim" d="M701 202l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.3s"/><path class="rainfall anim" d="M711 184l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.44999999999999996s"/><path class="rainfall anim" d="M721 193l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.6s"/><path class="rainfall anim" d="M731 202l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.75s"/><path class="rainfall anim" d="M741 184l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-0.8999999999999999s"/><path class="rainfall anim" d="M751 193l-8 16" stroke="#80aeb7" stroke-width="2" stroke-linecap="round" style="animation-delay:-1.05s"/><path d="M670 171H775V251H655Z" fill="transparent"/><g transform="translate(774 141)"><circle r="13" class="number"/><text y="4" class="numtext">02</text><text x="23" y="4" class="maplabel">Rain</text></g></g></g><g class="scene-item" data-topic="lake" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Lakes and evaporation"><title>Lakes and evaporation</title><g class="object"><g transform="translate(250 150) scale(.7)"><path d="M798 266Q800 244 842 247Q875 232 910 253Q954 254 946 278Q919 301 875 292Q849 308 818 289Q790 286 798 266Z" fill="#e9ead2" stroke="#e9ead2" stroke-width="10"/><path d="M798 266Q800 244 842 247Q875 232 910 253Q954 254 946 278Q919 301 875 292Q849 308 818 289Q790 286 798 266Z" fill="url(#water)"/><ellipse class="ripple anim" cx="842" cy="265" rx="15" ry="5" stroke="#d9eeea" fill="none" opacity=".65"/><ellipse class="ripple anim" cx="883" cy="274" rx="15" ry="5" stroke="#d9eeea" fill="none" opacity=".65"/><ellipse class="ripple anim" cx="913" cy="264" rx="15" ry="5" stroke="#d9eeea" fill="none" opacity=".65"/><g class="vapor anim" fill="none" stroke="#9cbbb1" stroke-width="2"><path d="M842 234q-10-13 0-25t0-25" marker-end="url(#arrow)"/><path d="M875 233q-10-13 0-25t0-25" marker-end="url(#arrow)"/></g></g><g transform="translate(960 320)"><circle r="13" class="number"/><text y="4" class="numtext">03</text><text x="23" y="4" class="maplabel">Lakes</text></g></g></g><g class="scene-item" data-topic="drainage" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Explore Soil drainage"><title>Soil drainage</title><g class="object"><path d="M841 498L984 441V504L841 560Z" fill="transparent"/><path d="M812 503v48" stroke="#d5e3d9" stroke-width="1" opacity=".5"/><path class="drainflow anim" d="M812 503v48" stroke="#c2dedc" stroke-width="3" stroke-dasharray="5 10" marker-end="url(#arrow)"/><path d="M838 493v48" stroke="#d5e3d9" stroke-width="1" opacity=".5"/><path class="drainflow anim" d="M838 493v48" stroke="#c2dedc" stroke-width="3" stroke-dasharray="5 10" marker-end="url(#arrow)"/><path d="M955 446v48" stroke="#d5e3d9" stroke-width="1" opacity=".5"/><path class="drainflow anim" d="M955 446v48" stroke="#c2dedc" stroke-width="3" stroke-dasharray="5 10" marker-end="url(#arrow)"/><g transform="translate(902 567)"><circle r="13" class="number"/><text y="4" class="numtext">06</text><text x="23" y="4" class="maplabel">Drainage</text></g></g></g><path d="M810 502l4-8 3 8m1 1l6-5" fill="none" stroke="#95a674" stroke-width="1.5"/><path d="M845 490l4-8 3 8m1 1l6-5" fill="none" stroke="#95a674" stroke-width="1.5"/><path d="M601 524l4-8 3 8m1 1l6-5" fill="none" stroke="#95a674" stroke-width="1.5"/><path d="M550 494l4-8 3 8m1 1l6-5" fill="none" stroke="#95a674" stroke-width="1.5"/><path d="M332 393l4-8 3 8m1 1l6-5" fill="none" stroke="#95a674" stroke-width="1.5"/><path d="M984 431l4-8 3 8m1 1l6-5" fill="none" stroke="#95a674" stroke-width="1.5"/></svg><div class="hint-panel" aria-live="polite" aria-atomic="true"><span class="hint-num" id="hint-number"></span><h2 class="hint-title" id="hint-title"></h2><p class="hint-copy" id="hint-copy"></p><span class="hint-link" id="hint-link"></span></div></div>
+ <div class="topic-nav" aria-label="Explore research areas"><button data-topic="snow" aria-haspopup="dialog"><span>01</span>Snow &amp; frozen ground</button><button data-topic="rain" aria-haspopup="dialog"><span>02</span>Precipitation</button><button data-topic="lake" aria-haspopup="dialog"><span>03</span>Lakes &amp; evaporation</button><button data-topic="vegetation" aria-haspopup="dialog"><span>04</span>Vegetation &amp; water</button><button data-topic="soil" aria-haspopup="dialog"><span>05</span>Soil moisture</button><button data-topic="drainage" aria-haspopup="dialog"><span>06</span>Soil drainage</button><button data-topic="flood" aria-haspopup="dialog"><span>07</span>Runoff, rivers &amp; floods</button><a href="human.html" data-topic="human"><span>08</span>Human-driven processes ↗</a></div><p class="cycle-note">On touchscreens, tap the map once to animate, twice to open. Or use the buttons above.</p>
+ <noscript><p>Enable JavaScript to explore the map. <a href="human.html">Explore human-driven processes</a> or <a href="index.html#studies">browse irrigation studies</a>.</p></noscript>
+ </section>
     <section aria-labelledby="why">
+      <p class="cycle-eyebrow">A closer look · Agricultural water use</p>
       <h2 id="why">Why irrigation matters</h2>
       <p class="intro">Feeding a growing population depends on irrigated farms, and irrigated farms depend on water that is already running short.</p>
       <div class="facts">
@@ -551,6 +105,30 @@
       </div>
       <p class="bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale.</p>
     </section>
+
+    <details class="more"><summary>Seeing irrigation at different scales</summary>      <div class="scales" id="scales">
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="1" role="img" aria-label="One coarse pixel: the irrigation signal is averaged away"></svg>
+          <figcaption><strong>Tens of kilometers</strong><span>Passive microwave (AMSR2)</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="4" role="img" aria-label="A 4 by 4 grid: wetter cells begin to appear in one corner"></svg>
+          <figcaption><strong>9 km</strong><span>SMAP enhanced</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="16" role="img" aria-label="A 16 by 16 grid: wet patches line up with fields"></svg>
+          <figcaption><strong>1 km</strong><span>SMAP/Sentinel-1</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="field" role="img" aria-label="Field scale: individual center-pivot fields, most irrigated, two fallow"></svg>
+          <figcaption><strong>Field scale</strong><span>Sentinel-1/2 and thermal</span></figcaption>
+        </figure>
+      </div>
+      <div class="scales-note">
+        <div class="legend" aria-hidden="true"><span>Drier</span><span class="ramp"></span><span>Wetter</span></div>
+        <p>Illustration: one landscape at four resolutions. The irrigation signal that a coarse pixel averages away becomes visible at field scale.</p>
+      </div>
+</details>
 
     <section id="studies" aria-labelledby="studies-h">
       <div class="studies-head">
@@ -1585,5 +1163,7 @@ litLoad()
     $("lit-body").innerHTML = `<tr class="lit-empty"><td colspan="7">The table could not load. It reads from data/papers.json, which browsers block when you open the page straight from your computer. It works once the page is on GitHub Pages.</td></tr>`;
   });
 </script>
+<dialog id="research-dialog" aria-labelledby="dialog-title"><button id="close-dialog" class="close" aria-label="Close research details" autofocus>×</button><div id="dialog-content" class="dialog-body"></div></dialog>
 </body>
 </html>
+

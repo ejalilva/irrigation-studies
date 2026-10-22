@@ -6,6 +6,7 @@ A living guide to research that uses satellites and Earth system models to find 
 
 ## What's on the page
 
+- **Interactive water-cycle landscape**: explore snow, rain, lakes, vegetation, soil moisture, drainage and rivers. The farm opens a separate human-driven processes view.
 - **Why irrigation matters**, and why it is so hard to measure on the ground.
 - **My own irrigation studies**, from coarse satellite soil moisture down to field-scale thermal observations.
 - **Essential reading**: an ordered list of the papers to start with if you are new to the field.
@@ -32,3 +33,4 @@ The table is plain JSON in [`data/papers.json`](data/papers.json), with the read
 ---
 
 Views expressed here are my own and do not reflect those of my employer. Maintenance notes are in [docs/MAINTAINING.md](docs/MAINTAINING.md).
+
