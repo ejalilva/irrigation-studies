@@ -69,9 +69,9 @@
 .scene-item .object{transform:none!important}.scene-item.active .object,.scene-item:hover .object,.scene-item:focus-visible .object{filter:drop-shadow(0 0 7px #d5b57799)}
 .scene-item .anim{animation-play-state:paused!important}.scene-item.active .anim,.scene-item:hover .anim,.scene-item:focus-visible .anim{animation-play-state:running!important}
 body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-play-state:paused!important}
-.anim{transform-box:fill-box;transform-origin:center}.waterline{animation:flow 4s linear infinite}.vapor{animation:evaporate 3s ease-in-out infinite}.rainfall{animation:rain 1.2s linear infinite}.snowflake{animation:snowfall 3s linear infinite}.snowcap{animation:thaw 6s ease-in-out infinite;transform-origin:50% 0}.meltwater,.drainflow,.pipeflow{animation:downstream 2s linear infinite}.wet-soil{animation:wetting 3.8s ease-in-out infinite}.ripple{animation:rippling 3s ease-in-out infinite}.crop-grow{animation:growth 4s ease-in-out infinite;transform-origin:50% 100%}.spray{animation:sprinkle 1.5s linear infinite;opacity:.7}.floodplain{animation:river-rise 5s ease-in-out infinite}.field-outline{animation:outline-flow 3s linear infinite}
+.anim{transform-box:fill-box;transform-origin:center}.waterline{stroke-dasharray:9 13;stroke-linecap:round;stroke-width:3;opacity:.95;animation:river-current 1.5s linear infinite}.river-fall{animation:river-cascade 1s linear infinite}.vapor{animation:evaporate 3s ease-in-out infinite}.rainfall{animation:rain 1.2s linear infinite}.snowflake{animation:snowfall 2.8s linear infinite}.snowcap{animation:thaw 6s ease-in-out infinite;transform-origin:50% 0}.meltwater,.drainflow,.pipeflow{animation:downstream 2s linear infinite}.wet-soil{animation:wetting 3.8s ease-in-out infinite}.ripple{animation:rippling 3s ease-in-out infinite}.crop-grow{animation:growth 4s ease-in-out infinite;transform-origin:50% 100%}.spray{animation:sprinkle 1.5s linear infinite;opacity:.7}.floodplain{animation:river-rise 5s ease-in-out infinite}.field-outline{animation:outline-flow 3s linear infinite}
 @keyframes rain{0%{transform:translate(2px,-4px);opacity:.25}25%{opacity:.8}100%{transform:translate(-10px,23px);opacity:.05}}
-@keyframes snowfall{0%{transform:translate(-2px,-9px);opacity:.1}30%{opacity:.9}100%{transform:translate(5px,19px);opacity:.1}}
+@keyframes snowfall{0%{transform:translate(-3px,-8px);opacity:.25}20%,65%{opacity:1}100%{transform:translate(5px,31px);opacity:.15}}
 @keyframes thaw{0%,100%{transform:scaleY(1);opacity:1}60%{transform:scaleY(.78);opacity:.83}}
 @keyframes evaporate{0%{transform:translateY(4px);opacity:.2}50%{opacity:.85}100%{transform:translateY(-13px);opacity:.15}}
 @keyframes downstream{to{stroke-dashoffset:-60}}
@@ -87,3 +87,7 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 .pumpflow{animation:pumping 2s linear infinite}
 @keyframes pivot-turn{from{transform:rotate(-20deg)}to{transform:rotate(340deg)}}
 @keyframes pumping{to{stroke-dashoffset:-72}}
+
+/* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
+@keyframes river-current{from{stroke-dashoffset:0}to{stroke-dashoffset:-44}}
+@keyframes river-cascade{from{stroke-dashoffset:0}to{stroke-dashoffset:-24}}
