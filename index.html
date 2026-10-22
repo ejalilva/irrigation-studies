@@ -14,6 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/water-cycle.css">
+<link rel="stylesheet" href="assets/study-grid.css">
 <script src="assets/water-cycle.js" defer></script>
 </head>
 <body class="main-page">
@@ -133,8 +134,8 @@
     <section id="studies" aria-labelledby="studies-h">
       <div class="studies-head">
         <div>
-          <h2 id="studies-h">Studies</h2>
-          <p class="intro">Each study pushes the irrigation signal to a finer scale or adds a new kind of observation. Newest first.</p>
+          <h2 id="studies-h">My irrigation studies</h2>
+          <p class="intro">Explore the figures, then open a study for its methods and findings. Newest first.</p>
         </div>
         <fieldset class="filters" id="filters">
           <legend>Filter studies by method</legend>
@@ -269,6 +270,8 @@
   </footer>
 </div>
 
+<dialog id="study-figure-dialog" class="study-figure-dialog" aria-labelledby="figure-title"><header class="figure-dialog-head"><h2 id="figure-title"></h2><button id="figure-close" type="button" aria-label="Close study figure" autofocus>×</button></header><figure><img id="figure-image" alt=""><figcaption id="figure-caption"></figcaption></figure><div class="figure-links"><a id="figure-original" target="_blank" rel="noopener">Open full-size figure ↗</a><a id="figure-source" target="_blank" rel="noopener">Figure source ↗</a></div></dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -289,14 +292,13 @@
    scaleNote optional text that replaces the scale label, e.g. "10 m"
    summary   one or two plain-language sentences
    findings  a short list of key results
-   image     optional { src, alt, caption }. Without an image, the page
-             draws a small resolution illustration instead.
+   image     optional { src, alt, caption, source }. Missing images are
+             clearly labeled; no substitute scientific figure is drawn.
+   imageNote optional description for a missing study figure.
 
-   Tip: save your figures in an "img" folder next to this file and use
-   src: "img/your-figure.png". Google Sites image links can change.
+   Tip: save original figures in assets/studies and cite their source.
+   Google Sites image links can change; use local copies when possible.
    ====================================================================== */
-
-const GS = "https://lh7-us.googleusercontent.com/sitesv-images-rt/";
 
 const STUDIES = [
   {
@@ -313,11 +315,7 @@ const STUDIES = [
       "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
       "Captured widespread fallowing of fields after California's 2021 megadrought."
     ],
-    image: {
-      src: GS + "AMxu72svyr-zaeniIGOinffSers-hEuUppAE4bQrvOmXpe6PGXRxFo6mnicD-_aVa8nExSJjciR7Je-j_O4D2nm0hGcINjaYsJqsJ7UCNZmZd6UgDHYQLf4Bkt1YRZjc6wzL4BnAAhmQU55tva7-a67MSWHXbytchyHMY9buAEiPRleY3YAosAx5PtslOf9aW44=w1280",
-      alt: "AgroTrack results for California after the 2021 drought",
-      caption: "AgroTrack captured widespread fallowing after California's 2021 megadrought."
-    }
+    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}]
   },
   {
     year: 2023,
@@ -333,7 +331,8 @@ const STUDIES = [
       "Estimated irrigation was significantly lower over non-irrigated pixels than over irrigated ones.",
       "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
       "In synthetic tests, knowing when irrigation happened raised accuracy to a 3% bias and R² = 0.95, which motivated the later work on timing."
-    ]
+    ],
+    image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, Noah-MP simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and Noah-MP.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
   },
   {
     year: 2021,
@@ -351,11 +350,7 @@ const STUDIES = [
       "The 1 km SMAP/Sentinel-1 product shows higher mean soil moisture and more variability over irrigated fields.",
       "Using real-time vegetation water content instead of climatology improves retrievals over irrigated cropland."
     ],
-    image: {
-      src: GS + "AMxu72uIbRAy3S3qgjEVYN055zxvaycV9P3XwjuRwbKQOa4Hq1z6KofNdawEnRIFZ5Ts9hjJNORamdrZjHq0LSbdMubFmDWbRq0LJukywX3mkkPYWq3CHSnIUh98CAYBpO_mY9GgQqa19vXczHpJ40u0htQMzwXSjAnMw1K6AZvIRlmWdg17aTVacI7vSzpXenA0txT4DV75WQf3SEp3clMaboZFDGbdFIeQ1AB4IYCXOuQ=w1280",
-      alt: "SMAP/Sentinel-1 soil moisture variability over cropland",
-      caption: "SMAP/Sentinel-1 soil moisture varies more over cropland than over surrounding land."
-    }
+    image: {"src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp", "alt": "May to September 2017 SMAP–Sentinel-1 soil moisture over irrigated and non-irrigated areas, their difference, and daily precipitation.", "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
   },
   {
     year: 2021,
@@ -373,11 +368,7 @@ const STUDIES = [
       "Irrigated fields had significantly wetter surface soil than rainfed cropland during the irrigation season.",
       "Classifying the soil moisture maps identified irrigated agriculture with 77% overall accuracy."
     ],
-    image: {
-      src: "https://pub.mdpi-res.com/sustainability/sustainability-13-11355/article_deploy/html/images/sustainability-13-11355-g013.png?1634539361",
-      alt: "Land-use classification derived from Sentinel-2 soil moisture",
-      caption: "Land-use classes from Sentinel-2 soil moisture. Figure: Rabiei et al. (2021), CC BY."
-    }
+    image: {"src": "assets/studies/rabiei-2021-figure13-original.webp", "alt": "High-resolution field imagery and a classified map showing urban land, dry farming, rangeland and irrigated agriculture near Varamin.", "caption": "Land-use classification from Sentinel-2 soil moisture. Rabiei et al. (2021), Figure 13, CC BY.", "source": "https://www.mdpi.com/2071-1050/13/20/11355"}
   },
   {
     year: 2019,
@@ -395,11 +386,7 @@ const STUDIES = [
       "Irrigated pixels showed a weekly cycle in soil moisture.",
       "Coarse microwave resolution limits the method over small parcels, which set up the move to higher-resolution data."
     ],
-    image: {
-      src: GS + "AMxu72tPXVSElCALcVUZX010mteXhYwTcb1ORo6m_yz7PFtj1xcuc1PSpTgWShejq9S53GlY8NgOM3bTxcQqN1Fp-2NGgtbKXcv9mVVxqTSPHHaUbGCVh3xcYlble6gKdMIvFQWB3yD0YrdfMzi5GNvjGEIDVMIqc5WwCCXiIn3xyqVnmzqQdydJpAOYZ7h7URPjtqwF5wahAv7CxMUv8Ft35NpE7UA8a3DX9ecEKeuR=w1280",
-      alt: "Satellite soil moisture increases over cropland used to estimate irrigation",
-      caption: "Positive changes in satellite soil moisture over cropland can be used to estimate irrigation water use."
-    }
+    image: {"src": "assets/studies/irrigation-2019-study-area.webp", "alt": "Map of the 2019 study area showing irrigated pixels 1 and 3 and non-irrigated pixels A, B and C near the Zarrineh and Simineh rivers.", "caption": "Irrigated and non-irrigated pixels in the study area.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
   }
 ];
 
@@ -547,50 +534,66 @@ function studyHTML(s, idx) {
   const authors = esc(s.authors).replace(esc(ME), `<strong>${esc(ME)}</strong>`);
   const tags = s.methods.map(m => `<li class="tag">${esc(METHODS[m] || m)}</li>`).join("");
   const findings = (s.findings || []).map(f => `<li>${esc(f)}</li>`).join("");
-  let fig;
-  if (s.image && s.image.src) {
-    fig = `<figure class="study-fig">
-        <a href="${esc(s.image.src)}" target="_blank" rel="noopener"><img src="${esc(s.image.src)}" alt="${esc(s.image.alt || "")}" referrerpolicy="no-referrer" data-level="${sc.level}" data-scale="${esc(s.scaleNote || sc.label)}"></a>
-        ${s.image.caption ? `<figcaption>${esc(s.image.caption)}</figcaption>` : ""}
-      </figure>`;
-  } else {
-    fig = `<figure class="study-fig"><svg viewBox="0 0 100 100" data-level="${sc.level}" role="img" aria-label="Illustration of a ${esc(sc.label)} grid"></svg>
-        <figcaption>Illustration of the study's resolution: ${esc((s.scaleNote || sc.label).toLowerCase())}</figcaption></figure>`;
-  }
+  const images = s.images || (s.image?.src ? [s.image] : []);
+  const fig = images.length
+    ? `<figure class="study-fig"><div class="study-image-set${images.length > 1 ? ' study-image-pair' : ''}">${images.map((image, imageIdx) => `<a class="study-figure-open" href="${esc(image.src)}" data-study-figure="${idx}" data-study-image="${imageIdx}" aria-label="Enlarge figure: ${esc(image.alt)}"><img src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" decoding="async"><span class="figure-enlarge">Enlarge figure ↗</span></a>`).join('')}</div><figcaption>${images.map(image => esc(image.caption)).join(' ')}</figcaption></figure>`
+    : `<figure class="study-fig figure-pending"><div class="missing-figure"><span>Figure pending</span><p>${esc(s.imageNote || 'Study figure to be added.')}</p></div><figcaption>The paper and study details are available below.</figcaption></figure>`;
   return `<li class="study" data-methods="${s.methods.join(" ")}">
-      <div class="study-when"><span class="yr">${s.year}</span><span class="sc">${esc(s.scaleNote || sc.label)}</span></div>
-      <div class="study-body">
-        <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
-        <p class="venue"><em>${esc(s.journal)}</em>, ${esc(s.details)}</p>
-        <p class="authors">${authors}</p>
-        <p class="summary">${esc(s.summary)}</p>
-        ${findings ? `<ul class="findings">${findings}</ul>` : ""}
-        <div class="study-foot">
-          <ul class="tags" aria-label="Methods">${tags}</ul>
-          <div class="actions">
-            <a href="${esc(linkFor(s))}">Read the paper</a>
-            <button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button>
-          </div>
-        </div>
-      </div>
-      ${fig}
-    </li>`;
+    ${fig}
+    <div class="study-body">
+      <div class="study-meta"><span>${s.year}</span><span>${esc(s.scaleNote || sc.label)}</span></div>
+      <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
+      <p class="venue"><em>${esc(s.journal)}</em></p>
+      <p class="summary">${esc(s.summary)}</p>
+      <ul class="tags" aria-label="Methods">${tags}</ul>
+      <details class="study-details"><summary>Methods &amp; findings</summary><p class="authors">${authors}</p><p class="citation-details">${esc(s.journal)}, ${esc(s.details)} (${s.year}).</p>${findings ? `<ul class="findings">${findings}</ul>` : ""}</details>
+      <div class="study-foot"><a href="${esc(linkFor(s))}">Read the paper ↗</a><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div>
+    </div>
+  </li>`;
 }
 
 const sorted = STUDIES.map((s, i) => ({ s, i })).sort((a, b) => b.s.year - a.s.year || a.i - b.i).map(o => o.s);
 
 function renderStudies() {
   document.getElementById("study-list").innerHTML = sorted.map(studyHTML).join("");
-  // If a figure fails to load, swap in the resolution illustration.
   document.querySelectorAll(".study-fig img").forEach(img => {
-    img.addEventListener("error", () => {
+    const markUnavailable = () => {
       const fig = img.closest("figure");
-      const lv = img.dataset.level;
-      fig.innerHTML = `<svg viewBox="0 0 100 100" data-level="${lv}" role="img" aria-label="Resolution illustration"></svg>
-        <figcaption>Illustration of the study's resolution: ${esc(img.dataset.scale.toLowerCase())}</figcaption>`;
-      drawPanels();
-    }, { once: true });
+      fig.classList.add("figure-pending");
+      fig.innerHTML = `<div class="missing-figure"><span>Figure unavailable</span><p>This study’s figure could not be loaded.</p></div><figcaption>The paper and study details are available below.</figcaption>`;
+    };
+    img.addEventListener("error", markUnavailable, { once: true });
+    if (img.complete && img.naturalWidth === 0) markUnavailable();
   });
+}
+
+const figureDialog = document.getElementById('study-figure-dialog');
+let figureOpener = null;
+if (figureDialog && typeof figureDialog.showModal === 'function') {
+  document.getElementById('study-list').addEventListener('click', event => {
+    const link = event.target.closest('[data-study-figure]');
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    const study = sorted[Number(link.dataset.studyFigure)];
+    const figure = (study.images || [study.image])[Number(link.dataset.studyImage)];
+    figureOpener = link;
+    document.getElementById('figure-title').textContent = study.title;
+    const img = document.getElementById('figure-image');
+    img.src = figure.src;
+    img.alt = figure.alt;
+    document.getElementById('figure-caption').textContent = figure.caption;
+    document.getElementById('figure-original').href = figure.src;
+    document.getElementById('figure-source').href = figure.source;
+    figureDialog.showModal();
+    document.getElementById('figure-close').focus();
+  });
+  document.getElementById('figure-close').addEventListener('click', () => figureDialog.close());
+  figureDialog.addEventListener('click', event => {
+    if(event.target !== figureDialog) return;
+    const rect = figureDialog.getBoundingClientRect();
+    if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) figureDialog.close();
+  });
+  figureDialog.addEventListener('close', () => figureOpener?.focus({preventScroll:true}));
 }
 
 function renderFilters() {

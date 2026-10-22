@@ -184,7 +184,15 @@ The page is linked from the main site's navigation (Pages → New link → `http
 
 ## Figures
 
-Three figures in the Studies section load from Google Sites image URLs, which can change. To make them permanent, move them into `img/` and update each study's `image.src` in `index.html`. If an image fails to load, the page draws a resolution illustration instead.
+The personal irrigation studies use a compact two-column grid (one column on phones), styled by `assets/study-grid.css`. Figures remain uncropped, and clicking one opens a larger accessible dialog. Authors and findings are available under “Methods & findings.” Method filters and citation copying remain available.
+
+Three figures were retrieved from Ehsan's personal irrigation page on October 22, 2026 and saved locally under `assets/studies/`. `data/study-figure-sources.json` records their DOI associations and source URLs. WebP conversion is lossless, with original pixels and transparency retained.
+
+The Rabiei et al. (2021) figure was not found on the personal page. Its existing journal Figure 13 was retrieved successfully through the browser, saved locally, and credited to the paper (CC BY).
+
+AgroTrack uses the original 2021 and 2022 irrigation-day maps from the Juxtapose comparison embedded on the personal irrigation page. Both are saved locally as original PNGs and displayed side by side, with individual enlargement controls. All five studies have figures. Use an `image` object (`src`, `alt`, `caption`, `source`) for one figure, or an `images` array for a comparison. Failed image loads are explicitly labeled instead of replaced by synthetic resolution illustrations.
+
+The journey page and its navigation links were removed from the live site at Ehsan's request on October 22, 2026. Its implementation remains recoverable in Git history; do not restore it without a request.
 
 ## Water-cycle explorer
 
