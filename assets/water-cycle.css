@@ -86,6 +86,9 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 .pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 12s linear infinite}
 .pumpflow{animation:pumping 2s linear infinite}
 @keyframes pivot-turn{from{transform:rotate(-20deg)}to{transform:rotate(340deg)}}
+/* Towers and falling spray ride the arm but counter-rotate and undo the projection, so they stay upright on screen. */
+.pivot-counter{transform-box:view-box;transform-origin:0px 0px;animation:pivot-counter 12s linear infinite}
+@keyframes pivot-counter{from{transform:rotate(20deg)}to{transform:rotate(-340deg)}}
 @keyframes pumping{to{stroke-dashoffset:-72}}
 
 /* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
