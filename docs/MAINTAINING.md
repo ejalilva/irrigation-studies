@@ -6,7 +6,11 @@ Technical notes for running the page, the paper-finding agent and the review wor
 
 | Path | Contents |
 |---|---|
-| `index.html` | The water-cycle opening, irrigation studies, research landscape table and related work. |\n| `human.html` | Human-driven processes landscape, linked from the farm on the main map. |\n| `assets/site.css` | Shared page typography, layout and light/dark theme. |\n| `assets/water-cycle.css` | Explorer layout and hover/focus animations. |\n| `assets/water-cycle.js` | Map research descriptions and accessible interaction controller. |
+| `index.html` | The water-cycle opening, irrigation studies, research landscape table and related work. |
+| `human.html` | Human-driven processes landscape, linked from the farm on the main map. |
+| `assets/site.css` | Shared page typography, layout and light/dark theme. |
+| `assets/water-cycle.css` | Explorer layout and hover/focus animations. |
+| `assets/water-cycle.js` | Map research descriptions and accessible interaction controller. |
 | `data/papers.json` | Rows of the research landscape table. |
 | `data/editor_picks.json` | Rising papers (editor's picks) and their notes, shown above the table and tagged in it. |
 | `data/reading_list.json` | The ordered essential reading list. |
