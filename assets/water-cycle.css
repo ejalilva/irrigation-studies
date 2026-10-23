@@ -4,14 +4,17 @@
 .cycle-eyebrow {font:500 .72rem/1.5 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px;}
 .water-cycle h1 {font-size:clamp(2rem,4.4vw,3.35rem);line-height:1.1;max-width:19ch;}
 .cycle-intro {max-width:39ch;font-size:.95rem;line-height:1.65;color:var(--ink-2);margin:0;}
-.explorer-toolbar {display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
+.explorer-toolbar {display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
 .motion-toggle {font:inherit;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
 .motion-toggle:hover {background:var(--hover);}
 .toolbar-actions {display:flex;flex-shrink:0;gap:8px;}
 .tour-toggle {font:inherit;color:var(--link);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
 .tour-toggle:hover {background:var(--hover);}
 .tour-toggle.on {border-color:var(--link);}
-.explorer {position:relative;margin:0;}
+/* On wide screens the main map extends into the page margins (up to 80px each side) so it reads larger than the text column.
+   The hint panel stays aligned with the column and keeps the width it had at 19% of the column. */
+.explorer {position:relative;margin:0;--bleed:0px;margin-inline:calc(-1 * var(--bleed));}
+.main-page .explorer {--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 32px),80px);}
 .landscape {display:block;width:100%;height:auto;overflow:visible;}
 .scene-item {cursor:pointer;outline:none;}
 .scene-item .object {transition:filter .2s;}
@@ -21,23 +24,16 @@
 .scene-item .number {fill:var(--paper);stroke:var(--line);stroke-width:1;}
 .scene-item:is(:hover,:focus-visible,.active) .number {fill:var(--link);stroke:var(--link);}
 .scene-item:is(:hover,:focus-visible,.active) .numtext {fill:var(--paper);}
-.numtext {font:11px var(--sans);fill:var(--ink-2);text-anchor:middle;}
-.maplabel {font:12px var(--sans);fill:var(--ink-2);}
-.process-label {font:italic 12px var(--sans);fill:#506b5c;}
-.irrigation-label {font:10px var(--sans);fill:#415948;}
-.hint-panel {position:absolute;left:0;top:48%;width:19%;pointer-events:none;}
-.hint-num {font-size:.7rem;color:var(--link);}
+.numtext {font:12px var(--sans);fill:var(--ink-2);text-anchor:middle;}
+.maplabel {font:13.5px var(--sans);fill:var(--ink-2);}
+.process-label {font:italic 13px var(--sans);fill:#506b5c;}
+.irrigation-label {font:11px var(--sans);fill:#415948;}
+.hint-panel {position:absolute;left:var(--bleed);top:48%;width:calc((100% - 2 * var(--bleed)) * .19);pointer-events:none;}
 .hint-title {font:500 1.3rem/1.2 var(--sans);margin:8px 0;}
 .hint-copy {font-size:.75rem;line-height:1.6;color:var(--ink-2);margin:0 0 10px;}
-.hint-link {font-size:.65rem;color:var(--link);}
-.topic-nav {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 20px;border-block:1px solid var(--line);padding:16px 0;}
-.topic-nav button,.topic-nav a {font:400 .8rem/1.4 var(--sans);text-align:left;color:var(--ink);border:0;background:none;padding:5px 0;cursor:pointer;text-decoration:none;display:flex;align-items:baseline;gap:8px;}
-.topic-nav span {font-size:.65rem;color:var(--ink-2);}
-.topic-nav :is(button,a):hover {color:var(--link);text-decoration:underline;}
-.cycle-note {font-size:.72rem;line-height:1.6;color:var(--ink-2);margin:12px 0;}
+.hint-link {font-size:.72rem;color:var(--link);}
 .cycle-back {display:inline-block;margin-top:24px;font-size:.8rem;}
 .human-page .water-cycle {padding-top:24px;}
-.human-page .topic-nav {grid-template-columns:repeat(3,1fr);}
 .cycle-links {display:flex;flex-wrap:wrap;gap:12px 28px;margin:32px 0;font-size:.9rem;}
 #research-dialog {border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:0;width:min(680px,calc(100% - 32px));max-height:88dvh;border-radius:6px;box-shadow:0 24px 90px var(--shadow);}
 #research-dialog::backdrop {background:rgba(15,26,31,.55);backdrop-filter:blur(3px);}
@@ -57,13 +53,9 @@
 @media(max-width:750px) {
  .cycle-heading {display:block;} .cycle-intro {max-width:54ch;margin-top:16px;}
  .water-cycle {padding-top:32px;}
- .explorer {display:flex;flex-direction:column;}
+ .explorer,.main-page .explorer {display:flex;flex-direction:column;--bleed:0px;margin-inline:0;}
  .hint-panel {position:static;width:auto;max-width:none;min-height:112px;margin:8px 0 20px;}
  .hint-title {font-size:1.1rem;} .hint-copy {margin:5px 0;max-width:65ch;}
- .hint-link {display:none;}
- .topic-nav {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;}
- .human-page .topic-nav {gap:8px;}
- .topic-nav button,.topic-nav a {min-height:44px;}
  #research-dialog .dialog-body {padding:28px 22px;}
 }
 @media(prefers-reduced-motion:reduce) {
@@ -87,12 +79,12 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 @keyframes outline-flow{to{stroke-dashoffset:-60}}
 
 /* Rotation happens before isometric projection, about the stationary center well. */
-.pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 12s linear infinite}
+.pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 16s linear infinite}
 .pumpflow{animation:pumping 2s linear infinite}
-@keyframes pivot-turn{from{transform:rotate(-20deg)}to{transform:rotate(340deg)}}
+@keyframes pivot-turn{0%{transform:rotate(-20deg)}37.5%{transform:rotate(340deg)}75%,100%{transform:rotate(700deg)}}
 /* Towers and falling spray ride the arm but counter-rotate and undo the projection, so they stay upright on screen. */
-.pivot-counter{transform-box:view-box;transform-origin:0px 0px;animation:pivot-counter 12s linear infinite}
-@keyframes pivot-counter{from{transform:rotate(20deg)}to{transform:rotate(-340deg)}}
+.pivot-counter{transform-box:view-box;transform-origin:0px 0px;animation:pivot-counter 16s linear infinite}
+@keyframes pivot-counter{0%{transform:rotate(20deg)}37.5%{transform:rotate(-340deg)}75%,100%{transform:rotate(-700deg)}}
 @keyframes pumping{to{stroke-dashoffset:-72}}
 
 /* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
@@ -100,9 +92,9 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 @keyframes river-cascade{from{stroke-dashoffset:0}to{stroke-dashoffset:-24}}
 
 /* Soil moisture in two layers. The surface wets and dries quickly; the wetting front reaches the root zone later and lingers while roots draw water up. Keep the three 7 s timings equal so the stages stay in order. */
-.soil-layer{font:600 10px var(--sans);letter-spacing:.02em}
+.soil-layer{font:600 10.5px var(--sans);letter-spacing:.02em}
 .surface-label{fill:#4a391e}
-.root-label{font-size:11px;fill:#fffaf0}
+.root-label{font-size:11.5px;fill:#fffaf0}
 .surface-wet{animation:surface-wet 7s ease-in-out infinite}
 .wetting-front{transform-origin:50% 0;animation:wetting-front 7s ease-in-out infinite}
 .root-uptake{animation:uptake-flow .9s linear infinite,uptake-show 7s ease-in-out infinite}
@@ -118,10 +110,10 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 /* A badge label that sits on the landscape itself keeps dark text on a light halo in both themes. */
 .maplabel.on-map{fill:#3b4a43;stroke:rgba(247,245,233,.92)}
 /* Labels drawn on the soil faces: dark on the light surface band, white on the darker root zone and groundwater. */
-.soil-layer,.face-label{font:600 10px var(--sans);letter-spacing:.02em;paint-order:stroke;stroke-linejoin:round}
+.soil-layer,.face-label{font:600 10.5px var(--sans);letter-spacing:.02em;paint-order:stroke;stroke-linejoin:round}
 .surface-label{fill:#3b2d17;stroke:rgba(240,228,198,.8);stroke-width:2px}
-.root-label{font-size:11px;fill:#fffaf2;stroke:rgba(88,66,38,.55);stroke-width:2px}
-.gw-label{font-size:11px;fill:#f2fbfb;stroke:rgba(31,72,80,.6);stroke-width:2px}
+.root-label{font-size:11.5px;fill:#fffaf2;stroke:rgba(88,66,38,.55);stroke-width:2px}
+.gw-label{font-size:12px;fill:#f2fbfb;stroke:rgba(31,72,80,.6);stroke-width:2px}
 
 /* During the tour, only the part being shown animates, even if the mouse rests on another part. */
 body.touring .scene-item:not(.active) .anim{animation-play-state:paused!important}
@@ -130,22 +122,23 @@ body.touring .scene-item:not(.active):hover .hover-ring{opacity:0}
 body.touring .scene-item:not(.active):hover .number{fill:var(--paper);stroke:var(--line)}
 body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 
-/* Groundwater pumping, 12 s cycle matching the pivot: the pump runs for about 7 s, then rests while the water table recovers.
-   Keep cone, pump-on, wt-original and pump-spray at the same duration so they stay in step. */
+/* Pivot and pump cycle, 16 s: the pump runs for 12 s while the arm makes two 6 s turns (pivot-turn reaches 340deg at 37.5% and 700deg
+   at 75%), then both rest while the water table recovers. Keep pivot-turn, pivot-counter, cone, pump-on, wt-original, pump-spray,
+   footprint, field-wet and field-green at 16 s with matching percentages so they stay in step. The river-fed fields keep their own 12 s rotation. */
 .drainflow{animation:downstream 3s linear infinite}
-.pump-on{animation:pump-on 12s linear infinite}
+.pump-on{animation:pump-on 16s linear infinite}
 .pump-rise{animation:pump-rise 1.6s linear infinite}
 .aquifer-flow{animation:aquifer-flow 2.4s linear infinite}
-.cone{transform-box:fill-box;transform-origin:50% 0;animation:cone 12s infinite}
-.wt-original{animation:wt-original 12s linear infinite}
-.spray.pump-spray{animation:sprinkle 1.5s linear infinite,pump-spray 12s linear infinite}
-@keyframes pump-on{0%{opacity:0}5%,58%{opacity:1}64%,100%{opacity:0}}
+.cone{transform-box:fill-box;transform-origin:50% 0;animation:cone 16s infinite}
+.wt-original{animation:wt-original 16s linear infinite}
+.spray.pump-spray{animation:sprinkle 1.5s linear infinite,pump-spray 16s linear infinite}
+@keyframes pump-on{0%{opacity:0}3%,74%{opacity:1}79%,100%{opacity:0}}
 @keyframes pump-rise{to{transform:translateY(-15px)}}
 @keyframes aquifer-flow{to{stroke-dashoffset:-14}}
 /* Drawdown grows quickly at first and then ever more slowly while pumping (roughly with the log of time), and recovers the same way. */
-@keyframes cone{0%{transform:scale(.45,.02);animation-timing-function:cubic-bezier(.2,.65,.35,1)}58%,64%{transform:scale(1,1);animation-timing-function:cubic-bezier(.2,.65,.35,1)}100%{transform:scale(.45,.02)}}
-@keyframes wt-original{0%{opacity:0}18%,66%{opacity:.85}100%{opacity:0}}
-@keyframes pump-spray{0%{opacity:.12}5%,58%{opacity:.7}64%,100%{opacity:.12}}
+@keyframes cone{0%{transform:scale(.45,.02);animation-timing-function:cubic-bezier(.2,.65,.35,1)}75%,79%{transform:scale(1,1);animation-timing-function:cubic-bezier(.2,.65,.35,1)}100%{transform:scale(.45,.02)}}
+@keyframes wt-original{0%{opacity:0}15%,82%{opacity:.85}100%{opacity:0}}
+@keyframes pump-spray{0%{opacity:0}3%,74%{opacity:.7}79%,100%{opacity:0}}
 
 /* Surface-water irrigation in rotation, 12 s cycle: each field gets a 4 s turn from its own lateral canal (delays 0, -8 s, -4 s).
    Water advances along the furrows, the soil darkens (or the crop greens) behind it, then the field slowly dries. */
@@ -160,3 +153,33 @@ body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 @keyframes plot-water{0%{transform:scaleX(0);opacity:.75}22%{transform:scaleX(1);opacity:.75}33%,100%{transform:scaleX(1);opacity:0}}
 @keyframes plot-wet{0%,4%{transform:scaleX(0);opacity:.85}26%,70%{transform:scaleX(1);opacity:.85}100%{transform:scaleX(1);opacity:0}}
 @keyframes sprout{0%,8%{transform:scale(.65)}50%,80%{transform:scale(1.1)}100%{transform:scale(.65)}}
+
+/* Pivot field, same 16 s cycle: on the first turn the bare light-brown soil turns dark brown right behind the arm; on the second
+   turn the wet soil turns green behind it; at the end of the cycle the field returns to bare soil.
+   A circle stroked as wide as its diameter and revealed with stroke-dashoffset draws a growing pie from the arm's start angle. */
+.footprint{animation:pump-spray 16s linear infinite}
+.field-wet{animation:field-wet 16s linear infinite}
+.field-green{animation:field-green 16s linear infinite}
+@keyframes field-wet{0%{stroke-dashoffset:248.19;opacity:1}37.5%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes field-green{0%,37.5%{stroke-dashoffset:248.19;opacity:1}75%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+
+/* Linked stories. Elements with data-link run when any part they name is highlighted (the controller adds .link-run),
+   so soil water and the corn above it move together, and the river rises after the rain from either part. */
+body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-play-state:running!important}
+/* Corn, 7 s like the soil cycle: it grows as the roots take up water (uptake-show 55-85%), forms tassels and cobs, then starts again. */
+.corn-grow{transform-box:fill-box;transform-origin:50% 100%;animation:corn-grow 7s ease-in-out infinite}
+.corn-cob{transform-box:fill-box;transform-origin:50% 100%;animation:corn-cob 7s ease-in-out infinite}
+.corn-tassel{animation:corn-tassel 7s ease-in-out infinite}
+@keyframes corn-grow{0%,42%{transform:scale(.42)}82%,93%{transform:scale(1)}100%{transform:scale(.42)}}
+@keyframes corn-cob{0%,66%{opacity:0;transform:scale(.3)}82%,93%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
+@keyframes corn-tassel{0%,62%{opacity:0}76%,93%{opacity:1}100%{opacity:0}}
+/* Rain and river, 6 s: a shower falls (0-2.5 s), the river swells to its banks after a lag, its plume spreads into the sea, then it recedes. */
+.shower{animation:shower 6s linear infinite}
+.river-swell{animation:river-swell 6s ease-in-out infinite}
+.river-plume{animation:river-plume 6s ease-in-out infinite}
+.wave{animation:wave 3s ease-in-out infinite}
+@keyframes shower{0%,42%{opacity:1}50%,94%{opacity:0}100%{opacity:1}}
+@keyframes river-swell{0%,22%{stroke-width:0}62%{stroke-width:10}100%{stroke-width:0}}
+@keyframes river-plume{0%,35%{opacity:0}70%{opacity:.75}100%{opacity:0}}
+@keyframes wave{0%,100%{transform:translateX(0);opacity:.4}50%{transform:translateX(4px);opacity:.9}}
+.sea-label{font:italic 12px var(--sans);fill:#f4fbfb;paint-order:stroke;stroke:rgba(40,96,112,.55);stroke-width:2px;stroke-linejoin:round}
