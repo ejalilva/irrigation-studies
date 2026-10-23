@@ -15,11 +15,11 @@ function frameLandscape() {
 }
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
-const defaults={number:isHuman?'A closer look':'A connected landscape',title:isHuman?'Water meets the field.':'Follow the water.',copy:isHuman?'Explore field boundaries, the sprinkler, and groundwater pumping. Each opens a different irrigation question.':'Explore a water store or flow. Each part of the landscape opens the research connected to it.',touchCopy:isHuman?'Tap field boundaries, the sprinkler, or groundwater pumping to see it move, then tap again to open its irrigation question.':'Tap any part of the landscape to see it move, then tap it again to open the research connected to it.'};
+const defaults={title:isHuman?'Water meets the field.':'Follow the water.'};
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
-const howTo=document.querySelector('#explorer-how');
-function updateHowTo(){if(howTo)howTo.textContent=finePointer.matches?'Hover to animate · Select to explore':'Tap to animate · Tap again to explore';}
-finePointer.addEventListener('change',()=>{updateHowTo();if(!activeTopic)clearHighlight();});updateHowTo();
+// The side panel shows only the part's title and one line about it; the explore cue appears once a part is selected.
+function setHint(title,copy,link){document.querySelector('#hint-title').textContent=title;document.querySelector('#hint-copy').textContent=copy;document.querySelector('#hint-link').textContent=link;}
+function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to explore')+(t.href?' ↗':'');}
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 const motionButton=document.querySelector('#motion-toggle');
 let activeTopic=null,touchArmed=null,returnFocus=null,motionEnabled=!reduced.matches;
@@ -27,13 +27,13 @@ function updateMotion(){document.body.classList.toggle('motion-off',!motionEnabl
 motionButton.addEventListener('click',()=>{motionEnabled=!motionEnabled;updateMotion();});
 reduced.addEventListener('change',()=>{motionEnabled=!reduced.matches;updateMotion();});updateMotion();
 function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;
- document.querySelector('#hint-number').textContent=t.n+' / EXPLORE';document.querySelector('#hint-title').textContent=t.title;document.querySelector('#hint-copy').textContent=t.short;document.querySelector('#hint-link').textContent=t.href?'Explore human-driven processes ↗':'Click to read the research ↗';
+ setHint(t.title,t.short,exploreCue(t,false));
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));
  setLinked(key);
 }
 // Elements whose data-link names the highlighted part run with it, wherever they sit on the map.
 function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',!!key&&el.dataset.link.split(' ').includes(key)));}
-function clearHighlight(){activeTopic=null;document.querySelector('#hint-number').textContent=defaults.number;document.querySelector('#hint-title').textContent=defaults.title;document.querySelector('#hint-copy').textContent=finePointer.matches?defaults.copy:defaults.touchCopy;document.querySelector('#hint-link').textContent=finePointer.matches?'Hover any part · Click to explore':'Tap any part · Tap again to explore';document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
+function clearHighlight(){activeTopic=null;setHint(defaults.title,'','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
 function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
  returnFocus=document.activeElement;content.replaceChildren();
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
@@ -52,15 +52,15 @@ document.querySelectorAll('[data-topic]').forEach(el=>{
  el.addEventListener('pointerleave',e=>{if(!tour&&(e.pointerType==='mouse'||e.pointerType==='pen'))clearHighlight();});
  el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open)clearHighlight();});
  let pointerType='';el.addEventListener('pointerdown',e=>{pointerType=e.pointerType;});
- el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=topics[key].href?'Tap again to explore human-driven processes ↗':'Tap again to read the research ↗';return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
+ el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=exploreCue(topics[key],true);return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
  if(el.tagName.toLowerCase()==='g')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTopic(el.dataset.topic);}});
 });
-// Intro tour. When the page opens and the map is in view, each part plays briefly in turn and the map then waits.
+// Intro tour. When the page opens and the map is in view, each part plays briefly in turn (in badge order) and the map then waits.
 // A click, tap, key press or deliberate hover stops it at once. The Play tour button replays it; with reduced motion or Motion off it only highlights.
 const tourButton=document.querySelector('#tour-toggle');
 const hintPanel=document.querySelector('.hint-panel');
 const explorer=document.querySelector('#explore');
-const tourKeys=[...new Set([...document.querySelectorAll('.topic-nav [data-topic]')].map(b=>b.dataset.topic))].filter(k=>document.querySelector('.scene-item[data-topic="'+k+'"]'));
+const tourKeys=[...new Set([...document.querySelectorAll('.landscape .scene-item[data-topic]')].map(e=>e.dataset.topic))].filter(k=>topics[k]).sort((a,b)=>topics[a].n.localeCompare(topics[b].n));
 const tourSeenKey='water-cycle-tour-v2-'+(isHuman?'human':'main');
 const minStep=Math.max(1600,4800/tourKeys.length),maxStep=3200,maxRate=3;
 // autoDone: the automatic tour has had its chance on this page view. Seen: it finished or the visitor stopped it, so later visits skip it.
@@ -81,8 +81,7 @@ function playTourStep(i){
  anims.forEach(a=>{a.playbackRate=Math.min(rateCap,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
  tour.sped=anims;
  highlight(key);
- document.querySelector('#hint-number').textContent=topics[key].n+' / '+String(tourKeys.length).padStart(2,'0')+' · TOUR';
- document.querySelector('#hint-link').textContent=finePointer.matches?'Hover any part to take over':'Tap any part to take over';
+ document.querySelector('#hint-link').textContent='';
  tour.timer=setTimeout(()=>playTourStep(i+1),ms);
 }
 function startTour(){
