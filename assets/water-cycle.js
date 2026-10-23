@@ -74,8 +74,11 @@ function playTourStep(i){
  if(i>=tourKeys.length){stopTour(false,true);return;}
  const key=tourKeys[i],anims=partAnimations(key);
  // A step lasts long enough for the part's slowest animation to finish most of a cycle at up to 3x speed; each animation restarts from its beginning.
- const ms=Math.min(maxStep,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/maxRate));
- anims.forEach(a=>{a.playbackRate=Math.min(maxRate,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
+ // A part can ask for a longer step (data-tour-step, in ms) when its story needs a full long cycle, such as the pivot's two turns.
+ const fixed=+(document.querySelector('.scene-item[data-topic="'+key+'"]')?.dataset.tourStep||0);
+ const ms=fixed||Math.min(maxStep,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/maxRate));
+ const rateCap=fixed?4:maxRate;
+ anims.forEach(a=>{a.playbackRate=Math.min(rateCap,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
  tour.sped=anims;
  highlight(key);
  document.querySelector('#hint-number').textContent=topics[key].n+' / '+String(tourKeys.length).padStart(2,'0')+' · TOUR';

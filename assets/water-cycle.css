@@ -87,12 +87,12 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 @keyframes outline-flow{to{stroke-dashoffset:-60}}
 
 /* Rotation happens before isometric projection, about the stationary center well. */
-.pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 12s linear infinite}
+.pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 16s linear infinite}
 .pumpflow{animation:pumping 2s linear infinite}
-@keyframes pivot-turn{0%{transform:rotate(-20deg)}75%,100%{transform:rotate(340deg)}}
+@keyframes pivot-turn{0%{transform:rotate(-20deg)}37.5%{transform:rotate(340deg)}75%,100%{transform:rotate(700deg)}}
 /* Towers and falling spray ride the arm but counter-rotate and undo the projection, so they stay upright on screen. */
-.pivot-counter{transform-box:view-box;transform-origin:0px 0px;animation:pivot-counter 12s linear infinite}
-@keyframes pivot-counter{0%{transform:rotate(20deg)}75%,100%{transform:rotate(-340deg)}}
+.pivot-counter{transform-box:view-box;transform-origin:0px 0px;animation:pivot-counter 16s linear infinite}
+@keyframes pivot-counter{0%{transform:rotate(20deg)}37.5%{transform:rotate(-340deg)}75%,100%{transform:rotate(-700deg)}}
 @keyframes pumping{to{stroke-dashoffset:-72}}
 
 /* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
@@ -130,23 +130,23 @@ body.touring .scene-item:not(.active):hover .hover-ring{opacity:0}
 body.touring .scene-item:not(.active):hover .number{fill:var(--paper);stroke:var(--line)}
 body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 
-/* Farm cycle, 12 s: the pump runs for 9 s while the pivot arm makes one full turn (pivot-turn reaches 340deg at 75%), then both rest
-   while the water table recovers. Keep pivot-turn, pivot-counter, cone, pump-on, wt-original, pump-spray, footprint, field-wet and
-   field-green at 12 s with matching percentages so they stay in step. */
+/* Pivot and pump cycle, 16 s: the pump runs for 12 s while the arm makes two 6 s turns (pivot-turn reaches 340deg at 37.5% and 700deg
+   at 75%), then both rest while the water table recovers. Keep pivot-turn, pivot-counter, cone, pump-on, wt-original, pump-spray,
+   footprint, field-wet and field-green at 16 s with matching percentages so they stay in step. The river-fed fields keep their own 12 s rotation. */
 .drainflow{animation:downstream 3s linear infinite}
-.pump-on{animation:pump-on 12s linear infinite}
+.pump-on{animation:pump-on 16s linear infinite}
 .pump-rise{animation:pump-rise 1.6s linear infinite}
 .aquifer-flow{animation:aquifer-flow 2.4s linear infinite}
-.cone{transform-box:fill-box;transform-origin:50% 0;animation:cone 12s infinite}
-.wt-original{animation:wt-original 12s linear infinite}
-.spray.pump-spray{animation:sprinkle 1.5s linear infinite,pump-spray 12s linear infinite}
-@keyframes pump-on{0%{opacity:0}4%,74%{opacity:1}79%,100%{opacity:0}}
+.cone{transform-box:fill-box;transform-origin:50% 0;animation:cone 16s infinite}
+.wt-original{animation:wt-original 16s linear infinite}
+.spray.pump-spray{animation:sprinkle 1.5s linear infinite,pump-spray 16s linear infinite}
+@keyframes pump-on{0%{opacity:0}3%,74%{opacity:1}79%,100%{opacity:0}}
 @keyframes pump-rise{to{transform:translateY(-15px)}}
 @keyframes aquifer-flow{to{stroke-dashoffset:-14}}
 /* Drawdown grows quickly at first and then ever more slowly while pumping (roughly with the log of time), and recovers the same way. */
 @keyframes cone{0%{transform:scale(.45,.02);animation-timing-function:cubic-bezier(.2,.65,.35,1)}75%,79%{transform:scale(1,1);animation-timing-function:cubic-bezier(.2,.65,.35,1)}100%{transform:scale(.45,.02)}}
-@keyframes wt-original{0%{opacity:0}18%,82%{opacity:.85}100%{opacity:0}}
-@keyframes pump-spray{0%{opacity:0}4%,74%{opacity:.7}79%,100%{opacity:0}}
+@keyframes wt-original{0%{opacity:0}15%,82%{opacity:.85}100%{opacity:0}}
+@keyframes pump-spray{0%{opacity:0}3%,74%{opacity:.7}79%,100%{opacity:0}}
 
 /* Surface-water irrigation in rotation, 12 s cycle: each field gets a 4 s turn from its own lateral canal (delays 0, -8 s, -4 s).
    Water advances along the furrows, the soil darkens (or the crop greens) behind it, then the field slowly dries. */
@@ -162,13 +162,14 @@ body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 @keyframes plot-wet{0%,4%{transform:scaleX(0);opacity:.85}26%,70%{transform:scaleX(1);opacity:.85}100%{transform:scaleX(1);opacity:0}}
 @keyframes sprout{0%,8%{transform:scale(.65)}50%,80%{transform:scale(1.1)}100%{transform:scale(.65)}}
 
-/* Pivot field, same 12 s cycle: bare soil turns dark brown right behind the arm, and green follows about 40 degrees later.
+/* Pivot field, same 16 s cycle: on the first turn the bare light-brown soil turns dark brown right behind the arm; on the second
+   turn the wet soil turns green behind it; at the end of the cycle the field returns to bare soil.
    A circle stroked as wide as its diameter and revealed with stroke-dashoffset draws a growing pie from the arm's start angle. */
-.footprint{animation:pump-spray 12s linear infinite}
-.field-wet{animation:field-wet 12s linear infinite}
-.field-green{animation:field-green 12s linear infinite}
-@keyframes field-wet{0%{stroke-dashoffset:248.19;opacity:1}75%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
-@keyframes field-green{0%,10%{stroke-dashoffset:248.19;opacity:1}85%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+.footprint{animation:pump-spray 16s linear infinite}
+.field-wet{animation:field-wet 16s linear infinite}
+.field-green{animation:field-green 16s linear infinite}
+@keyframes field-wet{0%{stroke-dashoffset:248.19;opacity:1}37.5%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes field-green{0%,37.5%{stroke-dashoffset:248.19;opacity:1}75%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 
 /* Linked stories. Elements with data-link run when any part they name is highlighted (the controller adds .link-run),
    so soil water and the corn above it move together, and the river rises after the rain from either part. */
