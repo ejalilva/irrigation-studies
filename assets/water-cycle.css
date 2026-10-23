@@ -11,7 +11,10 @@
 .tour-toggle {font:inherit;color:var(--link);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
 .tour-toggle:hover {background:var(--hover);}
 .tour-toggle.on {border-color:var(--link);}
-.explorer {position:relative;margin:0;}
+/* On wide screens the main map extends into the page margins (up to 80px each side) so it reads larger than the text column.
+   The hint panel stays aligned with the column and keeps the width it had at 19% of the column. */
+.explorer {position:relative;margin:0;--bleed:0px;margin-inline:calc(-1 * var(--bleed));}
+.main-page .explorer {--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 32px),80px);}
 .landscape {display:block;width:100%;height:auto;overflow:visible;}
 .scene-item {cursor:pointer;outline:none;}
 .scene-item .object {transition:filter .2s;}
@@ -25,7 +28,7 @@
 .maplabel {font:12px var(--sans);fill:var(--ink-2);}
 .process-label {font:italic 12px var(--sans);fill:#506b5c;}
 .irrigation-label {font:10px var(--sans);fill:#415948;}
-.hint-panel {position:absolute;left:0;top:48%;width:19%;pointer-events:none;}
+.hint-panel {position:absolute;left:var(--bleed);top:48%;width:calc((100% - 2 * var(--bleed)) * .19);pointer-events:none;}
 .hint-num {font-size:.7rem;color:var(--link);}
 .hint-title {font:500 1.3rem/1.2 var(--sans);margin:8px 0;}
 .hint-copy {font-size:.75rem;line-height:1.6;color:var(--ink-2);margin:0 0 10px;}
@@ -57,7 +60,7 @@
 @media(max-width:750px) {
  .cycle-heading {display:block;} .cycle-intro {max-width:54ch;margin-top:16px;}
  .water-cycle {padding-top:32px;}
- .explorer {display:flex;flex-direction:column;}
+ .explorer,.main-page .explorer {display:flex;flex-direction:column;--bleed:0px;margin-inline:0;}
  .hint-panel {position:static;width:auto;max-width:none;min-height:112px;margin:8px 0 20px;}
  .hint-title {font-size:1.1rem;} .hint-copy {margin:5px 0;max-width:65ch;}
  .hint-link {display:none;}
