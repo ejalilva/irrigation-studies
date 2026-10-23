@@ -15,25 +15,52 @@ function frameLandscape() {
 }
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
-const defaults={title:isHuman?'Water meets the field.':'Follow the water.'};
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
-// The side panel shows only the part's title and one line about it; the explore cue appears once a part is selected.
-function setHint(title,copy,link){document.querySelector('#hint-title').textContent=title;document.querySelector('#hint-copy').textContent=copy;document.querySelector('#hint-link').textContent=link;}
-function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to explore')+(t.href?' ↗':'');}
+// The callout: the part's title, one line about it and an explore cue, shown next to the part on larger screens
+// (anchor from the part's data-callout="x y side", in map units) and under the map on phones. Clicking it opens the part.
+const callout=document.querySelector('#callout');
+const explorerBox=document.querySelector('#explore');
+function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to explore')+(t.href?' ↗':' →');}
+function setHint(title,copy,link){document.querySelector('#hint-title').textContent=title;document.querySelector('#hint-copy').textContent=copy;document.querySelector('#hint-link').textContent=link;callout.classList.toggle('show',!!title);}
+function placeCallout(key){
+ callout.style.left=callout.style.top='';callout.dataset.side='';
+ if(smallScreen.matches||!key)return;
+ const item=document.querySelector('.scene-item[data-topic="'+key+'"]');if(!item)return;
+ const er=explorerBox.getBoundingClientRect(),spec=(item.dataset.callout||'').split(' ');
+ let ax,ay,side;
+ if(spec.length===3){const pt=landscape.createSVGPoint();pt.x=+spec[0];pt.y=+spec[1];const q=pt.matrixTransform(landscape.getScreenCTM());ax=q.x-er.left;ay=q.y-er.top;side=spec[2];}
+ else{const r=item.getBoundingClientRect();ax=r.right-er.left;ay=r.top+r.height/2-er.top;side='right';}
+ const w=callout.offsetWidth,h=callout.offsetHeight,W=explorerBox.clientWidth,H=explorerBox.clientHeight,gap=16,pad=8;
+ if(side==='right'&&ax+gap+w>W-pad)side='left';else if(side==='left'&&ax-gap-w<pad)side='right';
+ if(side==='top'&&ay-gap-h<pad)side='bottom';else if(side==='bottom'&&ay+gap+h>H-pad)side='top';
+ let x=side==='right'?ax+gap:side==='left'?ax-gap-w:ax-w/2, y=side==='top'?ay-gap-h:side==='bottom'?ay+gap:ay-h/2;
+ x=Math.max(pad,Math.min(W-w-pad,x));y=Math.max(pad,Math.min(H-h-pad,y));
+ callout.style.left=x+'px';callout.style.top=y+'px';callout.dataset.side=side;
+ callout.style.setProperty('--caret-x',Math.max(16,Math.min(w-16,ax-x))+'px');callout.style.setProperty('--caret-y',Math.max(16,Math.min(h-16,ay-y))+'px');
+}
+let hideTimer=0;
+function cancelHide(){clearTimeout(hideTimer);hideTimer=0;}
+function scheduleHide(){cancelHide();hideTimer=setTimeout(()=>{hideTimer=0;if(!tour)clearHighlight();},180);}
+callout.addEventListener('pointerenter',cancelHide);
+callout.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen')scheduleHide();});
+// Pressing the callout blurs the focused part first; remember the press so the blur does not clear what the callout shows.
+let calloutPress=false;
+callout.addEventListener('pointerdown',()=>{calloutPress=true;});
+callout.addEventListener('click',()=>{calloutPress=false;if(activeTopic)openTopic(activeTopic);});
+window.addEventListener('resize',()=>{if(activeTopic)placeCallout(activeTopic);});
+smallScreen.addEventListener('change',()=>placeCallout(activeTopic));
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
-const motionButton=document.querySelector('#motion-toggle');
 let activeTopic=null,touchArmed=null,returnFocus=null,motionEnabled=!reduced.matches;
-function updateMotion(){document.body.classList.toggle('motion-off',!motionEnabled);motionButton.textContent=reduced.matches?'Reduced motion':motionEnabled?'Motion on':'Motion off';motionButton.setAttribute('aria-pressed',String(motionEnabled&&!reduced.matches));}
-motionButton.addEventListener('click',()=>{motionEnabled=!motionEnabled;updateMotion();});
+function updateMotion(){document.body.classList.toggle('motion-off',!motionEnabled);}
 reduced.addEventListener('change',()=>{motionEnabled=!reduced.matches;updateMotion();});updateMotion();
-function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;
- setHint(t.title,t.short,exploreCue(t,false));
+function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelHide();
+ setHint(t.title,t.short,tour?'':exploreCue(t,false));
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));
- setLinked(key);
+ setLinked(key);placeCallout(key);
 }
 // Elements whose data-link names the highlighted part run with it, wherever they sit on the map.
 function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',!!key&&el.dataset.link.split(' ').includes(key)));}
-function clearHighlight(){activeTopic=null;setHint(defaults.title,'','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
+function clearHighlight(){activeTopic=null;cancelHide();setHint('','','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
 function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
  returnFocus=document.activeElement;content.replaceChildren();
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
@@ -47,16 +74,16 @@ function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.hre
 }
 function closeTopic(){dialog.close();}
 document.querySelectorAll('[data-topic]').forEach(el=>{
- el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}highlight(el.dataset.topic);});
+ el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}cancelHide();highlight(el.dataset.topic);});
  el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')&&deliberateHover()){takeOver();highlight(el.dataset.topic);}});
- el.addEventListener('pointerleave',e=>{if(!tour&&(e.pointerType==='mouse'||e.pointerType==='pen'))clearHighlight();});
- el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open)clearHighlight();});
+ el.addEventListener('pointerleave',e=>{if(!tour&&(e.pointerType==='mouse'||e.pointerType==='pen'))scheduleHide();});
+ el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open&&!calloutPress)clearHighlight();});
  let pointerType='';el.addEventListener('pointerdown',e=>{pointerType=e.pointerType;});
- el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=exploreCue(topics[key],true);return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
+ el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=exploreCue(topics[key],true);placeCallout(key);return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
  if(el.tagName.toLowerCase()==='g')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTopic(el.dataset.topic);}});
 });
 // Intro tour. When the page opens and the map is in view, each part plays briefly in turn (in badge order) and the map then waits.
-// A click, tap, key press or deliberate hover stops it at once. The Play tour button replays it; with reduced motion or Motion off it only highlights.
+// A click, tap, key press or deliberate hover stops it at once. The Play tour button replays it; with reduced motion it only highlights.
 const tourButton=document.querySelector('#tour-toggle');
 const hintPanel=document.querySelector('.hint-panel');
 const explorer=document.querySelector('#explore');
@@ -81,7 +108,7 @@ function playTourStep(i){
  anims.forEach(a=>{a.playbackRate=Math.min(rateCap,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
  tour.sped=anims;
  highlight(key);
- document.querySelector('#hint-link').textContent='';
+ document.querySelector('#hint-link').textContent='';placeCallout(key);
  tour.timer=setTimeout(()=>playTourStep(i+1),ms);
 }
 function startTour(){
@@ -111,6 +138,8 @@ function takeOver(){clearTimeout(autoPending);autoPending=0;if(tour)stopTour(tru
 function canAutoTour(){return !autoDone&&!tour&&inView&&motionEnabled&&!reduced.matches&&!dialog.open&&!document.hidden;}
 function scheduleAutoTour(){clearTimeout(autoPending);autoPending=0;if(canAutoTour())autoPending=setTimeout(()=>{autoPending=0;if(canAutoTour())startTour();},500);}
 function interruptTour(e){
+ // Clicking the callout during the tour opens what it shows.
+ if(e.target instanceof Node&&callout.contains(e.target)){if(tour)stopTour(true,true);return;}
  if(e.target instanceof Node&&tourButton.contains(e.target)&&(e.type==='pointerdown'||e.key==='Enter'||e.key===' '))return;
  if(e.type==='keydown'&&['Shift','Control','Alt','Meta'].includes(e.key))return;
  if(tour)stopTour(false,true);else if(autoPending)takeOver();
