@@ -7,6 +7,10 @@
 .explorer-toolbar {display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
 .motion-toggle {font:inherit;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
 .motion-toggle:hover {background:var(--hover);}
+.toolbar-actions {display:flex;flex-shrink:0;gap:8px;}
+.tour-toggle {font:inherit;color:var(--link);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
+.tour-toggle:hover {background:var(--hover);}
+.tour-toggle.on {border-color:var(--link);}
 .explorer {position:relative;margin:0;}
 .landscape {display:block;width:100%;height:auto;overflow:visible;}
 .scene-item {cursor:pointer;outline:none;}

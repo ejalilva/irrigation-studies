@@ -15,7 +15,11 @@ function frameLandscape() {
 }
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
-const defaults={number:isHuman?'A closer look':'A connected landscape',title:isHuman?'Water meets the field.':'Follow the water.',copy:isHuman?'Explore field boundaries, the sprinkler, and groundwater pumping. Each opens a different irrigation question.':'Explore a water store or flow. Each part of the landscape opens the research connected to it.'};
+const defaults={number:isHuman?'A closer look':'A connected landscape',title:isHuman?'Water meets the field.':'Follow the water.',copy:isHuman?'Explore field boundaries, the sprinkler, and groundwater pumping. Each opens a different irrigation question.':'Explore a water store or flow. Each part of the landscape opens the research connected to it.',touchCopy:isHuman?'Tap field boundaries, the sprinkler, or groundwater pumping to see it move, then tap again to open its irrigation question.':'Tap any part of the landscape to see it move, then tap it again to open the research connected to it.'};
+const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
+const howTo=document.querySelector('#explorer-how');
+function updateHowTo(){if(howTo)howTo.textContent=finePointer.matches?'Hover to animate · Select to explore':'Tap to animate · Tap again to explore';}
+finePointer.addEventListener('change',()=>{updateHowTo();if(!activeTopic)clearHighlight();});updateHowTo();
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 const motionButton=document.querySelector('#motion-toggle');
 let activeTopic=null,touchArmed=null,returnFocus=null,motionEnabled=!reduced.matches;
@@ -26,7 +30,7 @@ function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;
  document.querySelector('#hint-number').textContent=t.n+' / EXPLORE';document.querySelector('#hint-title').textContent=t.title;document.querySelector('#hint-copy').textContent=t.short;document.querySelector('#hint-link').textContent=t.href?'Explore human-driven processes ↗':'Click to read the research ↗';
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));
 }
-function clearHighlight(){activeTopic=null;document.querySelector('#hint-number').textContent=defaults.number;document.querySelector('#hint-title').textContent=defaults.title;document.querySelector('#hint-copy').textContent=defaults.copy;document.querySelector('#hint-link').textContent='Hover to bring it to life · Click to explore';document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));}
+function clearHighlight(){activeTopic=null;document.querySelector('#hint-number').textContent=defaults.number;document.querySelector('#hint-title').textContent=defaults.title;document.querySelector('#hint-copy').textContent=finePointer.matches?defaults.copy:defaults.touchCopy;document.querySelector('#hint-link').textContent=finePointer.matches?'Hover any part · Click to explore':'Tap any part · Tap again to explore';document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));}
 function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
  returnFocus=document.activeElement;content.replaceChildren();
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
@@ -40,13 +44,67 @@ function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.hre
 }
 function closeTopic(){dialog.close();}
 document.querySelectorAll('[data-topic]').forEach(el=>{
- el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen')highlight(el.dataset.topic);});
+ el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen'){takeOver();highlight(el.dataset.topic);}});
+ el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')){takeOver();highlight(el.dataset.topic);}});
  el.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen')clearHighlight();});
- el.addEventListener('focus',()=>highlight(el.dataset.topic));el.addEventListener('blur',()=>{if(!dialog.open)clearHighlight();});
+ el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open)clearHighlight();});
  let pointerType='';el.addEventListener('pointerdown',e=>{pointerType=e.pointerType;});
- el.addEventListener('click',e=>{const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=topics[key].href?'Tap again to explore human-driven processes ↗':'Tap again to read the research ↗';return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
+ el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=topics[key].href?'Tap again to explore human-driven processes ↗':'Tap again to read the research ↗';return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
  if(el.tagName.toLowerCase()==='g')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTopic(el.dataset.topic);}});
 });
+// Intro tour. On a first visit, once the map is in view, each part plays briefly in turn and the map then waits.
+// Any interaction stops it at once. The Play tour button replays it; with reduced motion or Motion off it only highlights.
+const tourButton=document.querySelector('#tour-toggle');
+const hintPanel=document.querySelector('.hint-panel');
+const explorer=document.querySelector('#explore');
+const tourKeys=[...new Set([...document.querySelectorAll('.topic-nav [data-topic]')].map(b=>b.dataset.topic))].filter(k=>document.querySelector('.scene-item[data-topic="'+k+'"]'));
+const tourSeenKey='water-cycle-tour-seen-'+(isHuman?'human':'main');
+const minStep=Math.max(1000,4500/tourKeys.length);
+let tour=null,inView=false,autoPending=0,autoDone=(()=>{try{return localStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
+function markTourSeen(){autoDone=true;try{localStorage.setItem(tourSeenKey,'1');}catch(e){}}
+function cycleLength(a){const d=a.effect&&a.effect.getTiming().duration;return typeof d==='number'?d:0;}
+function partAnimations(key){return [...document.querySelectorAll('.scene-item[data-topic="'+key+'"]')].flatMap(el=>el.getAnimations({subtree:true})).filter(a=>'animationName' in a);}
+function restoreSpeed(){if(!tour)return;tour.sped.forEach(a=>{a.playbackRate=1;});tour.sped=[];}
+function playTourStep(i){
+ restoreSpeed();
+ if(i>=tourKeys.length){stopTour();return;}
+ const key=tourKeys[i],anims=partAnimations(key);
+ // A step lasts long enough for the part's slowest animation to finish one cycle at up to 4x speed; each animation restarts from its beginning.
+ const ms=Math.min(2000,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/4));
+ anims.forEach(a=>{a.playbackRate=Math.min(4,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
+ tour.sped=anims;
+ highlight(key);
+ document.querySelector('#hint-number').textContent=topics[key].n+' / '+String(tourKeys.length).padStart(2,'0')+' · TOUR';
+ document.querySelector('#hint-link').textContent=finePointer.matches?'Hover any part to take over':'Tap any part to take over';
+ tour.timer=setTimeout(()=>playTourStep(i+1),ms);
+}
+function startTour(){
+ if(tour||!tourKeys.length||dialog.open)return;
+ clearTimeout(autoPending);autoPending=0;markTourSeen();touchArmed=null;
+ tour={timer:0,sped:[]};
+ hintPanel.setAttribute('aria-live','off');
+ tourButton.textContent='Stop tour';tourButton.classList.add('on');
+ playTourStep(0);
+}
+function stopTour(keepHighlight){
+ if(!tour)return;
+ clearTimeout(tour.timer);restoreSpeed();tour=null;
+ hintPanel.setAttribute('aria-live','polite');
+ tourButton.textContent='Play tour';tourButton.classList.remove('on');
+ if(!keepHighlight)clearHighlight();
+}
+// The visitor is exploring the map themselves: end the tour and do not start it later.
+function takeOver(){clearTimeout(autoPending);autoPending=0;if(tour)stopTour(true);else if(!autoDone)markTourSeen();}
+function canAutoTour(){return !autoDone&&!tour&&inView&&motionEnabled&&!reduced.matches&&!dialog.open&&!document.hidden;}
+function scheduleAutoTour(){clearTimeout(autoPending);autoPending=0;if(canAutoTour())autoPending=setTimeout(()=>{autoPending=0;if(canAutoTour())startTour();},800);}
+function interruptTour(e){
+ if(e.target instanceof Node&&tourButton.contains(e.target)&&(e.type==='pointerdown'||e.key==='Enter'||e.key===' '))return;
+ clearTimeout(autoPending);autoPending=0;if(tour)stopTour();
+}
+['pointerdown','keydown','wheel'].forEach(type=>window.addEventListener(type,interruptTour,{capture:true,passive:true}));
+tourButton.addEventListener('click',()=>{if(tour)stopTour();else startTour();});
+if('IntersectionObserver' in window)new IntersectionObserver(([entry])=>{inView=entry.intersectionRatio>=.5;if(!inView&&tour)stopTour();scheduleAutoTour();},{threshold:[0,.5,1]}).observe(explorer);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&tour)stopTour();scheduleAutoTour();});
 document.querySelector('#close-dialog').addEventListener('click',closeTopic);
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeTopic();}});
 dialog.addEventListener('close',()=>{document.body.style.overflow='';document.body.classList.remove('dialog-open');history.replaceState(null,'',location.pathname+location.search+'#explore');if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});
