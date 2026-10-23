@@ -71,7 +71,13 @@ function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.hre
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
  const h=document.createElement('h2');h.id='dialog-title';h.textContent=t.title;
  const intro=document.createElement('p');intro.className='dialog-intro';intro.textContent=t.intro;content.append(p,h,intro);
- t.projects.forEach(item=>{const article=document.createElement('article');article.className='project';const status=document.createElement('span');status.className='status'+(item.planned?' planned':'');status.textContent=item.status;const title=document.createElement('h3');title.textContent=item.title;const text=document.createElement('p');text.textContent=item.text;article.append(status,title,text);if(item.link){const a=document.createElement('a');a.href=item.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=item.linkText+' ↗';article.append(a);}content.append(article);});
+ // Published papers (a project whose link is a DOI listed in assets/journals.js) show first as paper cards; other work follows as plain entries.
+ const P=window.Papers,papers=[],other=[];
+ t.projects.forEach(item=>{const paper=P&&item.link?P.paperFor(item.link):null;(paper?papers:other).push([item,paper]);});
+ const group=(label)=>{const g=document.createElement('h3');g.className='dialog-group';g.textContent=label;content.append(g);};
+ if(papers.length){group(papers.length>1?'Papers':'Paper');const list=document.createElement('div');list.className='paper-list';list.innerHTML=papers.map(([item,paper])=>P.paperCard(paper,item.text)).join('');content.append(list);}
+ if(papers.length&&other.length)group('Other work');
+ other.forEach(([item])=>{const article=document.createElement('article');article.className='project';const status=document.createElement('span');status.className='status'+(item.planned?' planned':'');status.textContent=item.status;const title=document.createElement('h3');title.textContent=item.title;const text=document.createElement('p');text.textContent=item.text;article.append(status,title,text);if(item.link){const a=document.createElement('a');a.href=item.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=item.linkText+' ↗';article.append(a);}content.append(article);});
  if(!isHuman&&['vegetation','soil','drainage'].includes(key)){const a=document.createElement('a');a.className='dialog-related';a.href='human.html';a.textContent='Explore the agricultural water cycle ↗';content.append(a);}
  const note=document.createElement('p');note.className='dialog-note';note.textContent='Research status as of October 2026. Landscape animations are illustrative, not quantitative simulations.';content.append(note);
  if(!dialog.open)dialog.showModal();dialog.scrollTop=0;document.body.classList.add('dialog-open');document.body.style.overflow='hidden';
