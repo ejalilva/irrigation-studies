@@ -11,15 +11,16 @@ const fullView = landscape.getAttribute('viewBox');
 const smallScreen = window.matchMedia('(max-width: 750px)');
 function frameLandscape() {
  landscape.setAttribute('viewBox', smallScreen.matches
-  ? (isHuman ? '280 160 810 520' : '170 45 940 660') : fullView);
+  ? (isHuman ? '280 160 810 520' : '128 45 1000 662') : fullView);
 }
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
 // The description: one line about the highlighted part and an explore cue, as left-aligned plain text in the white space just
-// outside the drawing, close to the part. By default it sits right under the part's label: from the label's left edge for labels
-// to the right of their badge, and ending at the badge side for labels to the left of it. data-desc="above" puts it above the
-// label, and data-desc="x y start|end" pins its top-left (start) or top-right (end) corner to a point in map units.
+// outside the drawing, close to the part. By default it sits right under the part's label and starts at the label's left edge;
+// data-desc-right (map units) is where the drawing begins to the right of a label, and the text wraps to more lines to stay clear
+// of it. data-desc="above" puts it above the label, and data-desc="x y start|end" pins its top-left (start) or top-right (end)
+// corner to a point in map units.
 // On phones it sits under the map. Clicking it opens the part.
 const callout=document.querySelector('#callout');
 const explorerBox=document.querySelector('#explore');
@@ -27,7 +28,7 @@ function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to expl
 function setHint(title,copy,link){document.querySelector('#hint-title').textContent=title;document.querySelector('#hint-copy').textContent=copy;document.querySelector('#hint-link').textContent=link;callout.classList.toggle('show',!!title);}
 function mapPoint(x,y){const pt=landscape.createSVGPoint();pt.x=x;pt.y=y;return pt.matrixTransform(landscape.getScreenCTM());}
 function placeCallout(key){
- callout.style.left=callout.style.top='';callout.dataset.align='';
+ callout.style.left=callout.style.top=callout.style.maxWidth='';callout.dataset.align='';
  if(smallScreen.matches||!key)return;
  const item=document.querySelector('.scene-item[data-topic="'+key+'"]');if(!item)return;
  const label=document.querySelector('.scene-item[data-topic="'+key+'"] .maplabel');
@@ -35,8 +36,9 @@ function placeCallout(key){
  const W=explorerBox.clientWidth,H=explorerBox.clientHeight,pad=8,gap=3;
  let x,y,end;
  if(spec.length===3){end=spec[2]==='end';callout.dataset.align=end?'end':'start';const q=mapPoint(+spec[0],+spec[1]);x=q.x-er.left-(end?callout.offsetWidth:0);y=q.y-er.top;}
- else{const r=(label||item).getBoundingClientRect();end=!!label&&label.getAttribute('text-anchor')==='end';callout.dataset.align=end?'end':'start';
-  const w=callout.offsetWidth,h=callout.offsetHeight;x=end?r.right-er.left-w:r.left-er.left;y=spec[0]==='above'?r.top-er.top-gap-h:r.bottom-er.top+gap;}
+ else{const r=(label||item).getBoundingClientRect();
+  if(item.dataset.descRight){const limit=mapPoint(+item.dataset.descRight,0).x;callout.style.maxWidth=Math.max(120,Math.min(190,limit-r.left-4))+'px';}
+  const h=callout.offsetHeight;x=r.left-er.left;y=spec[0]==='above'?r.top-er.top-gap-h:r.bottom-er.top+gap;}
  x=Math.max(pad,Math.min(W-callout.offsetWidth-pad,x));y=Math.max(pad,Math.min(H-callout.offsetHeight-pad,y));
  callout.style.left=x+'px';callout.style.top=y+'px';
 }
