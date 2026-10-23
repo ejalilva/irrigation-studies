@@ -110,3 +110,53 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 @keyframes wetting-front{0%{transform:scaleY(.04);opacity:0}10%{transform:scaleY(.06);opacity:.85}48%{transform:scaleY(1);opacity:.75}78%{opacity:.45}100%{transform:scaleY(1);opacity:0}}
 @keyframes uptake-flow{to{stroke-dashoffset:16}}
 @keyframes uptake-show{0%,40%,100%{opacity:0}55%,85%{opacity:.95}}
+
+
+/* Map labels get a halo in the page colour so they stay readable over the landscape. */
+.maplabel{paint-order:stroke;stroke:var(--paper);stroke-width:3px;stroke-linejoin:round}
+.process-label,.irrigation-label{paint-order:stroke;stroke:rgba(247,245,233,.92);stroke-width:2.6px;stroke-linejoin:round}
+/* A badge label that sits on the landscape itself keeps dark text on a light halo in both themes. */
+.maplabel.on-map{fill:#3b4a43;stroke:rgba(247,245,233,.92)}
+/* Labels drawn on the soil faces: dark on the light surface band, white on the darker root zone and groundwater. */
+.soil-layer,.face-label{font:600 10px var(--sans);letter-spacing:.02em;paint-order:stroke;stroke-linejoin:round}
+.surface-label{fill:#3b2d17;stroke:rgba(240,228,198,.8);stroke-width:2px}
+.root-label{font-size:11px;fill:#fffaf2;stroke:rgba(88,66,38,.55);stroke-width:2px}
+.gw-label{font-size:11px;fill:#f2fbfb;stroke:rgba(31,72,80,.6);stroke-width:2px}
+
+/* During the tour, only the part being shown animates, even if the mouse rests on another part. */
+body.touring .scene-item:not(.active) .anim{animation-play-state:paused!important}
+body.touring .scene-item:not(.active):hover .object{filter:none}
+body.touring .scene-item:not(.active):hover .hover-ring{opacity:0}
+body.touring .scene-item:not(.active):hover .number{fill:var(--paper);stroke:var(--line)}
+body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
+
+/* Groundwater pumping, 12 s cycle matching the pivot: the pump runs for about 7 s, then rests while the water table recovers.
+   Keep cone, pump-on, wt-original and pump-spray at the same duration so they stay in step. */
+.drainflow{animation:downstream 3s linear infinite}
+.pump-on{animation:pump-on 12s linear infinite}
+.pump-rise{animation:pump-rise 1.6s linear infinite}
+.aquifer-flow{animation:aquifer-flow 2.4s linear infinite}
+.cone{transform-box:fill-box;transform-origin:50% 0;animation:cone 12s infinite}
+.wt-original{animation:wt-original 12s linear infinite}
+.spray.pump-spray{animation:sprinkle 1.5s linear infinite,pump-spray 12s linear infinite}
+@keyframes pump-on{0%{opacity:0}5%,58%{opacity:1}64%,100%{opacity:0}}
+@keyframes pump-rise{to{transform:translateY(-15px)}}
+@keyframes aquifer-flow{to{stroke-dashoffset:-14}}
+/* Drawdown grows quickly at first and then ever more slowly while pumping (roughly with the log of time), and recovers the same way. */
+@keyframes cone{0%{transform:scale(.45,.02);animation-timing-function:cubic-bezier(.2,.65,.35,1)}58%,64%{transform:scale(1,1);animation-timing-function:cubic-bezier(.2,.65,.35,1)}100%{transform:scale(.45,.02)}}
+@keyframes wt-original{0%{opacity:0}18%,66%{opacity:.85}100%{opacity:0}}
+@keyframes pump-spray{0%{opacity:.12}5%,58%{opacity:.7}64%,100%{opacity:.12}}
+
+/* Surface-water irrigation in rotation, 12 s cycle: each field gets a 4 s turn from its own lateral canal (delays 0, -8 s, -4 s).
+   Water advances along the furrows, the soil darkens (or the crop greens) behind it, then the field slowly dries. */
+.canal-flow{animation:canal-flow 3s linear infinite}
+.lateral-water{animation:lateral-turn 12s linear infinite}
+.lateral-flow{animation:canal-flow 3s linear infinite,lateral-turn 12s linear infinite}
+.plot-water{transform-box:fill-box;transform-origin:0 50%;animation:plot-water 12s linear infinite}
+.plot-wet{transform-box:fill-box;transform-origin:0 50%;animation:plot-wet 12s linear infinite}
+.sprout{transform-box:fill-box;transform-origin:50% 100%;animation:sprout 12s ease-in-out infinite}
+@keyframes canal-flow{to{stroke-dashoffset:-32}}
+@keyframes lateral-turn{0%,25%{opacity:1}31%,95%{opacity:0}100%{opacity:1}}
+@keyframes plot-water{0%{transform:scaleX(0);opacity:.75}22%{transform:scaleX(1);opacity:.75}33%,100%{transform:scaleX(1);opacity:0}}
+@keyframes plot-wet{0%,4%{transform:scaleX(0);opacity:.85}26%,70%{transform:scaleX(1);opacity:.85}100%{transform:scaleX(1);opacity:0}}
+@keyframes sprout{0%,8%{transform:scale(.65)}50%,80%{transform:scale(1.1)}100%{transform:scale(.65)}}
