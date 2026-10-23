@@ -135,7 +135,7 @@
       <div class="studies-head">
         <div>
           <h2 id="studies-h">My irrigation studies</h2>
-          <p class="intro">Explore the figures, then open a study for its methods and findings. Newest first.</p>
+          <p class="intro">In the order the work developed, from coarse satellite soil moisture to field-scale timing.</p>
         </div>
         <fieldset class="filters" id="filters">
           <legend>Filter studies by method</legend>
@@ -159,27 +159,17 @@
 
       <div class="bleed">
         <div class="lit-review" id="lit-review" hidden></div>
-        <div class="picks" id="picks" hidden>
-          <div class="picks-head">
-            <h3><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Rising</h3>
-            <button type="button" class="linkbtn" id="picks-all">Show all Rising papers in the table</button>
-          </div>
-          <p class="intro">My picks among recent papers: not essential reading yet, but worth reading now. Each comes with a note on why.</p>
-          <div class="pick-grid" id="pick-grid"></div>
-        </div>
-        <div class="lit-controls" role="search" aria-label="Filter the research table">
-          <label class="lit-search">
-            <span class="sr">Search studies</span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <input type="search" id="lit-q" placeholder="Search by title, place, method or keyword" autocomplete="off">
-          </label>
+        <div class="lit-controls" aria-label="Filter the research table">
           <div class="seg" role="group" aria-label="Question the study answers" id="lit-qseg">
-            <button type="button" data-q="any" aria-pressed="true">Any question</button>
             <button type="button" class="q-where" data-q="where" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>Where</button>
             <button type="button" class="q-when" data-q="when" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>When</button>
             <button type="button" class="q-how_much" data-q="how_much" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>How much</button>
-            <button type="button" data-q="all" aria-pressed="false">All three</button>
           </div>
+          <button type="button" class="lit-filter-btn" id="lit-filter-btn" aria-expanded="false" aria-controls="lit-panel">Filter<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+          <button type="button" class="lit-reset" id="lit-reset" hidden>Clear filters</button>
+          <p id="lit-count" aria-live="polite">Loading studies</p>
+        </div>
+        <div class="lit-panel" id="lit-panel" hidden>
           <label class="lit-select"><span class="sr">Review status</span>
             <select id="lit-status">
               <option value="any">Any status</option>
@@ -193,29 +183,11 @@
           <label class="lit-select"><span class="sr">Region</span>
             <select id="lit-region"><option value="any">Any region</option></select>
           </label>
-          <button type="button" class="lit-reset" id="lit-reset" hidden>Clear filters</button>
-        </div>
-
-        <div class="lit-meta">
-          <div class="lit-meta-l">
-            <p id="lit-count" aria-live="polite">Loading studies</p>
-            <label class="lit-sort">Sort
-              <span class="lit-select"><select id="lit-sort">
-                <option value="featured:-1">Rising and new first</option>
-                <option value="year:-1">Newest first</option>
-                <option value="year:1">Oldest first</option>
-                <option value="author:1">First author A to Z</option>
-                <option value="area:1">Study area A to Z</option>
-                <option value="period:-1">Latest study period</option>
-              </select></span>
-            </label>
-          </div>
           <div class="lit-legend">
             <span><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>
-            <span><span class="pulse" aria-hidden="true"></span>Preprint, not yet peer reviewed</span>
-            <span><span class="new">New</span>Published or posted in the last 90 days</span>
-            <span id="lit-legend-ess" hidden><span class="ess" id="lit-legend-ess-mark"></span>On the Essential reading list</span>
-            <span id="lit-legend-pick" hidden><span class="pickb"><svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>Rising</span>My pick: worth reading now</span>
+            <span><span class="pulse" aria-hidden="true"></span>Preprint</span>
+            <span><span class="new">New</span>Last 90 days</span>
+            <span id="lit-legend-ess" hidden><span class="ess" id="lit-legend-ess-mark"></span>Essential reading</span>
           </div>
         </div>
 
@@ -552,7 +524,7 @@ function studyHTML(s, idx) {
   </li>`;
 }
 
-const sorted = STUDIES.map((s, i) => ({ s, i })).sort((a, b) => b.s.year - a.s.year || a.i - b.i).map(o => o.s);
+const sorted = STUDIES.map((s, i) => ({ s, i })).sort((a, b) => a.s.year - b.s.year || a.i - b.i).map(o => o.s);
 
 function renderStudies() {
   document.getElementById("study-list").innerHTML = sorted.map(studyHTML).join("");
@@ -695,7 +667,7 @@ const METHOD_LABELS = {
 };
 const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
 
-const lit = { all: [], q: "any", status: "any", method: "any", region: "any", text: "", sortKey: "featured", sortDir: -1, showAll: false, open: new Set(), picks: new Map(), essential: new Map() };
+const lit = { all: [], qs: new Set(), status: "any", method: "any", region: "any", text: "", sortKey: "year", sortDir: -1, showAll: false, open: new Set(), picks: new Map(), essential: new Map() };
 const SEAL = `<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="currentColor"/><path d="M3.4 6.2l1.7 1.7 3.5-3.6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const STAR = `<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>`;
 const $ = id => document.getElementById(id);
@@ -720,11 +692,10 @@ function litHay(p) {
 }
 
 function litMatches(p) {
+  // Selected questions narrow the table to studies that answer every one of them.
   const qs = litQs(p);
-  if (lit.q === "all" && qs.length < 3) return false;
-  if (lit.q !== "any" && lit.q !== "all" && !qs.includes(lit.q)) return false;
+  for (const q of lit.qs) if (!qs.includes(q)) return false;
   if (lit.status === "proposed") { if (!p._proposed) return false; }
-  else if (lit.status === "pick") { if (!lit.picks.has(p.id)) return false; }
   else if (lit.status === "essential") { if (!lit.essential.has(p.id)) return false; }
   else if (lit.status !== "any" && p.status !== lit.status) return false;
   if (lit.method !== "any" && !(p.methods || []).includes(lit.method)) return false;
@@ -740,12 +711,6 @@ function litCompare(a, b) {
   const dir = lit.sortDir;
   const val = p => {
     switch (lit.sortKey) {
-      case "featured": {
-        // Rising papers (editor's picks) first, newest pick first, then the most recently published papers.
-        // Publication date, not the date a row was added, so backfilled older papers don't crowd the top.
-        const k = lit.picks.get(p.id);
-        return (k ? "1" + (k.picked || "") : "0") + "|" + (p.date || `${p.year}-00-00`) + "|" + (p.added || "");
-      }
       case "author": return (p.first_author || p.authors || "").toLowerCase();
       case "area": return (p.domain || "￿").toLowerCase();
       case "period": return p.period && p.period.start != null ? (p.period.end || p.period.start) : null;
@@ -793,7 +758,6 @@ function litRow(p, i) {
   const badges = [
     essN ? `<span class="ess" title="Number ${essN} on the Essential reading list">${SEAL}Essential</span>` : "",
     litIsNew(p) ? `<span class="new">New</span>` : "",
-    lit.picks.has(p.id) ? `<span class="pickb" title="Rising: my pick, worth reading now">${STAR}Rising</span>` : "",
     p._proposed ? `<span class="prop">Proposed</span>` : "",
     LIT_PREVIEW && p._proposed && p.needs_review ? `<span class="chk">Check details</span>` : ""
   ].join("");
@@ -851,13 +815,13 @@ function litRender() {
   const more = $("lit-more");
   more.hidden = rows.length <= LIT_PAGE;
   more.textContent = lit.showAll ? "Show fewer" : `Show all ${rows.length} studies`;
-  $("lit-reset").hidden = !(lit.q !== "any" || lit.status !== "any" || lit.method !== "any" || lit.region !== "any" || lit.text);
+  const panelFilters = lit.status !== "any" || lit.method !== "any" || lit.region !== "any";
+  $("lit-reset").hidden = !(lit.qs.size || panelFilters);
+  $("lit-filter-btn").classList.toggle("on", panelFilters);
   document.querySelectorAll("#lit th[data-key]").forEach(th => {
     if (th.dataset.key === lit.sortKey) th.setAttribute("aria-sort", lit.sortDir === -1 ? "descending" : "ascending");
     else th.removeAttribute("aria-sort");
   });
-  const sel = $("lit-sort"), v = `${lit.sortKey}:${lit.sortDir}`;
-  if ([...sel.options].some(o => o.value === v)) sel.value = v;
 }
 
 function litToggle(id) {
@@ -871,9 +835,9 @@ function litToggle(id) {
 }
 
 function litResetFilters() {
-  Object.assign(lit, { q: "any", status: "any", method: "any", region: "any", text: "" });
-  $("lit-q").value = ""; $("lit-status").value = "any"; $("lit-method").value = "any"; $("lit-region").value = "any";
-  document.querySelectorAll("#lit-qseg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.q === "any")));
+  Object.assign(lit, { qs: new Set(), status: "any", method: "any", region: "any", text: "" });
+  $("lit-status").value = "any"; $("lit-method").value = "any"; $("lit-region").value = "any";
+  document.querySelectorAll("#lit-qseg button").forEach(b => b.setAttribute("aria-pressed", "false"));
   litRender();
 }
 
@@ -928,26 +892,6 @@ function litSuggest(e) {
 function litAuthorShort(a) {
   const parts = (a || "").split(",").map(x => x.trim()).filter(Boolean);
   return parts.length ? parts[0] + (parts.length > 2 || /et al/.test(a) ? " et al." : "") : "";
-}
-
-function picksRender() {
-  const box = $("picks");
-  const cards = [...lit.picks.values()]
-    .map(k => ({ k, p: lit.all.find(x => x.id === k.id) }))
-    .filter(o => o.p)
-    .sort((a, b) => String(b.k.picked || "").localeCompare(String(a.k.picked || "")))
-    .slice(0, 6);
-  box.hidden = !cards.length;
-  if (!cards.length) return;
-  $("pick-grid").innerHTML = cards.map(({ k, p }) => {
-    const qs = litQs(p);
-    return `<article class="pick">
-      <a class="ti" href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.title)}</a>
-      <p class="by">${esc(litAuthorShort(p.authors))}, ${p.year}, <em>${esc(p.venue || "")}</em>${p.status === "preprint" && !/preprint/i.test(p.venue || "") ? " (preprint)" : ""}</p>
-      ${k.note ? `<p class="note">${esc(k.note)}</p>` : ""}
-      <div class="q" role="img" aria-label="${esc(qs.length ? "Answers " + qs.map(x => Q_LABELS[x].toLowerCase()).join(", ") : "")}">${Object.keys(Q_LABELS).map(x => `<span class="q-${x}${qs.includes(x) ? " on" : ""}">${Q_LABELS[x]}</span>`).join("")}</div>
-    </article>`;
-  }).join("");
 }
 
 const reading = { stages: [], tab: "all", open: new Set() };
@@ -1043,15 +987,7 @@ function litInit(data) {
     const d = new Date(data.updated + "T00:00:00");
     $("lit-updated").textContent = `Last updated ${d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Preprints are flagged until a peer-reviewed version appears.`;
   }
-  lit.picks = new Map(((data._picks || {}).picks || []).filter(k => k && k.id).map(k => [k.id, k]));
-  $("lit-legend-pick").hidden = !lit.picks.size;
-  if (lit.picks.size) {
-    const opt = document.createElement("option");
-    opt.value = "pick"; opt.textContent = `Rising (${lit.picks.size})`;
-    $("lit-status").insertBefore(opt, $("lit-status").options[1] || null);
-  }
   if (LIT_PREVIEW) litShowReview(data);
-  picksRender();
   litRender();
   litEssentialReady();
 }
@@ -1070,41 +1006,33 @@ function litShowReview(data) {
   const opt = document.createElement("option");
   opt.value = "proposed"; opt.textContent = `Proposed for review (${n})`;
   $("lit-status").prepend(opt);
-  if (n) { lit.status = "proposed"; $("lit-status").value = "proposed"; lit.showAll = true; }
+  if (n) { lit.status = "proposed"; $("lit-status").value = "proposed"; lit.showAll = true; $("lit-panel").hidden = false; $("lit-filter-btn").setAttribute("aria-expanded", "true"); }
   box.innerHTML = `<p><strong>Review preview.</strong> ${n ? `${n} ${n === 1 ? "paper is" : "papers are"} proposed in the agent's pull request and shown here as they would appear once merged.` : "The pull request adds no new papers."} The published page is unchanged until you merge.</p>
     <p>To reject a paper, untick it in the pull request description; it leaves this preview within a few minutes. To fix a detail, edit the file on the review branch.</p>
     <div class="acts"><a href="${pulls}">Open the pull request</a><a href="${edit}">Edit details on GitHub</a><a href="${location.pathname}#landscape">Exit preview</a></div>`;
 }
 
 function litWire() {
-  let t;
-  $("lit-q").addEventListener("input", e => {
-    clearTimeout(t);
-    t = setTimeout(() => { lit.text = e.target.value.trim().toLowerCase(); litRender(); }, 120);
-  });
   $("lit-qseg").addEventListener("click", e => {
     const b = e.target.closest("button[data-q]");
     if (!b) return;
-    lit.q = b.dataset.q;
-    document.querySelectorAll("#lit-qseg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    const q = b.dataset.q, on = !lit.qs.has(q);
+    if (on) lit.qs.add(q); else lit.qs.delete(q);
+    b.setAttribute("aria-pressed", String(on));
     litRender();
+  });
+  $("lit-filter-btn").addEventListener("click", () => {
+    const panel = $("lit-panel"), open = panel.hidden;
+    panel.hidden = !open; $("lit-filter-btn").setAttribute("aria-expanded", String(open));
   });
   $("lit-status").addEventListener("change", e => { lit.status = e.target.value; litRender(); });
   $("lit-method").addEventListener("change", e => { lit.method = e.target.value; litRender(); });
   $("lit-region").addEventListener("change", e => { lit.region = e.target.value; litRender(); });
-  $("lit-sort").addEventListener("change", e => {
-    const [k, d] = e.target.value.split(":");
-    lit.sortKey = k; lit.sortDir = Number(d); litRender();
-  });
   $("lit-reset").addEventListener("click", litResetFilters);
   $("lit-more").addEventListener("click", () => { lit.showAll = !lit.showAll; litRender(); });
   $("lit-csv").addEventListener("click", litCSV);
   $("lit-suggest").addEventListener("submit", litSuggest);
   $("lit-doi").addEventListener("input", () => { $("lit-doi").removeAttribute("aria-invalid"); $("lit-suggest-msg").textContent = ""; });
-  $("picks-all").addEventListener("click", () => {
-    lit.status = "pick"; $("lit-status").value = "pick"; litRender();
-    $("lit").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  });
 
   document.querySelector("#lit thead").addEventListener("click", e => {
     const th = e.target.closest("th[data-key]");
