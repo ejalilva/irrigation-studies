@@ -16,10 +16,11 @@ function frameLandscape() {
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
-// The description: one line about the highlighted part and an explore cue, as plain text in the white space just outside the
-// drawing, close to the part. By default it sits right under the part's label, aligned with the label's side; data-desc="above"
-// puts it above the label, and data-desc="x y start|end" pins its top-left (start) or top-right (end) corner to a point in map
-// units. On phones it sits under the map. Clicking it opens the part.
+// The description: one line about the highlighted part and an explore cue, as left-aligned plain text in the white space just
+// outside the drawing, close to the part. By default it sits right under the part's label: from the label's left edge for labels
+// to the right of their badge, and ending at the badge side for labels to the left of it. data-desc="above" puts it above the
+// label, and data-desc="x y start|end" pins its top-left (start) or top-right (end) corner to a point in map units.
+// On phones it sits under the map. Clicking it opens the part.
 const callout=document.querySelector('#callout');
 const explorerBox=document.querySelector('#explore');
 function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to explore')+(t.href?' ↗':' →');}
@@ -60,7 +61,8 @@ function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelH
  setLinked(key);placeCallout(key);
 }
 // Elements whose data-link names the highlighted part run with it, wherever they sit on the map.
-function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',!!key&&el.dataset.link.split(' ').includes(key)));}
+function linkedTo(el,key){const parts=el.dataset.link.split(' ');return !!key&&(tour?parts[0]===key:parts.includes(key));}
+function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',linkedTo(el,key)));}
 function clearHighlight(){activeTopic=null;cancelHide();setHint('','','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
 function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
  returnFocus=document.activeElement;content.replaceChildren();
@@ -95,7 +97,7 @@ const minStep=Math.max(1600,4800/tourKeys.length),maxStep=3200,maxRate=3;
 let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{return localStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
 function markTourSeen(){autoDone=true;try{localStorage.setItem(tourSeenKey,'1');}catch(e){}}
 function cycleLength(a){const d=a.effect&&a.effect.getTiming().duration;return typeof d==='number'?d:0;}
-function partAnimations(key){return [...new Set([...document.querySelectorAll('.scene-item[data-topic="'+key+'"], [data-link~="'+key+'"]')].flatMap(el=>el.getAnimations({subtree:true})))].filter(a=>'animationName' in a);}
+function partAnimations(key){const els=[...document.querySelectorAll('.scene-item[data-topic="'+key+'"]'),...[...document.querySelectorAll('[data-link]')].filter(el=>linkedTo(el,key))];return [...new Set(els.flatMap(el=>el.getAnimations({subtree:true})))].filter(a=>'animationName' in a);}
 function restoreSpeed(){if(!tour)return;tour.sped.forEach(a=>{a.playbackRate=1;});tour.sped=[];}
 function playTourStep(i){
  restoreSpeed();

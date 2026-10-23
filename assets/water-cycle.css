@@ -11,9 +11,9 @@
 .tour-toggle:hover {background:#ff7a00;}
 .tour-toggle:focus-visible {outline:2px solid #111;outline-offset:2px;}
 .tour-toggle.on {background:#ffb066;}
-/* On wide screens the main map extends into the page margins (up to 80px each side) so it reads larger than the text column. */
+/* On wide screens the main map extends into the page margins, to within 20px of the window edge (up to 170px each side). */
 .explorer {position:relative;margin:0;--bleed:0px;margin-inline:calc(-1 * var(--bleed));}
-.main-page .explorer {--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 32px),80px);}
+.main-page .explorer {--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 20px),170px);}
 .landscape {display:block;width:100%;height:auto;overflow:visible;}
 .scene-item {cursor:pointer;outline:none;}
 .scene-item .object {transition:filter .2s;}
@@ -29,9 +29,8 @@
 .irrigation-label {font:11px var(--sans);fill:#415948;}
 /* Description of the highlighted part: plain text right under its map label (no box), with a halo in the page colour so it
    reads over the landscape. The label already names the part, so the title is kept only for screen readers on larger screens. */
-.hint-panel {position:absolute;left:0;top:0;z-index:2;width:max-content;max-width:230px;cursor:pointer;opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .15s;text-shadow:0 0 3px var(--paper),0 0 3px var(--paper),0 0 2px var(--paper);}
+.hint-panel {position:absolute;left:0;top:0;z-index:2;width:max-content;max-width:190px;cursor:pointer;opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .15s;text-shadow:0 0 3px var(--paper),0 0 3px var(--paper),0 0 2px var(--paper);}
 .hint-panel.show {opacity:1;visibility:visible;transition:opacity .15s;}
-.hint-panel[data-align="end"] {text-align:right;}
 .hint-title {position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;}
 .hint-copy {font-size:.8rem;line-height:1.45;color:var(--ink-2);margin:0;}
 .hint-copy:empty {display:none;}
