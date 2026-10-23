@@ -89,10 +89,10 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 /* Rotation happens before isometric projection, about the stationary center well. */
 .pivot-rotor{transform-box:view-box;transform-origin:0px 0px;animation:pivot-turn 12s linear infinite}
 .pumpflow{animation:pumping 2s linear infinite}
-@keyframes pivot-turn{from{transform:rotate(-20deg)}to{transform:rotate(340deg)}}
+@keyframes pivot-turn{0%{transform:rotate(-20deg)}75%,100%{transform:rotate(340deg)}}
 /* Towers and falling spray ride the arm but counter-rotate and undo the projection, so they stay upright on screen. */
 .pivot-counter{transform-box:view-box;transform-origin:0px 0px;animation:pivot-counter 12s linear infinite}
-@keyframes pivot-counter{from{transform:rotate(20deg)}to{transform:rotate(-340deg)}}
+@keyframes pivot-counter{0%{transform:rotate(20deg)}75%,100%{transform:rotate(-340deg)}}
 @keyframes pumping{to{stroke-dashoffset:-72}}
 
 /* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
@@ -130,8 +130,9 @@ body.touring .scene-item:not(.active):hover .hover-ring{opacity:0}
 body.touring .scene-item:not(.active):hover .number{fill:var(--paper);stroke:var(--line)}
 body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 
-/* Groundwater pumping, 12 s cycle matching the pivot: the pump runs for about 7 s, then rests while the water table recovers.
-   Keep cone, pump-on, wt-original and pump-spray at the same duration so they stay in step. */
+/* Farm cycle, 12 s: the pump runs for 9 s while the pivot arm makes one full turn (pivot-turn reaches 340deg at 75%), then both rest
+   while the water table recovers. Keep pivot-turn, pivot-counter, cone, pump-on, wt-original, pump-spray, footprint, field-wet and
+   field-green at 12 s with matching percentages so they stay in step. */
 .drainflow{animation:downstream 3s linear infinite}
 .pump-on{animation:pump-on 12s linear infinite}
 .pump-rise{animation:pump-rise 1.6s linear infinite}
@@ -139,13 +140,13 @@ body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 .cone{transform-box:fill-box;transform-origin:50% 0;animation:cone 12s infinite}
 .wt-original{animation:wt-original 12s linear infinite}
 .spray.pump-spray{animation:sprinkle 1.5s linear infinite,pump-spray 12s linear infinite}
-@keyframes pump-on{0%{opacity:0}5%,58%{opacity:1}64%,100%{opacity:0}}
+@keyframes pump-on{0%{opacity:0}4%,74%{opacity:1}79%,100%{opacity:0}}
 @keyframes pump-rise{to{transform:translateY(-15px)}}
 @keyframes aquifer-flow{to{stroke-dashoffset:-14}}
 /* Drawdown grows quickly at first and then ever more slowly while pumping (roughly with the log of time), and recovers the same way. */
-@keyframes cone{0%{transform:scale(.45,.02);animation-timing-function:cubic-bezier(.2,.65,.35,1)}58%,64%{transform:scale(1,1);animation-timing-function:cubic-bezier(.2,.65,.35,1)}100%{transform:scale(.45,.02)}}
-@keyframes wt-original{0%{opacity:0}18%,66%{opacity:.85}100%{opacity:0}}
-@keyframes pump-spray{0%{opacity:.12}5%,58%{opacity:.7}64%,100%{opacity:.12}}
+@keyframes cone{0%{transform:scale(.45,.02);animation-timing-function:cubic-bezier(.2,.65,.35,1)}75%,79%{transform:scale(1,1);animation-timing-function:cubic-bezier(.2,.65,.35,1)}100%{transform:scale(.45,.02)}}
+@keyframes wt-original{0%{opacity:0}18%,82%{opacity:.85}100%{opacity:0}}
+@keyframes pump-spray{0%{opacity:0}4%,74%{opacity:.7}79%,100%{opacity:0}}
 
 /* Surface-water irrigation in rotation, 12 s cycle: each field gets a 4 s turn from its own lateral canal (delays 0, -8 s, -4 s).
    Water advances along the furrows, the soil darkens (or the crop greens) behind it, then the field slowly dries. */
@@ -160,3 +161,32 @@ body.touring .scene-item:not(.active):hover .numtext{fill:var(--ink-2)}
 @keyframes plot-water{0%{transform:scaleX(0);opacity:.75}22%{transform:scaleX(1);opacity:.75}33%,100%{transform:scaleX(1);opacity:0}}
 @keyframes plot-wet{0%,4%{transform:scaleX(0);opacity:.85}26%,70%{transform:scaleX(1);opacity:.85}100%{transform:scaleX(1);opacity:0}}
 @keyframes sprout{0%,8%{transform:scale(.65)}50%,80%{transform:scale(1.1)}100%{transform:scale(.65)}}
+
+/* Pivot field, same 12 s cycle: bare soil turns dark brown right behind the arm, and green follows about 40 degrees later.
+   A circle stroked as wide as its diameter and revealed with stroke-dashoffset draws a growing pie from the arm's start angle. */
+.footprint{animation:pump-spray 12s linear infinite}
+.field-wet{animation:field-wet 12s linear infinite}
+.field-green{animation:field-green 12s linear infinite}
+@keyframes field-wet{0%{stroke-dashoffset:248.19;opacity:1}75%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes field-green{0%,10%{stroke-dashoffset:248.19;opacity:1}85%,93%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+
+/* Linked stories. Elements with data-link run when any part they name is highlighted (the controller adds .link-run),
+   so soil water and the corn above it move together, and the river rises after the rain from either part. */
+body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-play-state:running!important}
+/* Corn, 7 s like the soil cycle: it grows as the roots take up water (uptake-show 55-85%), forms tassels and cobs, then starts again. */
+.corn-grow{transform-box:fill-box;transform-origin:50% 100%;animation:corn-grow 7s ease-in-out infinite}
+.corn-cob{transform-box:fill-box;transform-origin:50% 100%;animation:corn-cob 7s ease-in-out infinite}
+.corn-tassel{animation:corn-tassel 7s ease-in-out infinite}
+@keyframes corn-grow{0%,42%{transform:scale(.42)}82%,93%{transform:scale(1)}100%{transform:scale(.42)}}
+@keyframes corn-cob{0%,66%{opacity:0;transform:scale(.3)}82%,93%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
+@keyframes corn-tassel{0%,62%{opacity:0}76%,93%{opacity:1}100%{opacity:0}}
+/* Rain and river, 6 s: a shower falls (0-2.5 s), the river swells to its banks after a lag, its plume spreads into the sea, then it recedes. */
+.shower{animation:shower 6s linear infinite}
+.river-swell{animation:river-swell 6s ease-in-out infinite}
+.river-plume{animation:river-plume 6s ease-in-out infinite}
+.wave{animation:wave 3s ease-in-out infinite}
+@keyframes shower{0%,42%{opacity:1}50%,94%{opacity:0}100%{opacity:1}}
+@keyframes river-swell{0%,22%{stroke-width:0}62%{stroke-width:10}100%{stroke-width:0}}
+@keyframes river-plume{0%,35%{opacity:0}70%{opacity:.75}100%{opacity:0}}
+@keyframes wave{0%,100%{transform:translateX(0);opacity:.4}50%{transform:translateX(4px);opacity:.9}}
+.sea-label{font:italic 11px var(--sans);fill:#f4fbfb;paint-order:stroke;stroke:rgba(40,96,112,.55);stroke-width:2px;stroke-linejoin:round}

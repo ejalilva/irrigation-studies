@@ -29,8 +29,11 @@ reduced.addEventListener('change',()=>{motionEnabled=!reduced.matches;updateMoti
 function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;
  document.querySelector('#hint-number').textContent=t.n+' / EXPLORE';document.querySelector('#hint-title').textContent=t.title;document.querySelector('#hint-copy').textContent=t.short;document.querySelector('#hint-link').textContent=t.href?'Explore human-driven processes ↗':'Click to read the research ↗';
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));
+ setLinked(key);
 }
-function clearHighlight(){activeTopic=null;document.querySelector('#hint-number').textContent=defaults.number;document.querySelector('#hint-title').textContent=defaults.title;document.querySelector('#hint-copy').textContent=finePointer.matches?defaults.copy:defaults.touchCopy;document.querySelector('#hint-link').textContent=finePointer.matches?'Hover any part · Click to explore':'Tap any part · Tap again to explore';document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));}
+// Elements whose data-link names the highlighted part run with it, wherever they sit on the map.
+function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',!!key&&el.dataset.link.split(' ').includes(key)));}
+function clearHighlight(){activeTopic=null;document.querySelector('#hint-number').textContent=defaults.number;document.querySelector('#hint-title').textContent=defaults.title;document.querySelector('#hint-copy').textContent=finePointer.matches?defaults.copy:defaults.touchCopy;document.querySelector('#hint-link').textContent=finePointer.matches?'Hover any part · Click to explore':'Tap any part · Tap again to explore';document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
 function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
  returnFocus=document.activeElement;content.replaceChildren();
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
@@ -59,20 +62,20 @@ const hintPanel=document.querySelector('.hint-panel');
 const explorer=document.querySelector('#explore');
 const tourKeys=[...new Set([...document.querySelectorAll('.topic-nav [data-topic]')].map(b=>b.dataset.topic))].filter(k=>document.querySelector('.scene-item[data-topic="'+k+'"]'));
 const tourSeenKey='water-cycle-tour-v2-'+(isHuman?'human':'main');
-const minStep=Math.max(1000,4500/tourKeys.length),maxStep=2500;
+const minStep=Math.max(1600,4800/tourKeys.length),maxStep=3200,maxRate=3;
 // autoDone: the automatic tour has had its chance on this page view. Seen: it finished or the visitor stopped it, so later visits skip it.
 let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{return localStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
 function markTourSeen(){autoDone=true;try{localStorage.setItem(tourSeenKey,'1');}catch(e){}}
 function cycleLength(a){const d=a.effect&&a.effect.getTiming().duration;return typeof d==='number'?d:0;}
-function partAnimations(key){return [...document.querySelectorAll('.scene-item[data-topic="'+key+'"]')].flatMap(el=>el.getAnimations({subtree:true})).filter(a=>'animationName' in a);}
+function partAnimations(key){return [...new Set([...document.querySelectorAll('.scene-item[data-topic="'+key+'"], [data-link~="'+key+'"]')].flatMap(el=>el.getAnimations({subtree:true})))].filter(a=>'animationName' in a);}
 function restoreSpeed(){if(!tour)return;tour.sped.forEach(a=>{a.playbackRate=1;});tour.sped=[];}
 function playTourStep(i){
  restoreSpeed();
  if(i>=tourKeys.length){stopTour(false,true);return;}
  const key=tourKeys[i],anims=partAnimations(key);
- // A step lasts long enough for the part's slowest animation to finish most of a cycle at up to 4x speed; each animation restarts from its beginning.
- const ms=Math.min(maxStep,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/4));
- anims.forEach(a=>{a.playbackRate=Math.min(4,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
+ // A step lasts long enough for the part's slowest animation to finish most of a cycle at up to 3x speed; each animation restarts from its beginning.
+ const ms=Math.min(maxStep,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/maxRate));
+ anims.forEach(a=>{a.playbackRate=Math.min(maxRate,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
  tour.sped=anims;
  highlight(key);
  document.querySelector('#hint-number').textContent=topics[key].n+' / '+String(tourKeys.length).padStart(2,'0')+' · TOUR';
