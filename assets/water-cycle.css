@@ -5,14 +5,13 @@
 .water-cycle h1 {font-size:clamp(2rem,4.4vw,3.35rem);line-height:1.1;max-width:19ch;}
 .cycle-intro {max-width:39ch;font-size:.95rem;line-height:1.65;color:var(--ink-2);margin:0;}
 .explorer-toolbar {display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
-.motion-toggle {font:inherit;color:var(--ink-2);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
-.motion-toggle:hover {background:var(--hover);}
 .toolbar-actions {display:flex;flex-shrink:0;gap:8px;}
-.tour-toggle {font:inherit;color:var(--link);background:transparent;border:1px solid var(--line);border-radius:20px;padding:5px 12px;cursor:pointer;}
-.tour-toggle:hover {background:var(--hover);}
-.tour-toggle.on {border-color:var(--link);}
-/* On wide screens the main map extends into the page margins (up to 80px each side) so it reads larger than the text column.
-   The hint panel stays aligned with the column and keeps the width it had at 19% of the column. */
+/* Play tour: vibrant orange with black text in both themes. */
+.tour-toggle {font:600 .8rem/1 var(--sans);color:#111;background:#ff8a1f;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.12);}
+.tour-toggle:hover {background:#ff7a00;}
+.tour-toggle:focus-visible {outline:2px solid #111;outline-offset:2px;}
+.tour-toggle.on {background:#ffb066;}
+/* On wide screens the main map extends into the page margins (up to 80px each side) so it reads larger than the text column. */
 .explorer {position:relative;margin:0;--bleed:0px;margin-inline:calc(-1 * var(--bleed));}
 .main-page .explorer {--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 32px),80px);}
 .landscape {display:block;width:100%;height:auto;overflow:visible;}
@@ -28,10 +27,20 @@
 .maplabel {font:13.5px var(--sans);fill:var(--ink-2);}
 .process-label {font:italic 13px var(--sans);fill:#506b5c;}
 .irrigation-label {font:11px var(--sans);fill:#415948;}
-.hint-panel {position:absolute;left:var(--bleed);top:48%;width:calc((100% - 2 * var(--bleed)) * .19);pointer-events:none;}
-.hint-title {font:500 1.3rem/1.2 var(--sans);margin:8px 0;}
-.hint-copy {font-size:.75rem;line-height:1.6;color:var(--ink-2);margin:0 0 10px;}
-.hint-link {font-size:.72rem;color:var(--link);}
+/* Callout next to the highlighted part: a small card with a caret pointing at the part; the whole card is clickable. */
+.hint-panel {position:absolute;left:0;top:0;z-index:2;width:250px;box-sizing:border-box;padding:12px 14px 11px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px var(--shadow);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility 0s .15s;}
+.hint-panel.show {opacity:1;visibility:visible;transform:none;transition:opacity .15s,transform .15s;}
+.hint-panel::before {content:"";position:absolute;width:10px;height:10px;background:var(--paper);border:1px solid var(--line);transform:rotate(45deg);display:none;}
+.hint-panel[data-side="right"]::before {display:block;left:-6px;top:calc(var(--caret-y) - 5px);border-width:0 0 1px 1px;}
+.hint-panel[data-side="left"]::before {display:block;right:-6px;top:calc(var(--caret-y) - 5px);border-width:1px 1px 0 0;}
+.hint-panel[data-side="top"]::before {display:block;bottom:-6px;left:calc(var(--caret-x) - 5px);border-width:0 1px 1px 0;}
+.hint-panel[data-side="bottom"]::before {display:block;top:-6px;left:calc(var(--caret-x) - 5px);border-width:1px 0 0 1px;}
+.hint-title {font:600 1.05rem/1.25 var(--sans);margin:0 0 4px;}
+.hint-copy {font-size:.8rem;line-height:1.5;color:var(--ink-2);margin:0;}
+.hint-copy:empty {display:none;}
+.hint-link {display:inline-block;margin-top:8px;font-size:.78rem;font-weight:500;color:var(--link);}
+.hint-link:empty {display:none;}
+.hint-panel:hover .hint-link {text-decoration:underline;text-underline-offset:3px;}
 .cycle-back {display:inline-block;margin-top:24px;font-size:.8rem;}
 .human-page .water-cycle {padding-top:24px;}
 .cycle-links {display:flex;flex-wrap:wrap;gap:12px 28px;margin:32px 0;font-size:.9rem;}
@@ -54,7 +63,8 @@
  .cycle-heading {display:block;} .cycle-intro {max-width:54ch;margin-top:16px;}
  .water-cycle {padding-top:32px;}
  .explorer,.main-page .explorer {display:flex;flex-direction:column;--bleed:0px;margin-inline:0;}
- .hint-panel {position:static;width:auto;max-width:none;min-height:112px;margin:8px 0 20px;}
+ .hint-panel {position:static;width:auto;max-width:none;margin:8px 0 20px;box-shadow:none;transform:none;}
+ .hint-panel:not(.show) {display:none;}
  .hint-title {font-size:1.1rem;} .hint-copy {margin:5px 0;max-width:65ch;}
  #research-dialog .dialog-body {padding:28px 22px;}
 }
