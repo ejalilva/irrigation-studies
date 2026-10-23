@@ -12,10 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-23j">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-23j">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-23j">
-<script src="assets/water-cycle.js?v=2026-10-23j" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=2026-10-23k">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-23k">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-23k">
+<script>function whyFigError(img){if(img.dataset.alt){img.src=img.dataset.alt;img.dataset.alt="";}else{img.closest("figure").hidden=true;}}</script>
+<script src="assets/journals.js?v=2026-10-23k"></script>
+<script src="assets/water-cycle.js?v=2026-10-23k" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -49,62 +51,23 @@
     <section aria-labelledby="why">
       <p class="cycle-eyebrow">A closer look · Agricultural water use</p>
       <h2 id="why">Why irrigation matters</h2>
-      <p class="intro">Feeding a growing population depends on irrigated farms, and irrigated farms depend on water that is already running short.</p>
-      <div class="facts">
-        <div class="fact">
-          <div class="fact-num">70%</div>
-          <p>of the fresh water withdrawn worldwide goes to irrigation, and more than 90% in parts of the Middle East and Southeast Asia.<a class="src" href="https://www.nature.com/articles/nature10452">Foley et al., 2011</a></p>
-        </div>
-        <div class="fact">
-          <div class="fact-num">2&times;</div>
-          <p>Irrigated land is at least twice as productive per hectare as rainfed land.<a class="src" href="https://www.worldbank.org/en/topic/water-in-agriculture">World Bank, Water in agriculture</a></p>
-        </div>
-        <div class="fact">
-          <div class="fact-num">2050</div>
-          <p>is when global food demand is projected to have roughly doubled, driven more by diets shifting toward meat than by population growth.<a class="src" href="https://direct.mit.edu/daed/article/144/4/8/27090/Food-Agriculture-amp-the-Environment-Can-We-Feed">Tilman &amp; Clark, 2015</a></p>
-        </div>
-        <div class="fact">
-          <div class="fact-num">41%</div>
-          <p>of irrigation water use comes at the expense of rivers&rsquo; environmental flow requirements.<a class="src" href="https://www.nature.com/articles/ncomms15900">J&auml;germeyr et al., 2017</a></p>
-        </div>
+      <!-- Open-access figures, shown from the publishers' sites with credit. If one fails to load it tries the second
+           address in data-alt, then hides itself. To use a local copy, save the image in assets/why/ and point src at it. -->
+      <div class="why-figs">
+        <figure class="why-fig">
+          <a href="https://hess.copernicus.org/articles/22/1119/2018/#f04" target="_blank" rel="noopener"><img src="https://hess.copernicus.org/articles/22/1119/2018/hess-22-1119-2018-f04-web.png" alt="World map of irrigated areas identified from satellite vegetation records." loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="whyFigError(this)"></a>
+          <figcaption><strong>Where farms are irrigated</strong> Irrigated areas mapped from satellite vegetation records. <span class="credit">Meier et al. (2018), <em>HESS</em>, Fig. 4, CC BY 3.0</span></figcaption>
+        </figure>
+        <figure class="why-fig">
+          <a href="https://www.nature.com/articles/ncomms15900#Fig1" target="_blank" rel="noopener"><img src="https://cdn.ncbi.nlm.nih.gov/pmc/blobs/5259/5524928/b9628956891f/ncomms15900-f1.jpg" data-alt="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fncomms15900/MediaObjects/41467_2017_Article_BFncomms15900_Fig1_HTML.jpg" alt="World map of how far river flow falls below environmental flow requirements, with hydrographs of selected rivers." loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="whyFigError(this)"></a>
+          <figcaption><strong>What it costs rivers</strong> Where withdrawals leave river flow below what ecosystems need. <span class="credit">J&auml;germeyr et al. (2017), <em>Nature Communications</em>, Fig. 1, CC BY 4.0</span></figcaption>
+        </figure>
+        <figure class="why-fig">
+          <a href="https://www.nature.com/articles/ncomms15900#Fig2" target="_blank" rel="noopener"><img src="https://cdn.ncbi.nlm.nih.gov/pmc/blobs/5259/5524928/2af3e0a5b33a/ncomms15900-f2.jpg" data-alt="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fncomms15900/MediaObjects/41467_2017_Article_BFncomms15900_Fig2_HTML.jpg" alt="Maps of the change in food production if environmental flows were protected, under four scenarios." loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="whyFigError(this)"></a>
+          <figcaption><strong>What is at stake for food</strong> Change in food production if rivers kept their environmental flows. <span class="credit">J&auml;germeyr et al. (2017), <em>Nature Communications</em>, Fig. 2, CC BY 4.0</span></figcaption>
+        </figure>
       </div>
-
-      <details class="more">
-        <summary>How irrigation changes the climate system</summary>
-        <ul>
-          <li>It can shift evapotranspiration from moisture-limited to energy-limited, changing local water and energy budgets (<a href="https://www.nature.com/articles/nclimate1744">Taylor et al., 2012</a>).</li>
-          <li>Groundwater-fed irrigation has increased downwind precipitation and streamflow by up to 30% in the High Plains and California&rsquo;s Central Valley (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD013892">DeAngelis et al., 2010</a>; <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010WR010046">Kustu et al., 2011</a>).</li>
-          <li>Large-scale irrigation can also suppress local precipitation (<a href="https://link.springer.com/article/10.1007/s40899-020-00368-w">Szilagyi et al., 2020</a>).</li>
-          <li>It cools the hottest days of the year (Thiery et al., 2020; Lawston et al., 2020).</li>
-          <li>It can delay the onset of monsoons (Tuinenburg, 2013).</li>
-          <li>It can create humid heat waves beyond what people can tolerate (Raymond et al., 2020).</li>
-        </ul>
-        <p class="credit">Adapted from <a href="https://www.nature.com/articles/s43017-023-00438-5">McDermid et al., 2023, Irrigation in the Earth system</a>.</p>
-      </details>
-    </section>
-
-    <section aria-labelledby="gap">
-      <h2 id="gap">The measurement gap</h2>
-      <p class="intro">To manage water withdrawals, someone first has to know how much water each farm is taking. On the ground, that is surprisingly hard.</p>
-      <div class="gap-grid">
-        <div>
-          <h3>Few withdrawals are metered</h3>
-          <ul>
-            <li>Metering is expensive and labor-intensive.</li>
-            <li>Some withdrawals from rivers and aquifers go unreported or are illegal.</li>
-            <li>Farmers may oppose meters over concerns about future regulation (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378">Foster et al., 2020</a>).</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Models estimate need, not decisions</h3>
-          <ul>
-            <li>Crops rotate from season to season.</li>
-            <li>Farmers often irrigate by rule of thumb, such as leaf color, curling or leaf temperature, rather than modeled crop water demand.</li>
-            <li>Most models estimate the irrigation a crop requires, not what was actually applied.</li>
-          </ul>
-        </div>
-      </div>
-      <p class="bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale.</p>
+      <p class="bridge">Few farms meter their water. Satellites revisit every field every few days; my work asks how much of the irrigation signal they can recover, and at what scale.</p>
     </section>
 
     <details class="more"><summary>Seeing irrigation at different scales</summary>      <div class="scales" id="scales">
@@ -137,11 +100,7 @@
           <h2 id="studies-h">My irrigation studies</h2>
           <p class="intro">In the order the work developed, from coarse satellite soil moisture to field-scale timing.</p>
         </div>
-        <fieldset class="filters" id="filters">
-          <legend>Filter studies by method</legend>
-        </fieldset>
       </div>
-      <p class="count" id="count" aria-live="polite"></p>
       <ol class="study-list" id="study-list"></ol>
       <noscript><p>See the full list on the <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications page</a>.</p></noscript>
     </section>
@@ -250,7 +209,7 @@
 /* ======================================================================
    HOW TO ADD A NEW STUDY
    Copy any block in STUDIES below, paste it anywhere in the list, and
-   edit the fields. Studies are sorted newest-first automatically.
+   edit the fields. Studies are listed oldest first automatically.
 
    year      publication year (number)
    title     paper title
@@ -262,9 +221,9 @@
    methods   any of: "sm", "da", "thermal", "ml" (see METHODS)
    scale     one of: "coarse", "9km", "1km", "field" (see SCALES)
    scaleNote optional text that replaces the scale label, e.g. "10 m"
-   summary   one or two plain-language sentences
+   summary   one short line shown on the card (findings, authors and citation sit behind "Findings & authors")
    findings  a short list of key results
-   image     optional { src, alt, caption, source }. Missing images are
+   image     optional { src, alt, caption, source, credit }; the caption shows when the figure is enlarged, the credit (if any) under the figure on the card. Missing images are
              clearly labeled; no substitute scientific figure is drawn.
    imageNote optional description for a missing study figure.
 
@@ -282,7 +241,7 @@ const STUDIES = [
     doi: "10.1016/j.rse.2025.115153",
     methods: ["thermal", "ml"],
     scale: "field",
-    summary: "AgroTrack, a data-driven tool that reads farmers' irrigation decisions, meaning when fields are actually watered, from thermal satellite observations.",
+    summary: "AgroTrack reads when fields are actually watered from thermal satellite observations.",
     findings: [
       "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
       "Captured widespread fallowing of fields after California's 2021 megadrought."
@@ -298,7 +257,7 @@ const STUDIES = [
     doi: "10.1029/2022WR033342",
     methods: ["sm", "da"],
     scale: "1km",
-    summary: "Assimilates roughly weekly 1 km SMAP/Sentinel-1 soil moisture into a model with a particle batch smoother to estimate how much water was applied.",
+    summary: "Estimates how much water was applied by assimilating 1 km SMAP/Sentinel-1 soil moisture.",
     findings: [
       "Estimated irrigation was significantly lower over non-irrigated pixels than over irrigated ones.",
       "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
@@ -316,7 +275,7 @@ const STUDIES = [
     methods: ["sm"],
     scale: "1km",
     scaleNote: "9 km vs. 1 km",
-    summary: "Tests whether SMAP soil moisture can see irrigation inside its footprint, comparing the 9 km enhanced product with 1 km SMAP/Sentinel-1.",
+    summary: "Tests whether SMAP sees irrigation: the 9 km product against 1 km SMAP/Sentinel-1.",
     findings: [
       "The 9 km enhanced product misses irrigation on small plots.",
       "The 1 km SMAP/Sentinel-1 product shows higher mean soil moisture and more variability over irrigated fields.",
@@ -334,13 +293,13 @@ const STUDIES = [
     methods: ["sm", "ml"],
     scale: "field",
     scaleNote: "10 m",
-    summary: "Estimates surface soil moisture at 10 m from Sentinel-1 radar and Sentinel-2 imagery with machine learning, then uses it to map irrigated fields.",
+    summary: "Maps irrigated fields from 10 m soil moisture estimated with Sentinel-1 and Sentinel-2.",
     findings: [
       "A convolutional neural network performed best, reaching R² = 0.92 (Sentinel-2) and 0.84 (Sentinel-1) against field measurements.",
       "Irrigated fields had significantly wetter surface soil than rainfed cropland during the irrigation season.",
       "Classifying the soil moisture maps identified irrigated agriculture with 77% overall accuracy."
     ],
-    image: {"src": "assets/studies/rabiei-2021-figure13-original.webp", "alt": "High-resolution field imagery and a classified map showing urban land, dry farming, rangeland and irrigated agriculture near Varamin.", "caption": "Land-use classification from Sentinel-2 soil moisture. Rabiei et al. (2021), Figure 13, CC BY.", "source": "https://www.mdpi.com/2071-1050/13/20/11355"}
+    image: {"src": "assets/studies/rabiei-2021-figure13-original.webp", "alt": "High-resolution field imagery and a classified map showing urban land, dry farming, rangeland and irrigated agriculture near Varamin.", "caption": "Land-use classification from Sentinel-2 soil moisture.", "credit": "Rabiei et al. (2021), Figure 13, CC BY", "source": "https://www.mdpi.com/2071-1050/13/20/11355"}
   },
   {
     year: 2019,
@@ -351,7 +310,7 @@ const STUDIES = [
     doi: "10.1016/j.rse.2019.111226",
     methods: ["sm"],
     scale: "coarse",
-    summary: "Uses AMSR2 satellite soil moisture with the SM2RAIN approach to estimate how much water farmers apply.",
+    summary: "Estimates how much water farmers apply from AMSR2 satellite soil moisture.",
     findings: [
       "SM2RAIN captured irrigation patterns consistent with observations.",
       "It estimated nearly zero irrigation over non-irrigated pixels.",
@@ -375,7 +334,7 @@ const RELATED = [
     title: "Harnessing SMAP satellite soil moisture product to optimize soil properties to improve water resource management for agriculture",
     venue: "Nanda, A., Das, N.N., Jalilvand, E., et al. Agricultural Water Management",
     note: "Six years of SMAP soil moisture used to calibrate soil properties, improving streamflow and agricultural drought estimates.",
-    doi: "10.1016/j.agwat.2024.109065"
+    doi: "10.1016/j.agwat.2024.108918"
   },
   {
     year: 2024,
@@ -508,18 +467,16 @@ function studyHTML(s, idx) {
   const findings = (s.findings || []).map(f => `<li>${esc(f)}</li>`).join("");
   const images = s.images || (s.image?.src ? [s.image] : []);
   const fig = images.length
-    ? `<figure class="study-fig"><div class="study-image-set${images.length > 1 ? ' study-image-pair' : ''}">${images.map((image, imageIdx) => `<a class="study-figure-open" href="${esc(image.src)}" data-study-figure="${idx}" data-study-image="${imageIdx}" aria-label="Enlarge figure: ${esc(image.alt)}"><img src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" decoding="async"><span class="figure-enlarge">Enlarge figure ↗</span></a>`).join('')}</div><figcaption>${images.map(image => esc(image.caption)).join(' ')}</figcaption></figure>`
+    ? `<figure class="study-fig"><div class="study-image-set${images.length > 1 ? ' study-image-pair' : ''}">${images.map((image, imageIdx) => `<a class="study-figure-open" href="${esc(image.src)}" data-study-figure="${idx}" data-study-image="${imageIdx}" aria-label="Enlarge figure: ${esc(image.alt)}"><img src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" decoding="async"><span class="figure-enlarge">Enlarge figure ↗</span></a>`).join('')}</div>${images.some(image => image.credit) ? `<figcaption>${images.filter(image => image.credit).map(image => esc(image.credit)).join(' ')}</figcaption>` : ''}</figure>`
     : `<figure class="study-fig figure-pending"><div class="missing-figure"><span>Figure pending</span><p>${esc(s.imageNote || 'Study figure to be added.')}</p></div><figcaption>The paper and study details are available below.</figcaption></figure>`;
+  const j = window.Papers && window.Papers.JOURNALS[s.journal];
   return `<li class="study" data-methods="${s.methods.join(" ")}">
     ${fig}
     <div class="study-body">
-      <div class="study-meta"><span>${s.year}</span><span>${esc(s.scaleNote || sc.label)}</span></div>
+      <p class="study-meta"><span class="jchip" style="--jc:${j ? j.color : "#3f4c63"}" title="${esc(s.journal)}">${esc(j ? j.acr : s.journal)}</span><span>${s.year}</span><span class="study-scale">${esc(s.scaleNote || sc.label)}</span></p>
       <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
-      <p class="venue"><em>${esc(s.journal)}</em></p>
       <p class="summary">${esc(s.summary)}</p>
-      <ul class="tags" aria-label="Methods">${tags}</ul>
-      <details class="study-details"><summary>Methods &amp; findings</summary><p class="authors">${authors}</p><p class="citation-details">${esc(s.journal)}, ${esc(s.details)} (${s.year}).</p>${findings ? `<ul class="findings">${findings}</ul>` : ""}</details>
-      <div class="study-foot"><a href="${esc(linkFor(s))}">Read the paper ↗</a><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div>
+      <details class="study-details"><summary>Findings &amp; authors</summary>${findings ? `<ul class="findings">${findings}</ul>` : ""}<p class="authors">${authors}</p><p class="citation-details"><em>${esc(s.journal)}</em>, ${esc(s.details)} (${s.year}).</p><ul class="tags" aria-label="Methods">${tags}</ul><div class="study-foot"><a href="${esc(linkFor(s))}">Read the paper ↗</a><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div></details>
     </div>
   </li>`;
 }
@@ -553,7 +510,7 @@ if (figureDialog && typeof figureDialog.showModal === 'function') {
     const img = document.getElementById('figure-image');
     img.src = figure.src;
     img.alt = figure.alt;
-    document.getElementById('figure-caption').textContent = figure.caption;
+    document.getElementById('figure-caption').textContent = figure.caption + (figure.credit ? ' ' + figure.credit + '.' : '');
     document.getElementById('figure-original').href = figure.src;
     document.getElementById('figure-source').href = figure.source;
     figureDialog.showModal();
@@ -566,33 +523,6 @@ if (figureDialog && typeof figureDialog.showModal === 'function') {
     if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) figureDialog.close();
   });
   figureDialog.addEventListener('close', () => figureOpener?.focus({preventScroll:true}));
-}
-
-function renderFilters() {
-  const box = document.getElementById("filters");
-  const counts = { all: STUDIES.length };
-  STUDIES.forEach(s => s.methods.forEach(m => counts[m] = (counts[m] || 0) + 1));
-  const keys = ["all", ...Object.keys(METHODS).filter(k => counts[k])];
-  box.insertAdjacentHTML("beforeend", keys.map(k =>
-    `<button type="button" data-filter="${k}" aria-pressed="${k === "all"}">${k === "all" ? "All" : esc(METHODS[k])}<span class="n">${counts[k]}</span></button>`
-  ).join(""));
-  box.addEventListener("click", e => {
-    const b = e.target.closest("button[data-filter]");
-    if (!b) return;
-    box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    applyFilter(b.dataset.filter);
-  });
-}
-
-function applyFilter(f) {
-  let shown = 0;
-  document.querySelectorAll(".study").forEach(el => {
-    const on = f === "all" || el.dataset.methods.split(" ").includes(f);
-    el.hidden = !on;
-    if (on) shown++;
-  });
-  const label = f === "all" ? "" : ` using ${METHODS[f].toLowerCase()}`;
-  document.getElementById("count").textContent = `Showing ${shown} ${shown === 1 ? "study" : "studies"}${label}`;
 }
 
 function renderRelated() {
@@ -629,8 +559,6 @@ document.addEventListener("click", async e => {
 });
 
 renderStudies();
-renderFilters();
-applyFilter("all");
 renderRelated();
 drawPanels();
 document.getElementById("scales").classList.add("animate");
