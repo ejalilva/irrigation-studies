@@ -11,7 +11,7 @@ const fullView = landscape.getAttribute('viewBox');
 const smallScreen = window.matchMedia('(max-width: 750px)');
 function frameLandscape() {
  landscape.setAttribute('viewBox', smallScreen.matches
-  ? (isHuman ? '280 160 810 520' : '190 45 920 640') : fullView);
+  ? (isHuman ? '280 160 810 520' : '170 45 940 660') : fullView);
 }
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
@@ -44,33 +44,34 @@ function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.hre
 }
 function closeTopic(){dialog.close();}
 document.querySelectorAll('[data-topic]').forEach(el=>{
- el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen'){takeOver();highlight(el.dataset.topic);}});
- el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')){takeOver();highlight(el.dataset.topic);}});
- el.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen')clearHighlight();});
+ el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}highlight(el.dataset.topic);});
+ el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')&&deliberateHover()){takeOver();highlight(el.dataset.topic);}});
+ el.addEventListener('pointerleave',e=>{if(!tour&&(e.pointerType==='mouse'||e.pointerType==='pen'))clearHighlight();});
  el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open)clearHighlight();});
  let pointerType='';el.addEventListener('pointerdown',e=>{pointerType=e.pointerType;});
  el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=topics[key].href?'Tap again to explore human-driven processes ↗':'Tap again to read the research ↗';return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
  if(el.tagName.toLowerCase()==='g')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTopic(el.dataset.topic);}});
 });
-// Intro tour. On a first visit, once the map is in view, each part plays briefly in turn and the map then waits.
-// Any interaction stops it at once. The Play tour button replays it; with reduced motion or Motion off it only highlights.
+// Intro tour. When the page opens and the map is in view, each part plays briefly in turn and the map then waits.
+// A click, tap, key press or deliberate hover stops it at once. The Play tour button replays it; with reduced motion or Motion off it only highlights.
 const tourButton=document.querySelector('#tour-toggle');
 const hintPanel=document.querySelector('.hint-panel');
 const explorer=document.querySelector('#explore');
 const tourKeys=[...new Set([...document.querySelectorAll('.topic-nav [data-topic]')].map(b=>b.dataset.topic))].filter(k=>document.querySelector('.scene-item[data-topic="'+k+'"]'));
-const tourSeenKey='water-cycle-tour-seen-'+(isHuman?'human':'main');
-const minStep=Math.max(1000,4500/tourKeys.length);
-let tour=null,inView=false,autoPending=0,autoDone=(()=>{try{return localStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
+const tourSeenKey='water-cycle-tour-v2-'+(isHuman?'human':'main');
+const minStep=Math.max(1000,4500/tourKeys.length),maxStep=2500;
+// autoDone: the automatic tour has had its chance on this page view. Seen: it finished or the visitor stopped it, so later visits skip it.
+let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{return localStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
 function markTourSeen(){autoDone=true;try{localStorage.setItem(tourSeenKey,'1');}catch(e){}}
 function cycleLength(a){const d=a.effect&&a.effect.getTiming().duration;return typeof d==='number'?d:0;}
 function partAnimations(key){return [...document.querySelectorAll('.scene-item[data-topic="'+key+'"]')].flatMap(el=>el.getAnimations({subtree:true})).filter(a=>'animationName' in a);}
 function restoreSpeed(){if(!tour)return;tour.sped.forEach(a=>{a.playbackRate=1;});tour.sped=[];}
 function playTourStep(i){
  restoreSpeed();
- if(i>=tourKeys.length){stopTour();return;}
+ if(i>=tourKeys.length){stopTour(false,true);return;}
  const key=tourKeys[i],anims=partAnimations(key);
- // A step lasts long enough for the part's slowest animation to finish one cycle at up to 4x speed; each animation restarts from its beginning.
- const ms=Math.min(2000,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/4));
+ // A step lasts long enough for the part's slowest animation to finish most of a cycle at up to 4x speed; each animation restarts from its beginning.
+ const ms=Math.min(maxStep,Math.max(minStep,Math.max(0,...anims.map(cycleLength))/4));
  anims.forEach(a=>{a.playbackRate=Math.min(4,Math.max(1,cycleLength(a)/ms));a.currentTime=0;});
  tour.sped=anims;
  highlight(key);
@@ -80,31 +81,41 @@ function playTourStep(i){
 }
 function startTour(){
  if(tour||!tourKeys.length||dialog.open)return;
- clearTimeout(autoPending);autoPending=0;markTourSeen();touchArmed=null;
+ clearTimeout(autoPending);autoPending=0;autoDone=true;touchArmed=null;tourMoved=0;lastPointer=null;
  tour={timer:0,sped:[]};
+ document.body.classList.add('touring');
  hintPanel.setAttribute('aria-live','off');
  tourButton.textContent='Stop tour';tourButton.classList.add('on');
  playTourStep(0);
 }
-function stopTour(keepHighlight){
+// remember: the tour finished, or the visitor chose to stop it (not when it was cut short by scrolling away or switching tabs).
+function stopTour(keepHighlight,remember){
  if(!tour)return;
  clearTimeout(tour.timer);restoreSpeed();tour=null;
+ if(remember)markTourSeen();
+ document.body.classList.remove('touring');
  hintPanel.setAttribute('aria-live','polite');
  tourButton.textContent='Play tour';tourButton.classList.remove('on');
  if(!keepHighlight)clearHighlight();
 }
+// A resting or nudged mouse that happens to sit over the map should not cancel the tour; moving it across the map should.
+window.addEventListener('pointermove',e=>{if(!tour||e.pointerType==='touch')return;if(lastPointer)tourMoved+=Math.hypot(e.clientX-lastPointer[0],e.clientY-lastPointer[1]);lastPointer=[e.clientX,e.clientY];},{capture:true,passive:true});
+function deliberateHover(){return tourMoved>40;}
 // The visitor is exploring the map themselves: end the tour and do not start it later.
-function takeOver(){clearTimeout(autoPending);autoPending=0;if(tour)stopTour(true);else if(!autoDone)markTourSeen();}
+function takeOver(){clearTimeout(autoPending);autoPending=0;if(tour)stopTour(true,true);else if(!autoDone)markTourSeen();}
 function canAutoTour(){return !autoDone&&!tour&&inView&&motionEnabled&&!reduced.matches&&!dialog.open&&!document.hidden;}
-function scheduleAutoTour(){clearTimeout(autoPending);autoPending=0;if(canAutoTour())autoPending=setTimeout(()=>{autoPending=0;if(canAutoTour())startTour();},800);}
+function scheduleAutoTour(){clearTimeout(autoPending);autoPending=0;if(canAutoTour())autoPending=setTimeout(()=>{autoPending=0;if(canAutoTour())startTour();},500);}
 function interruptTour(e){
  if(e.target instanceof Node&&tourButton.contains(e.target)&&(e.type==='pointerdown'||e.key==='Enter'||e.key===' '))return;
- clearTimeout(autoPending);autoPending=0;if(tour)stopTour();
+ if(e.type==='keydown'&&['Shift','Control','Alt','Meta'].includes(e.key))return;
+ if(tour)stopTour(false,true);else if(autoPending)takeOver();
 }
-['pointerdown','keydown','wheel'].forEach(type=>window.addEventListener(type,interruptTour,{capture:true,passive:true}));
-tourButton.addEventListener('click',()=>{if(tour)stopTour();else startTour();});
+['pointerdown','keydown'].forEach(type=>window.addEventListener(type,interruptTour,{capture:true,passive:true}));
+tourButton.addEventListener('click',()=>{if(tour)stopTour(false,true);else startTour();});
 if('IntersectionObserver' in window)new IntersectionObserver(([entry])=>{inView=entry.intersectionRatio>=.5;if(!inView&&tour)stopTour();scheduleAutoTour();},{threshold:[0,.5,1]}).observe(explorer);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&tour)stopTour();scheduleAutoTour();});
+// Open the page with ?tour to replay the tour as a first-time visitor.
+if(/[?&]tour\b/.test(location.search))autoDone=false;
 document.querySelector('#close-dialog').addEventListener('click',closeTopic);
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeTopic();}});
 dialog.addEventListener('close',()=>{document.body.style.overflow='';document.body.classList.remove('dialog-open');history.replaceState(null,'',location.pathname+location.search+'#explore');if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});
