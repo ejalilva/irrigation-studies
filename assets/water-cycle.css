@@ -94,3 +94,15 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 /* Dash travel follows the river path downstream; a solid stroke cannot show dash-offset motion. */
 @keyframes river-current{from{stroke-dashoffset:0}to{stroke-dashoffset:-44}}
 @keyframes river-cascade{from{stroke-dashoffset:0}to{stroke-dashoffset:-24}}
+
+/* Soil moisture in two layers. The surface wets and dries quickly; the wetting front reaches the root zone later and lingers while roots draw water up. Keep the three 7 s timings equal so the stages stay in order. */
+.soil-layer{font:600 10px var(--sans);letter-spacing:.02em}
+.surface-label{fill:#4a391e}
+.root-label{font-size:11px;fill:#fffaf0}
+.surface-wet{animation:surface-wet 7s ease-in-out infinite}
+.wetting-front{transform-origin:50% 0;animation:wetting-front 7s ease-in-out infinite}
+.root-uptake{animation:uptake-flow .9s linear infinite,uptake-show 7s ease-in-out infinite}
+@keyframes surface-wet{0%,100%{opacity:.12}8%{opacity:.8}22%{opacity:.72}60%{opacity:.2}}
+@keyframes wetting-front{0%{transform:scaleY(.04);opacity:0}10%{transform:scaleY(.06);opacity:.85}48%{transform:scaleY(1);opacity:.75}78%{opacity:.45}100%{transform:scaleY(1);opacity:0}}
+@keyframes uptake-flow{to{stroke-dashoffset:16}}
+@keyframes uptake-show{0%,40%,100%{opacity:0}55%,85%{opacity:.95}}
