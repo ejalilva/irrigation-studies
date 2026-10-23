@@ -212,6 +212,15 @@
   }
   .lit-reset { font: 500 .88rem/1 var(--sans); color: var(--link); background: none; border: 0; padding: 8px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
   .lit-reset[hidden] { display: none; }
+  /* One Filter button holds the less-used filters and the legend. */
+  .lit-filter-btn { display: inline-flex; align-items: center; gap: 6px; font: 500 .88rem/1 var(--sans); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 11px 13px; cursor: pointer; }
+  .lit-filter-btn svg { width: 10px; height: 10px; transition: transform .15s; }
+  .lit-filter-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .lit-filter-btn:hover { background: var(--tag-bg); }
+  .lit-filter-btn.on { border-color: var(--ink); }
+  .lit-controls #lit-count { margin: 0 0 0 auto; font-size: .88rem; color: var(--ink-2); }
+  .lit-panel { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; font-size: .88rem; color: var(--ink-2); }
+  .lit-panel[hidden] { display: none; }
 
   .lit-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-top: 20px; font-size: .88rem; color: var(--ink-2); }
   .lit-meta p { margin: 0; }

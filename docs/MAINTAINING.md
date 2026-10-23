@@ -12,7 +12,7 @@ Technical notes for running the page, the paper-finding agent and the review wor
 | `assets/water-cycle.css` | Explorer layout and hover/focus animations. |
 | `assets/water-cycle.js` | Map research descriptions and accessible interaction controller. |
 | `data/papers.json` | Rows of the research landscape table. |
-| `data/editor_picks.json` | Rising papers (editor's picks) and their notes, shown above the table and tagged in it. |
+| `data/editor_picks.json` | Rising papers (editor's picks) and their notes. Still recorded by the review workflow, but not shown on the page. |
 | `data/reading_list.json` | The ordered essential reading list. |
 | `agent/find_papers.py` | Paper-finding agent (Python 3.9+, standard library only). |
 | `agent/config.json` | Search phrases and agent settings. |
@@ -81,7 +81,7 @@ Each paper is one object in `papers`:
 | `note` | Optional extra line in the row's details, such as a preprint's earlier title. |
 | `resources` | Optional list of datasets (`"type": "data"`) and software (`"type": "code"`) published with the paper, at most four. Shown as **Data** and **Code** links in the "Data & code" column, and listed in full in the row's details. Add, fix or remove entries by hand at any time. |
 | `resources_checked` | Date the agent last looked for data and code links for this paper. Delete it to have the agent look again on its next run. |
-| `added` | Date the agent added the row. The default "Rising and new first" order shows Rising papers first, then the most recently published ones. |
+| `added` | Date the agent added the row. The table opens newest first; visitors re-sort by clicking a column heading (Year, Study, Study area, Period). |
 | `needs_review` | Set by the agent when it could not fill every column. Shown as "Check details" in the review preview only. |
 | `source` | `seed` (added by hand) or `agent`. |
 
@@ -163,7 +163,7 @@ Rising papers live in `data/editor_picks.json`, separate from the table data:
 }
 ```
 
-`id` must match a paper's `id` in `data/papers.json`. The six most recently picked appear as cards in the Rising section above the table. In the table, Rising papers come first in the default order, get a purple star **Rising** tag, show your note in their details, and can be filtered with "Rising" in the status menu. To mark a paper that is already in the table, add it to this file on `main` directly, or ask for it in a pull request.
+`id` must match a paper's `id` in `data/papers.json`. The page currently does not show Rising papers (the cards above the table, the star tag and the Rising filter were removed to keep the table minimal); the file is kept so picks can be shown again later.
 
 ## Essential reading list
 
