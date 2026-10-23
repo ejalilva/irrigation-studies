@@ -27,18 +27,15 @@
 .maplabel {font:13.5px var(--sans);fill:var(--ink-2);}
 .process-label {font:italic 13px var(--sans);fill:#506b5c;}
 .irrigation-label {font:11px var(--sans);fill:#415948;}
-/* Callout next to the highlighted part: a small card with a caret pointing at the part; the whole card is clickable. */
-.hint-panel {position:absolute;left:0;top:0;z-index:2;width:250px;box-sizing:border-box;padding:12px 14px 11px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px var(--shadow);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(4px);transition:opacity .15s,transform .15s,visibility 0s .15s;}
-.hint-panel.show {opacity:1;visibility:visible;transform:none;transition:opacity .15s,transform .15s;}
-.hint-panel::before {content:"";position:absolute;width:10px;height:10px;background:var(--paper);border:1px solid var(--line);transform:rotate(45deg);display:none;}
-.hint-panel[data-side="right"]::before {display:block;left:-6px;top:calc(var(--caret-y) - 5px);border-width:0 0 1px 1px;}
-.hint-panel[data-side="left"]::before {display:block;right:-6px;top:calc(var(--caret-y) - 5px);border-width:1px 1px 0 0;}
-.hint-panel[data-side="top"]::before {display:block;bottom:-6px;left:calc(var(--caret-x) - 5px);border-width:0 1px 1px 0;}
-.hint-panel[data-side="bottom"]::before {display:block;top:-6px;left:calc(var(--caret-x) - 5px);border-width:1px 0 0 1px;}
-.hint-title {font:600 1.05rem/1.25 var(--sans);margin:0 0 4px;}
-.hint-copy {font-size:.8rem;line-height:1.5;color:var(--ink-2);margin:0;}
+/* Description of the highlighted part: plain text right under its map label (no box), with a halo in the page colour so it
+   reads over the landscape. The label already names the part, so the title is kept only for screen readers on larger screens. */
+.hint-panel {position:absolute;left:0;top:0;z-index:2;width:max-content;max-width:230px;cursor:pointer;opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .15s;text-shadow:0 0 3px var(--paper),0 0 3px var(--paper),0 0 2px var(--paper);}
+.hint-panel.show {opacity:1;visibility:visible;transition:opacity .15s;}
+.hint-panel[data-align="end"] {text-align:right;}
+.hint-title {position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0;}
+.hint-copy {font-size:.8rem;line-height:1.45;color:var(--ink-2);margin:0;}
 .hint-copy:empty {display:none;}
-.hint-link {display:inline-block;margin-top:8px;font-size:.78rem;font-weight:500;color:var(--link);}
+.hint-link {display:inline-block;margin-top:3px;font-size:.78rem;font-weight:500;color:var(--link);}
 .hint-link:empty {display:none;}
 .hint-panel:hover .hint-link {text-decoration:underline;text-underline-offset:3px;}
 .cycle-back {display:inline-block;margin-top:24px;font-size:.8rem;}
@@ -63,9 +60,10 @@
  .cycle-heading {display:block;} .cycle-intro {max-width:54ch;margin-top:16px;}
  .water-cycle {padding-top:32px;}
  .explorer,.main-page .explorer {display:flex;flex-direction:column;--bleed:0px;margin-inline:0;}
- .hint-panel {position:static;width:auto;max-width:none;margin:8px 0 20px;box-shadow:none;transform:none;}
+ .hint-panel {position:static;width:auto;max-width:none;margin:8px 0 20px;text-shadow:none;}
  .hint-panel:not(.show) {display:none;}
- .hint-title {font-size:1.1rem;} .hint-copy {margin:5px 0;max-width:65ch;}
+ .hint-title {position:static;width:auto;height:auto;overflow:visible;clip:auto;white-space:normal;font:600 1.05rem/1.3 var(--sans);margin:0 0 4px;}
+ .hint-copy {margin:5px 0;max-width:65ch;}
  #research-dialog .dialog-body {padding:28px 22px;}
 }
 @media(prefers-reduced-motion:reduce) {

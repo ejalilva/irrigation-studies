@@ -16,34 +16,35 @@ function frameLandscape() {
 smallScreen.addEventListener('change', frameLandscape);
 frameLandscape();
 const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
-// The callout: the part's title, one line about it and an explore cue, shown next to the part on larger screens
-// (anchor from the part's data-callout="x y side", in map units) and under the map on phones. Clicking it opens the part.
+// The description: one line about the highlighted part and an explore cue, as plain text in the white space just outside the
+// drawing, close to the part. By default it sits right under the part's label, aligned with the label's side; data-desc="above"
+// puts it above the label, and data-desc="x y start|end" pins its top-left (start) or top-right (end) corner to a point in map
+// units. On phones it sits under the map. Clicking it opens the part.
 const callout=document.querySelector('#callout');
 const explorerBox=document.querySelector('#explore');
 function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to explore')+(t.href?' ↗':' →');}
 function setHint(title,copy,link){document.querySelector('#hint-title').textContent=title;document.querySelector('#hint-copy').textContent=copy;document.querySelector('#hint-link').textContent=link;callout.classList.toggle('show',!!title);}
+function mapPoint(x,y){const pt=landscape.createSVGPoint();pt.x=x;pt.y=y;return pt.matrixTransform(landscape.getScreenCTM());}
 function placeCallout(key){
- callout.style.left=callout.style.top='';callout.dataset.side='';
+ callout.style.left=callout.style.top='';callout.dataset.align='';
  if(smallScreen.matches||!key)return;
  const item=document.querySelector('.scene-item[data-topic="'+key+'"]');if(!item)return;
- const er=explorerBox.getBoundingClientRect(),spec=(item.dataset.callout||'').split(' ');
- let ax,ay,side;
- if(spec.length===3){const pt=landscape.createSVGPoint();pt.x=+spec[0];pt.y=+spec[1];const q=pt.matrixTransform(landscape.getScreenCTM());ax=q.x-er.left;ay=q.y-er.top;side=spec[2];}
- else{const r=item.getBoundingClientRect();ax=r.right-er.left;ay=r.top+r.height/2-er.top;side='right';}
- const w=callout.offsetWidth,h=callout.offsetHeight,W=explorerBox.clientWidth,H=explorerBox.clientHeight,gap=16,pad=8;
- if(side==='right'&&ax+gap+w>W-pad)side='left';else if(side==='left'&&ax-gap-w<pad)side='right';
- if(side==='top'&&ay-gap-h<pad)side='bottom';else if(side==='bottom'&&ay+gap+h>H-pad)side='top';
- let x=side==='right'?ax+gap:side==='left'?ax-gap-w:ax-w/2, y=side==='top'?ay-gap-h:side==='bottom'?ay+gap:ay-h/2;
- x=Math.max(pad,Math.min(W-w-pad,x));y=Math.max(pad,Math.min(H-h-pad,y));
- callout.style.left=x+'px';callout.style.top=y+'px';callout.dataset.side=side;
- callout.style.setProperty('--caret-x',Math.max(16,Math.min(w-16,ax-x))+'px');callout.style.setProperty('--caret-y',Math.max(16,Math.min(h-16,ay-y))+'px');
+ const label=document.querySelector('.scene-item[data-topic="'+key+'"] .maplabel');
+ const er=explorerBox.getBoundingClientRect(),spec=(item.dataset.desc||'').split(' ');
+ const W=explorerBox.clientWidth,H=explorerBox.clientHeight,pad=8,gap=3;
+ let x,y,end;
+ if(spec.length===3){end=spec[2]==='end';callout.dataset.align=end?'end':'start';const q=mapPoint(+spec[0],+spec[1]);x=q.x-er.left-(end?callout.offsetWidth:0);y=q.y-er.top;}
+ else{const r=(label||item).getBoundingClientRect();end=!!label&&label.getAttribute('text-anchor')==='end';callout.dataset.align=end?'end':'start';
+  const w=callout.offsetWidth,h=callout.offsetHeight;x=end?r.right-er.left-w:r.left-er.left;y=spec[0]==='above'?r.top-er.top-gap-h:r.bottom-er.top+gap;}
+ x=Math.max(pad,Math.min(W-callout.offsetWidth-pad,x));y=Math.max(pad,Math.min(H-callout.offsetHeight-pad,y));
+ callout.style.left=x+'px';callout.style.top=y+'px';
 }
 let hideTimer=0;
 function cancelHide(){clearTimeout(hideTimer);hideTimer=0;}
 function scheduleHide(){cancelHide();hideTimer=setTimeout(()=>{hideTimer=0;if(!tour)clearHighlight();},180);}
 callout.addEventListener('pointerenter',cancelHide);
 callout.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen')scheduleHide();});
-// Pressing the callout blurs the focused part first; remember the press so the blur does not clear what the callout shows.
+// Pressing the description blurs the focused part first; remember the press so the blur does not clear it.
 let calloutPress=false;
 callout.addEventListener('pointerdown',()=>{calloutPress=true;});
 callout.addEventListener('click',()=>{calloutPress=false;if(activeTopic)openTopic(activeTopic);});
@@ -138,7 +139,7 @@ function takeOver(){clearTimeout(autoPending);autoPending=0;if(tour)stopTour(tru
 function canAutoTour(){return !autoDone&&!tour&&inView&&motionEnabled&&!reduced.matches&&!dialog.open&&!document.hidden;}
 function scheduleAutoTour(){clearTimeout(autoPending);autoPending=0;if(canAutoTour())autoPending=setTimeout(()=>{autoPending=0;if(canAutoTour())startTour();},500);}
 function interruptTour(e){
- // Clicking the callout during the tour opens what it shows.
+ // Clicking the description during the tour opens what it shows.
  if(e.target instanceof Node&&callout.contains(e.target)){if(tour)stopTour(true,true);return;}
  if(e.target instanceof Node&&tourButton.contains(e.target)&&(e.type==='pointerdown'||e.key==='Enter'||e.key===' '))return;
  if(e.type==='keydown'&&['Shift','Control','Alt','Meta'].includes(e.key))return;
