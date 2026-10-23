@@ -1,27 +1,25 @@
-# My journey page
+# Learning journey, version 2
 
-`journey.html` adds a separate illustrated career page. The header links from both existing pages. No changes to water-cycle research interactions are needed.
+Review-only revision of the journey page. Main navigation is not changed. Do not merge or publish without Ehsan’s approval; the previous journey page was taken offline at his request.
 
-## Content and artwork
+## Content
 
-Four career summaries are adapted from Ehsan’s supplied NASA career spotlight:
-https://science.gsfc.nasa.gov/600/ECSS/Ehsan-Jalilvand/
-Accessed October 22, 2026. Sharif degrees, Italy collaboration, the 2019 PhD and 2022 move to Michigan State, and the NASA collaboration are supported there. No NASA start date is inferred from relative dates in the article.
+The ten stages follow Ehsan’s autobiographical account supplied October 22, 2026, including his corrections: VIC, Amirkabir University, NASA LIS and the AgroTrack Python package. Dates reflect the account: PhD 2013–2019; company 2015–2019; Italy 2016–2017; teaching at Sharif 2018; first postdoc 2020; teaching at Amirkabir 2020–2021; Research Institute for Earth Sciences faculty 2021; Michigan State 2022; NASA 2023–present.
 
-The landscape is the supplied Gemini_Generated_Image_99x5m399x5m399x5.jpeg. Four supplied institutional illustrations were prepared with the built-in image-generation tool, using this prompt:
+Georgia Tech is discussed alongside the transition to Python, without claiming an enrollment or completion date. Recent foundation-model and agent work has no invented start year. The startup has a symbolic workshop because no company name or identifiable building was provided. Early postdoctoral and teaching stages reuse the Iran landmark as a regional anchor, not a claim that all those appointments were at Sharif.
 
-> Remove only the plain white background to create a clean transparent PNG cutout for an interactive website map. Keep all landmark objects, structure, colors, paint texture, proportions, logos and fine detail unchanged. Preserve white surfaces belonging to the buildings. No added objects or text. Frame the full cutout with a small transparent margin.
+Edit the chapter list in `scripts/build_journey.py`, then run `python scripts/build_journey.py`. It generates `journey.html` and the structured content record `data/journey-timeline.json`. Styles and interaction are isolated in `assets/journey-v2.css` and `assets/journey-v2.js`.
 
-The generated cutouts are encoded as WebP in assets/journey with their alpha preserved. The map is symbolic; the NASA rocket artwork represents the NASA chapter, not a Goddard campus or the subject’s job. The cabin and alternative Colosseum are unused optional artwork.
+## Artwork
 
-## Editing
+`assets/journey/landscape-integrated-v2.webp` is a new built-in imagegen composite based on the original supplied landscape and four landmark illustrations. The original files remain intact. It is a symbolic map; the Colosseum represents Italy, and the rocket represents NASA, not a literal CNR IRPI or Goddard campus. The startup building is illustrative.
 
-Career copy is in the four articles in journey.html. JavaScript reads those articles into the dialog so there is one source of truth and a readable no-JavaScript fallback. The mapping of stop IDs and SVG view boxes is in assets/journey.js. Position the landmarks using the percentage rules in assets/journey.css. Keep source dimensions at 1254 × 1254 when using these view boxes.
+Generation prompt: compositing; preserve the base landscape’s winding paths, river and bridge, mountains, dry left terrain and green right hills. Incorporate the recognizable Sharif/Tehran architecture, Italy Colosseum, Michigan clocktower and Spartan reference, NASA building/rocket, plus a small startup workshop into the same terrain. Match perspective, shared soft daylight, contact shadows and vegetation at each base; no floating cutouts, isolated cards or platforms. Wide 16:9 arrangement, Sharif at left, startup foreground, Italy center, Michigan right-center and NASA upper right. Use a quieter sage, terracotta, slate-blue and cream palette with subtle brush texture. No text, dates, UI or numbered markers; labels and timeline are accessible HTML. Output uses the Michigan clocktower as its principal Michigan landmark.
 
-Personal career photographs have not been supplied. When available, they can replace or accompany the landmark illustration in each story panel, with an accurate caption and alt text. Do not invent photo captions or fetch personal photos from unrelated sources.
+The new image is encoded as WebP for the page. Separate transparent HTML buttons over its landmark regions provide hover, focus, selection and touch interaction, so the buildings remain visually grounded in the unified landscape.
 
-## Interaction
+## Interaction and accessibility
 
-Hover/focus adds a lift, glow and brief hint. Clicking or tapping a landmark or chapter link opens a native dialog. Escape, the close button, outside click, and the last chapter’s return button close it and return focus. Previous/next move between chapters. Reduced-motion preferences and the Motion toggle disable movement. All four stories remain readable if JavaScript or native dialog support is unavailable.
+Selecting a landmark or timeline stage updates an inline chapter and a cumulative toolkit, highlighting newly introduced skills. The timeline includes overlapping career chapters and is an ordered sequence, not a proportional date axis. Previous/next controls stop at either end. URL fragments identify the selected stage. All chapter articles remain readable without JavaScript. Native buttons support keyboard activation; selection is exposed through aria-current and aria-pressed; the step counter is a live region. Reduced-motion preferences disable animated scrolling and hover transitions.
 
-Changes are for review on review/water-cycle-opening. Do not merge or deploy without explicit approval.
+The map is not presented as literal geography. Teaching at Amirkabir and the faculty role are described in the timeline rather than inventing extra institutional landmarks.

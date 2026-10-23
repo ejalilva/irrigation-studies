@@ -1,0 +1,141 @@
+[
+  {
+    "period": "2013",
+    "place": "Sharif University",
+    "title": "Learning to see the Earth differently",
+    "landmark": "sharif",
+    "category": "Research foundations",
+    "story": "My PhD began at Sharif in 2013. My early introduction to GIS and remote sensing gave me a new way to ask questions about water. I started with ArcGIS and began learning MATLAB.",
+    "skills": [
+      "GIS & ArcGIS",
+      "Remote sensing",
+      "MATLAB foundations"
+    ],
+    "outcome": "Mapping and interpreting satellite observations."
+  },
+  {
+    "period": "2015\u20132019",
+    "place": "Building a startup",
+    "title": "Turning an idea into a product",
+    "landmark": "startup",
+    "category": "Entrepreneurship",
+    "story": "Alongside my PhD, I co-founded a company in 2015. Courses on entrepreneurship helped us move from ideas to products and minimum viable products. I designed website experiences for satellite-based agricultural monitoring and rural tourism, using PowerPoint to prototype interfaces and create presentation videos. We dissolved the company in 2019, but the design and communication skills stayed with me.",
+    "skills": [
+      "MVP development",
+      "UX prototyping",
+      "Visual storytelling"
+    ],
+    "outcome": "Product concepts, two website UX designs and presentation videos."
+  },
+  {
+    "period": "2016\u20132017",
+    "place": "CNR IRPI \u00b7 Italy",
+    "title": "From scripts to reusable models",
+    "landmark": "italy",
+    "category": "Research collaboration",
+    "story": "In Italy, I strengthened my MATLAB skills while processing satellite imagery. I learned to build models, write functions and assemble reusable components into modular software. Coding became a way to develop and test scientific ideas.",
+    "skills": [
+      "Satellite image processing",
+      "Model development",
+      "Modular programming"
+    ],
+    "outcome": "Reusable functions and satellite-processing workflows."
+  },
+  {
+    "period": "2018",
+    "place": "Teaching at Sharif",
+    "title": "Learning by explaining",
+    "landmark": "sharif",
+    "category": "Teaching",
+    "story": "Teaching at Sharif gave me another way to work with ideas: explain them clearly, organize them into a course and help others develop their own understanding.",
+    "skills": [
+      "Teaching",
+      "Scientific communication"
+    ],
+    "outcome": "University teaching alongside my doctoral research."
+  },
+  {
+    "period": "2019",
+    "place": "PhD completed",
+    "title": "Carrying the experience forward",
+    "landmark": "sharif",
+    "category": "Milestone",
+    "story": "I completed my PhD in 2019. The same year, our company closed. Research, coding and product design had become connected parts of my experience, ready to carry into the next stage.",
+    "skills": [],
+    "outcome": "A PhD and experience spanning research, software and product design."
+  },
+  {
+    "period": "2020",
+    "place": "First postdoctoral role",
+    "title": "From satellite data to land models",
+    "landmark": "sharif",
+    "category": "Research & computing",
+    "story": "My first postdoctoral role introduced me to the VIC model, land surface modeling and data assimilation. I began working in Ubuntu and Linux, using the command line and Bash scripts. I used MATLAB to preprocess satellite data and prepare model inputs.",
+    "skills": [
+      "Linux & Ubuntu",
+      "Command line & Bash",
+      "VIC & land surface modeling",
+      "Data assimilation"
+    ],
+    "outcome": "Satellite data prepared for modeling and assimilation experiments."
+  },
+  {
+    "period": "2020\u20132021",
+    "place": "Teaching & Earth science",
+    "title": "Making knowledge accessible online",
+    "landmark": "sharif",
+    "category": "Teaching & faculty",
+    "story": "In 2020 and 2021, I taught at Amirkabir University and learned Google Earth Engine while teaching a master\u2019s course. Teaching through the pandemic also meant learning to record lessons, which led me to start a YouTube channel. In 2021, I became a faculty member at the Research Institute for Earth Sciences, before moving to the United States.",
+    "skills": [
+      "Google Earth Engine",
+      "Recorded teaching",
+      "YouTube communication"
+    ],
+    "outcome": "Online lessons, a YouTube channel and an Earth-science faculty role."
+  },
+  {
+    "period": "2022",
+    "place": "Michigan State University",
+    "title": "Scaling up\u2014and moving to Python",
+    "landmark": "michigan",
+    "category": "Postdoctoral research",
+    "story": "At Michigan State, I was introduced to high-performance computing. My online master\u2019s studies in analytics at Georgia Tech also helped me learn Python. I moved from MATLAB toward Python, building confidence with NumPy and pandas, then expanding into machine learning with scikit-learn and PyTorch.",
+    "skills": [
+      "High-performance computing",
+      "Python",
+      "NumPy & pandas",
+      "scikit-learn",
+      "PyTorch"
+    ],
+    "outcome": "Larger computing workflows and a growing Python and machine-learning toolkit."
+  },
+  {
+    "period": "2023\u2013present",
+    "place": "NASA Goddard",
+    "title": "Building research software and global products",
+    "landmark": "nasa",
+    "category": "Research scientist",
+    "story": "At NASA, I deepened my use of Git and GitHub, developed within NASA\u2019s Land Information System (LIS) using Fortran, and learned to build Python software packages through AgroTrack. I developed my first global soil-moisture product using machine learning. The work expanded both the scientific questions I could tackle and the software skills I needed to answer them.",
+    "skills": [
+      "Git & GitHub",
+      "NASA LIS & Fortran",
+      "AgroTrack Python package",
+      "Global ML products"
+    ],
+    "outcome": "A global machine-learning soil-moisture product and reusable research software."
+  },
+  {
+    "period": "Recent work",
+    "place": "NASA \u00b7 continuing to learn",
+    "title": "From foundation models to agents",
+    "landmark": "nasa",
+    "category": "Ongoing development",
+    "story": "More recently, I have learned to fine-tune geospatial foundation models and benchmark them against one another. I am also exploring agents to automate everyday work, from software development to building this website and maintaining its research information. Each new need becomes a reason to learn the next skill.",
+    "skills": [
+      "Geospatial foundation models",
+      "Fine-tuning & benchmarking",
+      "Agent workflows"
+    ],
+    "outcome": "Foundation-model experiments and automation for research and everyday development."
+  }
+]
