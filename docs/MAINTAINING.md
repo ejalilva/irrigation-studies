@@ -11,7 +11,9 @@ Technical notes for running the page, the paper-finding agent and the review wor
 | `assets/site.css` | Shared page typography, layout and light/dark theme. |
 | `assets/water-cycle.css` | Explorer layout and hover/focus animations. |
 | `assets/water-cycle.js` | Map research descriptions and accessible interaction controller. |
-| `assets/journals.js` | Journals (acronym, band colour, logo) and the papers shown as paper cards in the map pop-ups; also gives the study cards their journal chip. |
+| `assets/journals.js` | Journals (acronym, cover colour, masthead) and the papers shown as paper cards in the map pop-ups; also gives the study cards their journal chip and PDF link. |
+| `assets/journals/` | Journal marks for the mastheads, cropped from the papers' first pages. |
+| `assets/papers/` | Published PDFs that may be shared (see Hosting PDFs). |
 | `data/papers.json` | Rows of the research landscape table. |
 | `data/editor_picks.json` | Rising papers (editor's picks) and their notes. Still recorded by the review workflow, but not shown on the page. |
 | `data/reading_list.json` | The ordered essential reading list. |
@@ -201,11 +203,30 @@ The section is three open-access figures, each with a one-line title, a short ca
 
 ## Paper cards in the map pop-ups
 
-When a map part opens, each of its projects whose link is a DOI listed in `PAPERS` in `assets/journals.js` shows as a paper card under **Papers**: a band in the journal's colour with the journal's acronym, full name (hidden on phones and when it is the same as the acronym) and year, then the paper title linked to the DOI and the authors as "First author, et al." with **All authors** to expand the full list. The project's `text` from `topics` is the muted line under it. Other projects (ongoing, planned, conference work) follow under **Other work** in the plain style.
+When a map part opens, each of its projects whose link is a paper listed in `PAPERS` in `assets/journals.js` shows as a paper card under **Papers**. Other projects (ongoing, planned, unlisted conference work) follow under **Other work** in the plain style. A card has:
 
-- **Add a paper:** add an entry to `PAPERS`, keyed by the DOI in lower case, with `year`, `journal` (exactly as in `JOURNALS`), `details`, `title` and `authors` (full list in order). If only some authors are known, end the list with `et al.` and the card will not offer **All authors**. Optional `kind` (for example `Commentary` or `Review`) shows before the year. Then link the project in `topics` to `https://doi.org/<doi>`.
-- **Add a journal:** add it to `JOURNALS` with its `acr` and a band `color` dark enough for white text (at least 4.5:1).
-- **Journal logos:** the band has a slot for each journal's logo. Save the logo (about 40 px tall, transparent or white background) as `assets/journals/<acronym>.png` and set `logo` to that path in `JOURNALS`; until then the band shows the acronym only. Logos belong to their publishers, so use files supplied by the journal or publisher.
+- a small **masthead** in the journal's own style, always on white like the paper. Elsevier journals get the Elsevier tree, a grey title box and the journal's cover. WRR gets its wordmark and the AGU logo. MDPI journals get the journal logo and the MDPI logo. Frontiers gets its logo, JSTARS the IEEE running header, IJSWR its banner, and the 2015 congress paper the congress and University of Tabriz logos;
+- a rule and an **acronym chip** in a colour taken from the journal's cover or logo, with the year;
+- the title linked to the paper, the authors as "First author, et al." with **All authors** to expand, and the project's `text` from `topics` as a muted line;
+- a **PDF** button with the license, when the PDF is hosted here.
+
+The marks were cropped from the first pages of the papers and from screenshots Ehsan supplied, and are stored in `assets/journals/` (covers about 120 × 150 px, logos 56–120 px tall). The study cards on the main page use the same journal colours for their chips and link the hosted PDF under **Findings & authors**.
+
+- **Add a paper:** add an entry to `PAPERS`, keyed by the DOI in lower case (or by the paper's address when it has no DOI, with `url` set), with `year`, `journal` (exactly as in `JOURNALS`), `details`, `title` and `authors` (full list in order). If only some authors are known, end the list with `et al.` and the card will not offer **All authors**. Optional fields:
+  - `kind` (for example `Commentary`, `Review` or `Conference paper`) shows before the year.
+  - `license` is the license as printed on the paper.
+  - `pdf` is a hosted copy (see below).
+
+  Then link the project in `topics` to `https://doi.org/<doi>`.
+- **Add a journal:** add it to `JOURNALS` with its `acr`, a `color` from its cover dark enough for white text (at least 4.5:1), and a `mast` (see the comment at the top of `assets/journals.js`). Without a `mast` the card shows a plain band in the journal colour; Water Resources Management uses this until its first page is supplied.
+
+### Hosting PDFs
+
+PDFs live in `assets/papers/`. Only post a published PDF when the paper's license or publisher allows it:
+
+- **Open access** (CC BY, CC BY-NC-ND): yes, unmodified and credited. This covers JSTARS 2021, Sustainability 2021, Climate 2022, JAG 2022 and Frontiers 2026.
+- **AGU (WRR):** the final PDF can be posted 6 months after publication if the AGU copyright statement is visible on it ([AGU author policies](https://www.agu.org/publications/authors/policies)). WRR 2023 is posted. The 2026 commentary can be posted from March 2027.
+- **Elsevier subscription articles** (RSE 2019, J. Hydrol. 2018, COMPAG 2024, ISPRS J. 2024, RSE 2025, RSE 2026): the published PDF cannot be posted publicly. The accepted manuscript can, on a personal site, with a CC BY-NC-ND license and a link to the DOI ([Elsevier sharing policy](https://www.elsevier.com/about/our-business/policies/sharing)). To share these, add the accepted manuscripts as `pdf`, with a first-page note naming the license and the DOI.
 
 ## Water-cycle explorer
 

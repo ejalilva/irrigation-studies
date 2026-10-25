@@ -24,6 +24,7 @@
     --gutter: 24px;
     --sans: "Fira Sans", "Helvetica Neue", Arial, sans-serif;
     --head: var(--sans);
+    --chip-ring: transparent;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
@@ -36,7 +37,7 @@
       --new-bg: #1B3747; --new-ink: #A9D3EC;
       --ess: #74C476; --ess-mark: #74C476;
       --rise: #BCBDDC; --rise-mark: #9E9AC8;
-      --shadow: rgba(0,0,0,.6);
+      --shadow: rgba(0,0,0,.6); --chip-ring: rgba(255,255,255,.32);
       color-scheme: dark;
     }
   }
@@ -49,7 +50,7 @@
     --new-bg: #1B3747; --new-ink: #A9D3EC;
     --ess: #74C476; --ess-mark: #74C476;
     --rise: #BCBDDC; --rise-mark: #9E9AC8;
-    --shadow: rgba(0,0,0,.6);
+    --shadow: rgba(0,0,0,.6); --chip-ring: rgba(255,255,255,.32);
     color-scheme: dark;
   }
 
@@ -441,3 +442,4 @@
     .scales { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
     .bridge { font-size: 1.15rem; }
   }
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}

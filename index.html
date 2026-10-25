@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-23k">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-23k">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-23k">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-25a">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25a">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25a">
 <script>function whyFigError(img){if(img.dataset.alt){img.src=img.dataset.alt;img.dataset.alt="";}else{img.closest("figure").hidden=true;}}</script>
-<script src="assets/journals.js?v=2026-10-23k"></script>
-<script src="assets/water-cycle.js?v=2026-10-23k" defer></script>
+<script src="assets/journals.js?v=2026-10-25a"></script>
+<script src="assets/water-cycle.js?v=2026-10-25a" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -470,13 +470,14 @@ function studyHTML(s, idx) {
     ? `<figure class="study-fig"><div class="study-image-set${images.length > 1 ? ' study-image-pair' : ''}">${images.map((image, imageIdx) => `<a class="study-figure-open" href="${esc(image.src)}" data-study-figure="${idx}" data-study-image="${imageIdx}" aria-label="Enlarge figure: ${esc(image.alt)}"><img src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" decoding="async"><span class="figure-enlarge">Enlarge figure ↗</span></a>`).join('')}</div>${images.some(image => image.credit) ? `<figcaption>${images.filter(image => image.credit).map(image => esc(image.credit)).join(' ')}</figcaption>` : ''}</figure>`
     : `<figure class="study-fig figure-pending"><div class="missing-figure"><span>Figure pending</span><p>${esc(s.imageNote || 'Study figure to be added.')}</p></div><figcaption>The paper and study details are available below.</figcaption></figure>`;
   const j = window.Papers && window.Papers.JOURNALS[s.journal];
+  const pdf = window.Papers && window.Papers.paperFor(s.doi)?.pdf;
   return `<li class="study" data-methods="${s.methods.join(" ")}">
     ${fig}
     <div class="study-body">
       <p class="study-meta"><span class="jchip" style="--jc:${j ? j.color : "#3f4c63"}" title="${esc(s.journal)}">${esc(j ? j.acr : s.journal)}</span><span>${s.year}</span><span class="study-scale">${esc(s.scaleNote || sc.label)}</span></p>
       <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
       <p class="summary">${esc(s.summary)}</p>
-      <details class="study-details"><summary>Findings &amp; authors</summary>${findings ? `<ul class="findings">${findings}</ul>` : ""}<p class="authors">${authors}</p><p class="citation-details"><em>${esc(s.journal)}</em>, ${esc(s.details)} (${s.year}).</p><ul class="tags" aria-label="Methods">${tags}</ul><div class="study-foot"><a href="${esc(linkFor(s))}">Read the paper ↗</a><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div></details>
+      <details class="study-details"><summary>Findings &amp; authors</summary>${findings ? `<ul class="findings">${findings}</ul>` : ""}<p class="authors">${authors}</p><p class="citation-details"><em>${esc(s.journal)}</em>, ${esc(s.details)} (${s.year}).</p><ul class="tags" aria-label="Methods">${tags}</ul><div class="study-foot"><span><a href="${esc(linkFor(s))}">Read the paper ↗</a>${pdf ? ` · <a href="${esc(pdf)}" target="_blank" rel="noopener">PDF</a>` : ""}</span><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div></details>
     </div>
   </li>`;
 }
