@@ -207,7 +207,7 @@ When a map part opens, each of its projects whose link is a paper listed in `PAP
 
 - a small **masthead** in the journal's own style, always on white like the paper. Elsevier journals get the Elsevier tree, a grey title box and the journal's cover. WRR gets its wordmark and the AGU logo. MDPI journals get the journal logo and the MDPI logo. Frontiers gets its logo, JSTARS the IEEE running header, IJSWR its banner, and the 2015 congress paper the congress and University of Tabriz logos;
 - a rule and an **acronym chip** in a colour taken from the journal's cover or logo, with the year;
-- the title linked to the paper, the authors as "First author, et al." with **All authors** to expand, and the project's `text` from `topics` as a muted line;
+- the title linked to the paper, then the authors in plain text: all of them when there are three or fewer; otherwise the first author and always Ehsan ("Jalilvand, E., et al.", "Hashemi, M.G.Z., Jalilvand, E., et al." or "Kwon, Y., … Jalilvand, E., et al."), with **All authors** to expand, and the project's `text` from `topics` as a muted line;
 - a **PDF** button with the license, when the PDF is hosted here.
 
 The marks were cropped from the first pages of the papers and from screenshots Ehsan supplied, and are stored in `assets/journals/` (covers about 120 × 150 px, logos 56–120 px tall). The study cards on the main page use the same journal colours for their chips and link the hosted PDF under **Findings & authors**.

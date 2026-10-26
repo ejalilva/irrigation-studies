@@ -106,11 +106,16 @@ function paperFor(urlOrDoi) {
   const key = Object.keys(PAPERS).find(k => k.startsWith("http") && s.startsWith(k));
   return key ? Object.assign({ href: PAPERS[key].url || key }, PAPERS[key]) : null;
 }
+/* Short author line: three authors or fewer are listed in full; otherwise the first author and always Ehsan,
+   e.g. "Jalilvand, E., et al.", "Hashemi, M.G.Z., Jalilvand, E., et al." or "Kwon, Y., … Jalilvand, E., et al." */
 function authorsShort(a) {
-  const parts = a.replace(/,?\s*et al\.?$/, "").split(/,\s*(?=[A-Z][^,]*,\s*[A-Z]\.)/);
-  return parts.length > 2 || /et al\.?$/.test(a) ? parts[0] + ", et al." : a;
+  const etal = /,?\s*et al\.?$/.test(a);
+  const list = a.replace(/,?\s*et al\.?$/, "").split(/,\s*(?=[A-Z][^,]*,\s*[A-Z]\.)/);
+  if (list.length <= 3 && !etal) return a;
+  const me = list.indexOf(ME);
+  if (me <= 0) return list[0] + ", et al.";
+  return list[0] + (me === 1 ? ", " : ", … ") + ME + (etal || me < list.length - 1 ? ", et al." : "");
 }
-const bold = s => esc(s).replace(esc(ME), `<strong>${esc(ME)}</strong>`);
 /* The masthead: decorative (the chip and journal name below carry the same information for screen readers). */
 function masthead(p, j) {
   const m = j.mast, img = (src, h, cls) => `<img class="${cls}" src="${esc(src)}" alt="" style="--h:${h}px" loading="lazy" decoding="async">`;
@@ -133,7 +138,7 @@ function paperCard(p, note) {
     ${j.mast ? masthead(p, j) + `<p class="pc-meta">${meta}</p>` : `<a class="pc-band" href="${esc(p.href)}" target="_blank" rel="noopener">${meta}</a>`}
     <div class="pc-body">
       <a class="pc-title" href="${esc(p.href)}" target="_blank" rel="noopener">${esc(p.title)}</a>
-      <p class="pc-authors"><span class="pc-short">${bold(authorsShort(p.authors))}</span>${full ? `<span class="pc-full" hidden>${bold(p.authors)}</span> <button type="button" class="pc-more" aria-expanded="false">All authors</button>` : ""}</p>
+      <p class="pc-authors"><span class="pc-short">${esc(authorsShort(p.authors))}</span>${full ? `<span class="pc-full" hidden>${esc(p.authors)}</span> <button type="button" class="pc-more" aria-expanded="false">All authors</button>` : ""}</p>
       ${note ? `<p class="pc-note">${esc(note)}</p>` : ""}
       ${p.pdf ? `<p class="pc-links"><a class="pc-pdf" href="${esc(p.pdf)}" target="_blank" rel="noopener">PDF</a>${p.license ? `<span>${esc(p.license)}</span>` : ""}</p>` : ""}
     </div>
