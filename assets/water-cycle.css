@@ -44,16 +44,16 @@
 #research-dialog::backdrop {background:rgba(15,26,31,.55);backdrop-filter:blur(3px);}
 #research-dialog .dialog-body {padding:38px;}
 #research-dialog .close {position:sticky;float:right;top:12px;margin:12px 12px 0 0;width:34px;height:34px;font-size:24px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:50%;cursor:pointer;z-index:1;}
-#research-dialog .eyebrow {font-size:.7rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.07em;}
-#research-dialog h2 {font-size:1.9rem;}
-#research-dialog .dialog-intro {font-size:.95rem;color:var(--ink-2);}
-#research-dialog .project {padding:20px 0;border-top:1px solid var(--line);}
-#research-dialog .project h3 {font-size:1.2rem;margin:8px 0;}
-#research-dialog .project p {font-size:.9rem;color:var(--ink-2);margin:8px 0;}
-#research-dialog .status {font-size:.7rem;color:var(--link);}
-#research-dialog .status.planned {color:var(--warn-ink);}
-#research-dialog .project a,#research-dialog .dialog-related {font-size:.85rem;}
-#research-dialog .dialog-note {font-size:.7rem;color:var(--ink-2);}
+:is(#research-dialog,#peek) .eyebrow {font-size:.7rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.07em;}
+:is(#research-dialog,#peek) h2 {font-size:1.9rem;}
+:is(#research-dialog,#peek) .dialog-intro {font-size:.95rem;color:var(--ink-2);}
+:is(#research-dialog,#peek) .project {padding:20px 0;border-top:1px solid var(--line);}
+:is(#research-dialog,#peek) .project h3 {font-size:1.2rem;margin:8px 0;}
+:is(#research-dialog,#peek) .project p {font-size:.9rem;color:var(--ink-2);margin:8px 0;}
+:is(#research-dialog,#peek) .status {font-size:.7rem;color:var(--link);}
+:is(#research-dialog,#peek) .status.planned {color:var(--warn-ink);}
+:is(#research-dialog,#peek) .project a,:is(#research-dialog,#peek) .dialog-related {font-size:.85rem;}
+:is(#research-dialog,#peek) .dialog-note {font-size:.7rem;color:var(--ink-2);}
 @keyframes flow {to {stroke-dashoffset:-68;}}
 @media(max-width:750px) {
  .cycle-heading {display:block;} .cycle-intro {max-width:54ch;margin-top:16px;}
@@ -213,8 +213,8 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
 
 /* Paper cards in the pop-ups (built by assets/journals.js). Each starts with a small masthead in the journal's own style
    (always on white, like the paper), a rule and a chip in the journal's cover colour (--jc). */
-#research-dialog .dialog-group {font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);margin:26px 0 10px;padding-top:18px;border-top:1px solid var(--line);}
-#research-dialog .dialog-group + .project {border-top:0;padding-top:4px;}
+:is(#research-dialog,#peek) .dialog-group {font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);margin:26px 0 10px;padding-top:18px;border-top:1px solid var(--line);}
+:is(#research-dialog,#peek) .dialog-group + .project {border-top:0;padding-top:4px;}
 .paper-list {display:grid;gap:14px;}
 .paper-card {border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--paper);}
 .paper-card .pc-mast {display:flex;align-items:center;gap:10px;min-height:60px;padding:7px 12px;background:#fff;border-bottom:4px solid var(--jc);text-decoration:none;}
@@ -255,5 +255,24 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
   .paper-card .pc-jname {display:none;}
 }
 /* Group headings in the Human-driven processes pop-up; the three questions carry their table colours. */
-#research-dialog .dialog-group.q-where,#research-dialog .dialog-group.q-when,#research-dialog .dialog-group.q-how_much{display:flex;align-items:center;gap:8px}
-#research-dialog .dialog-group.q-where::before,#research-dialog .dialog-group.q-when::before,#research-dialog .dialog-group.q-how_much::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--q-c)}
+:is(#research-dialog,#peek) .dialog-group.q-where,:is(#research-dialog,#peek) .dialog-group.q-when,:is(#research-dialog,#peek) .dialog-group.q-how_much{display:flex;align-items:center;gap:8px}
+:is(#research-dialog,#peek) .dialog-group.q-where::before,:is(#research-dialog,#peek) .dialog-group.q-when::before,:is(#research-dialog,#peek) .dialog-group.q-how_much::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--q-c)}
+
+/* Hover pop-up panel (data-popup="hover"): the same research as the dialog, in a scrolling card over one side of the map. */
+.peek {position:absolute;z-index:6;top:0;left:0;width:380px;overflow:auto;overscroll-behavior:contain;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;box-shadow:0 18px 50px rgba(15,26,31,.24);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .16s,transform .16s,visibility 0s .16s;}
+.peek.show {opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s;}
+.peek-tools {position:sticky;top:0;z-index:1;display:flex;justify-content:flex-end;gap:6px;height:0;padding:0 10px;}
+.peek-tools button {margin-top:10px;width:30px;height:30px;display:grid;place-items:center;font:400 18px/1 var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:50%;cursor:pointer;}
+.peek-tools button:hover {border-color:var(--ink-2);}
+.peek-body {padding:18px 20px 16px;}
+#peek .eyebrow {margin:0 76px 6px 0;}
+#peek h2 {font-size:1.35rem;line-height:1.2;margin:0 0 8px;padding-right:70px;}
+#peek .dialog-intro {font-size:.86rem;line-height:1.5;margin:0 0 10px;}
+#peek .dialog-group {margin:18px 0 8px;padding-top:12px;}
+#peek .project {padding:14px 0;}
+#peek .project h3 {font-size:1rem;}
+#peek .project p {font-size:.84rem;}
+#peek .paper-list {gap:12px;}
+#peek .dialog-note {margin-bottom:0;}
+/* While a panel is open or about to open, the one-line description under the part's label stays hidden. */
+.explorer.peeking .hint-panel {opacity:0;visibility:hidden;}

@@ -44,7 +44,7 @@ function placeCallout(key){
 }
 let hideTimer=0;
 function cancelHide(){clearTimeout(hideTimer);hideTimer=0;}
-function scheduleHide(){cancelHide();hideTimer=setTimeout(()=>{hideTimer=0;if(!tour)clearHighlight();},180);}
+function scheduleHide(){cancelHide();hideTimer=setTimeout(()=>{hideTimer=0;if(tour)return;if(peekPinned){if(peekKey&&activeTopic!==peekKey)highlight(peekKey);return;}hidePeek();clearHighlight();},180);}
 callout.addEventListener('pointerenter',cancelHide);
 callout.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'||e.pointerType==='pen')scheduleHide();});
 // Pressing the description blurs the focused part first; remember the press so the blur does not clear it.
@@ -66,10 +66,10 @@ function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelH
 function linkedTo(el,key){const parts=el.dataset.link.split(' ');return !!key&&(tour?parts[0]===key:parts.includes(key));}
 function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',linkedTo(el,key)));}
 function clearHighlight(){activeTopic=null;cancelHide();setHint('','','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
-function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
- returnFocus=document.activeElement;content.replaceChildren();
+// The research shown for a part: eyebrow, title, intro, paper cards and other work. Used by the dialog and by the hover panel.
+function fillTopic(key,content,titleId){const t=topics[key];
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
- const h=document.createElement('h2');h.id='dialog-title';h.textContent=t.title;
+ const h=document.createElement('h2');if(titleId)h.id=titleId;h.textContent=t.title;
  const intro=document.createElement('p');intro.className='dialog-intro';intro.textContent=t.intro;content.append(p,h,intro);
  // Published papers (a project whose link is a paper listed in assets/journals.js) show as paper cards; other work follows as plain entries.
  // A part with groups (Human-driven processes) shows several sections, each taking its projects from another part or its own list.
@@ -88,17 +88,62 @@ function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.hre
  else addProjects(t.projects,true);
  if(!isHuman&&['vegetation','soil','drainage','human'].includes(key)){const a=document.createElement('a');a.className='dialog-related';a.href='human.html';a.textContent='Explore the agricultural water cycle ↗';content.append(a);}
  const note=document.createElement('p');note.className='dialog-note';note.textContent='Research status as of October 2026. Landscape animations are illustrative, not quantitative simulations.';content.append(note);
+}
+function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.href=t.href;return;}
+ hidePeek();returnFocus=document.activeElement;content.replaceChildren();fillTopic(key,content,'dialog-title');
  if(!dialog.open)dialog.showModal();dialog.scrollTop=0;document.body.classList.add('dialog-open');document.body.style.overflow='hidden';
  history.replaceState(null,'','#research/'+key);
 }
 function closeTopic(){dialog.close();}
+// Hover pop-ups. With data-popup="hover" on the explorer (?popup=click or ?popup=hover in the address overrides it, to compare),
+// a mouse resting on a part shows its research in a panel over the map, in place of the one-line description. The panel sits on
+// the side of the map that covers the part least, so the part and its animation stay in view, and it fills the visible height of
+// the map, scrolling inside. Moving into the panel keeps it open, a click on the part pins it, and Escape, the close button or a
+// click elsewhere closes it; the expand button opens the usual dialog. Touch screens, small screens and the keyboard keep the
+// click-to-open dialog.
+const popupMode=new URLSearchParams(location.search).get('popup')||explorerBox.dataset.popup||'click';
+const hoverPopups=popupMode==='hover';
+const peek=document.createElement('aside');peek.id='peek';peek.className='peek';peek.setAttribute('aria-label','Research details');
+peek.innerHTML='<div class="peek-tools"><button type="button" class="peek-expand" aria-label="Open in a larger window" title="Open in a larger window">⤢</button><button type="button" class="peek-close" aria-label="Close" title="Close">×</button></div><div class="peek-body"></div>';
+const peekBody=peek.querySelector('.peek-body');
+if(hoverPopups)explorerBox.append(peek);
+let peekKey=null,peekPinned=false,peekTimer=0;
+function peekAllowed(){return hoverPopups&&finePointer.matches&&!smallScreen.matches;}
+function placePeek(key){
+ const item=document.querySelector('.scene-item[data-topic="'+key+'"]');if(!item)return;
+ const er=explorerBox.getBoundingClientRect(),ir=item.getBoundingClientRect(),pad=12;
+ const W=Math.round(Math.min(400,Math.max(300,er.width*.3)));peek.style.width=W+'px';
+ const top=Math.max(er.top+pad,pad),bottom=Math.min(er.bottom-pad,innerHeight-pad);
+ peek.style.top=(top-er.top)+'px';peek.style.maxHeight=Math.max(280,bottom-top)+'px';
+ const right=er.width-W-pad,left=pad,cover=x=>Math.max(0,Math.min(er.left+x+W,ir.right)-Math.max(er.left+x,ir.left));
+ peek.style.left=(cover(right)<=cover(left)?right:left)+'px';
+}
+function showPeek(key,pin){const t=topics[key];if(!t||t.href||dialog.open)return;clearTimeout(peekTimer);peekTimer=0;
+ if(peekKey!==key){peekBody.replaceChildren();fillTopic(key,peekBody,null);peek.scrollTop=0;peekKey=key;}
+ if(pin)peekPinned=true;
+ explorerBox.classList.add('peeking');placePeek(key);peek.classList.add('show');
+}
+function hidePeek(){clearTimeout(peekTimer);peekTimer=0;peekPinned=false;peekKey=null;peek.classList.remove('show');explorerBox.classList.remove('peeking');}
+// A short pause before the panel opens, so moving the mouse across the map does not flash panels.
+function queuePeek(key){if(!peekAllowed()||peekPinned)return;explorerBox.classList.add('peeking');clearTimeout(peekTimer);peekTimer=setTimeout(()=>showPeek(key),peekKey?160:320);}
+peek.addEventListener('pointerenter',()=>{cancelHide();clearTimeout(peekTimer);peekTimer=0;});
+peek.addEventListener('pointerleave',e=>{if((e.pointerType==='mouse'||e.pointerType==='pen')&&!peekPinned)scheduleHide();});
+peek.querySelector('.peek-close').addEventListener('click',()=>{hidePeek();clearHighlight();});
+peek.querySelector('.peek-expand').addEventListener('click',()=>{const k=peekKey;hidePeek();if(k)openTopic(k);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&peekKey&&!dialog.open){hidePeek();clearHighlight();}});
+document.addEventListener('click',e=>{if(!peekPinned||!(e.target instanceof Element))return;if(peek.contains(e.target)||e.target.closest('.scene-item'))return;hidePeek();clearHighlight();});
+addEventListener('resize',()=>{if(peekKey)placePeek(peekKey);});
+addEventListener('scroll',()=>{if(peekKey)placePeek(peekKey);},{passive:true});
 document.querySelectorAll('[data-topic]').forEach(el=>{
- el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}cancelHide();highlight(el.dataset.topic);});
- el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')&&deliberateHover()){takeOver();highlight(el.dataset.topic);}});
+ el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}cancelHide();highlight(el.dataset.topic);queuePeek(el.dataset.topic);});
+ el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')&&deliberateHover()){takeOver();highlight(el.dataset.topic);queuePeek(el.dataset.topic);}});
  el.addEventListener('pointerleave',e=>{if(!tour&&(e.pointerType==='mouse'||e.pointerType==='pen'))scheduleHide();});
- el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open&&!calloutPress)clearHighlight();});
+ el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open&&!calloutPress&&!peekKey)clearHighlight();});
  let pointerType='';el.addEventListener('pointerdown',e=>{pointerType=e.pointerType;});
- el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=exploreCue(topics[key],true);placeCallout(key);return;}if(el.tagName.toLowerCase()==='a')return;openTopic(key);pointerType='';});
+ el.addEventListener('click',e=>{takeOver();const key=el.dataset.topic;if((e.pointerType==='touch'||pointerType==='touch')&&el.classList.contains('scene-item')&&touchArmed!==key){e.preventDefault();touchArmed=key;highlight(key);document.querySelector('#hint-link').textContent=exploreCue(topics[key],true);placeCallout(key);return;}if(el.tagName.toLowerCase()==='a')return;
+  // Hover pop-ups: a mouse click pins the panel instead of opening the dialog.
+  if(peekAllowed()&&el.classList.contains('scene-item')&&(e.pointerType==='mouse'||e.pointerType==='pen'||pointerType==='mouse'||pointerType==='pen')){highlight(key);showPeek(key,true);pointerType='';return;}
+  openTopic(key);pointerType='';});
  if(el.tagName.toLowerCase()==='g')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTopic(el.dataset.topic);}});
 });
 // Intro tour. When the page opens and the map is in view, each part plays briefly in turn (in badge order) and the map then waits.
