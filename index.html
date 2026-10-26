@@ -97,23 +97,27 @@
     <section id="studies" aria-labelledby="studies-h">
       <div class="studies-head">
         <div>
-          <h2 id="studies-h">My irrigation studies</h2>
-          <p class="intro">I set out to estimate rainfall from satellite soil moisture and found irrigation instead. Each study since solves a problem the one before it exposed, so the work runs backward through the questions: how much, then when, then where.</p>
+          <p class="cycle-eyebrow">My irrigation studies</p>
+          <h2 id="studies-h">Every answer revealed another question</h2>
+          <p class="intro">It began with a signal that rainfall could not explain. Each study since answered a question the last one raised, so the work ran backward, from how much to when to where, and now returns to how much with all three.</p>
         </div>
       </div>
       <!-- The storyline. Each step sits in the lane of the question it answers (grid-column is the step, grid-row the lane:
-           1 Where, 2 When, 3 How much); its last line is the problem that led to the next step. Arrows are drawn by drawJourney(). -->
+           1 Where, 2 When, 3 How much). Its last line is the problem that led to the next step. Steps with data-feeds (2023 and 2026) also
+           feed the final step through a bracket under the lanes; the 2026→now→next path brings in the maps. Arrows are drawn by drawJourney(). -->
       <div class="journey" id="journey">
         <span class="j-lane g-where" style="grid-row:1">Where?</span>
         <span class="j-lane g-when" style="grid-row:2">When?</span>
         <span class="j-lane g-how_much" style="grid-row:3">How much?</span>
         <ol class="j-steps">
-          <li class="j-step g-how_much" style="grid-column:2;grid-row:3"><a class="j-node" href="#study-amsr2-2019"><span class="j-year">2019 <span class="j-q">How much</span></span><strong>Aimed at rainfall, found irrigation</strong><span class="j-why">But small, scattered fields vanish in a 25 km pixel.</span></a></li>
-          <li class="j-step g-where" style="grid-column:3;grid-row:1"><a class="j-node" href="#study-smap-sentinel-2021"><span class="j-year">2021 <span class="j-q">Where</span></span><strong>Can 1 km soil moisture see irrigation?</strong><span class="j-why">Yes, but it passes over only every 6–12 days.</span></a></li>
-          <li class="j-step g-how_much" style="grid-column:4;grid-row:3"><a class="j-node" href="#study-assimilation-2023"><span class="j-year">2023 <span class="j-q">How much</span></span><strong>Fill the gaps with a model</strong><span class="j-why">Far more accurate when irrigation timing is known.</span></a></li>
-          <li class="j-step g-when" style="grid-column:5;grid-row:2"><a class="j-node" href="#study-agrotrack-2026"><span class="j-year">2026 <span class="j-q">When</span></span><strong>Read irrigation timing from heat</strong><span class="j-why">Next, run the model only where fields are irrigated.</span></a></li>
-          <li class="j-step g-where" style="grid-column:6;grid-row:1"><a class="j-node" href="#research/mapping"><span class="j-year">Now <span class="j-q">Where</span></span><strong>Map irrigated land with foundation models</strong><span class="j-why">In progress: six models compared, with few labels.</span></a></li>
+          <li class="j-step g-how_much" style="grid-column:2;grid-row:3"><a class="j-node" href="#study-amsr2-2019"><span class="j-year">2019 · The signal <span class="j-q">How much</span></span><strong>Aimed at rainfall, found irrigation</strong><span class="j-how">SM2RAIN · AMSR2</span><span class="j-why">But small, scattered fields vanish in a 25 km pixel.</span></a></li>
+          <li class="j-step g-where" style="grid-column:3;grid-row:1"><a class="j-node" href="#study-smap-sentinel-2021"><span class="j-year">2021 · The scale <span class="j-q">Where</span></span><strong>Can 1 km soil moisture see irrigation?</strong><span class="j-how">SMAP–Sentinel-1</span><span class="j-why">Yes, but it passes over only every 6–12 days.</span></a></li>
+          <li class="j-step g-how_much" style="grid-column:4;grid-row:3" data-feeds><a class="j-node" href="#study-assimilation-2023"><span class="j-year">2023 · The gaps <span class="j-q">How much</span></span><strong>Fill the gaps with a model</strong><span class="j-how">VIC · particle batch smoother</span><span class="j-why">Far more accurate when irrigation timing is known.</span></a></li>
+          <li class="j-step g-when" style="grid-column:5;grid-row:2" data-feeds><a class="j-node" href="#study-agrotrack-2026"><span class="j-year">2026 · The timing <span class="j-q">When</span></span><strong>Read irrigation timing from heat</strong><span class="j-how">AgroTrack · thermal</span><span class="j-why">Next, run the model only where fields are irrigated.</span></a></li>
+          <li class="j-step g-where" style="grid-column:6;grid-row:1"><a class="j-node" href="#research/mapping"><span class="j-year">Now · The map <span class="j-q">Where</span></span><strong>Map irrigated land with foundation models</strong><span class="j-how">Prithvi-EO-2.0 and five more</span><span class="j-why">Toward yearly maps, trained with few labels.</span></a></li>
+          <li class="j-step g-how_much is-next" style="grid-column:7;grid-row:3"><a class="j-node" href="#research/amount"><span class="j-year">Next · The answer <span class="j-q">How much</span></span><strong>Back to how much, with all three</strong><span class="j-how">NASA LIS · NISAR</span><span class="j-why">Maps, timing and assimilation together, to estimate irrigation water use.</span></a></li>
         </ol>
+        <span class="j-together" aria-hidden="true">combined</span>
         <svg class="j-links" id="j-links" aria-hidden="true"></svg>
       </div>
       <ol class="study-list" id="study-list"></ol>
@@ -568,8 +572,19 @@ function drawJourney() {
       const xm = (x1 + x2) / 2, r = Math.min(8, Math.abs(y2 - y1) / 2), s = Math.sign(y2 - y1);
       d += s ? `M${x1} ${y1}H${xm - r}Q${xm} ${y1} ${xm} ${y1 + s * r}V${y2 - s * r}Q${xm} ${y2} ${xm + r} ${y2}H${x2}` : `M${x1} ${y1}H${x2}`;
     }
+    // Bracket under the lanes: steps marked data-feeds join a dashed line that rises into the final step.
+    const steps = [...box.querySelectorAll(".j-step")], last = nodes[nodes.length - 1], feeds = steps.map((s, i) => s.hasAttribute("data-feeds") ? nodes[i] : null).filter(Boolean);
+    let f = "";
+    if (feeds.length) {
+      const yb = Math.max(...nodes.map(n => n.bottom)) - b.top + 16, xl = last.left + last.width / 2 - b.left;
+      feeds.forEach(n => { const x = n.left + n.width / 2 - b.left; f += `M${x} ${n.bottom - b.top}V${yb}`; });
+      f += `M${feeds[0].left + feeds[0].width / 2 - b.left} ${yb}H${xl}V${last.bottom - b.top + 4}`;
+      const tag = box.querySelector(".j-together");
+      if (tag) { tag.style.left = ((feeds[0].left + last.left) / 2 + feeds[0].width / 2 - b.left) + "px"; tag.style.top = yb + "px"; }
+    }
     svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" fill="currentColor"/></marker></defs>` +
-      d.split("M").filter(Boolean).map(p => `<path d="M${p}" marker-end="url(#j-arrow)"/>`).join("");
+      d.split("M").filter(Boolean).map(p => `<path d="M${p}" marker-end="url(#j-arrow)"/>`).join("") +
+      (f ? `<path class="j-feed" d="${f}" marker-end="url(#j-arrow)"/>` : "");
   };
   draw();
   if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
