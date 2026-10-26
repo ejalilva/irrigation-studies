@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-25c">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25c">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25c">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-25d">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25d">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25d">
 <script>function whyFigError(img){if(img.dataset.alt){img.src=img.dataset.alt;img.dataset.alt="";}else{img.closest("figure").hidden=true;}}</script>
-<script src="assets/journals.js?v=2026-10-25c"></script>
-<script src="assets/water-cycle.js?v=2026-10-25c" defer></script>
+<script src="assets/journals.js?v=2026-10-25d"></script>
+<script src="assets/water-cycle.js?v=2026-10-25d" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -98,8 +98,23 @@
       <div class="studies-head">
         <div>
           <h2 id="studies-h">My irrigation studies</h2>
-          <p class="intro">In the order the work developed, from coarse satellite soil moisture to field-scale timing.</p>
+          <p class="intro">I set out to estimate rainfall from satellite soil moisture and found irrigation instead. Each study since solves a problem the one before it exposed, so the work runs backward through the questions: how much, then when, then where.</p>
         </div>
+      </div>
+      <!-- The storyline. Each step sits in the lane of the question it answers (grid-column is the step, grid-row the lane:
+           1 Where, 2 When, 3 How much); its last line is the problem that led to the next step. Arrows are drawn by drawJourney(). -->
+      <div class="journey" id="journey">
+        <span class="j-lane g-where" style="grid-row:1">Where?</span>
+        <span class="j-lane g-when" style="grid-row:2">When?</span>
+        <span class="j-lane g-how_much" style="grid-row:3">How much?</span>
+        <ol class="j-steps">
+          <li class="j-step g-how_much" style="grid-column:2;grid-row:3"><a class="j-node" href="#study-amsr2-2019"><span class="j-year">2019 <span class="j-q">How much</span></span><strong>Aimed at rainfall, found irrigation</strong><span class="j-why">But small, scattered fields vanish in a 25 km pixel.</span></a></li>
+          <li class="j-step g-where" style="grid-column:3;grid-row:1"><a class="j-node" href="#study-smap-sentinel-2021"><span class="j-year">2021 <span class="j-q">Where</span></span><strong>Can 1 km soil moisture see irrigation?</strong><span class="j-why">Yes, but it passes over only every 6–12 days.</span></a></li>
+          <li class="j-step g-how_much" style="grid-column:4;grid-row:3"><a class="j-node" href="#study-assimilation-2023"><span class="j-year">2023 <span class="j-q">How much</span></span><strong>Fill the gaps with a model</strong><span class="j-why">Far more accurate when irrigation timing is known.</span></a></li>
+          <li class="j-step g-when" style="grid-column:5;grid-row:2"><a class="j-node" href="#study-agrotrack-2026"><span class="j-year">2026 <span class="j-q">When</span></span><strong>Read irrigation timing from heat</strong><span class="j-why">Next, run the model only where fields are irrigated.</span></a></li>
+          <li class="j-step g-where" style="grid-column:6;grid-row:1"><a class="j-node" href="#research/mapping"><span class="j-year">Now <span class="j-q">Where</span></span><strong>Map irrigated land with foundation models</strong><span class="j-why">In progress: six models compared, with few labels.</span></a></li>
+        </ol>
+        <svg class="j-links" id="j-links" aria-hidden="true"></svg>
       </div>
       <ol class="study-list" id="study-list"></ol>
       <noscript><p>See the full list on the <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications page</a>.</p></noscript>
@@ -239,6 +254,8 @@ const STUDIES = [
     journal: "Remote Sensing of Environment",
     details: "333, 115153",
     doi: "10.1016/j.rse.2025.115153",
+    id: "agrotrack-2026",
+    q: "when",
     methods: ["thermal", "ml"],
     scale: "field",
     summary: "AgroTrack reads when fields are actually watered from thermal satellite observations.",
@@ -255,6 +272,8 @@ const STUDIES = [
     journal: "Water Resources Research",
     details: "59(4), e2022WR033342",
     doi: "10.1029/2022WR033342",
+    id: "assimilation-2023",
+    q: "how_much",
     methods: ["sm", "da"],
     scale: "1km",
     summary: "Estimates how much water was applied by assimilating 1 km SMAP/Sentinel-1 soil moisture.",
@@ -263,7 +282,7 @@ const STUDIES = [
       "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
       "In synthetic tests, knowing when irrigation happened raised accuracy to a 3% bias and R² = 0.95, which motivated the later work on timing."
     ],
-    image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, Noah-MP simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and Noah-MP.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
+    image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, land surface model simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and a land surface model.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
   },
   {
     year: 2021,
@@ -272,6 +291,8 @@ const STUDIES = [
     journal: "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
     details: "14, 10733–10747",
     doi: "10.1109/JSTARS.2021.3119228",
+    id: "smap-sentinel-2021",
+    q: "where",
     methods: ["sm"],
     scale: "1km",
     scaleNote: "9 km vs. 1 km",
@@ -290,6 +311,8 @@ const STUDIES = [
     journal: "Sustainability",
     details: "13(20), 11355",
     doi: "10.3390/su132011355",
+    id: "sentinel-2021",
+    q: "where",
     methods: ["sm", "ml"],
     scale: "field",
     scaleNote: "10 m",
@@ -308,6 +331,8 @@ const STUDIES = [
     journal: "Remote Sensing of Environment",
     details: "231, 111226",
     doi: "10.1016/j.rse.2019.111226",
+    id: "amsr2-2019",
+    q: "how_much",
     methods: ["sm"],
     scale: "coarse",
     summary: "Estimates how much water farmers apply from AMSR2 satellite soil moisture.",
@@ -460,6 +485,7 @@ function drawPanels() {
   });
 }
 
+const QLABEL = { where: "Where", when: "When", how_much: "How much" };
 function studyHTML(s, idx) {
   const sc = SCALES[s.scale] || SCALES.field;
   const authors = esc(s.authors).replace(esc(ME), `<strong>${esc(ME)}</strong>`);
@@ -471,10 +497,10 @@ function studyHTML(s, idx) {
     : `<figure class="study-fig figure-pending"><div class="missing-figure"><span>Figure pending</span><p>${esc(s.imageNote || 'Study figure to be added.')}</p></div><figcaption>The paper and study details are available below.</figcaption></figure>`;
   const j = window.Papers && window.Papers.JOURNALS[s.journal];
   const pdf = window.Papers && window.Papers.paperFor(s.doi)?.pdf;
-  return `<li class="study" data-methods="${s.methods.join(" ")}">
+  return `<li class="study" id="study-${esc(s.id || "")}" data-methods="${s.methods.join(" ")}">
     ${fig}
     <div class="study-body">
-      <p class="study-meta"><span class="jchip" style="--jc:${j ? j.color : "#3f4c63"}" title="${esc(s.journal)}">${esc(j ? j.acr : s.journal)}</span><span>${s.year}</span><span class="study-scale">${esc(s.scaleNote || sc.label)}</span></p>
+      <p class="study-meta"><span class="jchip" style="--jc:${j ? j.color : "#3f4c63"}" title="${esc(s.journal)}">${esc(j ? j.acr : s.journal)}</span><span>${s.year}</span>${s.q ? `<span class="study-q g-${s.q}">${QLABEL[s.q]}</span>` : `<span class="study-scale">${esc(s.scaleNote || sc.label)}</span>`}</p>
       <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
       <p class="summary">${esc(s.summary)}</p>
       <details class="study-details"><summary>Findings &amp; authors</summary>${findings ? `<ul class="findings">${findings}</ul>` : ""}<p class="authors">${authors}</p><p class="citation-details"><em>${esc(s.journal)}</em>, ${esc(s.details)} (${s.year}).</p><ul class="tags" aria-label="Methods">${tags}</ul><div class="study-foot"><span><a href="${esc(linkFor(s))}">Read the paper ↗</a>${pdf ? ` · <a href="${esc(pdf)}" target="_blank" rel="noopener">PDF</a>` : ""}</span><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div></details>
@@ -526,6 +552,39 @@ if (figureDialog && typeof figureDialog.showModal === 'function') {
   figureDialog.addEventListener('close', () => figureOpener?.focus({preventScroll:true}));
 }
 
+/* Storyline arrows: an elbow from each step to the next, redrawn whenever the layout changes. Hidden on phones,
+   where the steps stack and CSS draws a short arrow between them. */
+function drawJourney() {
+  const box = document.getElementById("journey"), svg = document.getElementById("j-links");
+  if (!box || !svg) return;
+  const draw = () => {
+    const b = box.getBoundingClientRect(), nodes = [...box.querySelectorAll(".j-node")].map(n => n.getBoundingClientRect());
+    svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
+    if (getComputedStyle(svg).display === "none") return;
+    let d = "";
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const a = nodes[i], c = nodes[i + 1];
+      const x1 = a.right - b.left, y1 = a.top + a.height / 2 - b.top, x2 = c.left - b.left - 3, y2 = c.top + c.height / 2 - b.top;
+      const xm = (x1 + x2) / 2, r = Math.min(8, Math.abs(y2 - y1) / 2), s = Math.sign(y2 - y1);
+      d += s ? `M${x1} ${y1}H${xm - r}Q${xm} ${y1} ${xm} ${y1 + s * r}V${y2 - s * r}Q${xm} ${y2} ${xm + r} ${y2}H${x2}` : `M${x1} ${y1}H${x2}`;
+    }
+    svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" fill="currentColor"/></marker></defs>` +
+      d.split("M").filter(Boolean).map(p => `<path d="M${p}" marker-end="url(#j-arrow)"/>`).join("");
+  };
+  draw();
+  if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
+  document.fonts?.ready.then(draw);
+  box.addEventListener("click", e => {
+    const a = e.target.closest('.j-node[href^="#study-"]');
+    if (!a) return;
+    const card = document.querySelector(a.getAttribute("href"));
+    if (!card) return;
+    e.preventDefault();
+    card.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+    card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash");
+  });
+}
+
 function renderRelated() {
   document.getElementById("related").innerHTML = RELATED.slice().sort((a, b) => b.year - a.year).map(r => `
     <li><span class="yr">${r.year}</span>
@@ -560,6 +619,7 @@ document.addEventListener("click", async e => {
 });
 
 renderStudies();
+drawJourney();
 renderRelated();
 drawPanels();
 document.getElementById("scales").classList.add("animate");
