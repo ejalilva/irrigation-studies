@@ -234,14 +234,7 @@ PDFs live in `assets/papers/`. Only post a published PDF when the paper's licens
 
 ### Human-driven processes pop-up
 
-Clicking the farm on the main map opens a pop-up rather than `human.html`. The `human` entry in `topics` has `groups` instead of its own projects. Each group shows a heading and the papers and other work of another part:
-- Where is irrigation? (`mapping`)
-- When does irrigation happen? (`timing`)
-- How much water? (`amount`)
-- Groundwater (its own `projects`)
-- Crop response (`crops`)
-
-The three question headings carry the table's colours. To change a group, edit that part's projects; to add one, add `{"from": "<part>"}` or `{"title": "...", "projects": [...]}` to `groups`. The pop-up ends with a link to `human.html`.
+Clicking the farm on the main map opens a pop-up rather than `human.html`. It lists the five irrigation papers in order (2019, 2021 JSTARS, 2021 Sustainability, 2023, 2026) as journal cards. Ongoing and planned work follows under "Ongoing and planned". Those items are written once, in other parts, and pulled in with `{"ref": "<part>:<project title>"}` in the `human` entry's `projects`. The heading comes from `otherLabel`. The pop-up ends with a link to `human.html`, which stays.
 
 ## Water-cycle explorer
 
@@ -249,7 +242,7 @@ The two landscapes are inline SVG in `index.html` and `human.html`, so they work
 
 **Size.** On the main page the map's `viewBox` is cropped to the drawing (`0 65 1130 640`), and on screens wider than about 1110px the map extends into the page margins to within 20px of the window edge, up to 170px each side (`--bleed` in `assets/water-cycle.css`). Phones use their own framing (`frameLandscape` in `assets/water-cycle.js`).
 
-**Updating CSS or JavaScript.** Both pages load `assets/*.css` and `assets/water-cycle.js` with a version query (currently `?v=2026-10-25e`). Change that value in `index.html` and `human.html` whenever you change those files. Browsers keep cached copies for a while, and without a new version a visitor can get the new page with the old styles and script: labels then show large and black, and animations and the tour do not run.
+**Updating CSS or JavaScript.** Both pages load `assets/*.css` and `assets/water-cycle.js` with a version query (currently `?v=2026-10-25f`). Change that value in `index.html` and `human.html` whenever you change those files. Browsers keep cached copies for a while, and without a new version a visitor can get the new page with the old styles and script: labels then show large and black, and animations and the tour do not run.
 
 **Soil block.** Both faces of the block are split, in face-local units, into a surface layer (0–14, top 5 cm), a root zone (14–44, to about 1 m) with plant roots, an unsaturated layer (44–56), and groundwater (56–94) whose top is the water table. Each band is drawn in its face's own plane with a `matrix(...)` transform (left face `matrix(1 .51143 0 1 280 390)`, right face `matrix(1 -.39048 0 1 630 569)`), so bands, labels and arrows follow the isometric slope. On hover of Soil moisture the surface wets and dries quickly, a wetting front then fills the root zone and lingers, and water moves up the roots as it dries; keep the `surface-wet`, `wetting-front` and `uptake-show` timings equal so the stages stay in order. Drainage arrows run down the left face from the root zone to the water table. The river ends at a small sea on the front corner of the block (part of Runoff & rivers), shown in section on the block's edge as a shallow wedge rather than a fall down the soil face. The beach stops on either side of the river mouth and the sea starts in the river's colour, so the river runs straight into the sea.
 
@@ -265,7 +258,7 @@ The two landscapes are inline SVG in `index.html` and `human.html`, so they work
 - **Snowfall (0–38%):** snow falls from the cloud and the caps build up.
 - **Sun (36–46%):** the snow stops and the sun replaces the cloud.
 - **Melt (44–82%):** the caps start melting at once, and meltwater runs down the mountain into the river.
-- **River (50–92%):** the river swells and spreads its plume into the sea, as it does after rain.
+- **River (48–92%):** the river swells and spreads its plume into the sea, as it does after rain, and stays high while the caps melt.
 - **Reset:** the sun gives way to the cloud for the next snowfall.
 
 The flakes sit in a `.snow-shower` group, the cloud is `.snow-cloud` and the sun `.snow-sun` (opacity 0 by default, so it stays hidden with reduced motion). The meltwater path has the `snowmelt` class. The river swell and plume for snow are copies of the rain ones (`.river-swell-melt`, `.river-plume-melt`, `data-link="snow"`) inside the Runoff & rivers part; a CSS rule keeps them still when that part itself is explored. Keep all of these at the same length and the same -3.6 s delay; the delay makes the still map, and the start of a hover, land late in the snowfall with the caps nearly full. The snow tour step is fixed at 4 seconds (`data-tour-step="4000"`) so the tour shows the whole cycle at 3x speed.
