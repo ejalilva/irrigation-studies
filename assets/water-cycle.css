@@ -94,8 +94,8 @@ body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-p
 @keyframes snow-cloud{0%,36%{opacity:1}44%,90%{opacity:0}97%,100%{opacity:1}}
 @keyframes snow-sun{0%,38%{opacity:0;transform:scale(.6)}46%,84%{opacity:1;transform:scale(1)}92%,100%{opacity:0;transform:scale(.6)}}
 @keyframes snowmelt{0%,44%{opacity:0}50%,80%{opacity:1}88%,100%{opacity:0}}
-@keyframes river-swell-melt{0%,50%{stroke-width:0}70%{stroke-width:10}88%,100%{stroke-width:0}}
-@keyframes river-plume-melt{0%,56%{opacity:0}76%{opacity:.75}92%,100%{opacity:0}}
+@keyframes river-swell-melt{0%,48%{stroke-width:0}60%,80%{stroke-width:11}92%,100%{stroke-width:0}}
+@keyframes river-plume-melt{0%,54%{opacity:0}68%,84%{opacity:.8}95%,100%{opacity:0}}
 @keyframes evaporate{0%{transform:translateY(4px);opacity:.2}50%{opacity:.85}100%{transform:translateY(-13px);opacity:.15}}
 @keyframes downstream{to{stroke-dashoffset:-60}}
 @keyframes wetting{0%,100%{opacity:.09}55%{opacity:.28}}
