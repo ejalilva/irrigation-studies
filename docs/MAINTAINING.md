@@ -193,15 +193,15 @@ The irrigation studies are told as six chapters in a small diagram, in place of 
 |---|---|---|---|---|
 | 1 | 2019 | How much | The Columbus voyage | RSE 2019 |
 | 2 | 2021 | Where | The devil is in the details | JSTARS 2021 (Sustainability 2021 noted in its card) |
-| 3 | 2023 | How much | Reinventing the wheel | WRR 2023 |
+| 3 | 2023 | How much | Paradigm shift | WRR 2023 |
 | 4 | 2026 | When | Patterns in the plot | RSE 2026 |
 | 5 | Now | Where | Rewriting the map | foundation-model mapping, in progress |
 | 6 | Next | How much | Coming full circle | where, when and how much together in NASA LIS with NISAR |
 
 **Layout.**
-- **Lanes:** there is one lane per question, in the logical order (Where?, When?, How much?).
-- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows a chapter mark (a dark square with its number), the year, a small original icon, the chapter title, one plain line on what was done, and what it left open.
-- **Arrows:** elbow arrows join the chapters in order. A dashed "combined" bracket joins chapters 3 and 4 into chapter 6, and chapter 5's arrow also enters it.
+- **Lanes:** there is one lane per question, in the logical order (Where?, When?, How much?). The lane labels are set larger than the card text so the three questions read first.
+- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows a chapter mark (a dark square with its number), the year, the chapter icon, the chapter title, one plain line on what was done, and what it left open. The icon sits over the card's top-right corner, breaking out of its border.
+- **Arrows:** thick elbow arrows join the chapters in order. A dashed "combined" bracket joins chapters 3 and 4 into chapter 6, and chapter 5's arrow also enters it.
 
 **Study card.** Hovering or focusing a chapter shows its study card beside it. Clicking or tapping keeps the card open, and Escape or a click elsewhere closes it. A published chapter's card holds:
 - the chapter title and seminar subtitle
@@ -215,12 +215,14 @@ Chapters 5 and 6 instead show a short text, the models or parts involved, and a 
 **Phones.** Below 1100 px the chapters stack in order with a small arrow between them. A tapped chapter's card opens under it.
 
 **Editing.** Everything comes from `CHAPTERS` in `index.html`:
-- `year`, `q` (`where`, `when` or `how_much`) and `icon` (a key of `ICONS`)
+- `year`, `q` (`where`, `when` or `how_much`) and `icon`, the name of the chapter's picture in `assets/chapters/`
 - `title`, `sub`, `what`, `left`
 - for published chapters: `study` (a study `id` in `STUDIES`), `finding` and an optional `also`
 - for the last two chapters: `topic`, `more`, `text` and `chips`
 - `feeds: true` joins the bracket
 - `next: true` gives the dashed border of a future chapter
+
+**Chapter icons.** Ehsan supplied the six icons. They are saved in `assets/chapters/` as transparent WebP, trimmed to their content and squared at 176 px: `voyage`, `details`, `shift`, `patterns`, `map` and `circle`. To change one, save a new transparent image under the same name, about 176 px square.
 
 `renderJourney()` draws everything and redraws the arrows when the layout changes. The figures and paper details still come from `STUDIES` and `assets/journals.js`.
 
