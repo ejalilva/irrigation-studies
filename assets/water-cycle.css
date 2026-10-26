@@ -72,10 +72,18 @@
 .scene-item .object{transform:none!important}.scene-item.active .object,.scene-item:hover .object,.scene-item:focus-visible .object{filter:drop-shadow(0 0 7px #d5b57799)}
 .scene-item .anim{animation-play-state:paused!important}.scene-item.active .anim,.scene-item:hover .anim,.scene-item:focus-visible .anim{animation-play-state:running!important}
 body.motion-off .scene-item .anim,body.dialog-open .scene-item .anim{animation-play-state:paused!important}
-.anim{transform-box:fill-box;transform-origin:center}.waterline{stroke-dasharray:9 13;stroke-linecap:round;stroke-width:3;opacity:.95;animation:river-current 1.5s linear infinite}.river-fall{animation:river-cascade 1s linear infinite}.vapor{animation:evaporate 3s ease-in-out infinite}.rainfall{animation:rain 1.2s linear infinite}.snowflake{animation:snowfall 2.8s linear infinite}.snowcap{animation:thaw 6s ease-in-out infinite;transform-origin:50% 0}.meltwater,.drainflow,.pipeflow{animation:downstream 2s linear infinite}.wet-soil{animation:wetting 3.8s ease-in-out infinite}.ripple{animation:rippling 3s ease-in-out infinite}.crop-grow{animation:growth 4s ease-in-out infinite;transform-origin:50% 100%}.spray{animation:sprinkle 1.5s linear infinite;opacity:.7}.floodplain{animation:river-rise 5s ease-in-out infinite}.field-outline{animation:outline-flow 3s linear infinite}
+.anim{transform-box:fill-box;transform-origin:center}.waterline{stroke-dasharray:9 13;stroke-linecap:round;stroke-width:3;opacity:.95;animation:river-current 1.5s linear infinite}.river-fall{animation:river-cascade 1s linear infinite}.vapor{animation:evaporate 3s ease-in-out infinite}.rainfall{animation:rain 1.2s linear infinite}.snowflake{animation:snowfall 2.8s linear infinite}.snowcap{transform-origin:50% 0}.meltwater,.drainflow,.pipeflow{animation:downstream 2s linear infinite}.wet-soil{animation:wetting 3.8s ease-in-out infinite}.ripple{animation:rippling 3s ease-in-out infinite}.crop-grow{animation:growth 4s ease-in-out infinite;transform-origin:50% 100%}.spray{animation:sprinkle 1.5s linear infinite;opacity:.7}.floodplain{animation:river-rise 5s ease-in-out infinite}.field-outline{animation:outline-flow 3s linear infinite}
 @keyframes rain{0%{transform:translate(2px,-4px);opacity:.25}25%{opacity:.8}100%{transform:translate(-10px,23px);opacity:.05}}
 @keyframes snowfall{0%{transform:translate(-3px,-8px);opacity:.25}20%,65%{opacity:1}100%{transform:translate(5px,31px);opacity:.15}}
-@keyframes thaw{0%,100%{transform:scaleY(1);opacity:1}60%{transform:scaleY(.78);opacity:.83}}
+/* Snow runs on one 12 s cycle: snowfall builds the caps (0-38%), the snow stops and the full caps rest (40-55%), then they
+   melt and meltwater runs (55-90%), and the bare caps wait for the next snowfall. The -3.6 s delay makes the still map, and
+   the start of a hover, fall late in the snowfall with the caps nearly full. Keep the three on the same length and delay. */
+.snowcap{animation:snowpack 12s -3.6s infinite}
+.snow-shower{animation:snow-shower 12s linear -3.6s infinite}
+.meltwater.snowmelt{animation:downstream 2s linear infinite,snowmelt 12s linear -3.6s infinite}
+@keyframes snowpack{0%{transform:scaleY(.72);opacity:.85;animation-timing-function:ease-out}38%{transform:scaleY(1);opacity:1}55%{transform:scaleY(1);opacity:1;animation-timing-function:ease-in-out}90%,100%{transform:scaleY(.72);opacity:.85}}
+@keyframes snow-shower{0%{opacity:0}4%,32%{opacity:1}40%,100%{opacity:0}}
+@keyframes snowmelt{0%,53%{opacity:0}60%,86%{opacity:1}94%,100%{opacity:0}}
 @keyframes evaporate{0%{transform:translateY(4px);opacity:.2}50%{opacity:.85}100%{transform:translateY(-13px);opacity:.15}}
 @keyframes downstream{to{stroke-dashoffset:-60}}
 @keyframes wetting{0%,100%{opacity:.09}55%{opacity:.28}}
@@ -191,22 +199,46 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
 @keyframes wave{0%,100%{transform:translateX(0);opacity:.4}50%{transform:translateX(4px);opacity:.9}}
 .sea-label{font:italic 12px var(--sans);fill:#f4fbfb;paint-order:stroke;stroke:rgba(40,96,112,.55);stroke-width:2px;stroke-linejoin:round}
 
-/* Paper cards in the pop-ups (built by assets/journals.js). The band takes the journal's colour from --jc. */
+/* Paper cards in the pop-ups (built by assets/journals.js). Each starts with a small masthead in the journal's own style
+   (always on white, like the paper), a rule and a chip in the journal's cover colour (--jc). */
 #research-dialog .dialog-group {font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);margin:26px 0 10px;padding-top:18px;border-top:1px solid var(--line);}
 #research-dialog .dialog-group + .project {border-top:0;padding-top:4px;}
-.paper-list {display:grid;gap:12px;}
+.paper-list {display:grid;gap:14px;}
 .paper-card {border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--paper);}
-.paper-card .pc-band {display:flex;align-items:center;gap:10px;padding:7px 14px;background:var(--jc);color:#fff;text-decoration:none;font-size:.78rem;line-height:1.3;}
-.paper-card .pc-band:hover .pc-journal {text-decoration:underline;}
-.paper-card .pc-logo {height:22px;width:auto;flex:none;background:#fff;border-radius:3px;padding:2px 4px;}
-.paper-card .pc-acr {font-weight:700;font-size:.88rem;letter-spacing:.01em;flex:none;}
-.paper-card .pc-journal {flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9;}
-.paper-card .pc-year {flex:none;margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums;}
-.paper-card .pc-body {padding:12px 14px 14px;}
+.paper-card .pc-mast {display:flex;align-items:center;gap:10px;min-height:60px;padding:7px 12px;background:#fff;border-bottom:4px solid var(--jc);text-decoration:none;}
+.paper-card .pc-mast img {display:block;flex:none;height:var(--h);width:auto;}
+.paper-card .mh-elsevier {align-items:stretch;}
+.paper-card .mh-box {flex:1;min-width:0;display:flex;align-items:center;justify-content:center;padding:4px 10px;background:#e8e8e8;color:#111;text-align:center;font:400 15px/1.2 Georgia,"Times New Roman",serif;}
+.paper-card .mh-logos {justify-content:space-between;}
+.paper-card .mh-logos .mh-l {max-width:64%;object-fit:contain;object-position:left center;}
+.paper-card .mh-text {flex:1;min-width:0;text-align:center;font:400 12px/1.35 Arial,Helvetica,sans-serif;color:#7d7d7d;}
+.paper-card .mh-ieee {font:400 10.5px/1.35 "Times New Roman",Times,serif;text-transform:uppercase;color:#1d1d1d;}
+.paper-card .mh-banner {padding:0;min-height:0;}
+.paper-card .mh-banner img {width:100%;height:auto;max-height:68px;object-fit:cover;object-position:left center;}
+.paper-card .pc-meta {display:flex;align-items:center;gap:8px;margin:12px 14px 0;font-size:.78rem;line-height:1.3;color:var(--ink-2);}
+.paper-card .pc-meta .pc-acr,.paper-card .pc-band .pc-acr {flex:none;background:var(--jc);color:#fff;font-weight:700;font-size:.74rem;letter-spacing:.01em;padding:2px 8px;border-radius:3px;box-shadow:0 0 0 1px var(--chip-ring);}
+.paper-card .pc-jname {flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.paper-card .pc-year {flex:none;margin-left:auto;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink);}
+.paper-card .pc-band {display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--jc);color:#fff;text-decoration:none;font-size:.78rem;line-height:1.3;}
+.paper-card .pc-band .pc-acr {background:rgba(255,255,255,.16);}
+.paper-card .pc-band .pc-jname,.paper-card .pc-band .pc-year {color:#fff;opacity:.92;}
+.paper-card .pc-body {padding:8px 14px 14px;}
+.paper-card .pc-band + .pc-body {padding-top:12px;}
 .paper-card .pc-title {display:block;color:var(--ink);font-weight:650;font-size:1rem;line-height:1.38;text-decoration:none;}
 .paper-card .pc-title:hover {color:var(--link);text-decoration:underline;}
 .paper-card .pc-authors {font-size:.82rem;color:var(--ink-2);margin:6px 0 0;}
 .paper-card .pc-authors strong {color:var(--ink);font-weight:600;}
 .paper-card .pc-more {border:0;background:none;padding:0 0 0 4px;font:inherit;color:var(--link);cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
 .paper-card .pc-note {font-size:.85rem;color:var(--ink-2);margin:8px 0 0;line-height:1.5;}
-@media (max-width:520px){.paper-card .pc-journal{display:none}.paper-card .pc-band{justify-content:space-between}}
+.paper-card .pc-links {display:flex;align-items:center;gap:10px;margin:10px 0 0;font-size:.76rem;color:var(--ink-2);}
+.paper-card .pc-pdf {display:inline-block;padding:3px 10px;border-radius:4px;box-shadow:0 0 0 1px var(--chip-ring);background:var(--jc);color:#fff;font-weight:600;font-size:.78rem;text-decoration:none;}
+.paper-card .pc-pdf:hover {filter:brightness(1.15);}
+@media (max-width:520px){
+  .paper-card .pc-mast {min-height:46px;gap:7px;padding:6px 8px;}
+  .paper-card .pc-mast img {height:calc(var(--h) * .74);}
+  .paper-card .mh-box {font-size:11.5px;padding:3px 6px;}
+  .paper-card .mh-text {font-size:9.5px;}
+  .paper-card .mh-ieee {font-size:9px;}
+  .paper-card .pc-mast.mh-banner img {height:auto;}
+  .paper-card .pc-jname {display:none;}
+}

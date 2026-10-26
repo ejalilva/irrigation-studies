@@ -10,7 +10,7 @@
 #studies .study-fig figcaption{font-size:.72rem;line-height:1.4;margin-top:6px}
 #studies .study-body{padding:16px 20px 18px;min-width:0}
 #studies .study-meta{display:flex;align-items:center;gap:10px;font-size:.77rem;line-height:1.4;color:var(--ink-2);margin:0 0 10px}
-#studies .jchip{flex:none;background:var(--jc);color:#fff;font-weight:700;font-size:.72rem;letter-spacing:.01em;padding:2px 8px;border-radius:3px}
+#studies .jchip{flex:none;box-shadow:0 0 0 1px var(--chip-ring);background:var(--jc);color:#fff;font-weight:700;font-size:.72rem;letter-spacing:.01em;padding:2px 8px;border-radius:3px}
 #studies .study-scale{margin-left:auto}
 #studies .study-title{font-size:1.16rem;line-height:1.35;letter-spacing:-.01em}
 #studies .summary{font-size:.9rem;line-height:1.5;margin:8px 0 12px}
