@@ -131,11 +131,12 @@
   .why-fact img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: var(--surface); }
   .why-pic { position: relative; }
   .why-tag { position: absolute; top: 8px; padding: 2px 8px; border-radius: 3px; background: rgba(15, 26, 31, .66); color: #fff; font: 600 .72rem/1.4 var(--sans); }
-  .why-tag.l { left: 8px; } .why-tag.r { right: 8px; }
+  .why-tag.l { left: 8px; } .why-tag.r { right: 8px; } .why-tag.bl { top: auto; bottom: 8px; left: 8px; }
+  .why-tag .why-short { display: none; }
   .why-fact figcaption { margin-top: 10px; font-size: .9rem; line-height: 1.5; color: var(--ink-2); }
   .why-fact figcaption strong, .why-gap li strong { color: var(--ink); font-weight: 600; }
   .why-fact .src { display: inline-block; margin: 4px 10px 0 0; font-size: .78rem; }
-  .why-gap { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: 26px; padding: 18px 20px; border: 1px solid var(--line); border-left: 4px solid var(--q-when); border-radius: 8px; background: var(--surface); }
+  .why-gap { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: 26px; padding: 18px 20px; border: 1px solid var(--line); border-left: 4px solid var(--q-when); border-radius: 8px; background: var(--surface); }
   .why-gap img { display: block; width: 100%; border-radius: 6px; }
   .why-gap-text { min-width: 0; }
   .why-gap h3 { margin: 0 0 6px; font: 500 1.2rem/1.3 var(--head); }
@@ -444,9 +445,9 @@
     .why-fact { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 14px; align-items: start; }
     .why-fact img { aspect-ratio: 4 / 3; }
     .why-fact figcaption { margin-top: 0; font-size: .86rem; }
-    .why-tag { top: 5px; padding: 1px 5px; font-size: .62rem; } .why-tag.l { left: 5px; } .why-tag.r { right: 5px; }
+    .why-tag { top: 5px; padding: 1px 5px; font-size: .62rem; } .why-tag.l { left: 5px; } .why-tag.r { right: 5px; } .why-tag.bl { top: auto; bottom: 5px; left: 5px; } .why-tag .why-long { display: none; } .why-tag .why-short { display: inline; }
     /* Phone: the picture sits beside the heading; the list and bridge run full width below. */
-    .why-gap { grid-template-columns: 96px minmax(0, 1fr); gap: 4px 14px; padding: 16px; }
+    .why-gap { grid-template-columns: 112px minmax(0, 1fr); gap: 4px 14px; padding: 16px; }
     .why-gap-text { display: contents; }
     .why-gap h3 { align-self: center; margin: 0; font-size: 1.08rem; }
     .why-gap ul, .why-bridge { grid-column: 1 / -1; }

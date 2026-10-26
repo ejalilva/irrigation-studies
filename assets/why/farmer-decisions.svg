@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 104 400 280" role="img" aria-labelledby="t">
+  <title id="t">A farmer at the edge of an irrigated field, next to a well whose meter shows a question mark, and a signpost reading When? and How much?</title>
+  <!-- Original illustration for the site, in the colours of the water-cycle map. -->
+  <defs>
+    <clipPath id="field"><rect x="0" y="188" width="400" height="212"/></clipPath>
+  </defs>
+
+  <!-- sky, sun, hills -->
+  <rect y="100" width="400" height="300" fill="#eef3ea"/>
+  <circle cx="366" cy="138" r="17" fill="#f2c94c"/>
+  <path d="M0 176 C60 150 110 158 160 170 C210 182 250 150 310 156 C350 160 380 170 400 166 V192 H0 Z" fill="#c9d6b4"/>
+  <path d="M0 184 C80 172 150 186 230 180 C300 175 350 182 400 178 V192 H0 Z" fill="#b5c79d"/>
+
+  <!-- field in perspective -->
+  <rect x="0" y="188" width="400" height="212" fill="#e4dfbf"/>
+  <g clip-path="url(#field)">
+    <g fill="#7f9c5c">
+      <path d="M-262 400 L-232 400 L150 188 L156 188 Z"/>
+      <path d="M-182 400 L-152 400 L160 188 L166 188 Z"/>
+      <path d="M-102 400 L-72 400 L170 188 L176 188 Z"/>
+      <path d="M-22 400 L8 400 L180 188 L186 188 Z"/>
+      <path d="M58 400 L88 400 L190 188 L196 188 Z"/>
+      <path d="M138 400 L168 400 L200 188 L206 188 Z"/>
+      <path d="M218 400 L248 400 L210 188 L216 188 Z"/>
+      <path d="M298 400 L328 400 L220 188 L226 188 Z"/>
+      <path d="M378 400 L408 400 L230 188 L236 188 Z"/>
+      <path d="M458 400 L488 400 L240 188 L246 188 Z"/>
+      <path d="M538 400 L568 400 L250 188 L256 188 Z"/>
+      <path d="M618 400 L648 400 L260 188 L266 188 Z"/>
+    </g>
+    <!-- water running down the furrows nearest the well -->
+    <g fill="#7cc0d1">
+      <path d="M-226 400 L-190 400 L157 188 L159 188 Z"/>
+      <path d="M-146 400 L-110 400 L167 188 L169 188 Z"/>
+      <path d="M-66 400 L-30 400 L177 188 L179 188 Z"/>
+    </g>
+  </g>
+
+  <!-- well: pad, casing, meter, outlet and water -->
+  <ellipse cx="62" cy="352" rx="36" ry="9" fill="#b8b39b"/>
+  <rect x="50" y="228" width="24" height="124" rx="3" fill="#6d7f86"/>
+  <rect x="46" y="222" width="32" height="10" rx="3" fill="#56676e"/>
+  <rect x="72" y="240" width="40" height="16" rx="3" fill="#6d7f86"/>
+  <rect x="108" y="236" width="10" height="24" rx="2" fill="#56676e"/>
+  <path d="M118 240 C134 240 146 268 149 334 L137 334 C134 286 128 260 118 256 Z" fill="#7cc0d1"/>
+  <ellipse cx="143" cy="336" rx="24" ry="5.5" fill="#7cc0d1"/>
+  <g fill="#7cc0d1"><circle cx="126" cy="326" r="2.5"/><circle cx="160" cy="324" r="2.5"/><circle cx="166" cy="331" r="2"/></g>
+  <circle cx="62" cy="292" r="21" fill="#ffffff" stroke="#3f574e" stroke-width="4"/>
+  <text x="62" y="302" text-anchor="middle" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="28" font-weight="700" fill="#3f574e">?</text>
+
+  <!-- signpost -->
+  <rect x="200" y="200" width="9" height="154" rx="2" fill="#8a6a45"/>
+  <path d="M164 206 H262 L278 223 L262 240 H164 Z" fill="#d6b27a" stroke="#8a6a45" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M256 250 H138 L122 267 L138 284 H256 Z" fill="#d6b27a" stroke="#8a6a45" stroke-width="2.5" stroke-linejoin="round"/>
+  <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="600" fill="#3f3a2e" text-anchor="middle">
+    <text x="216" y="230">When?</text>
+    <text x="192" y="274">How much?</text>
+  </g>
+
+  <!-- farmer, hand at chin, looking at the field -->
+  <ellipse cx="330" cy="364" rx="36" ry="6" fill="#3f574e" opacity=".18"/>
+  <rect x="315" y="298" width="14" height="60" rx="4" fill="#4b5a66"/>
+  <rect x="331" y="298" width="14" height="60" rx="4" fill="#4b5a66"/>
+  <rect x="311" y="352" width="18" height="10" rx="3" fill="#5a4632"/>
+  <rect x="331" y="352" width="18" height="10" rx="3" fill="#5a4632"/>
+  <rect x="308" y="246" width="44" height="60" rx="11" fill="#c4694a"/>
+  <path d="M352 258 L358 300" stroke="#c4694a" stroke-width="12" stroke-linecap="round" fill="none"/>
+  <rect x="348" y="290" width="20" height="26" rx="2" fill="#f7fbfc" stroke="#56676e" stroke-width="2" transform="rotate(8 358 303)"/>
+  <path d="M312 258 L302 286 L318 248" stroke="#b55c3f" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="318" cy="245" r="6" fill="#d9a77c"/>
+  <rect x="324" y="234" width="10" height="14" rx="3" fill="#d9a77c"/>
+  <circle cx="328" cy="224" r="15" fill="#d9a77c"/>
+  <ellipse cx="328" cy="212" rx="29" ry="6" fill="#b58d52"/>
+  <path d="M313 212 C313 196 318 192 328 192 C338 192 343 196 343 212 Z" fill="#c49d5e"/>
+  <rect x="313" y="205" width="30" height="4" fill="#8a6a45"/>
+</svg>
