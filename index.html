@@ -12,12 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-25g">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25g">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25g">
-<script>function whyFigError(img){if(img.dataset.alt){img.src=img.dataset.alt;img.dataset.alt="";}else{img.closest("figure").hidden=true;}}</script>
-<script src="assets/journals.js?v=2026-10-25g"></script>
-<script src="assets/water-cycle.js?v=2026-10-25g" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=2026-10-25i">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25i">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25i">
+<script src="assets/journals.js?v=2026-10-25i"></script>
+<script src="assets/water-cycle.js?v=2026-10-25i" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -51,23 +50,33 @@
     <section aria-labelledby="why">
       <p class="cycle-eyebrow">A closer look · Agricultural water use</p>
       <h2 id="why">Why irrigation matters</h2>
-      <!-- Open-access figures, shown from the publishers' sites with credit. If one fails to load it tries the second
-           address in data-alt, then hides itself. To use a local copy, save the image in assets/why/ and point src at it. -->
-      <div class="why-figs">
-        <figure class="why-fig">
-          <a href="https://hess.copernicus.org/articles/22/1119/2018/#f04" target="_blank" rel="noopener"><img src="https://hess.copernicus.org/articles/22/1119/2018/hess-22-1119-2018-f04-web.png" alt="World map of irrigated areas identified from satellite vegetation records." loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="whyFigError(this)"></a>
-          <figcaption><strong>Where farms are irrigated</strong> Irrigated areas mapped from satellite vegetation records. <span class="credit">Meier et al. (2018), <em>HESS</em>, Fig. 4, CC BY 3.0</span></figcaption>
+      <p class="intro">Feeding a growing world depends on irrigated farms, and irrigated farms depend on water that is already running short.</p>
+      <!-- Pictures are from Ehsan's seminar slides (assets/why/): the Twin Platte, Nebraska satellite view and the water-stress map (WRI Aqueduct, CC BY 4.0). The gap picture is an original SVG drawn for the site. -->
+      <div class="why-facts">
+        <figure class="why-fact">
+          <img src="assets/why/food-demand.webp" alt="A farmer carrying two watering cans along rows of seedlings." loading="lazy" decoding="async">
+          <figcaption><strong>Food demand will nearly double by 2050,</strong> driven about 30% by population growth and 70% by diets shifting toward meat. <a class="src" href="https://direct.mit.edu/daed/article/144/4/8/27090/Food-Agriculture-amp-the-Environment-Can-We-Feed">Tilman &amp; Clark, 2015</a></figcaption>
         </figure>
-        <figure class="why-fig">
-          <a href="https://www.nature.com/articles/ncomms15900#Fig1" target="_blank" rel="noopener"><img src="https://cdn.ncbi.nlm.nih.gov/pmc/blobs/5259/5524928/b9628956891f/ncomms15900-f1.jpg" data-alt="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fncomms15900/MediaObjects/41467_2017_Article_BFncomms15900_Fig1_HTML.jpg" alt="World map of how far river flow falls below environmental flow requirements, with hydrographs of selected rivers." loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="whyFigError(this)"></a>
-          <figcaption><strong>What it costs rivers</strong> Where withdrawals leave river flow below what ecosystems need. <span class="credit">J&auml;germeyr et al. (2017), <em>Nature Communications</em>, Fig. 1, CC BY 4.0</span></figcaption>
+        <figure class="why-fact">
+          <div class="why-pic"><img src="assets/why/irrigated-pivots.webp" alt="Satellite view of the Twin Platte region of Nebraska: green, irrigated center-pivot circles among brown fields that rely on rain." loading="lazy" decoding="async"><span class="why-tag bl"><span class="why-long">Green circles are irrigated</span><span class="why-short">Green = irrigated</span></span></div>
+          <figcaption><strong>Irrigated land grows about twice the food</strong> of the same area of rainfed land, at the cost of more water. <a class="src" href="https://www.worldbank.org/en/topic/water-in-agriculture">World Bank, Water in agriculture</a></figcaption>
         </figure>
-        <figure class="why-fig">
-          <a href="https://www.nature.com/articles/ncomms15900#Fig2" target="_blank" rel="noopener"><img src="https://cdn.ncbi.nlm.nih.gov/pmc/blobs/5259/5524928/2af3e0a5b33a/ncomms15900-f2.jpg" data-alt="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fncomms15900/MediaObjects/41467_2017_Article_BFncomms15900_Fig2_HTML.jpg" alt="Maps of the change in food production if environmental flows were protected, under four scenarios." loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="whyFigError(this)"></a>
-          <figcaption><strong>What is at stake for food</strong> Change in food production if rivers kept their environmental flows. <span class="credit">J&auml;germeyr et al. (2017), <em>Nature Communications</em>, Fig. 2, CC BY 4.0</span></figcaption>
+        <figure class="why-fact">
+          <img src="assets/why/water-stress.webp" alt="World map of projected water stress by river basin, high across the US West, the Middle East, South Asia and northern China." loading="lazy" decoding="async">
+          <figcaption><strong>Irrigation takes 70% of the fresh water</strong> withdrawn worldwide, while many farming regions already face high water stress. <a class="src" href="https://www.nature.com/articles/nature10452">Foley et al., 2011</a> <a class="src" href="https://www.wri.org/aqueduct">Map: WRI Aqueduct</a></figcaption>
         </figure>
       </div>
-      <p class="bridge">Few farms meter their water. Satellites revisit every field every few days; my work asks how much of the irrigation signal they can recover, and at what scale.</p>
+      <div class="why-gap">
+        <img src="assets/why/farmer-decisions.svg" alt="A farmer at the edge of an irrigated field, next to a well whose meter shows a question mark, and a signpost reading When? and How much?" loading="lazy" decoding="async">
+        <div class="why-gap-text">
+          <h3>The gap: no one knows how much water each farm uses</h3>
+          <ul>
+            <li><strong>Few withdrawals are measured.</strong> Only 36% of US irrigation wells have a flow meter (<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378">Foster et al., 2020</a>), and the UN names &ldquo;not enough data&rdquo; among the main obstacles to its water goal (<a href="https://www.unwater.org/sites/default/files/2023-08/UN-Water_SDG6_SynthesisReport_2023.pdf">UN-Water, 2023</a>).</li>
+            <li><strong>Models assume, farmers decide.</strong> Models switch irrigation on at a fixed soil-water deficit; farmers go by calendars, what they see in the field and what their neighbours do.</li>
+          </ul>
+          <p class="why-bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale.</p>
+        </div>
+      </div>
     </section>
 
     <details class="more"><summary>Seeing irrigation at different scales</summary>      <div class="scales" id="scales">

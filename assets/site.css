@@ -125,15 +125,25 @@
 
   .findings, details.more ul { list-style: disc; }
   .findings li::marker { color: var(--r3); }
-  /* Why irrigation matters: three open-access figures, each linked to its source */
-  .why-figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 28px; }
-  .why-fig { margin: 0; min-width: 0; }
-  .why-fig a { display: block; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: #fff; }
-  .why-fig a:hover { outline: 2px solid var(--link); outline-offset: 1px; }
-  .why-fig img { display: block; width: 100%; height: 210px; object-fit: contain; padding: 8px; background: #fff; }
-  .why-fig figcaption { font-size: .86rem; line-height: 1.45; color: var(--ink-2); margin-top: 10px; }
-  .why-fig figcaption strong { display: block; color: var(--ink); font: 500 1.05rem/1.3 var(--head); margin-bottom: 3px; }
-  .why-fig .credit { display: block; font-size: .75rem; margin-top: 5px; }
+  /* Why irrigation matters: three facts with pictures and sources, then the gap */
+  .why-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 24px; }
+  .why-fact { margin: 0; min-width: 0; }
+  .why-fact img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: var(--surface); }
+  .why-pic { position: relative; }
+  .why-tag { position: absolute; top: 8px; padding: 2px 8px; border-radius: 3px; background: rgba(15, 26, 31, .66); color: #fff; font: 600 .72rem/1.4 var(--sans); }
+  .why-tag.l { left: 8px; } .why-tag.r { right: 8px; } .why-tag.bl { top: auto; bottom: 8px; left: 8px; }
+  .why-tag .why-short { display: none; }
+  .why-fact figcaption { margin-top: 10px; font-size: .9rem; line-height: 1.5; color: var(--ink-2); }
+  .why-fact figcaption strong, .why-gap li strong { color: var(--ink); font-weight: 600; }
+  .why-fact .src { display: inline-block; margin: 4px 10px 0 0; font-size: .78rem; }
+  .why-gap { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: 26px; padding: 18px 20px; border: 1px solid var(--line); border-left: 4px solid var(--q-when); border-radius: 8px; background: var(--surface); }
+  .why-gap img { display: block; width: 100%; border-radius: 6px; }
+  .why-gap-text { min-width: 0; }
+  .why-gap h3 { margin: 0 0 6px; font: 500 1.2rem/1.3 var(--head); }
+  .why-gap ul { margin: 0; padding-left: 1.1em; list-style: disc; }
+  .why-gap li { margin: 6px 0; font-size: .92rem; line-height: 1.5; color: var(--ink-2); }
+  .why-gap li::marker { color: var(--q-when); }
+  .why-bridge { margin: 10px 0 0; font: 500 1rem/1.45 var(--head); color: var(--ink); }
   .bridge { font: 400 1.3rem/1.4 var(--head); max-width: 58ch; margin: 36px 0 0; padding-left: 20px; border-left: 3px solid var(--r3); }
 
   /* Studies */
@@ -431,8 +441,17 @@
     .study-when .sc { margin-top: 0; }
     .study-fig { max-width: 440px; }
     .related li { grid-template-columns: 4rem minmax(0, 1fr); gap: 16px; }
-    .why-figs { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-    .why-fig img { height: auto; max-height: 280px; }
+    .why-facts { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .why-fact { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 14px; align-items: start; }
+    .why-fact img { aspect-ratio: 4 / 3; }
+    .why-fact figcaption { margin-top: 0; font-size: .86rem; }
+    .why-tag { top: 5px; padding: 1px 5px; font-size: .62rem; } .why-tag.l { left: 5px; } .why-tag.r { right: 5px; } .why-tag.bl { top: auto; bottom: 5px; left: 5px; } .why-tag .why-long { display: none; } .why-tag .why-short { display: inline; }
+    /* Phone: the picture sits beside the heading; the list and bridge run full width below. */
+    .why-gap { grid-template-columns: 112px minmax(0, 1fr); gap: 4px 14px; padding: 16px; }
+    .why-gap-text { display: contents; }
+    .why-gap h3 { align-self: center; margin: 0; font-size: 1.08rem; }
+    .why-gap ul, .why-bridge { grid-column: 1 / -1; }
+    .why-gap ul { margin-top: 8px; }
   }
   @media (max-width: 640px) {
     :root { --gutter: 16px; }

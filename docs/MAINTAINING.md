@@ -238,7 +238,16 @@ The journey page and its navigation links were removed from the live site at Ehs
 
 ## Why irrigation matters
 
-The section is three open-access figures, each with a one-line title, a short caption and a credit, and each linked to the figure in its paper: irrigated areas from Meier et al. (2018, *HESS*, Fig. 4, CC BY 3.0), the environmental-flow deficit of rivers and the food-production cost of protecting those flows from Jägermeyr et al. (2017, *Nature Communications*, Figs. 1 and 2, CC BY 4.0). They load from the publishers' sites. If an image fails, `whyFigError` in the page head tries the address in its `data-alt` attribute (Nature's image server for the two Jägermeyr figures) and then hides that figure, so a broken image is never shown. To stop depending on the publishers, save each image under `assets/why/` and point `src` at the local copy. The big-number tiles, the climate-effects list and "The measurement gap" section were removed; one line under the figures carries the measurement point into the studies.
+The section follows the motivation slides of Ehsan's seminar: three picture-led facts and then "the gap", the problem his studies take on. No one else's study is featured before his own work.
+
+- **Facts.** Each `figure.why-fact` has a picture, one bold sentence and a short source link (`a.src`). Today they cover food demand to 2050 (Tilman & Clark, 2015), rainfed vs. irrigated yield (World Bank) and irrigation's 70% share of freshwater withdrawals (Foley et al., 2011). To change a fact, edit its sentence and link together, so every number keeps its source.
+- **The gap.** The `.why-gap` card lists what is missing (few withdrawals are measured; models assume while farmers decide) and ends with one line (`.why-bridge`) that leads into the studies.
+- **Pictures** are saved in `assets/why/`. Ehsan does not want AI-generated pictures here; use real photos, satellite views or simple drawn illustrations.
+  - `food-demand.webp` and `water-stress.webp` come from the seminar slides. The water-stress map is from WRI Aqueduct (CC BY 4.0) and must keep its "Map: WRI Aqueduct" credit link.
+  - `irrigated-pivots.webp` is the Twin Platte, Nebraska satellite view from the seminar's case-study slide, cropped above its label. Its tag ("Green circles are irrigated", shortened on phones) explains the picture.
+  - `farmer-decisions.svg` is an original flat illustration in the water-cycle map's colours: a farmer at the field edge, a well whose meter shows "?", and a signpost reading When? and How much?. Edit the SVG directly.
+  - Replace a photo by saving a new file under the same name, about 800 px wide.
+- **Layout.** On wide screens the three facts sit in a row above the gap card; at 860 px and below each fact becomes a small thumbnail beside its text and the gap picture sits beside its heading. The styles are the `.why-*` rules in `assets/site.css`.
 
 ## Paper cards in the map pop-ups
 

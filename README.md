@@ -7,7 +7,7 @@ A living guide to research that uses satellites and Earth system models to find 
 ## What's on the page
 
 - **Interactive water-cycle landscape**: explore snow, rain, lakes, vegetation, soil moisture, drainage and rivers. Each part opens a short note with its papers shown as cards in each journal's own style, with the PDF where the publisher allows it. The farm opens the five irrigation papers in order, then ongoing work, and links to a separate human-driven processes view.
-- **Why irrigation matters**, in three open-access figures: where farms are irrigated, what irrigation costs rivers, and what protecting rivers would cost in food.
+- **Why irrigation matters**: three picture-led facts (food demand, irrigated vs. rainfed yield, water use and stress) and the gap the studies address: farm water use is rarely measured.
 - **My own irrigation studies**, told as six chapters ("Every answer revealed another question") across the where, when and how much of irrigation; hover a chapter for its study card.
 - **Essential reading**: an ordered list of the papers to start with if you are new to the field.
 - **The research landscape**: a table of studies from across the field, filtered by the question each answers and sorted by clicking a column heading. Each row shows which questions a study answers (where, when, how much), its study area and period, whether it has been peer reviewed, and links to any dataset or code published with it. Preprints are clearly flagged. Select a title for the full details.
