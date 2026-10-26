@@ -24,12 +24,12 @@
    right -10px) and the card's borders (3px top, 1px right). */
 .j-ico::before{content:"";position:absolute;inset:0;background:var(--paper);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;clip-path:inset(43px 9px 0 0)}
 .j-ico img{position:relative;display:block;width:100%;height:100%;filter:drop-shadow(0 2px 3px rgba(15,26,31,.16))}
-.j-ico-voyage::before{-webkit-mask-image:url(chapters/voyage-back.png);mask-image:url(chapters/voyage-back.png)}
-.j-ico-details::before{-webkit-mask-image:url(chapters/details-back.png);mask-image:url(chapters/details-back.png)}
-.j-ico-shift::before{-webkit-mask-image:url(chapters/shift-back.png);mask-image:url(chapters/shift-back.png)}
-.j-ico-patterns::before{-webkit-mask-image:url(chapters/patterns-back.png);mask-image:url(chapters/patterns-back.png)}
-.j-ico-map::before{-webkit-mask-image:url(chapters/map-back.png);mask-image:url(chapters/map-back.png)}
-.j-ico-circle::before{-webkit-mask-image:url(chapters/circle-back.png);mask-image:url(chapters/circle-back.png)}
+.j-ico-voyage::before{-webkit-mask-image:url(chapters/voyage-back.png?v=2026-10-26f);mask-image:url(chapters/voyage-back.png?v=2026-10-26f)}
+.j-ico-details::before{-webkit-mask-image:url(chapters/details-back.png?v=2026-10-26f);mask-image:url(chapters/details-back.png?v=2026-10-26f)}
+.j-ico-shift::before{-webkit-mask-image:url(chapters/shift-back.png?v=2026-10-26f);mask-image:url(chapters/shift-back.png?v=2026-10-26f)}
+.j-ico-patterns::before{-webkit-mask-image:url(chapters/patterns-back.png?v=2026-10-26f);mask-image:url(chapters/patterns-back.png?v=2026-10-26f)}
+.j-ico-map::before{-webkit-mask-image:url(chapters/map-back.png?v=2026-10-26f);mask-image:url(chapters/map-back.png?v=2026-10-26f)}
+.j-ico-circle::before{-webkit-mask-image:url(chapters/circle-back.png?v=2026-10-26f);mask-image:url(chapters/circle-back.png?v=2026-10-26f)}
 /* The full-circle and paradigm-shift icons are mostly dark line art; in dark mode a thin light halo keeps their dashes visible. */
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.j-ico-circle,.j-ico-shift) img{filter:drop-shadow(0 0 1px #DDE6E3) drop-shadow(0 0 .6px #DDE6E3)}}
 :root[data-theme="dark"] :is(.j-ico-circle,.j-ico-shift) img{filter:drop-shadow(0 0 1px #DDE6E3) drop-shadow(0 0 .6px #DDE6E3)}

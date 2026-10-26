@@ -12,11 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-26e">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26e">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26e">
-<script src="assets/journals.js?v=2026-10-26e"></script>
-<script src="assets/water-cycle.js?v=2026-10-26e" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=2026-10-26f">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26f">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26f">
+<script src="assets/journals.js?v=2026-10-26f"></script>
+<script src="assets/water-cycle.js?v=2026-10-26f" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -526,6 +526,8 @@ const CHAPTERS = [
     text: "The maps, the timing and the assimilation come together in NASA's Land Information System, with NISAR soil moisture, to estimate how much water farms use.",
     chips: ["Where", "When", "How much", "NASA LIS", "NISAR"] }
 ];
+// Bump ICON_V (and the ?v= on the -back.png masks in assets/study-grid.css) whenever a chapter icon changes, so browsers fetch the new picture.
+const ICON_V = "2026-10-26f";
 const QLABEL = { where: "Where", when: "When", how_much: "How much" };
 const LANE = { where: 1, when: 2, how_much: 3 };
 const studyById = id => STUDIES.find(s => s.id === id);
@@ -551,7 +553,7 @@ function renderJourney() {
   box.innerHTML = ["where", "when", "how_much"].map(q => `<span class="j-lane g-${q}" style="grid-row:${LANE[q]}" aria-hidden="true">${QLABEL[q]}?</span>`).join("") +
     `<ol class="j-steps">${CHAPTERS.map((c, i) => `<li class="j-step g-${c.q}${c.next ? " is-next" : ""}" style="grid-column:${i + 2};grid-row:${LANE[c.q]}">
       <button type="button" class="j-node" aria-expanded="false" aria-controls="j-card">
-        <span class="j-top"><span class="j-ch" aria-hidden="true">${i + 1}</span><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp" alt="" width="80" height="80" decoding="async"></span></span>
+        <span class="j-top"><span class="j-ch" aria-hidden="true">${i + 1}</span><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="80" height="80" decoding="async"></span></span>
         <span class="j-title"><span class="sr-only">Chapter ${i + 1}: </span>${esc(c.title)}</span>
         <span class="j-what">${esc(c.what)}</span>
         <span class="j-why">${esc(c.left)}</span>
