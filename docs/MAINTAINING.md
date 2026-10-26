@@ -254,6 +254,18 @@ The section follows the motivation slides of Ehsan's seminar: three picture-led 
   - Replace a photo by saving a new file under the same name, about 800 px wide.
 - **Layout.** On wide screens the three facts sit in a row above the gap card; at 860 px and below each fact becomes a small thumbnail beside its text and the gap picture sits beside its heading. The styles are the `.why-*` rules in `assets/site.css`.
 
+## Hover pop-ups on the maps
+
+Both maps (`index.html` and `human.html`) show a part's research in a panel when the mouse rests on it, set by `data-popup="hover"` on `#explore`.
+- **Opening:** after a short pause (about a third of a second; shorter when a panel is already open), so moving across the map doesn't flash panels.
+- **Content:** the same as the dialog (title, intro, paper cards and other work), built by `fillTopic()` in `assets/water-cycle.js`.
+- **Placement:** the panel sits over the side of the map that covers the hovered part least, so the part and its animation stay in view. It is 300–400 px wide, fills the visible height of the map and scrolls inside.
+- **Description line:** the one-line description under the part's label is hidden while the panel is up.
+- **Pinning:** moving into the panel keeps it open, and a click on the part pins it. Escape, the × button or a click elsewhere closes it, and the ⤢ button opens the usual dialog.
+- **Unchanged:** touch screens, screens 750 px wide or less and the keyboard (Enter on a part) keep the click-to-open dialog.
+
+**Switching back.** Set `data-popup="click"` (or remove the attribute) on `#explore` in both pages to return to the click-to-open dialog. To compare without editing, add `?popup=click` or `?popup=hover` to the page address.
+
 ## Paper cards in the map pop-ups
 
 When a map part opens, each of its projects whose link is a paper listed in `PAPERS` in `assets/journals.js` shows as a paper card under **Papers**. Other projects (ongoing, planned, unlisted conference work) follow under **Other work** in the plain style. A card has:
