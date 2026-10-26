@@ -24,6 +24,16 @@ const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
 // On phones it sits under the map. Clicking it opens the part.
 const callout=document.querySelector('#callout');
 const explorerBox=document.querySelector('#explore');
+// How a part's research is shown, from data-popup on #explore (?popup=summary|hover|click in the address overrides it, to compare):
+// summary: hovering plays the part's animation first; after SUMMARY_DELAY a small card beside it gives the one-line description,
+//   a chip per paper (journal and year, in the journal's colour) and counts of other work; a click opens the dialog.
+// hover: a panel with the full research opens over the side of the map (see Hover pop-ups below).
+// click: the plain one-line description at once, and a click opens the dialog.
+const popupMode=new URLSearchParams(location.search).get('popup')||explorerBox.dataset.popup||'click';
+const summaryMode=popupMode==='summary',SUMMARY_DELAY=900;
+let summaryTimer=0;
+const hintPapers=document.createElement('div');hintPapers.className='hint-papers';hintPapers.id='hint-papers';
+callout.insertBefore(hintPapers,document.querySelector('#hint-link'));
 function exploreCue(t,touch){return (touch?'Tap again to explore':'Click to explore')+(t.href?' ↗':' →');}
 function setHint(title,copy,link){document.querySelector('#hint-title').textContent=title;document.querySelector('#hint-copy').textContent=copy;document.querySelector('#hint-link').textContent=link;callout.classList.toggle('show',!!title);}
 function mapPoint(x,y){const pt=landscape.createSVGPoint();pt.x=x;pt.y=y;return pt.matrixTransform(landscape.getScreenCTM());}
@@ -37,9 +47,20 @@ function placeCallout(key){
  let x,y,end;
  if(spec.length===3){end=spec[2]==='end';callout.dataset.align=end?'end':'start';const q=mapPoint(+spec[0],+spec[1]);x=q.x-er.left-(end?callout.offsetWidth:0);y=q.y-er.top;}
  else{const r=(label||item).getBoundingClientRect();
-  if(item.dataset.descRight){const limit=mapPoint(+item.dataset.descRight,0).x;callout.style.maxWidth=Math.max(120,Math.min(190,limit-r.left-4))+'px';}
-  const h=callout.offsetHeight;x=r.left-er.left;y=spec[0]==='above'?r.top-er.top-gap-h:r.bottom-er.top+gap;}
- x=Math.max(pad,Math.min(W-callout.offsetWidth-pad,x));y=Math.max(pad,Math.min(H-callout.offsetHeight-pad,y));
+  if(item.dataset.descRight){const limit=mapPoint(+item.dataset.descRight,0).x,card=callout.classList.contains('card');callout.style.maxWidth=Math.max(card?190:120,Math.min(card?250:190,limit-r.left-4))+'px';}
+  const h=callout.offsetHeight;x=r.left-er.left;y=spec[0]==='above'?r.top-er.top-gap-h:r.bottom-er.top+gap;
+  // The summary card is bigger than the plain description, so it tries eight spots around the label (below, above, left
+  // and right) and takes the one that stays inside the map, covers no map label and covers the part's drawing least.
+  // It may hang up to 64px below the map, into the page's margin under it.
+  if(callout.classList.contains('card')){const below=64,w=callout.offsetWidth,g=10,L=r.left-er.left,T=r.top-er.top,R=r.right-er.left,B=r.bottom-er.top;
+   const M=(L+R-w)/2,cands=[[L,B+gap],[L,T-gap-h],[R-w,B+gap],[R-w,T-gap-h],[M,B+gap],[M,T-gap-h],[L-g-w,T],[L-g-w,B-h],[R+g,T],[R+g,B-h]];
+   const box=q=>[q.left-er.left,q.top-er.top,q.right-er.left,q.bottom-er.top];
+   const obs=[...landscape.querySelectorAll('.maplabel,.number,.process-label,.irrigation-label')].map(e=>e.getBoundingClientRect()).filter(q=>q.width).map(box);
+   const part=box(item.getBoundingClientRect()),ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
+   let best=null;cands.forEach(([cx,cy],i)=>{const c=[cx,cy,cx+w,cy+h],out=Math.max(0,pad-cx)+Math.max(0,pad-cy)+Math.max(0,cx+w-W+pad)+Math.max(0,cy+h-H-below);
+    const score=out*1000+obs.reduce((t,o)=>t+ov(c,o),0)*20+ov(c,part)*.05+i;if(!best||score<best[0])best=[score,cx,cy];});
+   x=best[1];y=best[2];}}
+ x=Math.max(pad,Math.min(W-callout.offsetWidth-pad,x));y=Math.max(pad,Math.min(H-callout.offsetHeight+(callout.classList.contains('card')?64:-pad),y));
  callout.style.left=x+'px';callout.style.top=y+'px';
 }
 let hideTimer=0;
@@ -57,7 +78,25 @@ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 let activeTopic=null,touchArmed=null,returnFocus=null,motionEnabled=!reduced.matches;
 function updateMotion(){document.body.classList.toggle('motion-off',!motionEnabled);}
 reduced.addEventListener('change',()=>{motionEnabled=!reduced.matches;updateMotion();});updateMotion();
+// The summary card's papers and counts. Papers are projects listed in assets/journals.js; the rest is counted as ongoing,
+// planned or earlier work from its status.
+function partProjects(t){const resolve=item=>{if(!item.ref)return item;const [k,title]=item.ref.split(':');return ((topics[k]||{}).projects||[]).find(x=>x.title===title)||null;};
+ return (t.groups?t.groups.flatMap(g=>g.projects||(topics[g.from]||{}).projects||[]):t.projects||[]).map(resolve).filter(Boolean);}
+function fillSummary(t){hintPapers.replaceChildren();const P=window.Papers;if(!P)return;
+ const papers=[],seen=new Set(),n={ongoing:0,planned:0,earlier:0};
+ partProjects(t).forEach(item=>{const paper=item.link?P.paperFor(item.link):null;
+  if(paper){const id=paper.doi||paper.href;if(!seen.has(id)){seen.add(id);papers.push(paper);}return;}
+  const st=String(item.status||'');n[/planned|not started/i.test(st)?'planned':/earlier|contribution/i.test(st)?'earlier':'ongoing']++;});
+ papers.sort((a,b)=>a.year-b.year);
+ if(papers.length){const row=document.createElement('p');row.className='hp-chips';
+  papers.forEach(p=>{const j=P.JOURNALS[p.journal]||{acr:'Paper',color:'#3f4c63'};const c=document.createElement('span');c.className='hp-chip';c.style.setProperty('--jc',j.color);c.textContent=j.acr+' '+p.year;c.title=p.title;row.append(c);});
+  hintPapers.append(row);}
+ const parts=[papers.length?papers.length+(papers.length>1?' papers':' paper'):'',n.ongoing?n.ongoing+' ongoing':'',n.planned?n.planned+' planned':'',n.earlier?n.earlier+' earlier':''].filter(Boolean);
+ if(parts.length){const line=document.createElement('p');line.className='hp-count';line.textContent=parts.join(' · ');hintPapers.append(line);}
+}
 function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelHide();
+ const card=summaryMode&&!tour;callout.classList.toggle('card',card);if(card)fillSummary(t);else hintPapers.replaceChildren();
+ if(!summaryTimer)callout.classList.remove('wait');
  setHint(t.title,t.short,tour?'':exploreCue(t,false));
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));
  setLinked(key);placeCallout(key);
@@ -65,7 +104,7 @@ function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelH
 // Elements whose data-link names the highlighted part run with it, wherever they sit on the map.
 function linkedTo(el,key){const parts=el.dataset.link.split(' ');return !!key&&(tour?parts[0]===key:parts.includes(key));}
 function setLinked(key){document.querySelectorAll('[data-link]').forEach(el=>el.classList.toggle('link-run',linkedTo(el,key)));}
-function clearHighlight(){activeTopic=null;cancelHide();setHint('','','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
+function clearHighlight(){activeTopic=null;cancelHide();clearTimeout(summaryTimer);summaryTimer=0;callout.classList.remove('wait');hintPapers.replaceChildren();setHint('','','');document.querySelectorAll('.scene-item').forEach(el=>el.classList.remove('active'));setLinked(null);}
 // The research shown for a part: eyebrow, title, intro, paper cards and other work. Used by the dialog and by the hover panel.
 function fillTopic(key,content,titleId){const t=topics[key];
  const p=document.createElement('p');p.className='eyebrow';p.textContent=(isHuman?'Agricultural water use':'Water-cycle research')+' · '+t.n;
@@ -95,13 +134,16 @@ function openTopic(key){const t=topics[key];if(!t)return;if(t.href){location.hre
  history.replaceState(null,'','#research/'+key);
 }
 function closeTopic(){dialog.close();}
+// A mouse arriving on a part: its animation starts at once; in summary mode the card follows after SUMMARY_DELAY.
+function hoverOn(key){const was=activeTopic;
+ if(summaryMode&&was!==key){clearTimeout(summaryTimer);callout.classList.add('wait');summaryTimer=setTimeout(()=>{summaryTimer=0;callout.classList.remove('wait');if(activeTopic)placeCallout(activeTopic);},SUMMARY_DELAY);}
+ highlight(key);queuePeek(key);}
 // Hover pop-ups. With data-popup="hover" on the explorer (?popup=click or ?popup=hover in the address overrides it, to compare),
 // a mouse resting on a part shows its research in a panel over the map, in place of the one-line description. The panel sits on
 // the side of the map that covers the part least, so the part and its animation stay in view, and it fills the visible height of
 // the map, scrolling inside. Moving into the panel keeps it open, a click on the part pins it, and Escape, the close button or a
 // click elsewhere closes it; the expand button opens the usual dialog. Touch screens, small screens and the keyboard keep the
 // click-to-open dialog.
-const popupMode=new URLSearchParams(location.search).get('popup')||explorerBox.dataset.popup||'click';
 const hoverPopups=popupMode==='hover';
 const peek=document.createElement('aside');peek.id='peek';peek.className='peek';peek.setAttribute('aria-label','Research details');
 peek.innerHTML='<div class="peek-tools"><button type="button" class="peek-expand" aria-label="Open in a larger window" title="Open in a larger window">⤢</button><button type="button" class="peek-close" aria-label="Close" title="Close">×</button></div><div class="peek-body"></div>';
@@ -135,8 +177,8 @@ document.addEventListener('click',e=>{if(!peekPinned||!(e.target instanceof Elem
 addEventListener('resize',()=>{if(peekKey)placePeek(peekKey);});
 addEventListener('scroll',()=>{if(peekKey)placePeek(peekKey);},{passive:true});
 document.querySelectorAll('[data-topic]').forEach(el=>{
- el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}cancelHide();highlight(el.dataset.topic);queuePeek(el.dataset.topic);});
- el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')&&deliberateHover()){takeOver();highlight(el.dataset.topic);queuePeek(el.dataset.topic);}});
+ el.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;if(tour){if(!deliberateHover())return;takeOver();}cancelHide();hoverOn(el.dataset.topic);});
+ el.addEventListener('pointermove',e=>{if(tour&&(e.pointerType==='mouse'||e.pointerType==='pen')&&deliberateHover()){takeOver();hoverOn(el.dataset.topic);}});
  el.addEventListener('pointerleave',e=>{if(!tour&&(e.pointerType==='mouse'||e.pointerType==='pen'))scheduleHide();});
  el.addEventListener('focus',()=>{takeOver();highlight(el.dataset.topic);});el.addEventListener('blur',()=>{if(!dialog.open&&!calloutPress&&!peekKey)clearHighlight();});
  let pointerType='';el.addEventListener('pointerdown',e=>{pointerType=e.pointerType;});

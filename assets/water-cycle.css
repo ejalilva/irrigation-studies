@@ -276,3 +276,18 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
 #peek .dialog-note {margin-bottom:0;}
 /* While a panel is open or about to open, the one-line description under the part's label stays hidden. */
 .explorer.peeking .hint-panel {opacity:0;visibility:hidden;}
+
+/* Summary card (data-popup="summary"): the description under a part's label becomes a small card a moment after the mouse
+   arrives, so the part's animation is seen first. It holds the one-line description, a chip per paper (journal and year in the
+   journal's colour) and counts of other work. While waiting it stays hidden (.wait). */
+.hint-panel.wait {opacity:0;visibility:hidden;transition:none;}
+.hint-panel.card {max-width:250px;padding:10px 12px 9px;background:var(--paper);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(15,26,31,.14);text-shadow:none;}
+.hint-panel.card.show {transition:opacity .25s;}
+.hint-papers:empty {display:none;}
+.hp-chips {display:flex;flex-wrap:wrap;gap:4px;margin:7px 0 0;}
+.hp-chip {display:inline-block;padding:1px 6px;border-radius:3px;background:var(--jc);color:#fff;font:600 .66rem/1.45 var(--sans);letter-spacing:.02em;white-space:nowrap;}
+.hp-count {margin:6px 0 0;font-size:.74rem;line-height:1.35;color:var(--ink-2);}
+.hint-panel.card .hint-link {margin-top:6px;}
+@media(max-width:750px) {
+ .hint-panel.card {max-width:none;box-shadow:none;}
+}
