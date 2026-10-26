@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-25f">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25f">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25f">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-25g">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25g">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25g">
 <script>function whyFigError(img){if(img.dataset.alt){img.src=img.dataset.alt;img.dataset.alt="";}else{img.closest("figure").hidden=true;}}</script>
-<script src="assets/journals.js?v=2026-10-25f"></script>
-<script src="assets/water-cycle.js?v=2026-10-25f" defer></script>
+<script src="assets/journals.js?v=2026-10-25g"></script>
+<script src="assets/water-cycle.js?v=2026-10-25g" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -97,27 +97,21 @@
     <section id="studies" aria-labelledby="studies-h">
       <div class="studies-head">
         <div>
-          <h2 id="studies-h">My irrigation studies</h2>
-          <p class="intro">I set out to estimate rainfall from satellite soil moisture and found irrigation instead. Each study since solves a problem the one before it exposed, so the work runs backward through the questions: how much, then when, then where.</p>
+          <p class="cycle-eyebrow">My irrigation studies</p>
+          <h2 id="studies-h">Every answer revealed another question</h2>
+          <p class="intro">It began with a signal that rainfall could not explain. Each study since answered a question the last one raised, so the work ran backward, from how much to when to where, and now comes full circle to how much with all three.</p>
         </div>
       </div>
-      <!-- The storyline. Each step sits in the lane of the question it answers (grid-column is the step, grid-row the lane:
-           1 Where, 2 When, 3 How much); its last line is the problem that led to the next step. Arrows are drawn by drawJourney(). -->
-      <div class="journey" id="journey">
-        <span class="j-lane g-where" style="grid-row:1">Where?</span>
-        <span class="j-lane g-when" style="grid-row:2">When?</span>
-        <span class="j-lane g-how_much" style="grid-row:3">How much?</span>
-        <ol class="j-steps">
-          <li class="j-step g-how_much" style="grid-column:2;grid-row:3"><a class="j-node" href="#study-amsr2-2019"><span class="j-year">2019 <span class="j-q">How much</span></span><strong>Aimed at rainfall, found irrigation</strong><span class="j-why">But small, scattered fields vanish in a 25 km pixel.</span></a></li>
-          <li class="j-step g-where" style="grid-column:3;grid-row:1"><a class="j-node" href="#study-smap-sentinel-2021"><span class="j-year">2021 <span class="j-q">Where</span></span><strong>Can 1 km soil moisture see irrigation?</strong><span class="j-why">Yes, but it passes over only every 6–12 days.</span></a></li>
-          <li class="j-step g-how_much" style="grid-column:4;grid-row:3"><a class="j-node" href="#study-assimilation-2023"><span class="j-year">2023 <span class="j-q">How much</span></span><strong>Fill the gaps with a model</strong><span class="j-why">Far more accurate when irrigation timing is known.</span></a></li>
-          <li class="j-step g-when" style="grid-column:5;grid-row:2"><a class="j-node" href="#study-agrotrack-2026"><span class="j-year">2026 <span class="j-q">When</span></span><strong>Read irrigation timing from heat</strong><span class="j-why">Next, run the model only where fields are irrigated.</span></a></li>
-          <li class="j-step g-where" style="grid-column:6;grid-row:1"><a class="j-node" href="#research/mapping"><span class="j-year">Now <span class="j-q">Where</span></span><strong>Map irrigated land with foundation models</strong><span class="j-why">In progress: six models compared, with few labels.</span></a></li>
-        </ol>
-        <svg class="j-links" id="j-links" aria-hidden="true"></svg>
-      </div>
-      <ol class="study-list" id="study-list"></ol>
-      <noscript><p>See the full list on the <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications page</a>.</p></noscript>
+      <!-- The storyline in six chapters, drawn by renderJourney() from CHAPTERS in the script below. -->
+      <div class="journey" id="journey"></div>
+      <noscript><ol>
+        <li>2019, The Columbus voyage: aimed at rainfall, found irrigation (Remote Sensing of Environment).</li>
+        <li>2021, The devil is in the details: 1 km soil moisture sees irrigation (IEEE JSTARS).</li>
+        <li>2023, Reinventing the wheel: assimilation fills the gaps between passes (Water Resources Research).</li>
+        <li>2026, Patterns in the plot: irrigation timing from thermal data (Remote Sensing of Environment).</li>
+        <li>Now, Rewriting the map: irrigated land mapped with foundation models.</li>
+        <li>Next, Coming full circle: where, when and how much together.</li>
+      </ol></noscript>
     </section>
 
     <section id="reading" aria-labelledby="reading-h" hidden>
@@ -485,53 +479,156 @@ function drawPanels() {
   });
 }
 
+/* ---------------------------------------------------------------------
+   The storyline. Each chapter sits in the lane of the question it answers
+   (q: "where", "when" or "how_much") and ends with what it left open, which
+   led to the next. Chapter titles follow the seminar "Simulating the largest
+   human intervention in the water cycle". A chapter with study set shows that
+   study's figure and journal card; feeds:true joins the dashed bracket into
+   the last chapter. Icons are drawn in ICONS (24 x 24, stroked).
+   --------------------------------------------------------------------- */
+const CHAPTERS = [
+  { year: "2019", q: "how_much", icon: "voyage", title: "The Columbus voyage",
+    sub: "Aiming for rainfall, we ended up with irrigation.", what: "Set out to estimate rainfall, found irrigation.",
+    left: "But small, scattered fields vanish in a 25 km pixel.", study: "amsr2-2019",
+    finding: "Irrigation estimated from AMSR2 soil moisture south of Lake Urmia; after bias correction, R = 0.86 against irrigation records." },
+  { year: "2021", q: "where", icon: "details", title: "The devil is in the details",
+    sub: "Closing the gap with higher-resolution soil moisture.", what: "A closer look with 1 km soil moisture.",
+    left: "It sees irrigation, but passes over only every 6–12 days.", study: "smap-sentinel-2021",
+    finding: "The 1 km product carries irrigation in its mean and variability; dynamic vegetation water content strengthens the signal.",
+    also: { study: "sentinel-2021", text: "Also in 2021: irrigated fields mapped from 10 m Sentinel-1/2 soil moisture" } },
+  { year: "2023", q: "how_much", icon: "wheel", title: "Reinventing the wheel", feeds: true,
+    sub: "An irrigation model with the farmer's decision at its center.", what: "Assimilation fills the gaps between passes.",
+    left: "Far more accurate when irrigation timing is known.", study: "assimilation-2023",
+    finding: "In synthetic tests, knowing irrigation timing raised R² from 0.36 to 0.97." },
+  { year: "2026", q: "when", icon: "patterns", title: "Patterns in the plot", feeds: true,
+    sub: "Tracing farmers' irrigation decisions from space.", what: "AgroTrack reads irrigation timing from heat.",
+    left: "Next, run the model only where fields are irrigated.", study: "agrotrack-2026",
+    finding: "Season length within 18% (Nebraska) and 15% (Mahabad); irrigation events detected with F1 of 0.59–0.74." },
+  { year: "Now", q: "where", icon: "map", title: "Rewriting the map",
+    sub: "Completing the last piece: mapping irrigated land as it changes.", what: "Foundation models map irrigated land with few labels.",
+    left: "Toward yearly maps of irrigated land.", topic: "mapping", more: "More in Where is irrigation?",
+    text: "Fine-tuning NASA's Prithvi-EO-2.0 to map irrigated land with few labels (AGU 2025), and now comparing six geospatial foundation models.",
+    chips: ["Prithvi-EO-2.0", "TerraMind", "Clay", "AlphaEarth", "Tessera", "OlmoEarth"] },
+  { year: "Next", q: "how_much", icon: "circle", title: "Coming full circle", next: true,
+    sub: "Back to how much, with all three.", what: "Where, when and how much, together.",
+    left: "In NASA's Land Information System, with NISAR.", topic: "amount", more: "More in How much water?",
+    text: "The maps, the timing and the assimilation come together in NASA's Land Information System, with NISAR soil moisture, to estimate how much water farms use.",
+    chips: ["Where", "When", "How much", "NASA LIS", "NISAR"] }
+];
 const QLABEL = { where: "Where", when: "When", how_much: "How much" };
-function studyHTML(s, idx) {
-  const sc = SCALES[s.scale] || SCALES.field;
-  const authors = esc(s.authors).replace(esc(ME), `<strong>${esc(ME)}</strong>`);
-  const tags = s.methods.map(m => `<li class="tag">${esc(METHODS[m] || m)}</li>`).join("");
-  const findings = (s.findings || []).map(f => `<li>${esc(f)}</li>`).join("");
-  const images = s.images || (s.image?.src ? [s.image] : []);
-  const fig = images.length
-    ? `<figure class="study-fig"><div class="study-image-set${images.length > 1 ? ' study-image-pair' : ''}">${images.map((image, imageIdx) => `<a class="study-figure-open" href="${esc(image.src)}" data-study-figure="${idx}" data-study-image="${imageIdx}" aria-label="Enlarge figure: ${esc(image.alt)}"><img src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" decoding="async"><span class="figure-enlarge">Enlarge figure ↗</span></a>`).join('')}</div>${images.some(image => image.credit) ? `<figcaption>${images.filter(image => image.credit).map(image => esc(image.credit)).join(' ')}</figcaption>` : ''}</figure>`
-    : `<figure class="study-fig figure-pending"><div class="missing-figure"><span>Figure pending</span><p>${esc(s.imageNote || 'Study figure to be added.')}</p></div><figcaption>The paper and study details are available below.</figcaption></figure>`;
-  const j = window.Papers && window.Papers.JOURNALS[s.journal];
-  const pdf = window.Papers && window.Papers.paperFor(s.doi)?.pdf;
-  return `<li class="study" id="study-${esc(s.id || "")}" data-methods="${s.methods.join(" ")}">
-    ${fig}
-    <div class="study-body">
-      <p class="study-meta"><span class="jchip" style="--jc:${j ? j.color : "#3f4c63"}" title="${esc(s.journal)}">${esc(j ? j.acr : s.journal)}</span><span>${s.year}</span>${s.q ? `<span class="study-q g-${s.q}">${QLABEL[s.q]}</span>` : `<span class="study-scale">${esc(s.scaleNote || sc.label)}</span>`}</p>
-      <h3 class="study-title"><a href="${esc(linkFor(s))}">${esc(s.title)}</a></h3>
-      <p class="summary">${esc(s.summary)}</p>
-      <details class="study-details"><summary>Findings &amp; authors</summary>${findings ? `<ul class="findings">${findings}</ul>` : ""}<p class="authors">${authors}</p><p class="citation-details"><em>${esc(s.journal)}</em>, ${esc(s.details)} (${s.year}).</p><ul class="tags" aria-label="Methods">${tags}</ul><div class="study-foot"><span><a href="${esc(linkFor(s))}">Read the paper ↗</a>${pdf ? ` · <a href="${esc(pdf)}" target="_blank" rel="noopener">PDF</a>` : ""}</span><button type="button" class="linkbtn" data-cite="${idx}">Copy citation</button></div></details>
-    </div>
-  </li>`;
+const LANE = { where: 1, when: 2, how_much: 3 };
+const ICONS = {
+  voyage: '<path d="M12 3v12M12 4l6 9h-6M12 6l-5 7h5"/><path d="M3.5 16h17l-2.6 3.5H6.1z"/><path d="M2.5 21.5c1.5 0 1.5-.8 3-.8s1.5.8 3 .8 1.5-.8 3-.8 1.5.8 3 .8 1.5-.8 3-.8 1.5.8 3 .8"/>',
+  details: '<path d="M3 3h3v3H3zM6 6h3v3H6zM3 9h3v3H3zM9 3h3v3H9z"/><circle cx="14.5" cy="13.5" r="5"/><path d="M18 17l3.5 3.5"/><path d="M12.6 12.2h1.4v1.4h1.4v1.4"/>',
+  wheel: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2"/><path d="M12 3.5V10M12 14v6.5M3.5 12H10M14 12h6.5M6 6l4.6 4.6M13.4 13.4L18 18M18 6l-4.6 4.6M10.6 13.4L6 18"/>',
+  patterns: '<rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M6 4v16M8 4v16M11.5 4v16M13 4v16M16.5 4v16M18.5 4v16" stroke-width="1.2"/>',
+  map: '<path d="M12 3.5a8.5 8.5 0 0 1 0 17"/><path d="M12 3.5H9v1.5H7V6.5H5.5v2H4.5v7h1v2H7v1.5h2v1.5h3"/><path d="M12 3.5c2.2 2.3 3.2 5.2 3.2 8.5S14.2 18.2 12 20.5M12 12h8.5"/>',
+  circle: '<path d="M19.5 12A7.5 7.5 0 1 1 17.3 6.7"/><path d="M19.5 3.5v4h-4"/><circle cx="12" cy="12" r="2.2"/>'
+};
+const studyById = id => STUDIES.find(s => s.id === id);
+
+function chapterCard(c, i) {
+  const head = `<div class="jc-head"><span class="j-ch">${i + 1}</span><div><p class="jc-kick">Chapter ${i + 1} · ${c.year} · ${QLABEL[c.q]}</p><p class="jc-title">${esc(c.title)}</p><p class="jc-sub">${esc(c.sub)}</p></div></div>`;
+  const s = c.study && studyById(c.study), paper = s && window.Papers && window.Papers.paperFor(s.doi);
+  if (s) {
+    const img = (s.images || [s.image]).filter(Boolean)[0];
+    const fig = img ? `<a class="jc-fig" href="${esc(img.src)}" data-figure="${esc(s.id)}" aria-label="Enlarge figure: ${esc(img.alt)}"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></a>` : "";
+    const also = c.also && studyById(c.also.study);
+    return head + fig + (paper ? window.Papers.paperCard(paper, c.finding) : "") +
+      (also ? `<p class="jc-also">${esc(c.also.text)} (<a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em></a>).</p>` : "") +
+      `<p class="jc-left"><b>Left open:</b> ${esc(c.left)}</p>`;
+  }
+  return head + `<div class="jc-body"><p>${esc(c.text)}</p><ul class="jc-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul><a class="jc-more" href="#research/${c.topic}">${esc(c.more)} →</a></div>`;
 }
 
-const sorted = STUDIES.map((s, i) => ({ s, i })).sort((a, b) => a.s.year - b.s.year || a.i - b.i).map(o => o.s);
+function renderJourney() {
+  const box = document.getElementById("journey");
+  if (!box) return;
+  box.innerHTML = ["where", "when", "how_much"].map(q => `<span class="j-lane g-${q}" style="grid-row:${LANE[q]}" aria-hidden="true">${QLABEL[q]}?</span>`).join("") +
+    `<ol class="j-steps">${CHAPTERS.map((c, i) => `<li class="j-step g-${c.q}${c.next ? " is-next" : ""}" style="grid-column:${i + 2};grid-row:${LANE[c.q]}">
+      <button type="button" class="j-node" aria-expanded="false" aria-controls="j-card">
+        <span class="j-top"><span class="j-ch" aria-hidden="true">${i + 1}</span><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><svg class="j-ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[c.icon]}</svg></span>
+        <span class="j-title"><span class="sr-only">Chapter ${i + 1}: </span>${esc(c.title)}</span>
+        <span class="j-what">${esc(c.what)}</span>
+        <span class="j-why">${esc(c.left)}</span>
+      </button></li>`).join("")}</ol>
+    <svg class="j-links" aria-hidden="true"></svg><span class="j-together" aria-hidden="true">combined</span>
+    <div class="j-card" id="j-card" role="region" aria-label="Study details"></div>`;
+  const svg = box.querySelector(".j-links"), tag = box.querySelector(".j-together"), card = box.querySelector(".j-card");
+  const nodes = [...box.querySelectorAll(".j-node")], stacked = () => getComputedStyle(svg).display === "none";
 
-function renderStudies() {
-  document.getElementById("study-list").innerHTML = sorted.map(studyHTML).join("");
-  document.querySelectorAll(".study-fig img").forEach(img => {
-    const markUnavailable = () => {
-      const fig = img.closest("figure");
-      fig.classList.add("figure-pending");
-      fig.innerHTML = `<div class="missing-figure"><span>Figure unavailable</span><p>This study’s figure could not be loaded.</p></div><figcaption>The paper and study details are available below.</figcaption>`;
-    };
-    img.addEventListener("error", markUnavailable, { once: true });
-    if (img.complete && img.naturalWidth === 0) markUnavailable();
+  // Arrows from each chapter to the next, and the bracket that feeds the last one.
+  const draw = () => {
+    const b = box.getBoundingClientRect(), r = nodes.map(n => n.getBoundingClientRect());
+    svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
+    if (stacked()) return;
+    let d = "";
+    for (let i = 0; i < r.length - 1; i++) {
+      const a = r[i], c = r[i + 1], x1 = a.right - b.left, y1 = a.top + a.height / 2 - b.top, x2 = c.left - b.left - 3, y2 = c.top + c.height / 2 - b.top;
+      const xm = (x1 + x2) / 2, rr = Math.min(8, Math.abs(y2 - y1) / 2), sg = Math.sign(y2 - y1);
+      d += `<path d="${sg ? `M${x1} ${y1}H${xm - rr}Q${xm} ${y1} ${xm} ${y1 + sg * rr}V${y2 - sg * rr}Q${xm} ${y2} ${xm + rr} ${y2}H${x2}` : `M${x1} ${y1}H${x2}`}" marker-end="url(#j-arrow)"/>`;
+    }
+    const last = r[r.length - 1], feeds = CHAPTERS.map((c, i) => c.feeds ? r[i] : null).filter(Boolean);
+    let f = "";
+    if (feeds.length) {
+      const yb = Math.max(...r.map(n => n.bottom)) - b.top + 16, xl = last.left + last.width / 2 - b.left;
+      feeds.forEach(n => { f += `M${n.left + n.width / 2 - b.left} ${n.bottom - b.top}V${yb}`; });
+      f += `M${feeds[0].left + feeds[0].width / 2 - b.left} ${yb}H${xl}V${last.bottom - b.top + 4}`;
+      tag.style.left = ((feeds[0].left + last.left) / 2 + feeds[0].width / 2 - b.left) + "px"; tag.style.top = yb + "px";
+    }
+    svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" fill="currentColor"/></marker></defs>${d}` +
+      (f ? `<path class="j-feed" d="${f}" marker-end="url(#j-arrow)"/>` : "");
+  };
+  draw();
+  if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
+  document.fonts?.ready.then(draw);
+
+  // The study card: hover or focus shows it beside the chapter; a click or tap keeps it open (under the chapter when stacked).
+  let current = -1, pinned = false, hideTimer = 0;
+  const show = (i, pin) => {
+    clearTimeout(hideTimer);
+    const node = nodes[i];
+    if (current !== i) { card.innerHTML = chapterCard(CHAPTERS[i], i); current = i; }
+    nodes.forEach(n => n.setAttribute("aria-expanded", String(n === node)));
+    if (stacked()) { card.classList.add("inline"); node.parentElement.appendChild(card); card.style.left = card.style.top = ""; }
+    else {
+      card.classList.remove("inline"); if (card.parentElement !== box) box.appendChild(card);
+      const b = box.getBoundingClientRect(), r = node.getBoundingClientRect(), w = card.offsetWidth || 360, h = card.offsetHeight || 520;
+      let x = r.right - b.left + 14; if (r.right + 14 + w > innerWidth - 12) x = r.left - b.left - 14 - w;
+      // Beside the chapter, kept inside the window where it fits.
+      let y = r.top - b.top - 12;
+      if (r.top - 12 + h > innerHeight - 12) y = Math.max(innerHeight - 12 - h, 12) - b.top;
+      card.style.left = x + "px"; card.style.top = y + "px";
+    }
+    card.classList.add("on"); pinned = pinned || !!pin;
+  };
+  const hide = () => { card.classList.remove("on"); nodes.forEach(n => n.setAttribute("aria-expanded", "false")); pinned = false; };
+  const later = () => { if (!pinned) { clearTimeout(hideTimer); hideTimer = setTimeout(hide, 220); } };
+  const hoverable = matchMedia("(hover: hover)");
+  nodes.forEach((n, i) => {
+    n.addEventListener("mouseenter", () => { if (hoverable.matches && !stacked() && !pinned) show(i); });
+    n.addEventListener("mouseleave", () => { if (hoverable.matches) later(); });
+    n.addEventListener("focus", () => { if (!stacked() && !pinned) show(i); });
+    n.addEventListener("click", e => { e.stopPropagation(); if (pinned && current === i) hide(); else { pinned = false; show(i, true); } });
   });
+  card.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+  card.addEventListener("mouseleave", () => later());
+  card.addEventListener("click", e => { if (!e.target.closest("[data-figure], a[href^='#research/']")) e.stopPropagation(); });
+  box.addEventListener("focusout", e => { if (!box.contains(e.relatedTarget) && !pinned) later(); });
+  document.addEventListener("click", () => { if (pinned) hide(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && card.classList.contains("on")) { const n = nodes[current]; hide(); n?.focus(); } });
 }
 
 const figureDialog = document.getElementById('study-figure-dialog');
 let figureOpener = null;
 if (figureDialog && typeof figureDialog.showModal === 'function') {
-  document.getElementById('study-list').addEventListener('click', event => {
-    const link = event.target.closest('[data-study-figure]');
+  document.addEventListener('click', event => {
+    const link = event.target.closest('[data-figure]');
     if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    const study = sorted[Number(link.dataset.studyFigure)];
-    const figure = (study.images || [study.image])[Number(link.dataset.studyImage)];
+    const study = studyById(link.dataset.figure);
+    const figure = (study.images || [study.image])[0];
     figureOpener = link;
     document.getElementById('figure-title').textContent = study.title;
     const img = document.getElementById('figure-image');
@@ -552,39 +649,6 @@ if (figureDialog && typeof figureDialog.showModal === 'function') {
   figureDialog.addEventListener('close', () => figureOpener?.focus({preventScroll:true}));
 }
 
-/* Storyline arrows: an elbow from each step to the next, redrawn whenever the layout changes. Hidden on phones,
-   where the steps stack and CSS draws a short arrow between them. */
-function drawJourney() {
-  const box = document.getElementById("journey"), svg = document.getElementById("j-links");
-  if (!box || !svg) return;
-  const draw = () => {
-    const b = box.getBoundingClientRect(), nodes = [...box.querySelectorAll(".j-node")].map(n => n.getBoundingClientRect());
-    svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
-    if (getComputedStyle(svg).display === "none") return;
-    let d = "";
-    for (let i = 0; i < nodes.length - 1; i++) {
-      const a = nodes[i], c = nodes[i + 1];
-      const x1 = a.right - b.left, y1 = a.top + a.height / 2 - b.top, x2 = c.left - b.left - 3, y2 = c.top + c.height / 2 - b.top;
-      const xm = (x1 + x2) / 2, r = Math.min(8, Math.abs(y2 - y1) / 2), s = Math.sign(y2 - y1);
-      d += s ? `M${x1} ${y1}H${xm - r}Q${xm} ${y1} ${xm} ${y1 + s * r}V${y2 - s * r}Q${xm} ${y2} ${xm + r} ${y2}H${x2}` : `M${x1} ${y1}H${x2}`;
-    }
-    svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" fill="currentColor"/></marker></defs>` +
-      d.split("M").filter(Boolean).map(p => `<path d="M${p}" marker-end="url(#j-arrow)"/>`).join("");
-  };
-  draw();
-  if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
-  document.fonts?.ready.then(draw);
-  box.addEventListener("click", e => {
-    const a = e.target.closest('.j-node[href^="#study-"]');
-    if (!a) return;
-    const card = document.querySelector(a.getAttribute("href"));
-    if (!card) return;
-    e.preventDefault();
-    card.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
-    card.classList.remove("flash"); void card.offsetWidth; card.classList.add("flash");
-  });
-}
-
 function renderRelated() {
   document.getElementById("related").innerHTML = RELATED.slice().sort((a, b) => b.year - a.year).map(r => `
     <li><span class="yr">${r.year}</span>
@@ -602,24 +666,8 @@ function toast(msg) {
   toast._t = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-document.addEventListener("click", async e => {
-  const b = e.target.closest("button[data-cite]");
-  if (!b) return;
-  const text = citation(sorted[Number(b.dataset.cite)]);
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch (err) {
-    const ta = document.createElement("textarea");
-    ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "absolute"; ta.style.left = "-9999px";
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand("copy"); } catch (_) {}
-    ta.remove();
-  }
-  toast("Citation copied");
-});
 
-renderStudies();
-drawJourney();
+renderJourney();
 renderRelated();
 drawPanels();
 document.getElementById("scales").classList.add("animate");
