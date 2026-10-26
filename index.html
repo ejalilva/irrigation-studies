@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css?v=2026-10-26f">
 <link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26f">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26f">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26g">
 <script src="assets/journals.js?v=2026-10-26f"></script>
 <script src="assets/water-cycle.js?v=2026-10-26f" defer></script>
 </head>
@@ -114,12 +114,12 @@
       <!-- The storyline in six chapters, drawn by renderJourney() from CHAPTERS in the script below. -->
       <div class="journey" id="journey"></div>
       <noscript><ol>
-        <li>2019, The Columbus voyage: aimed at rainfall, found irrigation (Remote Sensing of Environment).</li>
-        <li>2021, The devil is in the details: 1 km soil moisture sees irrigation (IEEE JSTARS).</li>
-        <li>2023, Paradigm shift: assimilation fills the gaps between passes (Water Resources Research).</li>
-        <li>2026, Patterns in the plot: irrigation timing from thermal data (Remote Sensing of Environment).</li>
-        <li>Now, Redraw the map: irrigated land mapped with foundation models.</li>
-        <li>Next, Coming full circle: where, when and how much together.</li>
+        <li>Chapter one, The Columbus voyage (2019): aimed at rainfall, found irrigation (Remote Sensing of Environment).</li>
+        <li>Chapter two, The devil is in the details (2021): 1 km soil moisture sees irrigation (IEEE JSTARS).</li>
+        <li>Chapter three, Paradigm shift (2023): assimilation fills the gaps between passes (Water Resources Research).</li>
+        <li>Chapter four, Patterns in the plot (2026): irrigation timing from thermal data (Remote Sensing of Environment).</li>
+        <li>Chapter five, Redraw the map (now): irrigated land mapped with foundation models.</li>
+        <li>Chapter six, Coming full circle (next): where, when and how much together.</li>
       </ol></noscript>
     </section>
 
@@ -529,11 +529,14 @@ const CHAPTERS = [
 // Bump ICON_V (and the ?v= on the -back.png masks in assets/study-grid.css) whenever a chapter icon changes, so browsers fetch the new picture.
 const ICON_V = "2026-10-26f";
 const QLABEL = { where: "Where", when: "When", how_much: "How much" };
+// Chapters are named in words, as in a book: "Chapter one", "Chapter two"...
+const CH_WORD = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const chapterName = i => `Chapter ${CH_WORD[i] || i + 1}`;
 const LANE = { where: 1, when: 2, how_much: 3 };
 const studyById = id => STUDIES.find(s => s.id === id);
 
 function chapterCard(c, i) {
-  const head = `<div class="jc-head"><span class="j-ch">${i + 1}</span><div><p class="jc-kick">Chapter ${i + 1} · ${c.year} · ${QLABEL[c.q]}</p><p class="jc-title">${esc(c.title)}</p><p class="jc-sub">${esc(c.sub)}</p></div></div>`;
+  const head = `<div class="jc-head"><div><p class="jc-kick">${chapterName(i)} · ${c.year} · ${QLABEL[c.q]}</p><p class="jc-title">${esc(c.title)}</p><p class="jc-sub">${esc(c.sub)}</p></div></div>`;
   const s = c.study && studyById(c.study), paper = s && window.Papers && window.Papers.paperFor(s.doi);
   if (s) {
     // figs: how many of the study's images to show side by side (default 1); each enlarges on its own.
@@ -553,8 +556,9 @@ function renderJourney() {
   box.innerHTML = ["where", "when", "how_much"].map(q => `<span class="j-lane g-${q}" style="grid-row:${LANE[q]}" aria-hidden="true">${QLABEL[q]}?</span>`).join("") +
     `<ol class="j-steps">${CHAPTERS.map((c, i) => `<li class="j-step g-${c.q}${c.next ? " is-next" : ""}" style="grid-column:${i + 2};grid-row:${LANE[c.q]}">
       <button type="button" class="j-node" aria-expanded="false" aria-controls="j-card">
-        <span class="j-top"><span class="j-ch" aria-hidden="true">${i + 1}</span><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="80" height="80" decoding="async"></span></span>
-        <span class="j-title"><span class="sr-only">Chapter ${i + 1}: </span>${esc(c.title)}</span>
+        <span class="j-top"><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="80" height="80" decoding="async"></span></span>
+        <span class="j-ch">${chapterName(i)}</span>
+        <span class="j-title">${esc(c.title)}</span>
         <span class="j-what">${esc(c.what)}</span>
         <span class="j-why">${esc(c.left)}</span>
       </button></li>`).join("")}</ol>

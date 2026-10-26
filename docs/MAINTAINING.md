@@ -200,7 +200,7 @@ The irrigation studies are told as six chapters in a small diagram, in place of 
 
 **Layout.**
 - **Lanes:** there is one lane per question, in the logical order (Where?, When?, How much?). The lane labels are set larger than the card text so the three questions read first.
-- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows a chapter mark (a dark square with its number), the year, the chapter icon, the chapter title, one plain line on what was done, and what it left open. The 80 px icon sits over the card's top-right corner, breaking out of its border.
+- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows the year, the chapter name in words ("Chapter one", "Chapter two"; `chapterName()` in `index.html`), the chapter icon, the chapter title, one plain line on what was done, and what it left open. The 80 px icon sits over the card's top-right corner, breaking out of its border.
 - **Arrows:** each arrow leaves the middle of a chapter's top or bottom edge (marked by a dot), turns once with a rounded corner in the empty part of the next chapter's lane, and enters that chapter from the left with a solid head. A dotted "combined" bracket joins chapters 3 and 4 into chapter 6 from below, and chapter 5's arrow also enters it.
 
 **Study card.** Hovering or focusing a chapter shows its study card beside it. Clicking or tapping keeps the card open, and Escape or a click elsewhere closes it. A published chapter's card holds:
