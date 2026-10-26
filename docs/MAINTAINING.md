@@ -195,7 +195,7 @@ The irrigation studies are told as six chapters in a small diagram, in place of 
 | 2 | 2021 | Where | The devil is in the details | JSTARS 2021 (Sustainability 2021 noted in its card) |
 | 3 | 2023 | How much | Paradigm shift | WRR 2023 |
 | 4 | 2026 | When | Patterns in the plot | RSE 2026 |
-| 5 | Now | Where | Rewriting the map | foundation-model mapping, in progress |
+| 5 | Now | Where | Redraw the map | foundation-model mapping, in progress |
 | 6 | Next | How much | Coming full circle | where, when and how much together in NASA LIS with NISAR |
 
 **Layout.**
@@ -224,8 +224,8 @@ Chapters 5 and 6 instead show a short text, the models or parts involved, and a 
 
 **Chapter icons.** Ehsan supplied the six icons: `voyage`, `details`, `shift`, `patterns`, `map` and `circle`.
 - **Files:** each is saved in `assets/chapters/` as transparent WebP, trimmed to its content and squared at 176 px.
-- **Backing:** each icon has a `<name>-back.png` mask, the icon's outline with the gaps between its parts closed, holes filled and a thin margin added. The page fills that shape with the card colour (`--paper`) behind the icon, so the card border and arrows don't show through the icon, while the area around it stays transparent. The masks are wired up in `assets/study-grid.css` (`.j-ico-<name>::before`).
-- **Changing an icon:** save the new transparent image and rebuild its mask the same way: alpha above 40, morphological closing with a 9 px disk at 256 px, hole fill, a 3 px dilation, then resize to 176 px. An icon whose outline is open, like the dashed `circle` (replaced on 26 October 2026), uses its convex hull instead of the hole fill, so its whole inside is covered. The `shift` icon (paper planes, replaced on 26 October 2026) is scattered, so its backing is a plain disc around the icon's centre, which matches the circle's. Because both are mostly dark line art, their backing is a light disc in dark mode (`.j-ico-circle` and `.j-ico-shift` in `assets/study-grid.css`).
+- **Backing:** each icon has a `<name>-back.png` mask, the icon's outline with the gaps between its parts closed, holes filled and a thin margin added. The page fills that shape with the card colour (`--paper`) behind the icon, cut to the card itself (`clip-path` on `.j-ico::before`), so the card's coloured top border and right edge don't show through the icon. Above and beside the card the icon stays fully transparent over the lane. Each mask also covers the border's row from where the drawing starts to the card's top-right corner, so no piece of the border shows beside the drawing. The masks are wired up in `assets/study-grid.css` (`.j-ico-<name>::before`).
+- **Changing an icon:** save the new transparent image and rebuild its mask the same way: alpha above 40, morphological closing with a 9 px disk at 256 px, hole fill, a 3 px dilation, then resize to 176 px. An icon whose outline is open, like the dashed `circle` (replaced on 26 October 2026), uses its convex hull instead of the hole fill, so its whole inside is covered. The `shift` icon (paper planes, replaced on 26 October 2026) is scattered, so its backing is a plain disc around the icon's centre, which matches the circle's. Because both are mostly dark line art, they get a thin light halo in dark mode (`.j-ico-circle` and `.j-ico-shift` in `assets/study-grid.css`).
 
 `renderJourney()` draws everything and redraws the arrows when the layout changes. The figures and paper details still come from `STUDIES` and `assets/journals.js`.
 
