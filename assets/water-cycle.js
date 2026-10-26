@@ -169,5 +169,7 @@ document.querySelector('#close-dialog').addEventListener('click',closeTopic);
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeTopic();}});
 dialog.addEventListener('close',()=>{document.body.style.overflow='';document.body.classList.remove('dialog-open');history.replaceState(null,'',location.pathname+location.search+'#explore');if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});
 clearHighlight();const initial=location.hash.match(/^#research\/(\w+)$/);if(initial&&topics[initial[1]]&&!topics[initial[1]].href)openTopic(initial[1]);
+// Links elsewhere on the page (such as the storyline's last step) open a part with href="#research/<key>".
+addEventListener('hashchange',()=>{const m=location.hash.match(/^#research\/(\w+)$/);if(m&&topics[m[1]]&&!topics[m[1]].href&&!dialog.open)openTopic(m[1]);});
 
 })();
