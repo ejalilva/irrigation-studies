@@ -185,13 +185,48 @@ Rising papers live in `data/editor_picks.json`, separate from the table data:
 
 The page is linked from the main site's navigation (Pages → New link → `https://ejalilva.github.io/irrigation-studies/`). To serve it at a subdomain such as `research.ehsanjalilvand.com`, add a CNAME record pointing to `ejalilva.github.io` and set the custom domain under Settings → Pages.
 
-## Storyline
+## Storyline: "Every answer revealed another question"
 
-Above the study cards, a small diagram tells why each study followed the last. It has three lanes, one per question (Where?, When?, How much?, in the logical order top to bottom), and one column per step: 2019 AMSR2 (how much), 2021 SMAP–Sentinel-1 at 1 km (where), 2023 particle batch smoother (how much), 2026 AgroTrack (when), and the current foundation-model mapping (where). Each step's last line is the problem that led to the next, and elbow arrows join the steps, so the path visibly zigzags backward through the questions. The steps are plain HTML in `index.html` (`#journey`): `grid-column` is the step (2–6) and `grid-row` the lane (1 Where, 2 When, 3 How much). `drawJourney()` draws the arrows and redraws them when the layout changes. Clicking a step scrolls to its study card and flashes it; the last step opens the map's "Where is irrigation?" pop-up through its `#research/mapping` link. On phones the steps stack in order with a small arrow between them and a coloured question tag. Each study card also shows its question (the study's `q`: `where`, `when` or `how_much`) in place of the scale, and has an `id` used by the storyline links.
+The irrigation studies are told as six chapters in a small diagram, in place of a list of study cards. The chapter titles follow the seminar "Simulating the largest human intervention in the water cycle":
+
+| Chapter | Year | Lane | Title | Study |
+|---|---|---|---|---|
+| 1 | 2019 | How much | The Columbus voyage | RSE 2019 |
+| 2 | 2021 | Where | The devil is in the details | JSTARS 2021 (Sustainability 2021 noted in its card) |
+| 3 | 2023 | How much | Reinventing the wheel | WRR 2023 |
+| 4 | 2026 | When | Patterns in the plot | RSE 2026 |
+| 5 | Now | Where | Rewriting the map | foundation-model mapping, in progress |
+| 6 | Next | How much | Coming full circle | where, when and how much together in NASA LIS with NISAR |
+
+**Layout.**
+- **Lanes:** there is one lane per question, in the logical order (Where?, When?, How much?).
+- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows a chapter mark (a dark square with its number), the year, a small original icon, the chapter title, one plain line on what was done, and what it left open.
+- **Arrows:** elbow arrows join the chapters in order. A dashed "combined" bracket joins chapters 3 and 4 into chapter 6, and chapter 5's arrow also enters it.
+
+**Study card.** Hovering or focusing a chapter shows its study card beside it. Clicking or tapping keeps the card open, and Escape or a click elsewhere closes it. A published chapter's card holds:
+- the chapter title and seminar subtitle
+- the study figure (click to enlarge)
+- the journal card
+- one finding
+- what the chapter left open
+
+Chapters 5 and 6 instead show a short text, the models or parts involved, and a link to the map pop-up ("Where is irrigation?" or "How much water?").
+
+**Phones.** Below 1100 px the chapters stack in order with a small arrow between them. A tapped chapter's card opens under it.
+
+**Editing.** Everything comes from `CHAPTERS` in `index.html`:
+- `year`, `q` (`where`, `when` or `how_much`) and `icon` (a key of `ICONS`)
+- `title`, `sub`, `what`, `left`
+- for published chapters: `study` (a study `id` in `STUDIES`), `finding` and an optional `also`
+- for the last two chapters: `topic`, `more`, `text` and `chips`
+- `feeds: true` joins the bracket
+- `next: true` gives the dashed border of a future chapter
+
+`renderJourney()` draws everything and redraws the arrows when the layout changes. The figures and paper details still come from `STUDIES` and `assets/journals.js`.
 
 ## Figures
 
-The personal irrigation studies are listed oldest first in a grid of three cards on wide screens, two on tablets and one on phones, styled by `assets/study-grid.css`. Each card shows only the figure, a journal chip (its acronym in the journal's colour from `assets/journals.js`), the year and scale, the title and a one-line `summary`. Findings, authors, the citation, methods, **Read the paper** and **Copy citation** sit behind **Findings & authors**. Figures remain uncropped, and clicking one opens a larger accessible dialog that shows its `caption`; a figure's `credit` (for example a CC BY attribution) also shows under it on the card. The method filter above the cards was removed to keep the section minimal.
+The study figures appear in the storyline's study cards (see above) and enlarge in a dialog when clicked. `assets/study-grid.css` styles the storyline, the study cards and that dialog. Each study's figure is its `image` (`src`, `alt`, `caption`, `source`, optional `credit`), or the first of its `images`.
 
 Three figures were retrieved from Ehsan's personal irrigation page on October 22, 2026 and saved locally under `assets/studies/`. `data/study-figure-sources.json` records their DOI associations and source URLs. WebP conversion is lossless, with original pixels and transparency retained.
 
