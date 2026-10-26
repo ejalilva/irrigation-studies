@@ -25,8 +25,9 @@ const finePointer=window.matchMedia('(hover: hover) and (pointer: fine)');
 const callout=document.querySelector('#callout');
 const explorerBox=document.querySelector('#explore');
 // How a part's research is shown, from data-popup on #explore (?popup=summary|hover|click in the address overrides it, to compare):
-// summary: hovering plays the part's animation first; after SUMMARY_DELAY a small card beside it gives the one-line description,
-//   a chip per paper (journal and year, in the journal's colour) and counts of other work; a click opens the dialog.
+// summary: hovering plays the part's animation first; after SUMMARY_DELAY the text under the part's label (no box, transparent)
+//   gives the one-line description, a chip per paper (journal and year, in the journal's colour) and counts of other work;
+//   a click on the part or the text opens the dialog.
 // hover: a panel with the full research opens over the side of the map (see Hover pop-ups below).
 // click: the plain one-line description at once, and a click opens the dialog.
 const popupMode=new URLSearchParams(location.search).get('popup')||explorerBox.dataset.popup||'click';
@@ -47,20 +48,21 @@ function placeCallout(key){
  let x,y,end;
  if(spec.length===3){end=spec[2]==='end';callout.dataset.align=end?'end':'start';const q=mapPoint(+spec[0],+spec[1]);x=q.x-er.left-(end?callout.offsetWidth:0);y=q.y-er.top;}
  else{const r=(label||item).getBoundingClientRect();
-  if(item.dataset.descRight){const limit=mapPoint(+item.dataset.descRight,0).x,card=callout.classList.contains('card');callout.style.maxWidth=Math.max(card?190:120,Math.min(card?250:190,limit-r.left-4))+'px';}
+  if(item.dataset.descRight){const limit=mapPoint(+item.dataset.descRight,0).x,rich=callout.classList.contains('rich');callout.style.maxWidth=Math.max(rich?160:120,Math.min(rich?220:190,limit-r.left-4))+'px';}
   const h=callout.offsetHeight;x=r.left-er.left;y=spec[0]==='above'?r.top-er.top-gap-h:r.bottom-er.top+gap;
-  // The summary card is bigger than the plain description, so it tries eight spots around the label (below, above, left
-  // and right) and takes the one that stays inside the map, covers no map label and covers the part's drawing least.
-  // It may hang up to 64px below the map, into the page's margin under it.
-  if(callout.classList.contains('card')){const below=64,w=callout.offsetWidth,g=10,L=r.left-er.left,T=r.top-er.top,R=r.right-er.left,B=r.bottom-er.top;
-   const M=(L+R-w)/2,cands=[[L,B+gap],[L,T-gap-h],[R-w,B+gap],[R-w,T-gap-h],[M,B+gap],[M,T-gap-h],[L-g-w,T],[L-g-w,B-h],[R+g,T],[R+g,B-h]];
+  // With the paper chips the text is taller, so it tries spots under the label first (as designed), then above it, then beside
+  // it, and takes the first that stays inside the map (it may hang up to 64px into the margin under the map) and covers no
+  // other map label. A part whose drawing sits right under its label (Lakes) has data-desc="above", so its text goes above.
+  if(callout.classList.contains('rich')){const below=64,w=callout.offsetWidth,g=10,L=r.left-er.left,T=r.top-er.top,R=r.right-er.left,B=r.bottom-er.top,M=(L+R-w)/2;
+   const under=[[L,B+gap],[R-w,B+gap],[M,B+gap]],over=[[L,T-gap-h],[R-w,T-gap-h],[M,T-gap-h]];
+   const cands=(spec[0]==='above'?[...over,...under]:[...under,...over]).concat([[L-g-w,T],[L-g-w,B-h],[R+g,T],[R+g,B-h]]);
    const box=q=>[q.left-er.left,q.top-er.top,q.right-er.left,q.bottom-er.top];
    const obs=[...landscape.querySelectorAll('.maplabel,.number,.process-label,.irrigation-label')].map(e=>e.getBoundingClientRect()).filter(q=>q.width).map(box);
-   const part=box(item.getBoundingClientRect()),ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
+   const ov=(a,b)=>Math.max(0,Math.min(a[2],b[2])-Math.max(a[0],b[0]))*Math.max(0,Math.min(a[3],b[3])-Math.max(a[1],b[1]));
    let best=null;cands.forEach(([cx,cy],i)=>{const c=[cx,cy,cx+w,cy+h],out=Math.max(0,pad-cx)+Math.max(0,pad-cy)+Math.max(0,cx+w-W+pad)+Math.max(0,cy+h-H-below);
-    const score=out*1000+obs.reduce((t,o)=>t+ov(c,o),0)*20+ov(c,part)*.05+i;if(!best||score<best[0])best=[score,cx,cy];});
+    const score=out*1000+obs.reduce((t,o)=>t+ov(c,o),0)*20+i*40;if(!best||score<best[0])best=[score,cx,cy];});
    x=best[1];y=best[2];}}
- x=Math.max(pad,Math.min(W-callout.offsetWidth-pad,x));y=Math.max(pad,Math.min(H-callout.offsetHeight+(callout.classList.contains('card')?64:-pad),y));
+ x=Math.max(pad,Math.min(W-callout.offsetWidth-pad,x));y=Math.max(pad,Math.min(H-callout.offsetHeight+(callout.classList.contains('rich')?64:-pad),y));
  callout.style.left=x+'px';callout.style.top=y+'px';
 }
 let hideTimer=0;
@@ -95,7 +97,7 @@ function fillSummary(t){hintPapers.replaceChildren();const P=window.Papers;if(!P
  if(parts.length){const line=document.createElement('p');line.className='hp-count';line.textContent=parts.join(' · ');hintPapers.append(line);}
 }
 function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelHide();
- const card=summaryMode&&!tour;callout.classList.toggle('card',card);if(card)fillSummary(t);else hintPapers.replaceChildren();
+ const rich=summaryMode&&!tour;callout.classList.toggle('rich',rich);if(rich)fillSummary(t);else hintPapers.replaceChildren();
  if(!summaryTimer)callout.classList.remove('wait');
  setHint(t.title,t.short,tour?'':exploreCue(t,false));
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));

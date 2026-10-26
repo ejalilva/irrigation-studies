@@ -258,13 +258,19 @@ The section follows the motivation slides of Ehsan's seminar: three picture-led 
 
 `data-popup` on `#explore` (set in both `index.html` and `human.html`) chooses one of three behaviours. To compare them without editing, add `?popup=summary`, `?popup=hover` or `?popup=click` to the page address.
 
-- **`summary` (the default since 26 October 2026).** Hovering a part plays its animation at once. After `SUMMARY_DELAY` (900 ms, in `assets/water-cycle.js`), a small card appears beside the part's label with:
+- **`summary` (the default since 26 October 2026).** Hovering a part plays its animation at once. After `SUMMARY_DELAY` (900 ms, in `assets/water-cycle.js`), the text under the part's label appears: no box, the same transparent background and page-colour halo as the plain description. It holds:
   - the one-line description;
   - a chip for each paper (journal short name and year, in the journal's colour from `assets/journals.js`);
   - counts of other work (`3 papers · 4 ongoing · 3 planned`), worked out from each project's status: "planned" or "not started" counts as planned, "earlier" or "contribution" as earlier, and anything else as ongoing;
   - "Click to explore".
 
-  A click opens the dialog. The card picks the clearest of ten spots around the label: below, above, left or right, aligned to either end and centred above or below. It prefers spots inside the map that cover no map label and as little of the part's drawing as possible, and it may hang up to 64 px into the page margin under the map. During the tour the description stays plain. On phones and touch screens the card appears at once on tap, and a second tap opens the dialog.
+  A click on the part or on the text opens the dialog.
+
+  **Placement.** The text goes under the label first, then above it, then beside it. It takes the first spot that stays inside the map (it may hang up to 64 px into the page margin under the map) and covers no other map label.
+  - Parts with a pinned spot (`data-desc="x y start|end"`, such as Runoff & rivers and Human-driven processes) keep it.
+  - Lakes has `data-desc="above"`, because text under its label would cover the lake.
+
+  During the tour the description stays plain. On phones and touch screens it appears at once on tap, and a second tap opens the dialog.
 - **`hover`.** A panel with the part's full research (the same content as the dialog, built by `fillTopic()`) opens over the side of the map that covers the part least. It is 300–400 px wide, fills the visible height of the map and scrolls inside. Moving into it keeps it open, a click pins it, and Escape, × or a click elsewhere closes it; ⤢ opens the dialog. Ehsan found this too busy; it is kept for comparison.
 - **`click`.** The original behaviour: a plain one-line description under the label at once, and a click opens the dialog.
 
