@@ -10,9 +10,9 @@
 .j-node{position:relative;display:block;width:100%;height:100%;padding:9px 11px 11px;border:1px solid var(--line);border-top:3px solid var(--g);border-radius:6px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
 .j-node:hover,.j-node[aria-expanded="true"]{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 22px rgba(15,26,31,.14)}
 .j-step.is-next .j-node{border-style:dashed;border-top-style:solid}
-.j-top{display:flex;align-items:center;gap:7px;margin-bottom:6px;padding-right:60px}
-/* Chapter mark: a small dark square with the chapter number, after the chapter openers in the seminar. */
-.j-ch{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:2px;background:var(--ink);color:var(--paper);font:400 .92rem/1 Georgia,"Times New Roman",serif}
+.j-top{display:flex;align-items:center;gap:7px;min-height:22px;margin-bottom:6px;padding-right:60px}
+/* Chapter name, in words ("Chapter one"), on its own line just above the title, below the icon. */
+.j-ch{display:block;margin:0 0 2px;font:650 .68rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
 .j-year{font:700 .74rem/1.2 var(--sans);color:var(--ink-2)}
 .j-q{display:none}
 /* Chapter icon: a picture over the top-right corner of the chapter, breaking out of its border. A card-coloured
@@ -48,7 +48,6 @@
 .j-card.on{opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s}
 .j-card.inline{position:relative;width:auto;max-width:none;margin-top:10px;box-shadow:0 8px 24px rgba(15,26,31,.12)}
 .jc-head{display:flex;gap:10px;align-items:flex-start;padding:12px 14px}
-.jc-head .j-ch{width:28px;height:28px;font-size:1.1rem}
 .jc-kick{margin:0;font:600 .68rem/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .jc-title{margin:2px 0 0;font:italic 600 1.08rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink)}
 .jc-sub{margin:3px 0 0;font-size:.8rem;line-height:1.4;color:var(--ink-2)}
