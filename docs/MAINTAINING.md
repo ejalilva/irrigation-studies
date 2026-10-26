@@ -231,7 +231,7 @@ Chapters 5 and 6 instead show a short text, the models or parts involved, and a 
 
 ## Figures
 
-The study figures appear in the storyline's study cards (see above) and enlarge in a dialog when clicked. `assets/study-grid.css` styles the storyline, the study cards and that dialog. Each study's figure is its `image` (`src`, `alt`, `caption`, `source`, optional `credit`), or the first of its `images`.
+The study figures appear in the storyline's study cards (see above) and enlarge in a dialog when clicked. `assets/study-grid.css` styles the storyline, the study cards and that dialog. Each study's figure is its `image` (`src`, `alt`, `caption`, `source`, optional `credit`), or the first of its `images`. A chapter with `figs: 2` shows the first two of its study's `images` side by side, and each enlarges on its own. "Patterns in the plot" uses this to show the 2021 Central Valley irrigation-day map next to Fig. 8a of the paper, the Nebraska irrigation-schedule heat map with the season start and end that AgroTrack detected. That heat map was extracted from the article PDF and saved as `assets/studies/agrotrack-heatmap.webp`; its source is recorded in `data/study-figure-sources.json`.
 
 Three figures were retrieved from Ehsan's personal irrigation page on October 22, 2026 and saved locally under `assets/studies/`. `data/study-figure-sources.json` records their DOI associations and source URLs. WebP conversion is lossless, with original pixels and transparency retained.
 
