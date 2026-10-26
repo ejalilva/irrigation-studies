@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21",
+  "updated": "2026-10-26",
   "papers": [
     {
       "id": "10.5194/essd-2026-603",
@@ -198,6 +198,48 @@
       "needs_review": false,
       "source": "seed",
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1002/ird.70202",
+      "title": "Remote Sensing for Irrigation Water Management—The State of the Art and Prospects for Near‐Future Operations",
+      "authors": "Bastiaanssen, W.G.M., Perry, C., Dalby, R., et al.",
+      "first_author": "Bastiaanssen",
+      "year": 2026,
+      "date": "2026-09-03",
+      "venue": "Irrigation and Drainage",
+      "doi": "10.1002/ird.70202",
+      "url": null,
+      "status": "published",
+      "type": "review",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Global",
+      "region": "Global",
+      "scale": null,
+      "period": null,
+      "approach": "Narrative review of remote sensing products for irrigation water management",
+      "methods": [
+        "imagery",
+        "et",
+        "sm"
+      ],
+      "data": [],
+      "keywords": [
+        "remote sensing",
+        "irrigation water management",
+        "key performance indicators",
+        "water accounting",
+        "irrigation analytics"
+      ],
+      "summary": "Review of satellite-based information on cropping patterns, water consumption, deliveries and soil moisture to support irrigation planning and real-time management.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
     },
     {
       "id": "10.1080/28375807.2026.2725899",
@@ -667,6 +709,53 @@
       "resources_checked": "2026-10-21"
     },
     {
+      "id": "10.3390/rs18183142",
+      "title": "Satellite Mapping of Annual Center Pivot Irrigation Expansion in Africa’s Hyper-Arid Regions from 1972 to 2025",
+      "authors": "Fen, C., Ping, S., Voorde, T.V.d., et al.",
+      "first_author": "Fen",
+      "year": 2026,
+      "date": "2026-09-12",
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs18183142",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Africa's hyper-arid regions",
+      "region": "Africa",
+      "scale": "continental",
+      "period": {
+        "start": 1972,
+        "end": 2025
+      },
+      "approach": "Cascade Mask R-CNN with Swin Transformer instance segmentation on Landsat and Sentinel-2",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Landsat",
+        "Sentinel-2"
+      ],
+      "keywords": [
+        "center pivot irrigation",
+        "hyper-arid Africa",
+        "instance segmentation",
+        "Landsat time series",
+        "groundwater irrigation"
+      ],
+      "summary": "The study maps annual center pivot irrigation extent across Africa's hyper-arid regions from 1972 to 2025 using deep learning on satellite imagery, showing rapid recent expansion.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
+    },
+    {
       "id": "10.1007/s00271-026-01150-0",
       "title": "Sensitivity analysis of modeled soil water dynamics within variable rate irrigation zones for winter wheat",
       "authors": "Flint, E.A., Svedin, J.D., Hopkins, A., et al.",
@@ -757,6 +846,101 @@
       "resources_checked": "2026-10-21"
     },
     {
+      "id": "10.3390/su182010703",
+      "title": "Sprinkler-Irrigated Corn Fields Show Higher Realization of a Reference-Field Evapotranspiration Benchmark: A Six-Season Satellite Analysis of Colorado’s South Platte Corridor",
+      "authors": "García, L.A.",
+      "first_author": "García",
+      "year": 2026,
+      "date": "2026-10-21",
+      "venue": "Sustainability",
+      "doi": "10.3390/su182010703",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "South Platte corridor, Colorado, USA",
+      "region": "North America",
+      "scale": "field",
+      "period": {
+        "start": 2020,
+        "end": 2025
+      },
+      "approach": "Landsat-based AgroET evapotranspiration realization ratio against alfalfa-reference benchmark, regre",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "Landsat",
+        "AgroET"
+      ],
+      "keywords": [
+        "evapotranspiration",
+        "sprinkler irrigation",
+        "flood irrigation",
+        "corn",
+        "Landsat"
+      ],
+      "summary": "Landsat-based AgroET data show sprinkler-irrigated corn fields reach slightly higher evapotranspiration relative to a reference benchmark than flood-irrigated fields in Colorado, 2020–2025.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
+    },
+    {
+      "id": "10.3389/frwa.2026.1917387",
+      "title": "Estimating groundwater abstraction for irrigation in a data-scarce semi-arid region using optical and InSAR time-series analysis: the Tensift catchment, Morocco",
+      "authors": "Hajhouji, Y., Amazirh, A., Baba, M.W., et al.",
+      "first_author": "Hajhouji",
+      "year": 2026,
+      "date": "2026-09-21",
+      "venue": "Frontiers in Water",
+      "doi": "10.3389/frwa.2026.1917387",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Tensift catchment, Morocco",
+      "region": "Africa",
+      "scale": "regional",
+      "period": {
+        "start": 2015,
+        "end": 2016
+      },
+      "approach": "Optical and Sentinel-1 InSAR time series combined with field pumping observations and water balance",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "Sentinel-1",
+        "Sentinel-2",
+        "Field pumping records from monitoring we",
+        "Dam release records"
+      ],
+      "keywords": [
+        "groundwater abstraction",
+        "irrigation",
+        "InSAR",
+        "land subsidence",
+        "Morocco"
+      ],
+      "summary": "The study estimates groundwater abstraction for irrigation in the Tensift catchment in 2015–2016 using Sentinel-1 and Sentinel-2 data, validated against well pumping records, and links it to land subsidence.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
+    },
+    {
       "id": "10.1088/1748-9326/ae7e0c",
       "title": "Satellite soil moisture as an additional observational constraint for machine learning-based irrigation water use modeling",
       "authors": "Huang, X., He, Q., Hanasaki, N., et al.",
@@ -801,6 +985,49 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1007/s40899-026-01401-0",
+      "title": "Assessing the reliability of remote sensing-based evapotranspiration models for enhanced water management under center-pivot irrigation system in arid region. Case study: East Oweinat, Egypt",
+      "authors": "Ibrahim, H.A., Elgamal, M.H., Ghanem, A.M., et al.",
+      "first_author": "Ibrahim",
+      "year": 2026,
+      "date": "2026-09-21",
+      "venue": "Sustainable Water Resources Management",
+      "doi": "10.1007/s40899-026-01401-0",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "East Oweinat, Egypt",
+      "region": "Africa",
+      "scale": "field",
+      "period": null,
+      "approach": "Assessment of remote sensing-based evapotranspiration models for center-pivot irrigation water manag",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "remote sensing-based evapotranspiration "
+      ],
+      "keywords": [
+        "evapotranspiration",
+        "remote sensing",
+        "center-pivot irrigation",
+        "water management",
+        "arid region"
+      ],
+      "summary": "Evaluates the reliability of remote sensing-based evapotranspiration models to support water management under center-pivot irrigation in East Oweinat, Egypt.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
     },
     {
       "id": "10.1016/j.rse.2025.115153",
@@ -1042,6 +1269,54 @@
       "resources_checked": "2026-10-21"
     },
     {
+      "id": "10.1016/j.ejrh.2026.104078",
+      "title": "Intensification of irrigated agriculture and precipitation explain rising evapotranspiration in the Snake River Basin despite declining atmospheric demand",
+      "authors": "Kukal, M.S., Gulati, D., Zhao, M., et al.",
+      "first_author": "Kukal",
+      "year": 2026,
+      "date": "2026-10-22",
+      "venue": "Journal of Hydrology Regional Studies",
+      "doi": "10.1016/j.ejrh.2026.104078",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Snake River Plain, Idaho, USA",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 2000,
+        "end": 2023
+      },
+      "approach": "OpenET ensemble ET trend attribution with GRACE water balance and Landsat NPP",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "OpenET ensemble",
+        "GRACE",
+        "Landsat net primary productivity"
+      ],
+      "keywords": [
+        "evapotranspiration trends",
+        "irrigated agriculture",
+        "OpenET",
+        "Snake River Basin",
+        "attribution"
+      ],
+      "summary": "Satellite-based OpenET estimates show rising evapotranspiration across Snake River Plain watersheds, mainly driven by irrigated area expansion and precipitation.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
+    },
+    {
       "id": "10.5194/essd-18-4833-2026",
       "title": "Long-term irrigation water use datasets from multiple Earth Observation-based methods in major irrigated regions",
       "authors": "Laluet, P., Dari, J., Busschaert, L., et al.",
@@ -1133,6 +1408,51 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1016/j.aiia.2026.10.001",
+      "title": "CropINSs: A multi-objective irrigation and nitrogen scheduling optimization framework for silage maize based on coupling remote sensing and crop models",
+      "authors": "Li, G., Nie, W., Wang, Q., et al.",
+      "first_author": "Li",
+      "year": 2026,
+      "date": "2026-10-01",
+      "venue": "Artificial Intelligence in Agriculture",
+      "doi": "10.1016/j.aiia.2026.10.001",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": null,
+      "region": null,
+      "scale": "regional",
+      "period": null,
+      "approach": "Sentinel-1 LAI/AGB assimilation into DSSAT with SCE-UA and NSGA-III optimization",
+      "methods": [
+        "imagery",
+        "model",
+        "da"
+      ],
+      "data": [
+        "Sentinel-1",
+        "DSSAT"
+      ],
+      "keywords": [
+        "irrigation scheduling",
+        "nitrogen management",
+        "DSSAT",
+        "Sentinel-1",
+        "silage maize"
+      ],
+      "summary": "Combines Sentinel-1-derived LAI and biomass with the DSSAT crop model to optimize irrigation and nitrogen schedules for silage maize at regional scale.",
+      "added": "2026-10-26",
+      "needs_review": true,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
     },
     {
       "id": "10.3390/plants15152265",
@@ -1365,6 +1685,72 @@
       "needs_review": false,
       "source": "agent",
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1016/j.rse.2026.115639",
+      "title": "Field-scale irrigation estimation using Sentinel-1 and Sentinel-2 data within a soil water balance model coupled to the Water Cloud Model",
+      "authors": "Natali, M., Modanesi, S., Santis, D.D., et al.",
+      "first_author": "Natali",
+      "year": 2026,
+      "date": "2026-09-01",
+      "venue": "Remote Sensing of Environment",
+      "doi": "10.1016/j.rse.2026.115639",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": true,
+        "how_much": true
+      },
+      "domain": "Po Valley, Italy (irrigation district)",
+      "region": "Europe",
+      "scale": "field",
+      "period": {
+        "start": 2018,
+        "end": 2018
+      },
+      "approach": "Joint calibration of Water Cloud Model and two-layer soil water balance model using SAR backscatter",
+      "methods": [
+        "imagery",
+        "model"
+      ],
+      "data": [
+        "Sentinel-1 C-band SAR backscatter",
+        "Sentinel-2 NDVI",
+        "Water Cloud Model",
+        "Two-layer soil water balance model",
+        "Reanalysis meteorological data"
+      ],
+      "keywords": [
+        "irrigation estimation",
+        "Sentinel-1",
+        "Sentinel-2",
+        "Water Cloud Model",
+        "soil water balance"
+      ],
+      "summary": "Estimates field-scale irrigation in Po Valley fields by jointly calibrating a Water Cloud Model and soil water balance model using Sentinel-1 and Sentinel-2 data.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [
+        {
+          "type": "code",
+          "url": "https://doi.org/10.5281/zenodo.22961226",
+          "label": "Zenodo"
+        },
+        {
+          "type": "code",
+          "url": "https://doi.org/10.5281/zenodo.23047207",
+          "label": "Zenodo"
+        },
+        {
+          "type": "code",
+          "url": "https://doi.org/10.5281/zenodo.22961227",
+          "label": "Zenodo"
+        }
+      ],
+      "resources_checked": "2026-10-26"
     },
     {
       "id": "10.1007/s00271-026-01172-8",
@@ -1750,6 +2136,55 @@
       "resources_checked": "2026-10-21"
     },
     {
+      "id": "10.3390/rs18183223",
+      "title": "Comparing Irrigation Identification Methods in Colorado: Limitations of Downscaled SMAP Soil Moisture",
+      "authors": "Turman, A.M., Fang, B., Lakshmi, V.",
+      "first_author": "Turman",
+      "year": 2026,
+      "date": "2026-09-19",
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs18183223",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": true,
+        "how_much": false
+      },
+      "domain": "Colorado, USA",
+      "region": "North America",
+      "scale": "regional",
+      "period": {
+        "start": 2015,
+        "end": 2024
+      },
+      "approach": "Comparison of five irrigation identification methods using downscaled SMAP soil moisture, precipitat",
+      "methods": [
+        "sm",
+        "imagery"
+      ],
+      "data": [
+        "SMAP soil moisture",
+        "CHIRPS precipitation",
+        "Landsat NDVI",
+        "Colorado Decision Support System irrigat"
+      ],
+      "keywords": [
+        "irrigation detection",
+        "SMAP soil moisture",
+        "downscaling",
+        "Colorado",
+        "Landsat NDVI"
+      ],
+      "summary": "Five irrigation identification methods using downscaled SMAP soil moisture, CHIRPS and Landsat NDVI fail to accurately detect irrigated fields in Colorado from 2015 to 2024.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
+    },
+    {
       "id": "10.1016/j.agwat.2026.110566",
       "title": "Comparing four irrigation scheduling methods on maize growth, yield, and water productivity",
       "authors": "Zhang, H., DeJonge, K., Ma, L., et al.",
@@ -1797,6 +2232,98 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.3390/agronomy16212081",
+      "title": "Scenario-Based Optimization of Net Irrigation for Winter Wheat in the Huaihe Basin, China, Using AquaCrop-OSPy Constrained by Multi-Source Remote Sensing",
+      "authors": "Zhu, C., Tu, X., Huang, M., et al.",
+      "first_author": "Zhu",
+      "year": 2026,
+      "date": "2026-10-22",
+      "venue": "Agronomy",
+      "doi": "10.3390/agronomy16212081",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Huaihe Basin, China",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "AquaCrop-OSPy calibrated with remote sensing canopy cover, ET and soil moisture via Bayesian optimiz",
+      "methods": [
+        "model",
+        "et",
+        "sm",
+        "imagery",
+        "da"
+      ],
+      "data": [
+        "AquaCrop-OSPy",
+        "remotely sensed canopy cover",
+        "remotely sensed actual evapotranspiratio",
+        "gridded profile soil moisture",
+        "field observations of biomass and yield"
+      ],
+      "keywords": [
+        "winter wheat",
+        "net irrigation",
+        "AquaCrop-OSPy",
+        "remote sensing",
+        "Bayesian optimization"
+      ],
+      "summary": "Crop model constrained by satellite canopy cover, evapotranspiration and soil moisture optimizes winter wheat net irrigation scenarios in the Huaihe Basin.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
+    },
+    {
+      "id": "10.1016/j.ejrh.2026.103931",
+      "title": "Contrasting roles of human water use in soil and hydrological drought propagation in the mid-upper Huaihe River Basin",
+      "authors": "Zou, Y., Yuan, X., Li, C.",
+      "first_author": "Zou",
+      "year": 2026,
+      "date": "2026-09-02",
+      "venue": "Journal of Hydrology Regional Studies",
+      "doi": "10.1016/j.ejrh.2026.103931",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "mid-upper Huaihe River Basin, China",
+      "region": "Asia",
+      "scale": "regional",
+      "period": null,
+      "approach": "CSSPv3 hydrological model with irrigation water source constraints simulating drought propagation",
+      "methods": [
+        "model"
+      ],
+      "data": [
+        "CSSPv3"
+      ],
+      "keywords": [
+        "drought propagation",
+        "irrigation",
+        "reservoir regulation",
+        "soil drought",
+        "hydrological drought"
+      ],
+      "summary": "Uses the CSSPv3 hydrological model with explicit irrigation water source constraints to show how irrigation and reservoirs alter drought propagation in the Huaihe River Basin.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
     },
     {
       "id": "10.5194/egusphere-2025-2004",
