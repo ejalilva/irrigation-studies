@@ -46,8 +46,12 @@
 .jc-kick{margin:0;font:600 .68rem/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .jc-title{margin:2px 0 0;font:italic 600 1.08rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink)}
 .jc-sub{margin:3px 0 0;font-size:.8rem;line-height:1.4;color:var(--ink-2)}
-.jc-fig{display:block;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+/* Study figures at the top of the card: one, or several side by side (chapter option figs), each sized by its own shape. */
+.jc-figs{display:flex;gap:1px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--line)}
+.jc-fig{display:block;flex:1 1 auto;min-width:0;background:#fff}
 .jc-fig img{display:block;width:100%;height:130px;object-fit:contain;padding:6px}
+.jc-figs .jc-fig:has(+ .jc-fig){flex:0 1 auto}
+.jc-figs .jc-fig:has(+ .jc-fig) img{width:auto;max-width:100%}
 .jc-fig:hover img{opacity:.85}
 .j-card .paper-card{border:0;border-radius:0}
 .jc-also,.jc-left{margin:0;padding:10px 14px;font-size:.8rem;line-height:1.45;color:var(--ink-2);border-top:1px dashed var(--line)}

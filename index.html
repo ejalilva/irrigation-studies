@@ -12,11 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-26a">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26a">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26a">
-<script src="assets/journals.js?v=2026-10-26a"></script>
-<script src="assets/water-cycle.js?v=2026-10-26a" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=2026-10-26b">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26b">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26b">
+<script src="assets/journals.js?v=2026-10-26b"></script>
+<script src="assets/water-cycle.js?v=2026-10-26b" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -266,7 +266,7 @@ const STUDIES = [
       "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
       "Captured widespread fallowing of fields after California's 2021 megadrought."
     ],
-    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}]
+    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}, {"src": "assets/studies/agrotrack-heatmap.webp", "alt": "Heat map of the 2021 irrigation schedule of ten Nebraska fields, by day, from relative electricity consumption, with the start and end of the irrigation season detected by AgroTrack drawn over it.", "caption": "Irrigation schedule of ten Nebraska fields in 2021 (relative electricity consumption), with the start and end of the irrigation season that AgroTrack detected from thermal data.", "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}]
   },
   {
     year: 2023,
@@ -511,7 +511,7 @@ const CHAPTERS = [
     sub: "An irrigation model with the farmer's decision at its center.", what: "Assimilation fills the gaps between passes.",
     left: "Far more accurate when irrigation timing is known.", study: "assimilation-2023",
     finding: "In synthetic tests, knowing irrigation timing raised R² from 0.36 to 0.97." },
-  { year: "2026", q: "when", icon: "patterns", title: "Patterns in the plot", feeds: true,
+  { year: "2026", q: "when", icon: "patterns", title: "Patterns in the plot", feeds: true, figs: 2,
     sub: "Tracing farmers' irrigation decisions from space.", what: "AgroTrack reads irrigation timing from heat.",
     left: "Next, run the model only where fields are irrigated.", study: "agrotrack-2026",
     finding: "Season length within 18% (Nebraska) and 15% (Mahabad); irrigation events detected with F1 of 0.59–0.74." },
@@ -534,8 +534,9 @@ function chapterCard(c, i) {
   const head = `<div class="jc-head"><span class="j-ch">${i + 1}</span><div><p class="jc-kick">Chapter ${i + 1} · ${c.year} · ${QLABEL[c.q]}</p><p class="jc-title">${esc(c.title)}</p><p class="jc-sub">${esc(c.sub)}</p></div></div>`;
   const s = c.study && studyById(c.study), paper = s && window.Papers && window.Papers.paperFor(s.doi);
   if (s) {
-    const img = (s.images || [s.image]).filter(Boolean)[0];
-    const fig = img ? `<a class="jc-fig" href="${esc(img.src)}" data-figure="${esc(s.id)}" aria-label="Enlarge figure: ${esc(img.alt)}"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></a>` : "";
+    // figs: how many of the study's images to show side by side (default 1); each enlarges on its own.
+    const imgs = (s.images || [s.image]).filter(Boolean).slice(0, c.figs || 1);
+    const fig = imgs.length ? `<div class="jc-figs">${imgs.map((img, k) => `<a class="jc-fig" href="${esc(img.src)}" data-figure="${esc(s.id)}" data-figure-index="${k}" aria-label="Enlarge figure: ${esc(img.alt)}"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></a>`).join("")}</div>` : "";
     const also = c.also && studyById(c.also.study);
     return head + fig + (paper ? window.Papers.paperCard(paper, c.finding) : "") +
       (also ? `<p class="jc-also">${esc(c.also.text)} (<a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em></a>).</p>` : "") +
@@ -649,7 +650,7 @@ if (figureDialog && typeof figureDialog.showModal === 'function') {
     if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     const study = studyById(link.dataset.figure);
-    const figure = (study.images || [study.image])[0];
+    const figure = (study.images || [study.image])[+link.dataset.figureIndex || 0];
     figureOpener = link;
     document.getElementById('figure-title').textContent = study.title;
     const img = document.getElementById('figure-image');

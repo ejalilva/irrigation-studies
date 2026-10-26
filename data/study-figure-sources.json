@@ -50,5 +50,12 @@
     "sourceImage": "https://dl.dropboxusercontent.com/scl/fi/uvua8ucirvronskhj56pt/2022_ir_area.png?rlkey=op8hkgjb9tgk5al0e258vwzm3&dl=0",
     "encoding": "Original PNG preserved without re-encoding",
     "retrieved": "2026-10-22"
+  },
+  {
+    "file": "assets/studies/agrotrack-heatmap.webp",
+    "doi": "10.1016/j.rse.2025.115153",
+    "sourceFigure": "Fig. 8a, extracted from the article PDF Ehsan supplied",
+    "encoding": "WebP (quality 88), resized from 1896 to 1500 px wide",
+    "retrieved": "2026-10-26"
   }
 ]
