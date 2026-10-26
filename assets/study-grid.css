@@ -1,27 +1,28 @@
 /* The irrigation storyline ("Every answer revealed another question"): six chapters in three lanes, one per question
    (Where, When, How much), with elbow arrows from each chapter to the next and a dashed "combined" bracket that feeds the
    last chapter. Hovering, focusing or tapping a chapter opens its study card. Drawn by renderJourney() in index.html. */
-.journey{--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 20px),170px);position:relative;display:grid;grid-template-columns:84px repeat(6,minmax(0,1fr));column-gap:28px;row-gap:6px;margin:24px calc(-1 * var(--bleed)) 4px;padding-bottom:30px}
+.journey{--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 20px),170px);position:relative;display:grid;grid-template-columns:104px repeat(6,minmax(0,1fr));column-gap:28px;row-gap:6px;margin:40px calc(-1 * var(--bleed)) 4px;padding-bottom:30px}
 .journey .j-steps{display:contents;list-style:none;margin:0;padding:0}
-.j-lane{grid-column:1/-1;display:flex;align-items:center;gap:8px;min-height:84px;margin:0 -12px;padding:0 12px;border-radius:8px;background:var(--tint);font:600 .82rem/1.2 var(--sans);color:var(--ink)}
-.j-lane::before{content:"";flex:none;width:10px;height:10px;border-radius:2px;background:var(--g)}
+.j-lane{grid-column:1/-1;display:flex;align-items:center;gap:9px;min-height:84px;margin:0 -12px;padding:0 12px;border-radius:8px;background:var(--tint);font:650 1.06rem/1.2 var(--sans);color:var(--ink)}
+.j-lane::before{content:"";flex:none;width:12px;height:12px;border-radius:2px;background:var(--g)}
 .j-lane.g-where{--tint:rgba(49,130,189,.07)}.j-lane.g-when{--tint:rgba(253,141,60,.09)}.j-lane.g-how_much{--tint:rgba(116,196,118,.11)}
-.j-step{position:relative;z-index:2;align-self:center;margin:6px 0}
-.j-node{display:block;width:100%;height:100%;padding:9px 11px 11px;border:1px solid var(--line);border-top:3px solid var(--g);border-radius:6px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
+.j-step{position:relative;z-index:2;align-self:center;margin:20px 0 8px}
+.j-node{position:relative;display:block;width:100%;height:100%;padding:9px 11px 11px;border:1px solid var(--line);border-top:3px solid var(--g);border-radius:6px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
 .j-node:hover,.j-node[aria-expanded="true"]{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 22px rgba(15,26,31,.14)}
 .j-step.is-next .j-node{border-style:dashed;border-top-style:solid}
-.j-top{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.j-top{display:flex;align-items:center;gap:7px;margin-bottom:6px;padding-right:44px}
 /* Chapter mark: a small dark square with the chapter number, after the chapter openers in the seminar. */
 .j-ch{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:2px;background:var(--ink);color:var(--paper);font:400 .92rem/1 Georgia,"Times New Roman",serif}
 .j-year{font:700 .74rem/1.2 var(--sans);color:var(--ink-2)}
 .j-q{display:none}
-.j-ico{flex:none;width:24px;height:24px;margin-left:auto;color:var(--g);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* Chapter icon: a picture that sits over the top-right corner of the chapter, breaking out of its border. */
+.j-ico{position:absolute;top:-30px;right:-8px;width:64px;height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(15,26,31,.18))}
 .j-title{display:block;font:italic 600 1rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink);text-wrap:balance}
 .j-what{display:block;margin-top:4px;font-size:.8rem;line-height:1.35;color:var(--ink)}
 .j-why{display:block;margin-top:6px;font-size:.75rem;line-height:1.4;color:var(--ink-2)}
 .j-links{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--ink-2)}
-.j-links path{fill:none;stroke:currentColor;stroke-width:1.5}
-.j-links .j-feed{stroke-dasharray:4 4;opacity:.85}
+.j-links path{fill:none;stroke:currentColor;stroke-width:2.4}
+.j-links .j-feed{stroke-width:2;stroke-dasharray:6 5;opacity:.85}
 .j-together{position:absolute;z-index:2;transform:translate(-50%,-50%);padding:0 6px;background:var(--paper);font:600 .66rem/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 
 /* Study card: one card, placed beside the chapter on wide screens and under it when the chapters stack. */
@@ -47,13 +48,14 @@
 .jc-more{font-size:.82rem}
 
 @media(max-width:1100px){
-  .journey{display:block;margin:20px 0 4px;padding-bottom:0}
+  .journey{display:block;margin:38px 0 4px;padding-bottom:0}
   .j-lane,.j-links,.j-together{display:none}
   .journey .j-steps{display:block}
-  .j-step{margin:0 0 28px}
-  .j-step:not(:last-child)::after{content:"\2193";position:absolute;left:18px;bottom:-25px;font-size:1rem;line-height:1;color:var(--ink-2)}
-  .j-q{display:inline-block;padding:1px 6px;border-radius:3px;background:var(--g);color:var(--gt);font-size:.7rem;font-weight:600}
+  .j-step{margin:0 0 40px}
+  .j-step:not(:last-child)::after{content:"\2193";position:absolute;left:16px;bottom:-33px;font:700 1.35rem/1 var(--sans);color:var(--ink-2)}
+  .j-q{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--g);color:var(--gt);font-size:.8rem;font-weight:650}
   .j-node:hover,.j-node[aria-expanded="true"]{transform:none}
+  .j-ico{right:-2px}
 }
 @media(prefers-reduced-motion:reduce){.j-node,.j-card,.j-card.on{transition:none}.j-node:hover,.j-node[aria-expanded="true"]{transform:none}}
 
