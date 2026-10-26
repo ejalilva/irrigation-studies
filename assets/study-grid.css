@@ -18,15 +18,21 @@
 /* Chapter icon: a picture over the top-right corner of the chapter, breaking out of its border. A card-coloured
    backing in the icon's own outline (assets/chapters/<icon>-back.png) hides the border and arrows behind it,
    while the area around the icon stays transparent. */
-.j-ico{position:absolute;top:-46px;right:-10px;width:80px;height:80px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(15,26,31,.16))}
-.j-ico::before{content:"";position:absolute;inset:0;background:var(--paper);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
-.j-ico img{position:relative;display:block;width:100%;height:100%}
+.j-ico{position:absolute;top:-46px;right:-10px;width:80px;height:80px;pointer-events:none}
+/* The backing is cut to the card itself (from the outer edge of its 3px top border, and its right edge), so it only hides the
+   border under the icon; above and beside the card the icon stays transparent. Insets follow the icon's offsets (top -46px,
+   right -10px) and the card's borders (3px top, 1px right). */
+.j-ico::before{content:"";position:absolute;inset:0;background:var(--paper);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;clip-path:inset(43px 9px 0 0)}
+.j-ico img{position:relative;display:block;width:100%;height:100%;filter:drop-shadow(0 2px 3px rgba(15,26,31,.16))}
 .j-ico-voyage::before{-webkit-mask-image:url(chapters/voyage-back.png);mask-image:url(chapters/voyage-back.png)}
 .j-ico-details::before{-webkit-mask-image:url(chapters/details-back.png);mask-image:url(chapters/details-back.png)}
 .j-ico-shift::before{-webkit-mask-image:url(chapters/shift-back.png);mask-image:url(chapters/shift-back.png)}
 .j-ico-patterns::before{-webkit-mask-image:url(chapters/patterns-back.png);mask-image:url(chapters/patterns-back.png)}
 .j-ico-map::before{-webkit-mask-image:url(chapters/map-back.png);mask-image:url(chapters/map-back.png)}
 .j-ico-circle::before{-webkit-mask-image:url(chapters/circle-back.png);mask-image:url(chapters/circle-back.png)}
+/* The full-circle and paradigm-shift icons are mostly dark line art; in dark mode a thin light halo keeps their dashes visible. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.j-ico-circle,.j-ico-shift) img{filter:drop-shadow(0 0 1px #DDE6E3) drop-shadow(0 0 .6px #DDE6E3)}}
+:root[data-theme="dark"] :is(.j-ico-circle,.j-ico-shift) img{filter:drop-shadow(0 0 1px #DDE6E3) drop-shadow(0 0 .6px #DDE6E3)}
 .j-title{display:block;font:italic 600 1rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink);text-wrap:balance}
 .j-what{display:block;margin-top:4px;font-size:.8rem;line-height:1.35;color:var(--ink)}
 .j-why{display:block;margin-top:6px;font-size:.75rem;line-height:1.4;color:var(--ink-2)}
@@ -71,8 +77,8 @@
   .j-step:not(:last-child)::after{content:"\2193";position:absolute;left:16px;bottom:-44px;font:700 1.35rem/1 var(--sans);color:var(--ink-2)}
   .j-q{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--g);color:var(--gt);font-size:.8rem;font-weight:650}
   .j-node:hover,.j-node[aria-expanded="true"]{transform:none}
-  .j-ico{right:-2px}
-  .j-ico{top:-44px}
+  .j-ico{top:-44px;right:-2px}
+  .j-ico::before{clip-path:inset(41px 1px 0 0)}
 }
 @media(prefers-reduced-motion:reduce){.j-node,.j-card,.j-card.on{transition:none}.j-node:hover,.j-node[aria-expanded="true"]{transform:none}}
 
