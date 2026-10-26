@@ -1,28 +1,40 @@
 /* The irrigation storyline ("Every answer revealed another question"): six chapters in three lanes, one per question
    (Where, When, How much), with elbow arrows from each chapter to the next and a dashed "combined" bracket that feeds the
    last chapter. Hovering, focusing or tapping a chapter opens its study card. Drawn by renderJourney() in index.html. */
-.journey{--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 20px),170px);position:relative;display:grid;grid-template-columns:104px repeat(6,minmax(0,1fr));column-gap:28px;row-gap:6px;margin:40px calc(-1 * var(--bleed)) 4px;padding-bottom:30px}
+.journey{--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 20px),170px);position:relative;display:grid;grid-template-columns:104px repeat(6,minmax(0,1fr));column-gap:28px;row-gap:6px;margin:52px calc(-1 * var(--bleed)) 4px;padding-bottom:30px}
 .journey .j-steps{display:contents;list-style:none;margin:0;padding:0}
 .j-lane{grid-column:1/-1;display:flex;align-items:center;gap:9px;min-height:84px;margin:0 -12px;padding:0 12px;border-radius:8px;background:var(--tint);font:650 1.06rem/1.2 var(--sans);color:var(--ink)}
 .j-lane::before{content:"";flex:none;width:12px;height:12px;border-radius:2px;background:var(--g)}
 .j-lane.g-where{--tint:rgba(49,130,189,.07)}.j-lane.g-when{--tint:rgba(253,141,60,.09)}.j-lane.g-how_much{--tint:rgba(116,196,118,.11)}
-.j-step{position:relative;z-index:2;align-self:center;margin:20px 0 8px}
+.j-step{position:relative;z-index:2;align-self:center;margin:34px 0 10px}
 .j-node{position:relative;display:block;width:100%;height:100%;padding:9px 11px 11px;border:1px solid var(--line);border-top:3px solid var(--g);border-radius:6px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
 .j-node:hover,.j-node[aria-expanded="true"]{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 22px rgba(15,26,31,.14)}
 .j-step.is-next .j-node{border-style:dashed;border-top-style:solid}
-.j-top{display:flex;align-items:center;gap:7px;margin-bottom:6px;padding-right:44px}
+.j-top{display:flex;align-items:center;gap:7px;margin-bottom:6px;padding-right:60px}
 /* Chapter mark: a small dark square with the chapter number, after the chapter openers in the seminar. */
 .j-ch{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:2px;background:var(--ink);color:var(--paper);font:400 .92rem/1 Georgia,"Times New Roman",serif}
 .j-year{font:700 .74rem/1.2 var(--sans);color:var(--ink-2)}
 .j-q{display:none}
-/* Chapter icon: a picture that sits over the top-right corner of the chapter, breaking out of its border. */
-.j-ico{position:absolute;top:-30px;right:-8px;width:64px;height:64px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(15,26,31,.18))}
+/* Chapter icon: a picture over the top-right corner of the chapter, breaking out of its border. A card-coloured
+   backing in the icon's own outline (assets/chapters/<icon>-back.png) hides the border and arrows behind it,
+   while the area around the icon stays transparent. */
+.j-ico{position:absolute;top:-46px;right:-10px;width:80px;height:80px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(15,26,31,.16))}
+.j-ico::before{content:"";position:absolute;inset:0;background:var(--paper);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.j-ico img{position:relative;display:block;width:100%;height:100%}
+.j-ico-voyage::before{-webkit-mask-image:url(chapters/voyage-back.png);mask-image:url(chapters/voyage-back.png)}
+.j-ico-details::before{-webkit-mask-image:url(chapters/details-back.png);mask-image:url(chapters/details-back.png)}
+.j-ico-shift::before{-webkit-mask-image:url(chapters/shift-back.png);mask-image:url(chapters/shift-back.png)}
+.j-ico-patterns::before{-webkit-mask-image:url(chapters/patterns-back.png);mask-image:url(chapters/patterns-back.png)}
+.j-ico-map::before{-webkit-mask-image:url(chapters/map-back.png);mask-image:url(chapters/map-back.png)}
+.j-ico-circle::before{-webkit-mask-image:url(chapters/circle-back.png);mask-image:url(chapters/circle-back.png)}
 .j-title{display:block;font:italic 600 1rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink);text-wrap:balance}
 .j-what{display:block;margin-top:4px;font-size:.8rem;line-height:1.35;color:var(--ink)}
 .j-why{display:block;margin-top:6px;font-size:.75rem;line-height:1.4;color:var(--ink-2)}
 .j-links{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--ink-2)}
-.j-links path{fill:none;stroke:currentColor;stroke-width:2.4}
-.j-links .j-feed{stroke-width:2;stroke-dasharray:6 5;opacity:.85}
+.j-links .j-arrow,.j-links .j-feed{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.j-links .j-feed{stroke-width:2.2;stroke-dasharray:1 7;opacity:.9}
+.j-links .j-head{fill:currentColor;stroke:none}
+.j-links .j-dots circle{fill:currentColor;stroke:var(--paper);stroke-width:2}
 .j-together{position:absolute;z-index:2;transform:translate(-50%,-50%);padding:0 6px;background:var(--paper);font:600 .66rem/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 
 /* Study card: one card, placed beside the chapter on wide screens and under it when the chapters stack. */
@@ -48,14 +60,15 @@
 .jc-more{font-size:.82rem}
 
 @media(max-width:1100px){
-  .journey{display:block;margin:38px 0 4px;padding-bottom:0}
+  .journey{display:block;margin:52px 0 4px;padding-bottom:0}
   .j-lane,.j-links,.j-together{display:none}
   .journey .j-steps{display:block}
-  .j-step{margin:0 0 40px}
-  .j-step:not(:last-child)::after{content:"\2193";position:absolute;left:16px;bottom:-33px;font:700 1.35rem/1 var(--sans);color:var(--ink-2)}
+  .j-step{margin:0 0 56px}
+  .j-step:not(:last-child)::after{content:"\2193";position:absolute;left:16px;bottom:-44px;font:700 1.35rem/1 var(--sans);color:var(--ink-2)}
   .j-q{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--g);color:var(--gt);font-size:.8rem;font-weight:650}
   .j-node:hover,.j-node[aria-expanded="true"]{transform:none}
   .j-ico{right:-2px}
+  .j-ico{top:-44px}
 }
 @media(prefers-reduced-motion:reduce){.j-node,.j-card,.j-card.on{transition:none}.j-node:hover,.j-node[aria-expanded="true"]{transform:none}}
 

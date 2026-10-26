@@ -200,8 +200,8 @@ The irrigation studies are told as six chapters in a small diagram, in place of 
 
 **Layout.**
 - **Lanes:** there is one lane per question, in the logical order (Where?, When?, How much?). The lane labels are set larger than the card text so the three questions read first.
-- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows a chapter mark (a dark square with its number), the year, the chapter icon, the chapter title, one plain line on what was done, and what it left open. The icon sits over the card's top-right corner, breaking out of its border.
-- **Arrows:** thick elbow arrows join the chapters in order. A dashed "combined" bracket joins chapters 3 and 4 into chapter 6, and chapter 5's arrow also enters it.
+- **Chapter cards:** each chapter sits in the lane of the question it answers. It shows a chapter mark (a dark square with its number), the year, the chapter icon, the chapter title, one plain line on what was done, and what it left open. The 80 px icon sits over the card's top-right corner, breaking out of its border.
+- **Arrows:** each arrow leaves the middle of a chapter's top or bottom edge (marked by a dot), turns once with a rounded corner in the empty part of the next chapter's lane, and enters that chapter from the left with a solid head. A dotted "combined" bracket joins chapters 3 and 4 into chapter 6 from below, and chapter 5's arrow also enters it.
 
 **Study card.** Hovering or focusing a chapter shows its study card beside it. Clicking or tapping keeps the card open, and Escape or a click elsewhere closes it. A published chapter's card holds:
 - the chapter title and seminar subtitle
@@ -222,7 +222,10 @@ Chapters 5 and 6 instead show a short text, the models or parts involved, and a 
 - `feeds: true` joins the bracket
 - `next: true` gives the dashed border of a future chapter
 
-**Chapter icons.** Ehsan supplied the six icons. They are saved in `assets/chapters/` as transparent WebP, trimmed to their content and squared at 176 px: `voyage`, `details`, `shift`, `patterns`, `map` and `circle`. To change one, save a new transparent image under the same name, about 176 px square.
+**Chapter icons.** Ehsan supplied the six icons: `voyage`, `details`, `shift`, `patterns`, `map` and `circle`.
+- **Files:** each is saved in `assets/chapters/` as transparent WebP, trimmed to its content and squared at 176 px.
+- **Backing:** each icon has a `<name>-back.png` mask, the icon's outline with the gaps between its parts closed, holes filled and a thin margin added. The page fills that shape with the card colour (`--paper`) behind the icon, so the card border and arrows don't show through the icon, while the area around it stays transparent. The masks are wired up in `assets/study-grid.css` (`.j-ico-<name>::before`).
+- **Changing an icon:** save the new transparent image and rebuild its mask the same way: alpha above 40, morphological closing with a 9 px disk at 256 px, hole fill, a 3 px dilation, then resize to 176 px.
 
 `renderJourney()` draws everything and redraws the arrows when the layout changes. The figures and paper details still come from `STUDIES` and `assets/journals.js`.
 
