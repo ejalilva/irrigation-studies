@@ -12,11 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-25j">
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-25j">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-25j">
-<script src="assets/journals.js?v=2026-10-25j"></script>
-<script src="assets/water-cycle.js?v=2026-10-25j" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=2026-10-26a">
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26a">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26a">
+<script src="assets/journals.js?v=2026-10-26a"></script>
+<script src="assets/water-cycle.js?v=2026-10-26a" defer></script>
 </head>
 <body class="main-page">
 <a class="skip" href="#studies">Skip to studies</a>
@@ -494,7 +494,8 @@ function drawPanels() {
    led to the next. Chapter titles follow the seminar "Simulating the largest
    human intervention in the water cycle". A chapter with study set shows that
    study's figure and journal card; feeds:true joins the dashed bracket into
-   the last chapter. Each chapter's icon is the picture assets/chapters/<icon>.webp.
+   the last chapter. Each chapter's icon is the picture assets/chapters/<icon>.webp, over a
+   card-coloured backing shaped by assets/chapters/<icon>-back.png.
    --------------------------------------------------------------------- */
 const CHAPTERS = [
   { year: "2019", q: "how_much", icon: "voyage", title: "The Columbus voyage",
@@ -549,7 +550,7 @@ function renderJourney() {
   box.innerHTML = ["where", "when", "how_much"].map(q => `<span class="j-lane g-${q}" style="grid-row:${LANE[q]}" aria-hidden="true">${QLABEL[q]}?</span>`).join("") +
     `<ol class="j-steps">${CHAPTERS.map((c, i) => `<li class="j-step g-${c.q}${c.next ? " is-next" : ""}" style="grid-column:${i + 2};grid-row:${LANE[c.q]}">
       <button type="button" class="j-node" aria-expanded="false" aria-controls="j-card">
-        <span class="j-top"><span class="j-ch" aria-hidden="true">${i + 1}</span><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><img class="j-ico" src="assets/chapters/${c.icon}.webp" alt="" width="64" height="64" decoding="async"></span>
+        <span class="j-top"><span class="j-ch" aria-hidden="true">${i + 1}</span><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp" alt="" width="80" height="80" decoding="async"></span></span>
         <span class="j-title"><span class="sr-only">Chapter ${i + 1}: </span>${esc(c.title)}</span>
         <span class="j-what">${esc(c.what)}</span>
         <span class="j-why">${esc(c.left)}</span>
@@ -559,27 +560,46 @@ function renderJourney() {
   const svg = box.querySelector(".j-links"), tag = box.querySelector(".j-together"), card = box.querySelector(".j-card");
   const nodes = [...box.querySelectorAll(".j-node")], stacked = () => getComputedStyle(svg).display === "none";
 
-  // Arrows from each chapter to the next, and the bracket that feeds the last one.
+  // Arrows from each chapter to the next. Each leaves the middle of the chapter's top or bottom edge (marked by a dot),
+  // turns once with a rounded corner in the empty part of the next chapter's lane, and enters that chapter from the left.
+  // The dashed bracket gathers the chapters marked feeds:true into the last one.
   const draw = () => {
     const b = box.getBoundingClientRect(), r = nodes.map(n => n.getBoundingClientRect());
     svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
     if (stacked()) return;
-    let d = "";
+    const X = v => v - b.left, Y = v => v - b.top;
+    let d = "", dots = "";
     for (let i = 0; i < r.length - 1; i++) {
-      const a = r[i], c = r[i + 1], x1 = a.right - b.left, y1 = a.top + a.height / 2 - b.top, x2 = c.left - b.left - 3, y2 = c.top + c.height / 2 - b.top;
-      const xm = (x1 + x2) / 2, rr = Math.min(8, Math.abs(y2 - y1) / 2), sg = Math.sign(y2 - y1);
-      d += `<path d="${sg ? `M${x1} ${y1}H${xm - rr}Q${xm} ${y1} ${xm} ${y1 + sg * rr}V${y2 - sg * rr}Q${xm} ${y2} ${xm + rr} ${y2}H${x2}` : `M${x1} ${y1}H${x2}`}" marker-end="url(#j-arrow)"/>`;
+      const a = r[i], c = r[i + 1], cy = c.top + c.height / 2, x2 = X(c.left) - 2, ym = Y(cy);
+      if (cy < a.top - 20 || cy > a.bottom + 20) {
+        const up = cy < a.top, s = up ? -1 : 1, x1 = X(a.left + a.width / 2), y1 = Y(up ? a.top : a.bottom);
+        const R = Math.max(0, Math.min(22, Math.abs(ym - y1) - 4, (x2 - x1) / 2));
+        d += `<path d="M${x1} ${y1}V${ym - s * R}Q${x1} ${ym} ${x1 + R} ${ym}H${x2}"/>`;
+        dots += `<circle cx="${x1}" cy="${y1}" r="4"/>`;
+      } else {
+        const x1 = X(a.right), y1 = Y(a.top + a.height / 2), xm = (x1 + x2) / 2, R = Math.min(10, Math.abs(ym - y1) / 2), s = Math.sign(ym - y1);
+        d += `<path d="${s ? `M${x1} ${y1}H${xm - R}Q${xm} ${y1} ${xm} ${y1 + s * R}V${ym - s * R}Q${xm} ${ym} ${xm + R} ${ym}H${x2}` : `M${x1} ${y1}H${x2}`}"/>`;
+        dots += `<circle cx="${x1}" cy="${y1}" r="4"/>`;
+      }
     }
     const last = r[r.length - 1], feeds = CHAPTERS.map((c, i) => c.feeds ? r[i] : null).filter(Boolean);
     let f = "";
     if (feeds.length) {
-      const yb = Math.max(...r.map(n => n.bottom)) - b.top + 16, xl = last.left + last.width / 2 - b.left;
-      feeds.forEach(n => { f += `M${n.left + n.width / 2 - b.left} ${n.bottom - b.top}V${yb}`; });
-      f += `M${feeds[0].left + feeds[0].width / 2 - b.left} ${yb}H${xl}V${last.bottom - b.top + 4}`;
+      const yb = Math.max(...r.map(n => n.bottom)) - b.top + 18, xl = X(last.left + last.width / 2), R = 12;
+      // The other feeds drop onto the bracket first; the first feed's path runs last so the arrowhead lands on the last chapter.
+      let main = "";
+      feeds.forEach((n, k) => {
+        const x = X(n.left + n.width / 2), y = Y(n.bottom);
+        if (k === 0) main = `M${x} ${y}V${yb - R}Q${x} ${yb} ${x + R} ${yb}H${xl - R}Q${xl} ${yb} ${xl} ${yb - R}V${Y(last.bottom) + 2}`;
+        else f += `M${x} ${y}V${yb}`;
+        dots += `<circle cx="${x}" cy="${y}" r="3.5"/>`;
+      });
+      f += main;
       tag.style.left = ((feeds[0].left + last.left) / 2 + feeds[0].width / 2 - b.left) + "px"; tag.style.top = yb + "px";
     }
-    svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4.6" markerHeight="4.6" orient="auto-start-reverse"><path d="M0 1L9 5L0 9Z" fill="currentColor"/></marker></defs>${d}` +
-      (f ? `<path class="j-feed" d="${f}" marker-end="url(#j-arrow)"/>` : "");
+    svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path class="j-head" d="M1.5 1.5L11 6L1.5 10.5Q3.6 6 1.5 1.5Z"/></marker></defs>` +
+      d.replace(/<path /g, '<path class="j-arrow" marker-end="url(#j-arrow)" ') +
+      (f ? `<path class="j-feed" d="${f}" marker-end="url(#j-arrow)"/>` : "") + `<g class="j-dots">${dots}</g>`;
   };
   draw();
   if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
