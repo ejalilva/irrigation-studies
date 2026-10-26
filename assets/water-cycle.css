@@ -276,3 +276,16 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
 #peek .dialog-note {margin-bottom:0;}
 /* While a panel is open or about to open, the one-line description under the part's label stays hidden. */
 .explorer.peeking .hint-panel {opacity:0;visibility:hidden;}
+
+/* Summary (data-popup="summary"): a moment after the mouse arrives, so the part's animation is seen first, the text under the
+   part's label adds a chip per paper (journal and year in the journal's colour) and counts of other work. No box: it keeps the
+   description's transparent background and page-colour halo. While waiting it stays hidden (.wait). */
+.hint-panel.wait {opacity:0;visibility:hidden;transition:none;}
+.hint-panel.rich {max-width:220px;}
+.hint-panel.rich.show {transition:opacity .25s;}
+.hint-papers:empty {display:none;}
+.hp-chips {display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 0;}
+.hp-chip {display:inline-block;padding:1px 6px;border-radius:3px;background:var(--jc);color:#fff;font:600 .66rem/1.45 var(--sans);letter-spacing:.02em;white-space:nowrap;text-shadow:none;box-shadow:0 0 0 1.5px var(--paper);}
+.hp-count {margin:5px 0 0;font-size:.74rem;line-height:1.35;color:var(--ink-2);}
+.hint-panel.rich .hint-link {margin-top:4px;}
+@media(max-width:750px) {.hint-panel.rich {max-width:none;}}
