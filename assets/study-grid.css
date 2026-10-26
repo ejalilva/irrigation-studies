@@ -27,6 +27,9 @@
 .j-ico-patterns::before{-webkit-mask-image:url(chapters/patterns-back.png);mask-image:url(chapters/patterns-back.png)}
 .j-ico-map::before{-webkit-mask-image:url(chapters/map-back.png);mask-image:url(chapters/map-back.png)}
 .j-ico-circle::before{-webkit-mask-image:url(chapters/circle-back.png);mask-image:url(chapters/circle-back.png)}
+/* The full-circle icon is mostly dark line art, so in dark mode it sits on a light disc instead of the card colour. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .j-ico-circle::before{background:#DDE6E3}}
+:root[data-theme="dark"] .j-ico-circle::before{background:#DDE6E3}
 .j-title{display:block;font:italic 600 1rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink);text-wrap:balance}
 .j-what{display:block;margin-top:4px;font-size:.8rem;line-height:1.35;color:var(--ink)}
 .j-why{display:block;margin-top:6px;font-size:.75rem;line-height:1.4;color:var(--ink-2)}

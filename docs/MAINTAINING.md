@@ -225,7 +225,7 @@ Chapters 5 and 6 instead show a short text, the models or parts involved, and a 
 **Chapter icons.** Ehsan supplied the six icons: `voyage`, `details`, `shift`, `patterns`, `map` and `circle`.
 - **Files:** each is saved in `assets/chapters/` as transparent WebP, trimmed to its content and squared at 176 px.
 - **Backing:** each icon has a `<name>-back.png` mask, the icon's outline with the gaps between its parts closed, holes filled and a thin margin added. The page fills that shape with the card colour (`--paper`) behind the icon, so the card border and arrows don't show through the icon, while the area around it stays transparent. The masks are wired up in `assets/study-grid.css` (`.j-ico-<name>::before`).
-- **Changing an icon:** save the new transparent image and rebuild its mask the same way: alpha above 40, morphological closing with a 9 px disk at 256 px, hole fill, a 3 px dilation, then resize to 176 px.
+- **Changing an icon:** save the new transparent image and rebuild its mask the same way: alpha above 40, morphological closing with a 9 px disk at 256 px, hole fill, a 3 px dilation, then resize to 176 px. An icon whose outline is open, like the dashed `circle` (replaced on 26 October 2026), uses its convex hull instead of the hole fill, so its whole inside is covered. Because that icon is mostly dark line art, its backing is a light disc in dark mode (`.j-ico-circle::before` in `assets/study-grid.css`).
 
 `renderJourney()` draws everything and redraws the arrows when the layout changes. The figures and paper details still come from `STUDIES` and `assets/journals.js`.
 
