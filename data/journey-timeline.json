@@ -1,141 +1,291 @@
-[
-  {
-    "period": "2013",
-    "place": "Sharif University",
-    "title": "Learning to see the Earth differently",
-    "landmark": "sharif",
-    "category": "Research foundations",
-    "story": "My PhD began at Sharif in 2013. My early introduction to GIS and remote sensing gave me a new way to ask questions about water. I started with ArcGIS and began learning MATLAB.",
-    "skills": [
-      "GIS & ArcGIS",
-      "Remote sensing",
-      "MATLAB foundations"
-    ],
-    "outcome": "Mapping and interpreting satellite observations."
-  },
-  {
-    "period": "2015\u20132019",
-    "place": "Building a startup",
-    "title": "Turning an idea into a product",
-    "landmark": "startup",
-    "category": "Entrepreneurship",
-    "story": "Alongside my PhD, I co-founded a company in 2015. Courses on entrepreneurship helped us move from ideas to products and minimum viable products. I designed website experiences for satellite-based agricultural monitoring and rural tourism, using PowerPoint to prototype interfaces and create presentation videos. We dissolved the company in 2019, but the design and communication skills stayed with me.",
-    "skills": [
-      "MVP development",
-      "UX prototyping",
-      "Visual storytelling"
-    ],
-    "outcome": "Product concepts, two website UX designs and presentation videos."
-  },
-  {
-    "period": "2016\u20132017",
-    "place": "CNR IRPI \u00b7 Italy",
-    "title": "From scripts to reusable models",
-    "landmark": "italy",
-    "category": "Research collaboration",
-    "story": "In Italy, I strengthened my MATLAB skills while processing satellite imagery. I learned to build models, write functions and assemble reusable components into modular software. Coding became a way to develop and test scientific ideas.",
-    "skills": [
-      "Satellite image processing",
-      "Model development",
-      "Modular programming"
-    ],
-    "outcome": "Reusable functions and satellite-processing workflows."
-  },
-  {
-    "period": "2018",
-    "place": "Teaching at Sharif",
-    "title": "Learning by explaining",
-    "landmark": "sharif",
-    "category": "Teaching",
-    "story": "Teaching at Sharif gave me another way to work with ideas: explain them clearly, organize them into a course and help others develop their own understanding.",
-    "skills": [
-      "Teaching",
-      "Scientific communication"
-    ],
-    "outcome": "University teaching alongside my doctoral research."
-  },
-  {
-    "period": "2019",
-    "place": "PhD completed",
-    "title": "Carrying the experience forward",
-    "landmark": "sharif",
-    "category": "Milestone",
-    "story": "I completed my PhD in 2019. The same year, our company closed. Research, coding and product design had become connected parts of my experience, ready to carry into the next stage.",
-    "skills": [],
-    "outcome": "A PhD and experience spanning research, software and product design."
-  },
-  {
-    "period": "2020",
-    "place": "First postdoctoral role",
-    "title": "From satellite data to land models",
-    "landmark": "sharif",
-    "category": "Research & computing",
-    "story": "My first postdoctoral role introduced me to the VIC model, land surface modeling and data assimilation. I began working in Ubuntu and Linux, using the command line and Bash scripts. I used MATLAB to preprocess satellite data and prepare model inputs.",
-    "skills": [
-      "Linux & Ubuntu",
-      "Command line & Bash",
-      "VIC & land surface modeling",
-      "Data assimilation"
-    ],
-    "outcome": "Satellite data prepared for modeling and assimilation experiments."
-  },
-  {
-    "period": "2020\u20132021",
-    "place": "Teaching & Earth science",
-    "title": "Making knowledge accessible online",
-    "landmark": "sharif",
-    "category": "Teaching & faculty",
-    "story": "In 2020 and 2021, I taught at Amirkabir University and learned Google Earth Engine while teaching a master\u2019s course. Teaching through the pandemic also meant learning to record lessons, which led me to start a YouTube channel. In 2021, I became a faculty member at the Research Institute for Earth Sciences, before moving to the United States.",
-    "skills": [
-      "Google Earth Engine",
-      "Recorded teaching",
-      "YouTube communication"
-    ],
-    "outcome": "Online lessons, a YouTube channel and an Earth-science faculty role."
-  },
-  {
-    "period": "2022",
-    "place": "Michigan State University",
-    "title": "Scaling up\u2014and moving to Python",
-    "landmark": "michigan",
-    "category": "Postdoctoral research",
-    "story": "At Michigan State, I was introduced to high-performance computing. My online master\u2019s studies in analytics at Georgia Tech also helped me learn Python. I moved from MATLAB toward Python, building confidence with NumPy and pandas, then expanding into machine learning with scikit-learn and PyTorch.",
-    "skills": [
-      "High-performance computing",
-      "Python",
-      "NumPy & pandas",
-      "scikit-learn",
-      "PyTorch"
-    ],
-    "outcome": "Larger computing workflows and a growing Python and machine-learning toolkit."
-  },
-  {
-    "period": "2023\u2013present",
-    "place": "NASA Goddard",
-    "title": "Building research software and global products",
-    "landmark": "nasa",
-    "category": "Research scientist",
-    "story": "At NASA, I deepened my use of Git and GitHub, developed within NASA\u2019s Land Information System (LIS) using Fortran, and learned to build Python software packages through AgroTrack. I developed my first global soil-moisture product using machine learning. The work expanded both the scientific questions I could tackle and the software skills I needed to answer them.",
-    "skills": [
-      "Git & GitHub",
-      "NASA LIS & Fortran",
-      "AgroTrack Python package",
-      "Global ML products"
-    ],
-    "outcome": "A global machine-learning soil-moisture product and reusable research software."
-  },
-  {
-    "period": "Recent work",
-    "place": "NASA \u00b7 continuing to learn",
-    "title": "From foundation models to agents",
-    "landmark": "nasa",
-    "category": "Ongoing development",
-    "story": "More recently, I have learned to fine-tune geospatial foundation models and benchmark them against one another. I am also exploring agents to automate everyday work, from software development to building this website and maintaining its research information. Each new need becomes a reason to learn the next skill.",
-    "skills": [
-      "Geospatial foundation models",
-      "Fine-tuning & benchmarking",
-      "Agent workflows"
-    ],
-    "outcome": "Foundation-model experiments and automation for research and everyday development."
-  }
-]
+{
+  "landmarks": [
+    {
+      "key": "sharif",
+      "name": "Sharif University",
+      "x": 5.921,
+      "y": 41.339,
+      "w": 31.878,
+      "h": 25.717
+    },
+    {
+      "key": "startup",
+      "name": "My startup",
+      "x": 30.861,
+      "y": 61.743,
+      "w": 11.902,
+      "h": 15.197
+    },
+    {
+      "key": "italy",
+      "name": "CNR IRPI, Italy",
+      "x": 42.763,
+      "y": 39.32,
+      "w": 16.806,
+      "h": 19.341
+    },
+    {
+      "key": "michigan",
+      "name": "Michigan State",
+      "x": 67.943,
+      "y": 32.944,
+      "w": 7.656,
+      "h": 33.262
+    },
+    {
+      "key": "nasa",
+      "name": "NASA Goddard",
+      "x": 80.981,
+      "y": 12.965,
+      "w": 14.773,
+      "h": 28.162
+    }
+  ],
+  "skills": [
+    {
+      "key": "gis",
+      "label": "GIS",
+      "color": "#2A74B8",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "rs",
+      "label": "Remote sensing",
+      "color": "#10806A",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "matlab",
+      "label": "MATLAB",
+      "color": "#E16737",
+      "text": "#172026"
+    },
+    {
+      "key": "ux",
+      "label": "UX design",
+      "color": "#D63384",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "story",
+      "label": "Storytelling",
+      "color": "#F7B6CF",
+      "text": "#172026"
+    },
+    {
+      "key": "imgproc",
+      "label": "Image processing",
+      "color": "#4FB3D9",
+      "text": "#172026"
+    },
+    {
+      "key": "model",
+      "label": "Model building",
+      "color": "#8B5A2B",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "teach",
+      "label": "Teaching",
+      "color": "#B39DDB",
+      "text": "#172026"
+    },
+    {
+      "key": "linux",
+      "label": "Linux",
+      "color": "#FCC624",
+      "text": "#172026"
+    },
+    {
+      "key": "lsm",
+      "label": "Land surface models",
+      "color": "#557A1F",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "da",
+      "label": "Data assimilation",
+      "color": "#7B4FB0",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "gee",
+      "label": "Earth Engine",
+      "color": "#0B7A45",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "youtube",
+      "label": "YouTube",
+      "color": "#D9241C",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "python",
+      "label": "Python",
+      "color": "#3776AB",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "hpc",
+      "label": "HPC",
+      "color": "#546E7A",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "ml",
+      "label": "Machine learning",
+      "color": "#F7931E",
+      "text": "#172026"
+    },
+    {
+      "key": "dl",
+      "label": "Deep learning",
+      "color": "#EE4C2C",
+      "text": "#000000"
+    },
+    {
+      "key": "git",
+      "label": "Git",
+      "color": "#24292F",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "lis",
+      "label": "NASA LIS · Fortran",
+      "color": "#0B3D91",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "pkg",
+      "label": "Python packages",
+      "color": "#FFD43B",
+      "text": "#172026"
+    },
+    {
+      "key": "gfm",
+      "label": "Foundation models",
+      "color": "#3949AB",
+      "text": "#FFFFFF"
+    },
+    {
+      "key": "agents",
+      "label": "AI agents",
+      "color": "#00ACC1",
+      "text": "#172026"
+    }
+  ],
+  "stops": [
+    {
+      "period": "2013",
+      "short": "Sharif",
+      "place": "Sharif University",
+      "landmark": "sharif",
+      "skills": [
+        "gis",
+        "rs",
+        "matlab"
+      ],
+      "story": "Began my PhD, mapping water with GIS and remote sensing."
+    },
+    {
+      "period": "2015–19",
+      "short": "Startup",
+      "place": "My startup",
+      "landmark": "startup",
+      "skills": [
+        "ux",
+        "story"
+      ],
+      "story": "Co-founded a company: product ideas, website designs and videos."
+    },
+    {
+      "period": "2016–17",
+      "short": "Italy",
+      "place": "CNR IRPI, Italy",
+      "landmark": "italy",
+      "skills": [
+        "imgproc",
+        "model"
+      ],
+      "story": "Turned MATLAB scripts into reusable models for satellite data."
+    },
+    {
+      "period": "2018",
+      "short": "Teaching",
+      "place": "Sharif University",
+      "landmark": "sharif",
+      "skills": [
+        "teach"
+      ],
+      "story": "Taught my first university course."
+    },
+    {
+      "period": "2019",
+      "short": "PhD",
+      "place": "Sharif University",
+      "landmark": "sharif",
+      "skills": [],
+      "story": "Finished my PhD."
+    },
+    {
+      "period": "2020",
+      "short": "Postdoc",
+      "place": "First postdoc",
+      "landmark": "sharif",
+      "skills": [
+        "linux",
+        "lsm",
+        "da"
+      ],
+      "story": "Land surface models and data assimilation, on Linux."
+    },
+    {
+      "period": "2020–21",
+      "short": "Amirkabir",
+      "place": "Amirkabir University",
+      "landmark": "sharif",
+      "skills": [
+        "gee",
+        "youtube"
+      ],
+      "story": "Taught Earth Engine and recorded the lessons for YouTube."
+    },
+    {
+      "period": "2022",
+      "short": "Michigan State",
+      "place": "Michigan State",
+      "landmark": "michigan",
+      "skills": [
+        "python",
+        "hpc",
+        "ml",
+        "dl"
+      ],
+      "story": "Moved to Python, machine learning and supercomputers."
+    },
+    {
+      "period": "2023",
+      "short": "NASA",
+      "place": "NASA Goddard",
+      "landmark": "nasa",
+      "skills": [
+        "git",
+        "lis",
+        "pkg"
+      ],
+      "story": "Code for NASA LIS, the AgroTrack package and a global ML product."
+    },
+    {
+      "period": "Now",
+      "short": "NASA",
+      "place": "NASA Goddard",
+      "landmark": "nasa",
+      "skills": [
+        "gfm",
+        "agents"
+      ],
+      "story": "Fine-tuning geospatial foundation models, and building agents."
+    }
+  ]
+}

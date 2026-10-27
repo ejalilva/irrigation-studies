@@ -1,0 +1,94 @@
+/* My journey (journey.html). The painting fills the top of the page; the landmark of the current stop grows out of it
+   (a cut-out layer in assets/journey/marks/ scaled up) while the rest of the painting fades back. Below it, the timeline,
+   one line for the current stop, and the skills as coloured bars that start at the stop where each was learned and
+   reach to the current stop. Built by scripts/build_journey.py; behaviour in assets/journey-page.js. */
+:root { --jy-veil: rgba(255,255,255,.2); --jy-ghost: #6B777C; --jy-dot: #B9C3C7; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; --jy-dot: #4A5D64; } }
+:root[data-theme="dark"] { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; --jy-dot: #4A5D64; }
+
+.jy-page { background: var(--paper); }
+
+/* Header and title sit on the sky */
+.jy-hero { position: relative; }
+.jy-top { position: absolute; z-index: 7; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding: 22px max(24px, calc((100% - 1072px) / 2)); text-shadow: 0 1px 8px rgba(10,35,60,.45); }
+.jy-name { font: 500 1.2rem/1.2 var(--head); color: #fff; text-decoration: none; }
+.jy-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
+.jy-nav a { color: rgba(255,255,255,.92); text-decoration: none; }
+.jy-nav a:hover { color: #fff; text-decoration: underline; }
+.jy-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+.jy-title { position: absolute; z-index: 6; left: max(24px, calc((100% - 1072px) / 2)); top: clamp(64px, 11.5%, 112px); margin: 0; font: 500 clamp(2.2rem, 4.2vw, 3.75rem)/1 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }
+
+/* The painting, edge to edge */
+.jy-scene { position: relative; width: 100%; aspect-ratio: 1672 / 941; overflow: hidden; background: #D4DDCB; }
+.jy-land { display: block; width: 100%; height: 100%; object-fit: cover; transition: filter .35s; }
+.jy-veil { position: absolute; inset: 0; z-index: 1; background: var(--jy-veil); opacity: 0; transition: opacity .35s; pointer-events: none; }
+.jy-scene.has-mark .jy-land { filter: saturate(.72) brightness(1.03); }
+.jy-scene.has-mark .jy-veil { opacity: 1; }
+.jy-scrim { position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: min(230px, 30%); background: linear-gradient(rgba(12,40,70,.42), rgba(12,40,70,0)); pointer-events: none; }
+/* Each landmark's cut-out sits exactly over its painted self, so it is invisible until it grows. */
+.jy-mark { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: var(--w); height: var(--h); opacity: 0; transform-origin: 50% 92%; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .25s, filter .45s; pointer-events: none; }
+.jy-mark.is-on { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 10px 14px rgba(23,32,38,.3)); }
+.jy-tag { position: absolute; z-index: 4; left: calc(var(--x) + var(--w) / 2); top: calc(var(--y) + var(--h)); transform: translate(-50%, 2px); opacity: 0; padding: 5px 11px; border-radius: 999px; background: #fff; color: #172026; font: 600 .875rem/1.3 var(--head); white-space: nowrap; box-shadow: 0 4px 14px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
+.jy-tag.is-on { opacity: 1; transform: translate(-50%, 12px); }
+.jy-hit { position: absolute; z-index: 5; left: var(--x); top: var(--y); width: var(--w); height: var(--h); padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; }
+.jy-hit:focus { outline: none; }
+
+/* Timeline, story line and skill bars share one ten-column grid, so each bar starts under its stop. */
+.jy-path { max-width: 1200px; margin: 0 auto; padding: 36px 24px 0; }
+.jy-scroll { overflow-x: auto; padding-bottom: 10px; }
+.jy-inner { --last: 9; position: relative; min-width: 960px; padding: 0 44px; } /* side room for the last column's longer labels */
+.jy-track { position: absolute; left: calc(44px + (100% - 88px) * .05); right: calc(44px + (100% - 88px) * .05); top: 9px; height: 2px; background: var(--line); }
+.jy-progress { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--end) / var(--last) * 100%); background: var(--ink); transition: width .4s; }
+.jy-stops { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); }
+.jy-stop { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 0 4px 6px; border: 0; border-radius: 6px; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
+.jy-stop:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.jy-dot { display: block; width: 12px; height: 12px; margin-top: 4px; box-sizing: border-box; border-radius: 50%; background: var(--paper); border: 2px solid var(--jy-dot); transition: all .25s; }
+.jy-year { font-size: .875rem; font-weight: 600; color: var(--jy-ghost); }
+.jy-place { font-size: .78rem; line-height: 1.3; color: var(--ink-2); }
+.jy-stop.is-same .jy-dot { border-color: var(--ink); }
+.jy-stop.is-past .jy-dot { background: var(--ink); border-color: var(--ink); }
+.jy-stop.is-past .jy-year { color: var(--ink); }
+.jy-stop.is-now .jy-dot { width: 20px; height: 20px; margin-top: 0; border: 3px solid var(--paper); box-shadow: 0 0 0 2px var(--ink); }
+.jy-stop.is-now .jy-year { font-weight: 700; }
+.jy-stories { max-width: 760px; margin: 22px auto 0; text-align: center; }
+.jy-story { margin: 0 0 6px; font-size: 1.125rem; line-height: 1.5; color: var(--ink); }
+.jy-story strong { font-weight: 600; }
+.js .jy-story:not(.is-active) { display: none; }
+.jy-lanes { position: relative; height: calc(var(--rows) * 30px); margin-top: 28px; }
+.jy-band { position: absolute; top: -6px; bottom: -6px; left: calc(var(--end) * 10%); width: 10%; border-radius: 8px; background: color-mix(in srgb, var(--ink) 5%, transparent); transition: left .4s; }
+.jy-bars { list-style: none; margin: 0; padding: 0; }
+.jy-bar { position: absolute; top: calc(var(--row) * 30px); left: calc(var(--start) * 10% + .6%); height: 24px; box-sizing: border-box; display: flex; align-items: center; width: 0; min-width: max-content; padding: 0 11px; border: 1px dashed var(--line); border-radius: 12px; background: var(--paper); color: var(--jy-ghost); font-size: .8125rem; font-weight: 500; line-height: 1; white-space: nowrap; transition: width .55s cubic-bezier(.2,.8,.2,1), background-color .3s, color .3s, border-color .3s; }
+.jy-bar.is-on { width: calc((var(--end) - var(--start) + 1) * 10% - 1.2%); border: 1px solid var(--bg); background: var(--bg); color: var(--fg); }
+.jy-bar.jy-python.is-on { box-shadow: inset 0 -3px 0 #FFD43B; }
+/* A skill learned at the stop just reached gives one soft pulse. */
+@keyframes jy-pulse { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bg) 55%, transparent); } to { box-shadow: 0 0 0 9px transparent; } }
+.jy-bar.is-new { animation: jy-pulse .9s ease-out; }
+.jy-page .site-foot { margin-top: 72px; }
+
+@media (max-width: 760px) {
+  .jy-top { position: relative; padding: 16px; text-shadow: none; }
+  .jy-name { color: var(--ink); }
+  .jy-nav a { color: var(--ink-2); }
+  .jy-nav a:hover, .jy-nav a[aria-current="page"] { color: var(--ink); }
+  .jy-scrim { display: none; }
+  .jy-title { left: 16px; top: 14px; font-size: 1.9rem; }
+  .jy-tag { font-size: .7rem; padding: 3px 7px; }
+  .jy-path { padding: 24px 16px 0; }
+  /* On phones the timeline fits the screen as dots (only the current year is named) and the skills wrap as boxes. */
+  .jy-scroll { overflow: visible; }
+  .jy-inner { min-width: 0; padding: 0; }
+  .jy-track { left: 5%; right: 5%; }
+  .jy-place, .jy-year { display: none; }
+  .jy-stop.is-now .jy-year { display: block; position: absolute; top: 26px; white-space: nowrap; font-size: .8rem; }
+  .jy-stop { position: relative; padding-bottom: 18px; }
+  .jy-stories { margin-top: 18px; }
+  .jy-story { font-size: 1rem; }
+  .jy-lanes { height: auto; margin-top: 20px; }
+  .jy-band { display: none; }
+  .jy-bars { display: flex; flex-wrap: wrap; gap: 6px; }
+  .jy-bar, .jy-bar.is-on { position: static; width: auto; min-width: 0; height: 28px; border-radius: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jy-land, .jy-veil, .jy-mark, .jy-tag, .jy-progress, .jy-dot, .jy-band, .jy-bar { transition: none; }
+  .jy-bar.is-new { animation: none; }
+}
