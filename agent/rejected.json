@@ -443,6 +443,53 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-26"
+    },
+    {
+      "id": "10.3390/su182010703",
+      "title": "Sprinkler-Irrigated Corn Fields Show Higher Realization of a Reference-Field Evapotranspiration Benchmark: A Six-Season Satellite Analysis of Colorado’s South Platte Corridor",
+      "authors": "García, L.A.",
+      "first_author": "García",
+      "year": 2026,
+      "date": "2026-10-21",
+      "venue": "Sustainability",
+      "doi": "10.3390/su182010703",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "South Platte corridor, Colorado, USA",
+      "region": "North America",
+      "scale": "field",
+      "period": {
+        "start": 2020,
+        "end": 2025
+      },
+      "approach": "Landsat-based AgroET evapotranspiration realization ratio against alfalfa-reference benchmark, regre",
+      "methods": [
+        "et",
+        "imagery"
+      ],
+      "data": [
+        "Landsat",
+        "AgroET"
+      ],
+      "keywords": [
+        "evapotranspiration",
+        "sprinkler irrigation",
+        "flood irrigation",
+        "corn",
+        "Landsat"
+      ],
+      "summary": "Landsat-based AgroET data show sprinkler-irrigated corn fields reach slightly higher evapotranspiration relative to a reference benchmark than flood-irrigated fields in Colorado, 2020–2025.",
+      "added": "2026-10-26",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-10-26"
     }
   ]
 }
