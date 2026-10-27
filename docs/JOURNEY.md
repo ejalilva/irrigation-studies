@@ -1,39 +1,40 @@
 # My journey
 
-The journey page is back on the site as a work in progress, linked as **My journey** in the header of `index.html` and `human.html`. Two designs are kept side by side so they can be compared:
+`journey.html` is linked as **My journey** in the header of `index.html` and `human.html`. Ehsan chose this design on October 26, 2026 (option B of three): a white page, the painting edge to edge, as little text as possible, and the skills shown as coloured bars that grow along the timeline.
 
-| Page | Design | Built from |
-|---|---|---|
-| `journey.html` | Current version (October 23, 2026): one illustrated landscape with five landmarks, a ten-stage timeline, and the skills added at each stage. | `scripts/build_journey.py`, `assets/journey-v2.css`, `assets/journey-v2.js`, `assets/journey/landscape-integrated-v2.webp` |
-| `journey-initial.html` | First design (October 21, 2026): four landmark cutouts (Sharif, Italy, Michigan State, NASA Goddard) on the painted landscape; each opens a short story in a pop-up. Restored from commit `9e9a3bf`. | Hand-written HTML, `assets/journey.css`, `assets/journey.js`, `assets/site.css`, `assets/journey/landscape.jpg` and the four `.webp` cutouts |
+`journey-initial.html` keeps the first design (October 21, 2026) for comparison: four landmark cut-outs that each open a short story in a pop-up, restored from commit `9e9a3bf`. It can be deleted, with `assets/journey.css`, `assets/journey.js`, `assets/journey/landscape.jpg` and the four `.webp` cut-outs in `assets/journey/`, once it is no longer wanted.
 
-The first design uses the site's shared header, footer and light/dark theme. The current version has its own header and stays light in dark mode.
+History: the first design was added in pull request #13 and taken offline on October 22, 2026 (commit `3236b23`). A second version came in #16 without a header link; #43 restored the link; this design replaces the second version.
 
-History: the first design was added in pull request #13 and taken offline on October 22, 2026 (commit `3236b23`, which removed the page and its header links). The current version was merged in pull request #16 without a header link, so it was reachable only by its address until the link was restored.
+## How the page works
 
-Once one design is chosen, delete the other page and its unused assets.
+- **The painting** (`assets/journey/landscape-integrated-v2.webp`) fills the top of the page. The header and the title "My journey" sit on the sky, over a soft dark band so the white text reads; on phones the header moves above the painting.
+- **Landmarks grow.** Each of the five landmarks has a cut-out layer in `assets/journey/marks/` that sits exactly over its painted self, so it is invisible until it is highlighted. The highlighted landmark scales up by 15% from its base and gets a soft shadow, while the rest of the painting is slightly desaturated and veiled. Its name appears in a small tag under it. There are no outlines or circles.
+- **Map and timeline are linked.** Hovering or focusing a stop previews it: its landmark grows, its one-line story shows and the skill bars move to it. Clicking selects it. Hovering a landmark grows it and darkens the dots of its stops; clicking it selects its first stop, and clicking again moves to its next stop (Sharif has five). Arrow keys, Home and End move along the timeline.
+- **Skill bars.** Each skill is a bar that starts under the stop where it was learned and reaches to the current stop, so the bars form a staircase that grows as you move along. Skills not yet reached are faint dashed outlines. A skill learned at the stop just reached gives one soft pulse. On phones the timeline shrinks to dots (only the current year is named) and the skills wrap as boxes.
+- **First view.** The page opens at 2013. The first time the skills come into view, the timeline plays once through to now (about six seconds), unless the visitor has already hovered or clicked something. With reduced motion there is no play and the page opens at now.
+- **Without JavaScript** every stop's line is listed and all bars are shown at now.
 
-## Current version: content
+## Editing
 
-The ten stages follow Ehsan’s autobiographical account supplied October 22, 2026, including his corrections: VIC, Amirkabir University, NASA LIS and the AgroTrack Python package. Dates reflect the account: PhD 2013–2019; company 2015–2019; Italy 2016–2017; teaching at Sharif 2018; first postdoc 2020; teaching at Amirkabir 2020–2021; Research Institute for Earth Sciences faculty 2021; Michigan State 2022; NASA 2023–present.
+Everything is in `scripts/build_journey.py`; run `python scripts/build_journey.py` after editing. It writes `journey.html` and `data/journey-timeline.json` (a record of the same content).
 
-Georgia Tech is discussed alongside the transition to Python, without claiming an enrollment or completion date. Recent foundation-model and agent work has no invented start year. The startup has a symbolic workshop because no company name or identifiable building was provided. Early postdoctoral and teaching stages reuse the Iran landmark as a regional anchor, not a claim that all those appointments were at Sharif.
+- `STOPS`: the timeline, in order: year, short name under the dot, place for the story line, landmark, skills first learned there, and the one line on what Ehsan did.
+- `SKILLS`: each skill's label, colour and text colour. Tools use their own colours (MATLAB orange, Python blue with a yellow edge, Linux yellow, YouTube red, NASA blue, Git dark grey); the rest have colours chosen so every bar is different. The text colour is white or near-black, whichever reads at 4.5:1 on that colour. The Python bar's yellow edge is the `jy-python` rule in the CSS.
+- `MARKS`: each landmark's name and the box of its cut-out over the painting, in % of the painting's width and height.
+- Styles are in `assets/journey-page.css` and behaviour in `assets/journey-page.js`. Bump `V` in the script when either changes, so browsers fetch the new file.
 
-Edit the chapter list in `scripts/build_journey.py`, then run `python scripts/build_journey.py`. It generates `journey.html` and the structured content record `data/journey-timeline.json`. Styles and interaction are isolated in `assets/journey-v2.css` and `assets/journey-v2.js`.
+**Cut-outs.** The five layers were cut from the painting itself with box-prompted segmentation (Segment Anything, through the `rembg` package), one box per building (the Azadi tower and Sharif's building, the workshop and its dish, the NASA building, dome and rocket separately), then joined per landmark, cleaned of specks and given a 1 px soft edge. If the painting changes, the cut-outs must be redone to match it.
 
-## Artwork
+**Logos.** The bars use each tool's colour but not its logo. Official logo files could be added inside the bars later.
+
+## Artwork (the painting)
 
 `assets/journey/landscape-integrated-v2.webp` is a new built-in imagegen composite based on the original supplied landscape and four landmark illustrations. The original files remain intact. It is a symbolic map; the Colosseum represents Italy, and the rocket represents NASA, not a literal CNR IRPI or Goddard campus. The startup building is illustrative.
 
 Generation prompt: compositing; preserve the base landscape’s winding paths, river and bridge, mountains, dry left terrain and green right hills. Incorporate the recognizable Sharif/Tehran architecture, Italy Colosseum, Michigan clocktower and Spartan reference, NASA building/rocket, plus a small startup workshop into the same terrain. Match perspective, shared soft daylight, contact shadows and vegetation at each base; no floating cutouts, isolated cards or platforms. Wide 16:9 arrangement, Sharif at left, startup foreground, Italy center, Michigan right-center and NASA upper right. Use a quieter sage, terracotta, slate-blue and cream palette with subtle brush texture. No text, dates, UI or numbered markers; labels and timeline are accessible HTML. Output uses the Michigan clocktower as its principal Michigan landmark.
 
-The new image is encoded as WebP for the page. Separate transparent HTML buttons over its landmark regions provide hover, focus, selection and touch interaction, so the buildings remain visually grounded in the unified landscape.
-
-## Interaction and accessibility
-
-Selecting a landmark or timeline stage updates an inline chapter and a cumulative toolkit, highlighting newly introduced skills. The timeline includes overlapping career chapters and is an ordered sequence, not a proportional date axis. Previous/next controls stop at either end. URL fragments identify the selected stage. All chapter articles remain readable without JavaScript. Native buttons support keyboard activation; selection is exposed through aria-current and aria-pressed; the step counter is a live region. Reduced-motion preferences disable animated scrolling and hover transitions.
-
-The map is not presented as literal geography. Teaching at Amirkabir and the faculty role are described in the timeline rather than inventing extra institutional landmarks.
+The image is encoded as WebP for the page. Transparent buttons over the landmark regions take hover, focus, clicks and taps.
 
 ## First design: content and editing
 
