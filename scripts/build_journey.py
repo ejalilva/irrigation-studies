@@ -2,72 +2,145 @@
 
 Edit the lists below, then run:  python scripts/build_journey.py
 
-- MARKS: the five landmarks painted into assets/journey/landscape-integrated-v2.webp. Each has a cut-out
-  layer in assets/journey/marks/<key>.webp; x, y, w, h place that layer over the painting, in % of the
-  painting's width and height (taken from the cut-out's pixel box in the 1672 x 941 painting).
-- SKILLS: one coloured box per skill: label, background, text colour (white or near-black, whichever
-  reads at 4.5:1 on that background).
-- STOPS: the timeline, in order. Each stop names its landmark, the skills first learned there, and one
-  line on what I did.
+- MARKS: the landmarks painted into assets/journey/landscape-v3.webp. Each has a cut-out layer in
+  assets/journey/marks/<key>.webp; x, y, w, h place that layer over the painting, in % of the painting's
+  width and height (from the cut-out's pixel box in the 1672 x 941 painting).
+- SKILLS: one coloured bar per skill: label, background, text colour (white or near-black, whichever reads
+  at 4.5:1 on that background) and an optional second colour shown as a thin edge (MATLAB, Python).
+- WORK: papers, code, videos and talks, shown as small links under a stop's line. "href" may be None
+  until there is a link; such items are left out of the page.
+- STOPS: the timeline, in order: year, short name under the dot, place, landmark, skills first learned
+  there, one line on what I did (without repeating the skills, which the bars already show), the work
+  to link, and pictures. Pictures fan out above the stop and open in a viewer with their caption; put
+  photos in assets/journey/photos/ and list them as (file, caption) or (file, caption, credit).
 """
 from pathlib import Path
 import html
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-V = "2026-10-26j"  # bump when assets/journey-page.css or .js changes, so browsers fetch the new files
+V = "2026-10-27c"  # bump when assets/journey-page.css or .js changes, so browsers fetch the new files
+PAINTING = "assets/journey/landscape-v3.webp"
 
 MARKS = [
     # key, name on the map, x, y, w, h (% of the painting)
     ("sharif", "Sharif University", 5.921, 41.339, 31.878, 25.717),
-    ("startup", "My startup", 30.861, 61.743, 11.902, 15.197),
+    ("startup", "My startup", 30.861, 65.037, 11.902, 11.902),
     ("italy", "CNR IRPI, Italy", 42.763, 39.320, 16.806, 19.341),
     ("michigan", "Michigan State", 67.943, 32.944, 7.656, 33.262),
+    ("gatech", "Georgia Tech", 83.732, 50.159, 6.579, 13.815),
     ("nasa", "NASA Goddard", 80.981, 12.965, 14.773, 28.162),
 ]
 
 SKILLS = {
-    "gis": ("GIS", "#2A74B8", "#FFFFFF"),
+    "arcgis": ("ArcGIS", "#2A74B8", "#FFFFFF"),
+    "envi": ("ENVI", "#A1887F", "#172026"),
     "rs": ("Remote sensing", "#10806A", "#FFFFFF"),
-    "matlab": ("MATLAB", "#E16737", "#172026"),
+    "matlab": ("MATLAB coding", "#E16737", "#172026", "#0076A8"),
     "ux": ("UX design", "#D63384", "#FFFFFF"),
     "story": ("Storytelling", "#F7B6CF", "#172026"),
     "imgproc": ("Image processing", "#4FB3D9", "#172026"),
     "model": ("Model building", "#8B5A2B", "#FFFFFF"),
     "teach": ("Teaching", "#B39DDB", "#172026"),
     "linux": ("Linux", "#FCC624", "#172026"),
+    "bash": ("Bash", "#4EAA25", "#172026"),
+    "perl": ("Perl", "#39457E", "#FFFFFF"),
+    "web": ("Website design", "#9CCC65", "#172026"),
     "lsm": ("Land surface models", "#557A1F", "#FFFFFF"),
     "da": ("Data assimilation", "#7B4FB0", "#FFFFFF"),
-    "gee": ("Earth Engine", "#0B7A45", "#FFFFFF"),
+    "gee": ("Google Earth Engine", "#0B7A45", "#FFFFFF"),
     "youtube": ("YouTube", "#D9241C", "#FFFFFF"),
-    "python": ("Python", "#3776AB", "#FFFFFF"),
+    "python": ("Python", "#3776AB", "#FFFFFF", "#FFD43B"),
     "hpc": ("HPC", "#546E7A", "#FFFFFF"),
-    "ml": ("Machine learning", "#F7931E", "#172026"),
-    "dl": ("Deep learning", "#EE4C2C", "#000000"),
     "git": ("Git", "#24292F", "#FFFFFF"),
     "lis": ("NASA LIS · Fortran", "#0B3D91", "#FFFFFF"),
     "pkg": ("Python packages", "#FFD43B", "#172026"),
+    "geostack": ("Python geospatial stack", "#00796B", "#FFFFFF"),
+    "ml": ("Machine learning", "#F7931E", "#172026"),
+    "dl": ("Deep learning", "#EE4C2C", "#000000"),
     "gfm": ("Foundation models", "#3949AB", "#FFFFFF"),
     "agents": ("AI agents", "#00ACC1", "#172026"),
 }
 
+DOI = "https://doi.org/"
+WORK = {
+    # key: (kind, label, title, href)   kind: paper, code, video or talk
+    "congress2015": ("paper", "Congress paper 2015", "Estimating the rate of evaporation from Lake Urmia in 1995 using satellite and gauge data",
+                     "https://www.researchgate.net/publication/304498967"),
+    "dust": ("video", "UX video: dust monitoring", "UX design of a satellite-based dust monitoring system", None),
+    "tourism": ("video", "UX video: local tourism map", "UX design of a map-based local tourism website", None),
+    "jhydrol2018": ("paper", "J. Hydrol. 2018", "Estimating the drainage rate from surface soil moisture drydowns: application of the DfD model", DOI + "10.1016/j.jhydrol.2018.08.035"),
+    "rse2019": ("paper", "RSE 2019", "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region", DOI + "10.1016/j.rse.2019.111226"),
+    "jstars2021": ("paper", "IEEE JSTARS 2021", "Evaluation of SMAP/Sentinel-1 high-resolution soil moisture data to detect irrigation", DOI + "10.1109/JSTARS.2021.3119228"),
+    "su2021": ("paper", "Sustainability 2021", "Estimating soil moisture and mapping irrigated cropland with Sentinel-1 and Sentinel-2", DOI + "10.3390/su132011355"),
+    "wrr2023": ("paper", "WRR 2023", "Is it possible to quantify irrigation water-use by assimilating a high-resolution satellite soil moisture product?", DOI + "10.1029/2022WR033342"),
+    "youtube": ("video", "Lessons on YouTube", "Recorded lessons: remote sensing and GIS in water resources", "https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw"),
+    "compag2024": ("paper", "COMPAG 2024", "Yield estimation from SAR data using patch-based deep learning and machine learning techniques", DOI + "10.1016/j.compag.2024.109340"),
+    "isprs2024": ("paper", "ISPRS J. 2024", "Review of synthetic aperture radar with deep learning in agricultural applications", DOI + "10.1016/j.isprsjprs.2024.08.018"),
+    "frontiers2026": ("paper", "Front. Earth Sci. 2026", "Low-latency, high-resolution SMAP soil moisture retrievals for near-real-time applications", DOI + "10.3389/feart.2026.1854083"),
+    "lisf": ("code", "NASA LIS on GitHub", "NASA-LIS/LISF: the Land Information System Framework (contributor)", "https://github.com/NASA-LIS/LISF"),
+    "rse2026": ("paper", "RSE 2026 · AgroTrack", "Characterization of irrigation timing using thermal satellite observations, a data-driven approach", DOI + "10.1016/j.rse.2025.115153"),
+    "agrotrack": ("code", "AgroTrack on GitHub", "AgroTrack: an open-source Python package for irrigation timing", None),
+    "geostream": ("code", "GeoStreamPy on GitHub", "GeoStreamPy: stream Google Earth Engine data into xarray", "https://github.com/ejalilva/gee_tools"),
+    "wrr2026": ("paper", "WRR 2026", "Beyond SMAP: can GNSS-R platforms ensure continuity of global soil moisture observations?", DOI + "10.1029/2026WR044944"),
+    "agu2025": ("talk", "AGU 2025 talk", "Fine-tuning Prithvi-EO-2.0 for high-resolution irrigation mapping with limited labeled data", None),
+    "agent": ("code", "Paper-finding agent", "The agent that finds new irrigation papers for this site's research library", "https://github.com/ejalilva/irrigation-studies/tree/main/agent"),
+}
+
+STUDY = "assets/studies/"
 STOPS = [
-    # year, short place (under the dot), place (in the story line), landmark, skills learned, what I did
-    ("2013", "Sharif", "Sharif University", "sharif", ["gis", "rs", "matlab"], "Began my PhD, mapping water with GIS and remote sensing."),
-    ("2015–19", "Startup", "My startup", "startup", ["ux", "story"], "Co-founded a company: product ideas, website designs and videos."),
-    ("2016–17", "Italy", "CNR IRPI, Italy", "italy", ["imgproc", "model"], "Turned MATLAB scripts into reusable models for satellite data."),
-    ("2018", "Teaching", "Sharif University", "sharif", ["teach"], "Taught my first university course."),
-    ("2019", "PhD", "Sharif University", "sharif", [], "Finished my PhD."),
-    ("2020", "Postdoc", "First postdoc", "sharif", ["linux", "lsm", "da"], "Land surface models and data assimilation, on Linux."),
-    ("2020–21", "Amirkabir", "Amirkabir University", "sharif", ["gee", "youtube"], "Taught Earth Engine and recorded the lessons for YouTube."),
-    ("2022", "Michigan State", "Michigan State", "michigan", ["python", "hpc", "ml", "dl"], "Moved to Python, machine learning and supercomputers."),
-    ("2023", "NASA", "NASA Goddard", "nasa", ["git", "lis", "pkg"], "Code for NASA LIS, the AgroTrack package and a global ML product."),
-    ("Now", "NASA", "NASA Goddard", "nasa", ["gfm", "agents"], "Fine-tuning geospatial foundation models, and building agents."),
+    ("2013", "Sharif", "Sharif University", "sharif", ["arcgis", "envi", "rs", "matlab"],
+     "PhD: rainfall estimated from changes in soil moisture, and soil hydraulic properties from soil-moisture drydowns.",
+     ["congress2015"], []),
+    ("2015–19", "Startup", "My startup", "startup", ["ux", "story"],
+     "Co-founded a startup for environmental monitoring from satellite observations.",
+     ["dust", "tourism"], []),
+    ("2016–17", "Italy", "CNR IRPI, Italy", "italy", ["imgproc", "model"],
+     "Worked on improving SM2RAIN, which estimates rainfall from soil moisture.",
+     ["jhydrol2018"], []),
+    ("2019", "PhD · teaching", "Sharif University", "sharif", ["teach"],
+     "Finished my PhD with my first irrigation study, and taught undergraduate hydrology.",
+     ["rse2019"], [(STUDY + "irrigation-2019-study-area.webp", "Irrigated and non-irrigated pixels in the 2019 study area, south of Lake Urmia.")]),
+    ("2020", "Postdoc", "First postdoc, Sharif University", "sharif", ["linux", "bash", "perl", "web", "lsm", "da"],
+     "Detected irrigation in high-resolution satellite soil moisture, and estimated how much water farms applied.",
+     ["jstars2021", "su2021", "wrr2023"],
+     [(STUDY + "smap-sentinel-2021-irrigation-signal.webp", "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture."),
+      (STUDY + "irrigation-assimilation-2023.webp", "Estimating irrigation with a particle batch smoother and a land surface model."),
+      (STUDY + "rabiei-2021-figure13-original.webp", "Land-use classification from Sentinel-2 soil moisture.", "Rabiei et al. (2021), Figure 13, CC BY")]),
+    ("2021–22", "Amirkabir", "Amirkabir University", "sharif", ["gee", "youtube"],
+     "Taught a graduate course on remote sensing and GIS in water resources, recorded for YouTube.",
+     ["youtube"], []),
+    ("2022", "Michigan State", "Michigan State", "michigan", ["python", "hpc"],
+     "Developed high-resolution SMAP soil moisture for northern latitudes, contributed to NISAR, and joined the SMAPVEX22 field campaign with NASA JPL.",
+     ["compag2024", "isprs2024", "frontiers2026"], []),
+    ("2023", "Georgia Tech", "Georgia Tech, online", "gatech", [],
+     "Began an online Master of Science in Analytics.",
+     [], []),
+    ("2023", "NASA", "NASA Goddard", "nasa", ["git", "lis", "pkg", "geostack"],
+     "Water cycle and Earth system modeling, bringing satellite observations and machine learning into the models.",
+     ["lisf", "rse2026", "agrotrack", "geostream", "wrr2026"],
+     [(STUDY + "agrotrack-2021.png", "AgroTrack: number of irrigated days in cropland, 2021."),
+      (STUDY + "agrotrack-heatmap.webp", "Irrigation schedules of ten Nebraska fields in 2021, with the season AgroTrack detected from thermal data.", "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment"),
+      (STUDY + "agrotrack-2022.png", "AgroTrack: number of irrigated days in cropland, 2022.")]),
+    ("2024", "Georgia Tech", "Georgia Tech, online", "gatech", ["ml", "dl"],
+     "Kept going with the analytics master’s.",
+     [], []),
+    ("Now", "NASA", "NASA Goddard", "nasa", ["gfm", "agents"],
+     "Mapping irrigated land with few labels, and automating research work.",
+     ["agu2025", "agent"], []),
 ]
 
 esc = html.escape
-last = len(STOPS) - 1
+N = len(STOPS)
+last = N - 1
 first_stop = {k: next(i for i, s in enumerate(STOPS) if s[3] == k) for k, *_ in MARKS}
+
+ICON = {
+    "paper": '<path d="M4 1.5h5.5L13 5v9.5H4z M9.5 1.5V5H13 M6 8h5 M6 10.5h5"/>',
+    "code": '<path d="M5.5 4L2 8l3.5 4 M10.5 4L14 8l-3.5 4"/>',
+    "video": '<path class="fill" d="M5 3l8 5-8 5z"/>',
+    "talk": '<path d="M8 1.5a2 2 0 012 2v4a2 2 0 01-4 0v-4a2 2 0 012-2z M4 7.5a4 4 0 008 0 M8 11.5v3"/>',
+}
 
 scene = []
 for k, name, x, y, w, h in MARKS:
@@ -78,17 +151,31 @@ for k, name, x, y, w, h in MARKS:
     box = f"--x:{x}%;--y:{y}%;--w:{w}%;--h:{h}%"
     scene.append(f'<button type="button" class="jy-hit" data-mark="{k}" data-stage="{first_stop[k]}" aria-label="{esc(name)}" style="{box}"></button>')
 
-stops, stories = [], []
-for i, (year, short, place, mark, skills, line) in enumerate(STOPS):
+stops, stories, fans = [], [], []
+for i, (year, short, place, mark, skills, line, work, pics) in enumerate(STOPS):
     cur = ' aria-current="step"' if i == last else ""
     stops.append(f'<li><button type="button" class="jy-stop" data-stage="{i}" data-mark="{mark}"{cur}><span class="jy-dot" aria-hidden="true"></span><span class="jy-year">{esc(year)}</span><span class="jy-place">{esc(short)}</span></button></li>')
-    stories.append(f'<p class="jy-story" data-stage="{i}"><strong>{esc(year)} · {esc(place)}.</strong> {esc(line)}</p>')
+    links = []
+    for key in work:
+        kind, label, title, href = WORK[key]
+        if not href:
+            continue
+        links.append(f'<a class="jy-work" href="{esc(href)}" target="_blank" rel="noopener" title="{esc(title)}"><svg viewBox="0 0 16 16" aria-hidden="true">{ICON[kind]}</svg>{esc(label)}<span class="sr-only">: {esc(title)}</span></a>')
+    work_html = f'<div class="jy-works">{"".join(links)}</div>' if links else ""
+    stories.append(f'<div class="jy-story" data-stage="{i}"><p><strong>{esc(year)} · {esc(place)}.</strong> {esc(line)}</p>{work_html}</div>')
+    if pics:
+        cards = []
+        for k, pic in enumerate(pics):
+            src, caption, credit = (pic + (None,))[:3]
+            cards.append(f'<button type="button" class="jy-card" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="{esc(credit or "")}" style="--k:{k - (len(pics) - 1) / 2}" aria-label="Open picture {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(src)}" alt="{esc(caption)}" loading="lazy" decoding="async"></button>')
+        fans.append(f'<div class="jy-fan" data-stage="{i}" style="--col:{i}">{"".join(cards)}</div>')
 
 bars, row = [], 0
-for i, (*_, skills, _line) in enumerate(STOPS):
-    for k in skills:
-        label, bg, fg = SKILLS[k]
-        bars.append(f'<li class="jy-bar is-on{" jy-python" if k == "python" else ""}" data-start="{i}" style="--row:{row};--start:{i};--bg:{bg};--fg:{fg}"><span class="sr-only">{esc(STOPS[i][0])}: </span>{esc(label)}</li>')
+for i, stop in enumerate(STOPS):
+    for k in stop[4]:
+        label, bg, fg, *edge = SKILLS[k]
+        edge_css = f";--edge:{edge[0]}" if edge else ""
+        bars.append(f'<li class="jy-bar is-on{" has-edge" if edge else ""}" data-start="{i}" style="--row:{row};--start:{i};--bg:{bg};--fg:{fg}{edge_css}"><span class="sr-only">{esc(stop[0])}: </span>{esc(label)}</li>')
         row += 1
 
 out = f'''<!doctype html>
@@ -97,7 +184,7 @@ out = f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My journey | Ehsan Jalilvand</title>
-<meta name="description" content="Ehsan Jalilvand's journey from Sharif University to NASA Goddard, and the skills each stop added.">
+<meta name="description" content="Ehsan Jalilvand's journey from Sharif University to NASA Goddard: what he worked on at each stop, the skills each added, and the papers and code behind them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -120,16 +207,17 @@ out = f'''<!doctype html>
     </nav>
   </div>
   <div class="jy-scene" id="jy-scene">
-    <img class="jy-land" src="assets/journey/landscape-integrated-v2.webp" width="1672" height="941" fetchpriority="high" alt="A painted landscape with the places of my journey: Sharif University and the Azadi tower in Tehran, a small startup workshop, the Colosseum for Italy, Michigan State's clock tower, and a NASA building and rocket.">
+    <img class="jy-land" src="{PAINTING}" width="1672" height="941" fetchpriority="high" alt="A painted landscape with the places of my journey: Sharif University and the Azadi tower in Tehran, a small startup office, the Colosseum for Italy, Michigan State's clock tower, Georgia Tech's Tech Tower, and a NASA building and rocket.">
     <div class="jy-veil" aria-hidden="true"></div>
     <div class="jy-scrim" aria-hidden="true"></div>
     {"".join(scene)}
     <h1 class="jy-title">My journey</h1>
   </div>
 </header>
-<main class="jy-path" id="jy-path" aria-label="Timeline and skills">
+<main class="jy-path" id="jy-path" aria-label="Timeline, work and skills">
   <div class="jy-scroll">
-    <div class="jy-inner" id="jy-inner" style="--end:{last}">
+    <div class="jy-inner" id="jy-inner" style="--n:{N};--last:{last};--end:{last}">
+      <div class="jy-fans">{"".join(fans)}</div>
       <div class="jy-track" aria-hidden="true"><span class="jy-progress"></span></div>
       <ol class="jy-stops" aria-label="Timeline">{"".join(stops)}</ol>
       <div class="jy-stories" aria-live="polite">{"".join(stories)}</div>
@@ -140,6 +228,15 @@ out = f'''<!doctype html>
     </div>
   </div>
 </main>
+<dialog class="jy-viewer" id="jy-viewer" aria-labelledby="jy-viewer-cap">
+  <figure>
+    <img id="jy-viewer-img" alt="">
+    <figcaption><p id="jy-viewer-cap"></p><p class="jy-viewer-meta"><span id="jy-viewer-count"></span><span id="jy-viewer-credit"></span></p></figcaption>
+  </figure>
+  <button type="button" class="jy-viewer-btn jy-close" id="jy-viewer-close" aria-label="Close">×</button>
+  <button type="button" class="jy-viewer-btn jy-prev" id="jy-viewer-prev" aria-label="Previous picture">‹</button>
+  <button type="button" class="jy-viewer-btn jy-next" id="jy-viewer-next" aria-label="Next picture">›</button>
+</dialog>
 <div class="wrap">
   <footer class="site-foot">
     <p>All views expressed on this site are my own and do not reflect the opinions or positions of my employer or any affiliated organizations.</p>
@@ -158,9 +255,13 @@ out = f'''<!doctype html>
 (ROOT / "journey.html").write_text(out, encoding="utf-8")
 
 record = {
+    "painting": PAINTING,
     "landmarks": [dict(key=k, name=n, x=x, y=y, w=w, h=h) for k, n, x, y, w, h in MARKS],
-    "skills": [dict(key=k, label=l, color=bg, text=fg) for k, (l, bg, fg) in SKILLS.items()],
-    "stops": [dict(period=y, short=s, place=p, landmark=m, skills=sk, story=t) for y, s, p, m, sk, t in STOPS],
+    "skills": [dict(key=k, label=v[0], color=v[1], text=v[2], edge=(v[3] if len(v) > 3 else None)) for k, v in SKILLS.items()],
+    "work": {k: dict(kind=v[0], label=v[1], title=v[2], href=v[3]) for k, v in WORK.items()},
+    "stops": [dict(period=y, short=s, place=p, landmark=m, skills=sk, story=t, work=w,
+                   pictures=[dict(src=pc[0], caption=pc[1], credit=(pc[2] if len(pc) > 2 else None)) for pc in pics])
+              for y, s, p, m, sk, t, w, pics in STOPS],
 }
 (ROOT / "data" / "journey-timeline.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-print(f"journey.html: {len(STOPS)} stops, {row} skills")
+print(f"journey.html: {N} stops, {row} skills, {sum(len(s[7]) for s in STOPS)} pictures")

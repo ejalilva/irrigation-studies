@@ -1,4 +1,5 @@
 {
+  "painting": "assets/journey/landscape-v3.webp",
   "landmarks": [
     {
       "key": "sharif",
@@ -12,9 +13,9 @@
       "key": "startup",
       "name": "My startup",
       "x": 30.861,
-      "y": 61.743,
+      "y": 65.037,
       "w": 11.902,
-      "h": 15.197
+      "h": 11.902
     },
     {
       "key": "italy",
@@ -33,6 +34,14 @@
       "h": 33.262
     },
     {
+      "key": "gatech",
+      "name": "Georgia Tech",
+      "x": 83.732,
+      "y": 50.159,
+      "w": 6.579,
+      "h": 13.815
+    },
+    {
       "key": "nasa",
       "name": "NASA Goddard",
       "x": 80.981,
@@ -43,138 +52,311 @@
   ],
   "skills": [
     {
-      "key": "gis",
-      "label": "GIS",
+      "key": "arcgis",
+      "label": "ArcGIS",
       "color": "#2A74B8",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
+    },
+    {
+      "key": "envi",
+      "label": "ENVI",
+      "color": "#A1887F",
+      "text": "#172026",
+      "edge": null
     },
     {
       "key": "rs",
       "label": "Remote sensing",
       "color": "#10806A",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "matlab",
-      "label": "MATLAB",
+      "label": "MATLAB coding",
       "color": "#E16737",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": "#0076A8"
     },
     {
       "key": "ux",
       "label": "UX design",
       "color": "#D63384",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "story",
       "label": "Storytelling",
       "color": "#F7B6CF",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": null
     },
     {
       "key": "imgproc",
       "label": "Image processing",
       "color": "#4FB3D9",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": null
     },
     {
       "key": "model",
       "label": "Model building",
       "color": "#8B5A2B",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "teach",
       "label": "Teaching",
       "color": "#B39DDB",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": null
     },
     {
       "key": "linux",
       "label": "Linux",
       "color": "#FCC624",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": null
+    },
+    {
+      "key": "bash",
+      "label": "Bash",
+      "color": "#4EAA25",
+      "text": "#172026",
+      "edge": null
+    },
+    {
+      "key": "perl",
+      "label": "Perl",
+      "color": "#39457E",
+      "text": "#FFFFFF",
+      "edge": null
+    },
+    {
+      "key": "web",
+      "label": "Website design",
+      "color": "#9CCC65",
+      "text": "#172026",
+      "edge": null
     },
     {
       "key": "lsm",
       "label": "Land surface models",
       "color": "#557A1F",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "da",
       "label": "Data assimilation",
       "color": "#7B4FB0",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "gee",
-      "label": "Earth Engine",
+      "label": "Google Earth Engine",
       "color": "#0B7A45",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "youtube",
       "label": "YouTube",
       "color": "#D9241C",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "python",
       "label": "Python",
       "color": "#3776AB",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": "#FFD43B"
     },
     {
       "key": "hpc",
       "label": "HPC",
       "color": "#546E7A",
-      "text": "#FFFFFF"
-    },
-    {
-      "key": "ml",
-      "label": "Machine learning",
-      "color": "#F7931E",
-      "text": "#172026"
-    },
-    {
-      "key": "dl",
-      "label": "Deep learning",
-      "color": "#EE4C2C",
-      "text": "#000000"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "git",
       "label": "Git",
       "color": "#24292F",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "lis",
       "label": "NASA LIS · Fortran",
       "color": "#0B3D91",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "pkg",
       "label": "Python packages",
       "color": "#FFD43B",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": null
+    },
+    {
+      "key": "geostack",
+      "label": "Python geospatial stack",
+      "color": "#00796B",
+      "text": "#FFFFFF",
+      "edge": null
+    },
+    {
+      "key": "ml",
+      "label": "Machine learning",
+      "color": "#F7931E",
+      "text": "#172026",
+      "edge": null
+    },
+    {
+      "key": "dl",
+      "label": "Deep learning",
+      "color": "#EE4C2C",
+      "text": "#000000",
+      "edge": null
     },
     {
       "key": "gfm",
       "label": "Foundation models",
       "color": "#3949AB",
-      "text": "#FFFFFF"
+      "text": "#FFFFFF",
+      "edge": null
     },
     {
       "key": "agents",
       "label": "AI agents",
       "color": "#00ACC1",
-      "text": "#172026"
+      "text": "#172026",
+      "edge": null
     }
   ],
+  "work": {
+    "congress2015": {
+      "kind": "paper",
+      "label": "Congress paper 2015",
+      "title": "Estimating the rate of evaporation from Lake Urmia in 1995 using satellite and gauge data",
+      "href": "https://www.researchgate.net/publication/304498967"
+    },
+    "dust": {
+      "kind": "video",
+      "label": "UX video: dust monitoring",
+      "title": "UX design of a satellite-based dust monitoring system",
+      "href": null
+    },
+    "tourism": {
+      "kind": "video",
+      "label": "UX video: local tourism map",
+      "title": "UX design of a map-based local tourism website",
+      "href": null
+    },
+    "jhydrol2018": {
+      "kind": "paper",
+      "label": "J. Hydrol. 2018",
+      "title": "Estimating the drainage rate from surface soil moisture drydowns: application of the DfD model",
+      "href": "https://doi.org/10.1016/j.jhydrol.2018.08.035"
+    },
+    "rse2019": {
+      "kind": "paper",
+      "label": "RSE 2019",
+      "title": "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
+      "href": "https://doi.org/10.1016/j.rse.2019.111226"
+    },
+    "jstars2021": {
+      "kind": "paper",
+      "label": "IEEE JSTARS 2021",
+      "title": "Evaluation of SMAP/Sentinel-1 high-resolution soil moisture data to detect irrigation",
+      "href": "https://doi.org/10.1109/JSTARS.2021.3119228"
+    },
+    "su2021": {
+      "kind": "paper",
+      "label": "Sustainability 2021",
+      "title": "Estimating soil moisture and mapping irrigated cropland with Sentinel-1 and Sentinel-2",
+      "href": "https://doi.org/10.3390/su132011355"
+    },
+    "wrr2023": {
+      "kind": "paper",
+      "label": "WRR 2023",
+      "title": "Is it possible to quantify irrigation water-use by assimilating a high-resolution satellite soil moisture product?",
+      "href": "https://doi.org/10.1029/2022WR033342"
+    },
+    "youtube": {
+      "kind": "video",
+      "label": "Lessons on YouTube",
+      "title": "Recorded lessons: remote sensing and GIS in water resources",
+      "href": "https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw"
+    },
+    "compag2024": {
+      "kind": "paper",
+      "label": "COMPAG 2024",
+      "title": "Yield estimation from SAR data using patch-based deep learning and machine learning techniques",
+      "href": "https://doi.org/10.1016/j.compag.2024.109340"
+    },
+    "isprs2024": {
+      "kind": "paper",
+      "label": "ISPRS J. 2024",
+      "title": "Review of synthetic aperture radar with deep learning in agricultural applications",
+      "href": "https://doi.org/10.1016/j.isprsjprs.2024.08.018"
+    },
+    "frontiers2026": {
+      "kind": "paper",
+      "label": "Front. Earth Sci. 2026",
+      "title": "Low-latency, high-resolution SMAP soil moisture retrievals for near-real-time applications",
+      "href": "https://doi.org/10.3389/feart.2026.1854083"
+    },
+    "lisf": {
+      "kind": "code",
+      "label": "NASA LIS on GitHub",
+      "title": "NASA-LIS/LISF: the Land Information System Framework (contributor)",
+      "href": "https://github.com/NASA-LIS/LISF"
+    },
+    "rse2026": {
+      "kind": "paper",
+      "label": "RSE 2026 · AgroTrack",
+      "title": "Characterization of irrigation timing using thermal satellite observations, a data-driven approach",
+      "href": "https://doi.org/10.1016/j.rse.2025.115153"
+    },
+    "agrotrack": {
+      "kind": "code",
+      "label": "AgroTrack on GitHub",
+      "title": "AgroTrack: an open-source Python package for irrigation timing",
+      "href": null
+    },
+    "geostream": {
+      "kind": "code",
+      "label": "GeoStreamPy on GitHub",
+      "title": "GeoStreamPy: stream Google Earth Engine data into xarray",
+      "href": "https://github.com/ejalilva/gee_tools"
+    },
+    "wrr2026": {
+      "kind": "paper",
+      "label": "WRR 2026",
+      "title": "Beyond SMAP: can GNSS-R platforms ensure continuity of global soil moisture observations?",
+      "href": "https://doi.org/10.1029/2026WR044944"
+    },
+    "agu2025": {
+      "kind": "talk",
+      "label": "AGU 2025 talk",
+      "title": "Fine-tuning Prithvi-EO-2.0 for high-resolution irrigation mapping with limited labeled data",
+      "href": null
+    },
+    "agent": {
+      "kind": "code",
+      "label": "Paper-finding agent",
+      "title": "The agent that finds new irrigation papers for this site's research library",
+      "href": "https://github.com/ejalilva/irrigation-studies/tree/main/agent"
+    }
+  },
   "stops": [
     {
       "period": "2013",
@@ -182,11 +364,16 @@
       "place": "Sharif University",
       "landmark": "sharif",
       "skills": [
-        "gis",
+        "arcgis",
+        "envi",
         "rs",
         "matlab"
       ],
-      "story": "Began my PhD, mapping water with GIS and remote sensing."
+      "story": "PhD: rainfall estimated from changes in soil moisture, and soil hydraulic properties from soil-moisture drydowns.",
+      "work": [
+        "congress2015"
+      ],
+      "pictures": []
     },
     {
       "period": "2015–19",
@@ -197,7 +384,12 @@
         "ux",
         "story"
       ],
-      "story": "Co-founded a company: product ideas, website designs and videos."
+      "story": "Co-founded a startup for environmental monitoring from satellite observations.",
+      "work": [
+        "dust",
+        "tourism"
+      ],
+      "pictures": []
     },
     {
       "period": "2016–17",
@@ -208,40 +400,71 @@
         "imgproc",
         "model"
       ],
-      "story": "Turned MATLAB scripts into reusable models for satellite data."
+      "story": "Worked on improving SM2RAIN, which estimates rainfall from soil moisture.",
+      "work": [
+        "jhydrol2018"
+      ],
+      "pictures": []
     },
     {
-      "period": "2018",
-      "short": "Teaching",
+      "period": "2019",
+      "short": "PhD · teaching",
       "place": "Sharif University",
       "landmark": "sharif",
       "skills": [
         "teach"
       ],
-      "story": "Taught my first university course."
-    },
-    {
-      "period": "2019",
-      "short": "PhD",
-      "place": "Sharif University",
-      "landmark": "sharif",
-      "skills": [],
-      "story": "Finished my PhD."
+      "story": "Finished my PhD with my first irrigation study, and taught undergraduate hydrology.",
+      "work": [
+        "rse2019"
+      ],
+      "pictures": [
+        {
+          "src": "assets/studies/irrigation-2019-study-area.webp",
+          "caption": "Irrigated and non-irrigated pixels in the 2019 study area, south of Lake Urmia.",
+          "credit": null
+        }
+      ]
     },
     {
       "period": "2020",
       "short": "Postdoc",
-      "place": "First postdoc",
+      "place": "First postdoc, Sharif University",
       "landmark": "sharif",
       "skills": [
         "linux",
+        "bash",
+        "perl",
+        "web",
         "lsm",
         "da"
       ],
-      "story": "Land surface models and data assimilation, on Linux."
+      "story": "Detected irrigation in high-resolution satellite soil moisture, and estimated how much water farms applied.",
+      "work": [
+        "jstars2021",
+        "su2021",
+        "wrr2023"
+      ],
+      "pictures": [
+        {
+          "src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp",
+          "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.",
+          "credit": null
+        },
+        {
+          "src": "assets/studies/irrigation-assimilation-2023.webp",
+          "caption": "Estimating irrigation with a particle batch smoother and a land surface model.",
+          "credit": null
+        },
+        {
+          "src": "assets/studies/rabiei-2021-figure13-original.webp",
+          "caption": "Land-use classification from Sentinel-2 soil moisture.",
+          "credit": "Rabiei et al. (2021), Figure 13, CC BY"
+        }
+      ]
     },
     {
-      "period": "2020–21",
+      "period": "2021–22",
       "short": "Amirkabir",
       "place": "Amirkabir University",
       "landmark": "sharif",
@@ -249,7 +472,11 @@
         "gee",
         "youtube"
       ],
-      "story": "Taught Earth Engine and recorded the lessons for YouTube."
+      "story": "Taught a graduate course on remote sensing and GIS in water resources, recorded for YouTube.",
+      "work": [
+        "youtube"
+      ],
+      "pictures": []
     },
     {
       "period": "2022",
@@ -258,11 +485,25 @@
       "landmark": "michigan",
       "skills": [
         "python",
-        "hpc",
-        "ml",
-        "dl"
+        "hpc"
       ],
-      "story": "Moved to Python, machine learning and supercomputers."
+      "story": "Developed high-resolution SMAP soil moisture for northern latitudes, contributed to NISAR, and joined the SMAPVEX22 field campaign with NASA JPL.",
+      "work": [
+        "compag2024",
+        "isprs2024",
+        "frontiers2026"
+      ],
+      "pictures": []
+    },
+    {
+      "period": "2023",
+      "short": "Georgia Tech",
+      "place": "Georgia Tech, online",
+      "landmark": "gatech",
+      "skills": [],
+      "story": "Began an online Master of Science in Analytics.",
+      "work": [],
+      "pictures": []
     },
     {
       "period": "2023",
@@ -272,9 +513,47 @@
       "skills": [
         "git",
         "lis",
-        "pkg"
+        "pkg",
+        "geostack"
       ],
-      "story": "Code for NASA LIS, the AgroTrack package and a global ML product."
+      "story": "Water cycle and Earth system modeling, bringing satellite observations and machine learning into the models.",
+      "work": [
+        "lisf",
+        "rse2026",
+        "agrotrack",
+        "geostream",
+        "wrr2026"
+      ],
+      "pictures": [
+        {
+          "src": "assets/studies/agrotrack-2021.png",
+          "caption": "AgroTrack: number of irrigated days in cropland, 2021.",
+          "credit": null
+        },
+        {
+          "src": "assets/studies/agrotrack-heatmap.webp",
+          "caption": "Irrigation schedules of ten Nebraska fields in 2021, with the season AgroTrack detected from thermal data.",
+          "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment"
+        },
+        {
+          "src": "assets/studies/agrotrack-2022.png",
+          "caption": "AgroTrack: number of irrigated days in cropland, 2022.",
+          "credit": null
+        }
+      ]
+    },
+    {
+      "period": "2024",
+      "short": "Georgia Tech",
+      "place": "Georgia Tech, online",
+      "landmark": "gatech",
+      "skills": [
+        "ml",
+        "dl"
+      ],
+      "story": "Kept going with the analytics master’s.",
+      "work": [],
+      "pictures": []
     },
     {
       "period": "Now",
@@ -285,7 +564,12 @@
         "gfm",
         "agents"
       ],
-      "story": "Fine-tuning geospatial foundation models, and building agents."
+      "story": "Mapping irrigated land with few labels, and automating research work.",
+      "work": [
+        "agu2025",
+        "agent"
+      ],
+      "pictures": []
     }
   ]
 }
