@@ -1,53 +1,53 @@
 {
-  "painting": "assets/journey/landscape-v3.webp",
+  "painting": "assets/journey/landscape-v4.webp",
   "landmarks": [
     {
       "key": "sharif",
-      "name": "Sharif University",
-      "x": 5.921,
-      "y": 41.339,
-      "w": 31.878,
-      "h": 25.717
+      "name": "Tehran",
+      "x": 7.536,
+      "y": 43.996,
+      "w": 28.648,
+      "h": 23.061
     },
     {
       "key": "startup",
       "name": "My startup",
-      "x": 30.861,
-      "y": 65.037,
-      "w": 11.902,
-      "h": 11.902
+      "x": 31.579,
+      "y": 66.419,
+      "w": 10.467,
+      "h": 10.414
     },
     {
       "key": "italy",
       "name": "CNR IRPI, Italy",
-      "x": 42.763,
-      "y": 39.32,
-      "w": 16.806,
-      "h": 19.341
+      "x": 43.66,
+      "y": 41.339,
+      "w": 15.072,
+      "h": 17.322
     },
     {
       "key": "michigan",
       "name": "Michigan State",
-      "x": 67.943,
-      "y": 32.944,
-      "w": 7.656,
-      "h": 33.262
+      "x": 68.421,
+      "y": 36.982,
+      "w": 6.699,
+      "h": 29.224
     },
     {
       "key": "gatech",
       "name": "Georgia Tech",
-      "x": 83.732,
-      "y": 50.159,
-      "w": 6.579,
-      "h": 13.815
+      "x": 83.373,
+      "y": 45.909,
+      "w": 10.048,
+      "h": 29.649
     },
     {
       "key": "nasa",
       "name": "NASA Goddard",
-      "x": 80.981,
-      "y": 12.965,
-      "w": 14.773,
-      "h": 28.162
+      "x": 81.699,
+      "y": 15.834,
+      "w": 13.278,
+      "h": 25.292
     }
   ],
   "skills": [
@@ -56,189 +56,189 @@
       "label": "ArcGIS",
       "color": "#2A74B8",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "envi",
       "label": "ENVI",
       "color": "#A1887F",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "rs",
       "label": "Remote sensing",
       "color": "#10806A",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "matlab",
       "label": "MATLAB coding",
-      "color": "#E16737",
-      "text": "#172026",
-      "edge": "#0076A8"
+      "color": "#C04A1B",
+      "text": "#FFFFFF",
+      "fades_to": "#0076A8"
     },
     {
       "key": "ux",
       "label": "UX design",
       "color": "#D63384",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "story",
       "label": "Storytelling",
       "color": "#F7B6CF",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "imgproc",
       "label": "Image processing",
       "color": "#4FB3D9",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "model",
       "label": "Model building",
       "color": "#8B5A2B",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "teach",
       "label": "Teaching",
       "color": "#B39DDB",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "linux",
       "label": "Linux",
       "color": "#FCC624",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "bash",
       "label": "Bash",
       "color": "#4EAA25",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "perl",
       "label": "Perl",
       "color": "#39457E",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "web",
       "label": "Website design",
       "color": "#9CCC65",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "lsm",
       "label": "Land surface models",
       "color": "#557A1F",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "da",
       "label": "Data assimilation",
       "color": "#7B4FB0",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "gee",
       "label": "Google Earth Engine",
       "color": "#0B7A45",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "youtube",
       "label": "YouTube",
       "color": "#D9241C",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "python",
       "label": "Python",
-      "color": "#3776AB",
-      "text": "#FFFFFF",
-      "edge": "#FFD43B"
+      "color": "#FFD43B",
+      "text": "#172026",
+      "fades_to": "#3776AB"
     },
     {
       "key": "hpc",
       "label": "HPC",
       "color": "#546E7A",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "git",
       "label": "Git",
       "color": "#24292F",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "lis",
       "label": "NASA LIS · Fortran",
       "color": "#0B3D91",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "pkg",
       "label": "Python packages",
       "color": "#FFD43B",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "geostack",
       "label": "Python geospatial stack",
       "color": "#00796B",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "ml",
       "label": "Machine learning",
       "color": "#F7931E",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "dl",
       "label": "Deep learning",
       "color": "#EE4C2C",
       "text": "#000000",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "gfm",
       "label": "Foundation models",
       "color": "#3949AB",
       "text": "#FFFFFF",
-      "edge": null
+      "fades_to": null
     },
     {
       "key": "agents",
       "label": "AI agents",
       "color": "#00ACC1",
       "text": "#172026",
-      "edge": null
+      "fades_to": null
     }
   ],
   "work": {
@@ -350,6 +350,12 @@
       "title": "Fine-tuning Prithvi-EO-2.0 for high-resolution irrigation mapping with limited labeled data",
       "href": null
     },
+    "climate2022": {
+      "kind": "paper",
+      "label": "Climate 2022",
+      "title": "Using high-resolution climate models to identify climate change hotspots in the Middle East: a case study of Iran",
+      "href": "https://doi.org/10.3390/cli10110161"
+    },
     "agent": {
       "kind": "code",
       "label": "Paper-finding agent",
@@ -369,7 +375,7 @@
         "rs",
         "matlab"
       ],
-      "story": "PhD: rainfall estimated from changes in soil moisture, and soil hydraulic properties from soil-moisture drydowns.",
+      "story": "PhD: an inverse water balance model (SM2RAIN-DfD) that estimates rainfall from satellite soil moisture alone, and soil hydraulic properties from soil-moisture drydowns.",
       "work": [
         "congress2015"
       ],
@@ -400,7 +406,7 @@
         "imgproc",
         "model"
       ],
-      "story": "Worked on improving SM2RAIN, which estimates rainfall from soil moisture.",
+      "story": "Visiting researcher, improving SM2RAIN, a bottom-up approach that estimates rainfall from satellite soil moisture.",
       "work": [
         "jhydrol2018"
       ],
@@ -427,7 +433,7 @@
       ]
     },
     {
-      "period": "2020",
+      "period": "2019–21",
       "short": "Postdoc",
       "place": "First postdoc, Sharif University",
       "landmark": "sharif",
@@ -439,7 +445,7 @@
         "lsm",
         "da"
       ],
-      "story": "Detected irrigation in high-resolution satellite soil moisture, and estimated how much water farms applied.",
+      "story": "Detected the irrigation signal in SMAP soil moisture, and assimilated SMAP–Sentinel-1 soil moisture into the VIC model to estimate how much water farms applied.",
       "work": [
         "jstars2021",
         "su2021",
@@ -479,7 +485,19 @@
       "pictures": []
     },
     {
-      "period": "2022",
+      "period": "2021–22",
+      "short": "RIES",
+      "place": "Research Institute for Earth Sciences, Geological Survey of Iran",
+      "landmark": "sharif",
+      "skills": [],
+      "story": "Assistant professor: a rainfall-triggered landslide risk map of Iran, and climate-change hotspots from high-resolution climate models.",
+      "work": [
+        "climate2022"
+      ],
+      "pictures": []
+    },
+    {
+      "period": "2022–23",
       "short": "Michigan State",
       "place": "Michigan State",
       "landmark": "michigan",
@@ -487,7 +505,7 @@
         "python",
         "hpc"
       ],
-      "story": "Developed high-resolution SMAP soil moisture for northern latitudes, contributed to NISAR, and joined the SMAPVEX22 field campaign with NASA JPL.",
+      "story": "Built high-resolution SMAP–Sentinel-1 soil moisture for northern latitudes and permafrost, brought human water use into Noah-MP through data assimilation, worked on NISAR soil moisture for field-scale irrigation, and joined NASA JPL’s SMAPVEX22 field campaign.",
       "work": [
         "compag2024",
         "isprs2024",
