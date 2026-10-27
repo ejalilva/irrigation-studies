@@ -1410,51 +1410,6 @@
       "resources_checked": "2026-10-21"
     },
     {
-      "id": "10.1016/j.aiia.2026.10.001",
-      "title": "CropINSs: A multi-objective irrigation and nitrogen scheduling optimization framework for silage maize based on coupling remote sensing and crop models",
-      "authors": "Li, G., Nie, W., Wang, Q., et al.",
-      "first_author": "Li",
-      "year": 2026,
-      "date": "2026-10-01",
-      "venue": "Artificial Intelligence in Agriculture",
-      "doi": "10.1016/j.aiia.2026.10.001",
-      "url": null,
-      "status": "published",
-      "type": "article",
-      "questions": {
-        "where": false,
-        "when": false,
-        "how_much": true
-      },
-      "domain": null,
-      "region": null,
-      "scale": "regional",
-      "period": null,
-      "approach": "Sentinel-1 LAI/AGB assimilation into DSSAT with SCE-UA and NSGA-III optimization",
-      "methods": [
-        "imagery",
-        "model",
-        "da"
-      ],
-      "data": [
-        "Sentinel-1",
-        "DSSAT"
-      ],
-      "keywords": [
-        "irrigation scheduling",
-        "nitrogen management",
-        "DSSAT",
-        "Sentinel-1",
-        "silage maize"
-      ],
-      "summary": "Combines Sentinel-1-derived LAI and biomass with the DSSAT crop model to optimize irrigation and nitrogen schedules for silage maize at regional scale.",
-      "added": "2026-10-26",
-      "needs_review": true,
-      "source": "agent",
-      "resources": [],
-      "resources_checked": "2026-10-26"
-    },
-    {
       "id": "10.3390/plants15152265",
       "title": "Sentinel-2 and Unmanned Aerial Vehicle (UAV) Imagery for Irrigation Scheduling in Fodder Maize: A Comparative Remote Sensing Approach",
       "authors": "López-Hernández, N.A., Rodríguez-Moreno, V.M., Ramírez-Gottfried, R.I., et al.",
