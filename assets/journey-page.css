@@ -1,7 +1,8 @@
 /* My journey (journey.html). The painting fills the top of the page; the landmark of the current stop grows out of it
-   (a cut-out layer in assets/journey/marks/ scaled up) while the rest of the painting fades back. Below it, the timeline,
-   one line for the current stop, and the skills as coloured bars that start at the stop where each was learned and
-   reach to the current stop. Built by scripts/build_journey.py; behaviour in assets/journey-page.js. */
+   (a cut-out layer in assets/journey/marks/ scaled up) while the rest of the painting fades back. Below it: the timeline,
+   pictures that fan out above the current stop (they open in a viewer with their captions), one line for the stop with
+   links to its papers, code and videos, and the skills as coloured bars that start at the stop where each was learned
+   and reach to the current stop. Built by scripts/build_journey.py; behaviour in assets/journey-page.js. */
 :root { --jy-veil: rgba(255,255,255,.2); --jy-ghost: #6B777C; --jy-dot: #B9C3C7; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; --jy-dot: #4A5D64; } }
 :root[data-theme="dark"] { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; --jy-dot: #4A5D64; }
@@ -27,43 +28,77 @@
 .jy-scrim { position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: min(230px, 30%); background: linear-gradient(rgba(12,40,70,.42), rgba(12,40,70,0)); pointer-events: none; }
 /* Each landmark's cut-out sits exactly over its painted self, so it is invisible until it grows. */
 .jy-mark { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: var(--w); height: var(--h); opacity: 0; transform-origin: 50% 92%; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .25s, filter .45s; pointer-events: none; }
-.jy-mark.is-on { opacity: 1; transform: scale(1.15); filter: drop-shadow(0 10px 14px rgba(23,32,38,.3)); }
-.jy-tag { position: absolute; z-index: 4; left: calc(var(--x) + var(--w) / 2); top: calc(var(--y) + var(--h)); transform: translate(-50%, 2px); opacity: 0; padding: 5px 11px; border-radius: 999px; background: #fff; color: #172026; font: 600 .875rem/1.3 var(--head); white-space: nowrap; box-shadow: 0 4px 14px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
-.jy-tag.is-on { opacity: 1; transform: translate(-50%, 12px); }
+.jy-mark.is-on { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 8px 11px rgba(23,32,38,.28)); }
+.jy-tag { position: absolute; z-index: 4; left: calc(var(--x) + var(--w) / 2); top: calc(var(--y) + var(--h)); transform: translate(-50%, 2px); opacity: 0; padding: 4px 9px; border-radius: 999px; background: #fff; color: #172026; font: 600 .78rem/1.3 var(--head); white-space: nowrap; box-shadow: 0 3px 10px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
+.jy-tag.is-on { opacity: 1; transform: translate(-50%, 9px); }
 .jy-hit { position: absolute; z-index: 5; left: var(--x); top: var(--y); width: var(--w); height: var(--h); padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; }
 .jy-hit:focus { outline: none; }
 
-/* Timeline, story line and skill bars share one ten-column grid, so each bar starts under its stop. */
-.jy-path { max-width: 1200px; margin: 0 auto; padding: 36px 24px 0; }
-.jy-scroll { overflow-x: auto; padding-bottom: 10px; }
-.jy-inner { --last: 9; position: relative; min-width: 960px; padding: 0 44px; } /* side room for the last column's longer labels */
-.jy-track { position: absolute; left: calc(44px + (100% - 88px) * .05); right: calc(44px + (100% - 88px) * .05); top: 9px; height: 2px; background: var(--line); }
+/* Timeline, pictures, story line and skill bars share one grid of --n columns, so each sits under its stop. */
+.jy-path { position: relative; z-index: 8; max-width: 1200px; margin: 0 auto; padding: 36px 24px 0; }
+.jy-scroll { overflow-x: auto; padding: 130px 0 10px; margin-top: -130px; } /* the top padding leaves room for the pictures, which a scroll box would otherwise clip */
+.jy-inner { --col-w: calc((100% - 88px) / var(--n)); position: relative; min-width: 1000px; padding: 0 44px; }
+.jy-track { position: absolute; left: calc(44px + var(--col-w) / 2); right: calc(44px + var(--col-w) / 2); top: 9px; height: 2px; background: var(--line); }
 .jy-progress { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--end) / var(--last) * 100%); background: var(--ink); transition: width .4s; }
-.jy-stops { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); }
-.jy-stop { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 0 4px 6px; border: 0; border-radius: 6px; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
+.jy-stops { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.jy-stop { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 0 2px 6px; border: 0; border-radius: 6px; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
 .jy-stop:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 .jy-dot { display: block; width: 12px; height: 12px; margin-top: 4px; box-sizing: border-box; border-radius: 50%; background: var(--paper); border: 2px solid var(--jy-dot); transition: all .25s; }
-.jy-year { font-size: .875rem; font-weight: 600; color: var(--jy-ghost); }
-.jy-place { font-size: .78rem; line-height: 1.3; color: var(--ink-2); }
+.jy-year { font-size: .85rem; font-weight: 600; color: var(--jy-ghost); }
+.jy-place { font-size: .75rem; line-height: 1.3; color: var(--ink-2); }
 .jy-stop.is-same .jy-dot { border-color: var(--ink); }
 .jy-stop.is-past .jy-dot { background: var(--ink); border-color: var(--ink); }
 .jy-stop.is-past .jy-year { color: var(--ink); }
 .jy-stop.is-now .jy-dot { width: 20px; height: 20px; margin-top: 0; border: 3px solid var(--paper); box-shadow: 0 0 0 2px var(--ink); }
 .jy-stop.is-now .jy-year { font-weight: 700; }
-.jy-stories { max-width: 760px; margin: 22px auto 0; text-align: center; }
-.jy-story { margin: 0 0 6px; font-size: 1.125rem; line-height: 1.5; color: var(--ink); }
+
+/* Pictures fan out above the current stop, over the bottom of the painting. */
+.jy-fans { position: absolute; inset: 0 44px auto; height: 0; }
+.jy-fan { position: absolute; left: calc(var(--col-w) * (var(--col) + .5)); bottom: 18px; width: 0; height: 0; opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity .25s, transform .35s cubic-bezier(.2,.8,.2,1); }
+.jy-fan.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.jy-card { position: absolute; bottom: 0; left: -58px; width: 116px; height: 86px; padding: 3px; border: 0; border-radius: 4px; background: #fff; box-shadow: 0 6px 16px rgba(23,32,38,.25); cursor: zoom-in; transform: translateX(calc(var(--k) * 60px)) translateY(calc(var(--k) * var(--k) * 6px)) rotate(calc(var(--k) * 8deg)); transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .2s; }
+.jy-card img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; background: #EEF1F2; }
+.jy-card:hover, .jy-card:focus-visible { z-index: 2; box-shadow: 0 12px 26px rgba(23,32,38,.35); transform: translateX(calc(var(--k) * 64px)) translateY(-8px) rotate(calc(var(--k) * 5deg)) scale(1.06); }
+.jy-card:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+/* The stop's line, and links to its papers, code, videos and talks */
+.jy-stories { max-width: 780px; margin: 22px auto 0; text-align: center; }
+.jy-story p { margin: 0 0 6px; font-size: 1.125rem; line-height: 1.5; color: var(--ink); }
 .jy-story strong { font-weight: 600; }
 .js .jy-story:not(.is-active) { display: none; }
-.jy-lanes { position: relative; height: calc(var(--rows) * 30px); margin-top: 28px; }
-.jy-band { position: absolute; top: -6px; bottom: -6px; left: calc(var(--end) * 10%); width: 10%; border-radius: 8px; background: color-mix(in srgb, var(--ink) 5%, transparent); transition: left .4s; }
+.jy-works { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px 0 4px; }
+.jy-work { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: .82rem; text-decoration: none; }
+.jy-work:hover { border-color: var(--ink); }
+.jy-work svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.jy-work svg .fill { fill: currentColor; stroke: none; }
+
+.jy-lanes { position: relative; height: calc(var(--rows) * 28px); margin-top: 26px; }
+.jy-band { position: absolute; top: -6px; bottom: -6px; left: calc(var(--end) * 100% / var(--n)); width: calc(100% / var(--n)); border-radius: 8px; background: color-mix(in srgb, var(--ink) 5%, transparent); transition: left .4s; }
 .jy-bars { list-style: none; margin: 0; padding: 0; }
-.jy-bar { position: absolute; top: calc(var(--row) * 30px); left: calc(var(--start) * 10% + .6%); height: 24px; box-sizing: border-box; display: flex; align-items: center; width: 0; min-width: max-content; padding: 0 11px; border: 1px dashed var(--line); border-radius: 12px; background: var(--paper); color: var(--jy-ghost); font-size: .8125rem; font-weight: 500; line-height: 1; white-space: nowrap; transition: width .55s cubic-bezier(.2,.8,.2,1), background-color .3s, color .3s, border-color .3s; }
-.jy-bar.is-on { width: calc((var(--end) - var(--start) + 1) * 10% - 1.2%); border: 1px solid var(--bg); background: var(--bg); color: var(--fg); }
-.jy-bar.jy-python.is-on { box-shadow: inset 0 -3px 0 #FFD43B; }
+.jy-bar { position: absolute; top: calc(var(--row) * 28px); left: calc(var(--start) * 100% / var(--n) + .4%); height: 22px; box-sizing: border-box; display: flex; align-items: center; width: 0; min-width: max-content; padding: 0 10px; border: 1px dashed var(--line); border-radius: 11px; background: var(--paper); color: var(--jy-ghost); font-size: .78rem; font-weight: 500; line-height: 1; white-space: nowrap; transition: width .55s cubic-bezier(.2,.8,.2,1), background-color .3s, color .3s, border-color .3s; }
+.jy-bar.is-on { width: calc((var(--end) - var(--start) + 1) * 100% / var(--n) - .8%); border: 1px solid var(--bg); background: var(--bg); color: var(--fg); }
+.jy-bar.has-edge.is-on { box-shadow: inset 0 -3px 0 var(--edge); }
 /* A skill learned at the stop just reached gives one soft pulse. */
 @keyframes jy-pulse { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--bg) 55%, transparent); } to { box-shadow: 0 0 0 9px transparent; } }
 .jy-bar.is-new { animation: jy-pulse .9s ease-out; }
 .jy-page .site-foot { margin-top: 72px; }
+
+/* Picture viewer */
+.jy-viewer { width: min(920px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 8px; background: transparent; color: #fff; overflow: visible; }
+.jy-viewer::backdrop { background: rgba(12,18,22,.88); }
+.jy-viewer figure { margin: 0; }
+.jy-viewer img { display: block; width: 100%; max-height: calc(100dvh - 170px); object-fit: contain; border-radius: 6px; background: #fff; }
+.jy-viewer figcaption { padding: 12px 2px 0; }
+.jy-viewer figcaption p { margin: 0; font-size: 1.05rem; line-height: 1.45; }
+.jy-viewer figcaption strong { font-weight: 600; }
+.jy-viewer .jy-viewer-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 4px; font-size: .85rem; color: #C9D3D6; }
+.jy-viewer-btn { position: absolute; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; font: 400 1.5rem/1 var(--head); cursor: pointer; }
+.jy-viewer-btn:hover { background: rgba(255,255,255,.28); }
+.jy-viewer-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.jy-close { top: -52px; right: 0; }
+.jy-prev { top: 40%; left: -60px; }
+.jy-next { top: 40%; right: -60px; }
+.jy-viewer.is-single .jy-prev, .jy-viewer.is-single .jy-next { display: none; }
 
 @media (max-width: 760px) {
   .jy-top { position: relative; padding: 16px; text-shadow: none; }
@@ -72,23 +107,32 @@
   .jy-nav a:hover, .jy-nav a[aria-current="page"] { color: var(--ink); }
   .jy-scrim { display: none; }
   .jy-title { left: 16px; top: 14px; font-size: 1.9rem; }
-  .jy-tag { font-size: .7rem; padding: 3px 7px; }
+  .jy-tag { font-size: .66rem; padding: 2px 6px; }
   .jy-path { padding: 24px 16px 0; }
-  /* On phones the timeline fits the screen as dots (only the current year is named) and the skills wrap as boxes. */
-  .jy-scroll { overflow: visible; }
-  .jy-inner { min-width: 0; padding: 0; }
-  .jy-track { left: 5%; right: 5%; }
+  /* On phones the timeline fits the screen as dots (only the current year is named), the pictures sit in a row under
+     the line, and the skills wrap as boxes. */
+  .jy-scroll { overflow: visible; padding: 0; margin-top: 0; }
+  .jy-inner { min-width: 0; padding: 0; --col-w: calc(100% / var(--n)); }
+  .jy-track { left: calc(var(--col-w) / 2); right: calc(var(--col-w) / 2); }
   .jy-place, .jy-year { display: none; }
   .jy-stop.is-now .jy-year { display: block; position: absolute; top: 26px; white-space: nowrap; font-size: .8rem; }
   .jy-stop { position: relative; padding-bottom: 18px; }
-  .jy-stories { margin-top: 18px; }
-  .jy-story { font-size: 1rem; }
+  .jy-inner { display: flex; flex-direction: column; }
+  .jy-stops { order: 1; } .jy-stories { order: 2; } .jy-fans { order: 3; } .jy-lanes { order: 4; }
+  .jy-fans { position: static; height: auto; }
+  .jy-fan { position: static; width: auto; height: auto; display: none; gap: 8px; justify-content: center; margin-top: 14px; transform: none; }
+  .jy-fan.is-on { display: flex; }
+  .jy-card, .jy-card:hover, .jy-card:focus-visible { position: relative; left: auto; width: 96px; height: 72px; transform: none; }
+  .jy-stories { margin-top: 16px; }
+  .jy-story p { font-size: 1rem; }
   .jy-lanes { height: auto; margin-top: 20px; }
   .jy-band { display: none; }
   .jy-bars { display: flex; flex-wrap: wrap; gap: 6px; }
   .jy-bar, .jy-bar.is-on { position: static; width: auto; min-width: 0; height: 28px; border-radius: 6px; }
+  .jy-prev { left: 4px; top: auto; bottom: -56px; }
+  .jy-next { right: 4px; top: auto; bottom: -56px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .jy-land, .jy-veil, .jy-mark, .jy-tag, .jy-progress, .jy-dot, .jy-band, .jy-bar { transition: none; }
+  .jy-land, .jy-veil, .jy-mark, .jy-tag, .jy-progress, .jy-dot, .jy-band, .jy-bar, .jy-fan, .jy-card { transition: none; }
   .jy-bar.is-new { animation: none; }
 }
