@@ -2,6 +2,21 @@
   "_help": "Editor's picks. Add {\"id\": <paper id from papers.json>, \"note\": <your one or two sentences>, \"picked\": \"YYYY-MM-DD\"}. Newest picks show first.",
   "picks": [
     {
+      "id": "10.3390/rs18183223",
+      "picked": "2026-10-27",
+      "note": ""
+    },
+    {
+      "id": "10.1002/ird.70202",
+      "picked": "2026-10-27",
+      "note": ""
+    },
+    {
+      "id": "10.1016/j.rse.2026.115639",
+      "picked": "2026-10-27",
+      "note": ""
+    },
+    {
       "id": "10.3389/frsen.2026.1895172",
       "picked": "2026-10-21",
       "note": ""
