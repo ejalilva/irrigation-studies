@@ -46,7 +46,9 @@
     shown = active;
     scene.classList.add('has-mark');
     marks.forEach(m => m.classList.toggle('is-on', m.dataset.mark === mark));
-    tags.forEach(t => t.classList.toggle('is-on', t.dataset.mark === mark));
+    // A tag limited to some stops (Sharif University) shows at those stops, or when its landmark itself is hovered.
+    tags.forEach(t => t.classList.toggle('is-on', t.dataset.mark === mark &&
+      (!t.dataset.stops || previewMark !== null || t.dataset.stops.split(',').map(Number).includes(active))));
   }
   bars.forEach(bar => bar.addEventListener('animationend', () => bar.classList.remove('is-new')));
 
