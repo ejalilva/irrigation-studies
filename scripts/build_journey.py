@@ -26,7 +26,7 @@ import html
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-V = "2026-10-28a"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
+V = "2026-10-28b"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
 MARKS = [
@@ -245,7 +245,7 @@ out = f'''<!doctype html>
       <a href="index.html#studies">Irrigation studies</a>
       <a href="index.html#landscape">Research library</a>
       <a href="journey.html" aria-current="page">My journey</a>
-      <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications</a>
+      <a href="about.html">About</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </div>
@@ -283,12 +283,13 @@ out = f'''<!doctype html>
 <div class="wrap">
   <footer class="site-foot">
     <p>All views expressed on this site are my own and do not reflect the opinions or positions of my employer or any affiliated organizations.</p>
-    <nav aria-label="Profiles">
-      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en">Google Scholar</a>
-      <a href="https://github.com/ejalilva">GitHub</a>
-      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/">LinkedIn</a>
-      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand">ResearchGate</a>
-      <a href="mailto:ehsan.jalilvand@gmail.com">Email</a>
+    <nav class="foot-links" aria-label="Profiles">
+      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-scholar"/></svg></a>
+      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand" aria-label="ResearchGate" title="ResearchGate"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-researchgate"/></svg></a>
+      <a href="https://github.com/ejalilva" aria-label="GitHub" title="GitHub"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-github"/></svg></a>
+      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-linkedin"/></svg></a>
+      <a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw" aria-label="YouTube" title="YouTube"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-youtube"/></svg></a>
+      <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
     </nav>
   </footer>
 </div>

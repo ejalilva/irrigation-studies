@@ -10,10 +10,11 @@
 .j-node{position:relative;display:block;width:100%;height:100%;padding:9px 11px 11px;border:1px solid var(--line);border-top:3px solid var(--g);border-radius:6px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
 .j-node:hover,.j-node[aria-expanded="true"]{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 22px rgba(15,26,31,.14)}
 .j-step.is-next .j-node{border-style:dashed;border-top-style:solid}
-.j-top{display:flex;align-items:center;gap:7px;min-height:22px;margin-bottom:6px;padding-right:60px}
-/* Chapter name, in words ("Chapter one"), on its own line just above the title, below the icon. */
-.j-ch{display:block;margin:0 0 2px;font:650 .68rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
-.j-year{font:700 .74rem/1.2 var(--sans);color:var(--ink-2)}
+/* The top of the chapter is left to its icon; the chapter name and year share one line just above the title
+   ("Chapter one · 2019"). On narrow screens the question tag (Where, When, How much) follows on the same line. */
+.j-top{display:block;min-height:22px;margin-bottom:3px}
+.j-ch{display:flex;flex-wrap:wrap;align-items:center;gap:2px 0;margin:0 0 2px;font:650 .68rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.j-year::before{content:"\00b7";margin:0 .45em}
 .j-q{display:none}
 /* Chapter icon: a picture over the top-right corner of the chapter, breaking out of its border. A card-coloured
    backing in the icon's own outline (assets/chapters/<icon>-back.png) hides the border and arrows behind it,
@@ -74,9 +75,11 @@
   .journey .j-steps{display:block}
   .j-step{margin:0 0 56px}
   .j-step:not(:last-child)::after{content:"\2193";position:absolute;left:16px;bottom:-44px;font:700 1.35rem/1 var(--sans);color:var(--ink-2)}
-  .j-q{display:inline-block;padding:2px 7px;border-radius:3px;background:var(--g);color:var(--gt);font-size:.8rem;font-weight:650}
+  .j-q{display:inline-block;margin-left:9px;padding:2px 7px;border-radius:3px;background:var(--g);color:var(--gt);font-size:.8rem;font-weight:650;letter-spacing:normal;text-transform:none}
   .j-node:hover,.j-node[aria-expanded="true"]{transform:none}
   .j-ico{top:-44px;right:-2px}
+  .j-top{min-height:0;margin:0}
+  .j-ch{min-height:24px;margin-bottom:4px;padding-right:78px}
   .j-ico::before{clip-path:inset(41px 1px 0 0)}
 }
 @media(prefers-reduced-motion:reduce){.j-node,.j-card,.j-card.on{transition:none}.j-node:hover,.j-node[aria-expanded="true"]{transform:none}}

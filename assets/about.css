@@ -1,0 +1,78 @@
+/* About page (about.html). The opening sets the name, roles, a short bio and profile links beside the site's pages,
+   stacked as numbered chapters. Below, each section has its number and heading in a narrow column on the left. */
+.about-page main { padding-bottom: 8px; }
+
+.ab-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 56px 72px; align-items: center; padding: 72px 0 80px; border-bottom: 1px solid var(--line); }
+.ab-hero h1 { margin: 0; font: 500 clamp(2.6rem, 6.2vw, 4.8rem)/1 var(--head); letter-spacing: -.025em; color: var(--ink); }
+/* Each role carries its "/" on its left; the wrapper clips the one that would start a line. */
+.ab-roles-wrap { overflow: hidden; margin: 20px 0 0; }
+.ab-roles { display: flex; flex-wrap: wrap; gap: 4px 0; margin: 0 0 0 -1.4em; padding: 0; list-style: none; font-size: .98rem; color: var(--ink-2); }
+.ab-roles li { position: relative; margin-left: 1.4em; }
+.ab-roles li::before { content: "/"; position: absolute; left: -.95em; color: var(--line); }
+.ab-bio { max-width: 54ch; margin: 24px 0 0; font-size: 1.16rem; line-height: 1.6; color: var(--ink); }
+.ab-links { display: flex; flex-wrap: wrap; gap: 4px; margin: 26px 0 0 -9px; }
+.ab-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: var(--ink-2); transition: color .15s, background-color .15s; }
+.ab-links a:hover { color: var(--ink); background: var(--hover); }
+.ab-links a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.ab-links svg { width: 21px; height: 21px; fill: currentColor; }
+
+/* The site's pages, one under another, like chapters */
+.ab-chapters ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.ab-chapters li { border-bottom: 1px solid var(--line); }
+.ab-chapters a { display: grid; grid-template-columns: 44px 1fr auto; align-items: baseline; gap: 2px 12px; padding: 18px 4px; color: var(--ink); text-decoration: none; }
+.ab-chapters a::after { content: "→"; grid-column: 3; grid-row: 1 / span 2; align-self: center; color: var(--ink-2); transition: transform .2s; }
+.ab-n { grid-row: 1 / span 2; font: 500 .82rem/1 var(--sans); font-variant-numeric: tabular-nums; letter-spacing: .04em; color: var(--ink-2); }
+.ab-t { font: 500 1.5rem/1.2 var(--head); letter-spacing: -.01em; }
+.ab-d { grid-column: 2; font-size: .9rem; color: var(--ink-2); }
+.ab-chapters a:hover .ab-t { color: var(--link); }
+.ab-chapters a:hover::after { transform: translateX(4px); color: var(--link); }
+.ab-chapters a:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; border-radius: 4px; }
+
+/* Sections: number and heading on the left, text on the right */
+.ab-sec { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 48px; padding: 56px 0; border-bottom: 1px solid var(--line); }
+.ab-sec h2 { margin: 0; font: 500 1.35rem/1.25 var(--head); color: var(--ink); }
+.ab-sn { display: block; margin-bottom: 8px; font: 500 .82rem/1 var(--sans); font-variant-numeric: tabular-nums; letter-spacing: .04em; color: var(--ink-2); }
+.ab-body { max-width: 68ch; }
+.ab-body p { margin: 0 0 14px; font-size: 1.05rem; line-height: 1.65; color: var(--ink); }
+.ab-body a { color: var(--link); }
+.ab-lead { font-size: 1.25rem !important; line-height: 1.45 !important; }
+.ab-more { margin-top: 18px !important; }
+.ab-more a { text-decoration: none; font-weight: 500; }
+.ab-more a:hover { text-decoration: underline; }
+.ab-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 0; padding: 0; list-style: none; }
+.ab-tags li { padding: 5px 11px; border-radius: 999px; background: var(--tag-bg); font-size: .86rem; color: var(--ink); }
+.ab-pair { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: none; }
+.ab-pair h3 { margin: 0 0 8px; font: 600 1rem/1.3 var(--head); color: var(--ink); }
+.ab-pair p { font-size: 1rem; }
+.ab-edu { margin: 0; padding: 0; list-style: none; }
+.ab-edu li { display: flex; flex-direction: column; gap: 2px; padding: 12px 0; border-top: 1px solid var(--line); }
+.ab-edu li:first-child { border-top: 0; padding-top: 0; }
+.ab-deg { font-weight: 500; color: var(--ink); }
+.ab-where { font-size: .92rem; color: var(--ink-2); }
+
+/* Publications, newest first, grouped by year */
+.ab-count { color: var(--ink-2) !important; font-size: .95rem !important; }
+.ab-year { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+.ab-year > h3 { margin: 2px 0 0; font: 600 .95rem/1.4 var(--sans); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.ab-year ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.ab-pub { display: block; }
+.ab-chip { display: inline-block; margin-right: 7px; vertical-align: 1px; padding: 0 6px; border-radius: 3px; background: var(--jc); color: #fff; font: 600 .66rem/1.45 var(--sans); letter-spacing: .02em; white-space: nowrap; box-shadow: 0 0 0 1px var(--chip-ring); }
+.ab-pub-title { font-weight: 500; line-height: 1.4; color: var(--ink) !important; text-decoration: none; }
+.ab-pub-title:hover { color: var(--link) !important; text-decoration: underline; }
+.ab-pub-meta { margin: 3px 0 0 !important; font-size: .88rem !important; line-height: 1.5 !important; color: var(--ink-2) !important; }
+.ab-pub-meta b { font-weight: 600; color: var(--ink); }
+.ab-pdf { margin-left: 6px; font-size: .8rem; font-weight: 600; }
+
+.ab-spot { margin: 40px 0 0; font-size: .98rem; color: var(--ink-2); }
+.ab-spot a { color: var(--link); }
+
+@media (max-width: 900px) {
+  .ab-hero { grid-template-columns: 1fr; padding: 48px 0 56px; gap: 40px; }
+  .ab-sec { grid-template-columns: 1fr; padding: 44px 0; }
+  .ab-pair { grid-template-columns: 1fr; gap: 20px; }
+}
+@media (max-width: 520px) {
+  .ab-t { font-size: 1.3rem; }
+  .ab-year { grid-template-columns: 1fr; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .ab-chapters a::after { transition: none; } }

@@ -1,6 +1,6 @@
 # Irrigation studies
 
-A living guide to research that uses satellites and Earth system models to find **where**, **when** and **how much** farms irrigate. Curated by [Ehsan Jalilvand](https://www.ehsanjalilvand.com/home).
+A living guide to research that uses satellites and Earth system models to find **where**, **when** and **how much** farms irrigate. Curated by [Ehsan Jalilvand](https://ejalilva.github.io/irrigation-studies/about.html).
 
 **Visit the page: [ejalilva.github.io/irrigation-studies](https://ejalilva.github.io/irrigation-studies/)**
 
