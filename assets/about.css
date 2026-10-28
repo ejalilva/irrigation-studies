@@ -31,6 +31,8 @@
 .ab-spot-where { font-size: .92rem; line-height: 1.4; color: var(--ink-2); }
 .ab-spot-go { margin-top: 4px; font-size: .92rem; font-weight: 500; color: var(--link); }
 .ab-spot:hover .ab-spot-go { text-decoration: underline; }
+.ab-spot-credit { margin-top: 2px; font-size: .72rem; color: var(--ink-2); }
+.ab-spot.is-local .ab-spot-credit { display: none; }
 
 /* Sections: number and heading on the left, text on the right */
 .ab-sec { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 48px; padding: 56px 0; border-bottom: 1px solid var(--line); }

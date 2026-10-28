@@ -1,26 +1,49 @@
-/* "My focus: human-driven processes in the water cycle" (index.html#focus). A row of human-managed processes with
-   irrigation first; a green bracket above joins irrigation to the processes it interacts with directly, a grey one
-   below reaches the less direct one. On narrow screens the row becomes a grid and a legend replaces the brackets. */
+/* "My focus: human-driven processes in the water cycle" (index.html#focus). The human-managed processes appear side by
+   side, then move into place around irrigation with one line each on how they are linked (assets/focus.js); then the
+   three irrigation questions. On narrow screens the processes are a plain list. */
 .focus { padding-top: 8px; }
-.hm { margin: 30px 0 0; }
-.hm-title { margin: 0 0 14px; font: 600 .78rem/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
-.hm-grid { --green: #31A354; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-template-rows: auto auto auto; }
-.hm-list { display: contents; list-style: none; margin: 0; padding: 0; }
-.hm-item { position: relative; grid-row: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 112px; margin: 12px 4px; padding: 10px 6px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink-2); font-size: .8rem; line-height: 1.3; text-align: center; overflow-wrap: normal; word-break: normal; hyphens: manual; }
-.hm-sub { font-size: .74rem; color: var(--ink-2); }
-.hm-item.is-irr { border-color: var(--r4); background: var(--r4); color: #fff; font-size: 1rem; font-weight: 600; box-shadow: 0 8px 20px rgba(30,92,134,.22); }
-.hm-item.is-direct { border-color: var(--green); color: var(--ink); }
-.hm-item.is-less { border-color: var(--green); border-style: dashed; color: var(--ink); }
-/* ticks from the tiles up to the green bracket and down to the grey one */
-.hm-item.is-irr::before, .hm-item.is-direct::before { content: ""; position: absolute; left: 50%; top: -14px; width: 2px; height: 12px; margin-left: -1px; background: var(--green); }
-.hm-item.is-irr::after, .hm-item.is-less::after { content: ""; position: absolute; left: 50%; bottom: -14px; width: 2px; height: 12px; margin-left: -1px; background: var(--ink-2); }
-.hm-br { position: relative; display: block; }
-.hm-br-direct { grid-row: 1; grid-column: 1 / 9; height: 26px; margin: 0 6.25%; border-bottom: 2px solid var(--green); }
-.hm-br-less { grid-row: 3; grid-column: 1 / 10; height: 2px; margin: 0 5.556%; background: var(--ink-2); }
-.hm-br span { position: absolute; padding: 0 8px; font: 600 .86rem/1 var(--sans); white-space: nowrap; }
-.hm-br-direct span { left: -8px; bottom: 6px; color: #23793B; }
-.hm-br-less span { left: 50%; top: 10px; transform: translateX(-50%); color: var(--ink-2); }
-.hm-legend { display: none; }
+/* The processes: first side by side ("all"), then in place around irrigation ("linked"). Each tile sits at
+   (--x1, --y1) or (--x2, --y2), in % of the stage, and glides between them; a tile's explanation and the lines
+   from irrigation appear once it has arrived. */
+.hx { margin: 28px 0 0; }
+.hx-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; margin-bottom: 12px; }
+.hx-cap { margin: 0; font-size: 1.05rem; font-weight: 500; color: var(--ink); }
+.hx-cap-linked, .hx[data-phase="linked"] .hx-cap-all { display: none; }
+.hx[data-phase="linked"] .hx-cap-linked { display: inline; }
+.hx-toggle { min-height: 40px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink); font: 500 .9rem/1 var(--sans); cursor: pointer; }
+.hx-toggle:hover { border-color: var(--ink-2); }
+.hx-toggle:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.hx-stage { --green: #23793B; --h-all: 300px; --h-linked: 780px; position: relative; height: var(--h-all); border-radius: 14px; background: color-mix(in srgb, var(--ink) 3%, transparent); transition: height .8s cubic-bezier(.3,.7,.2,1); }
+.hx[data-phase="linked"] .hx-stage { height: var(--h-linked); }
+.hx-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.hx-line { fill: none; stroke: var(--green); stroke-width: 2; stroke-linecap: round; stroke-dasharray: var(--len) var(--len); stroke-dashoffset: var(--len); opacity: 0; transition: stroke-dashoffset .7s ease, opacity .3s ease, stroke-width .2s; }
+.hx-line.is-less { stroke: var(--ink-2); stroke-dasharray: 6 6; stroke-dashoffset: 0; }
+.hx[data-phase="linked"] .hx-line { stroke-dashoffset: 0; opacity: 1; transition-delay: calc(.75s + var(--d) * 60ms); }
+.hx-stage.is-drawn .hx-line, .hx-stage.is-drawn .hx-t { transition-delay: 0s; } /* after the first draw, hover responds at once */
+.hx-stage.has-active .hx-line { opacity: .22; }
+.hx-stage.has-active .hx-line.is-on { opacity: 1; stroke-width: 3.5; }
+.hx-list { margin: 0; padding: 0; list-style: none; }
+.hx-t { position: absolute; z-index: 2; left: calc(var(--x1) * 1%); top: calc(var(--y1) * 1%); width: 180px; box-sizing: border-box; padding: 12px 14px; transform: translate(-50%, -50%); border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper); text-align: center; transition: left .9s cubic-bezier(.3,.7,.2,1), top .9s cubic-bezier(.3,.7,.2,1), width .9s cubic-bezier(.3,.7,.2,1), background-color .4s, border-color .4s, color .4s, box-shadow .3s; transition-delay: calc(var(--d) * 40ms); }
+.hx-name { display: block; font-size: .9rem; font-weight: 500; line-height: 1.3; color: var(--ink); }
+.hx-why { display: block; max-height: 0; overflow: hidden; opacity: 0; font-size: .82rem; line-height: 1.4; color: var(--ink-2); transition: max-height .5s ease, opacity .4s ease, margin .4s ease; }
+.hx-tag { display: block; margin-bottom: 3px; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.hx-t.is-direct .hx-tag { color: var(--green); }
+.hx-t.is-less .hx-tag, .hx-t.is-other .hx-tag { color: var(--ink-2); }
+.hx-t.is-irr { border-color: var(--r4); }
+.hx-t.is-irr .hx-name { color: var(--r4); font-weight: 600; }
+/* linked */
+.hx[data-phase="linked"] .hx-t { left: calc(var(--x2) * 1%); top: calc(var(--y2) * 1%); width: 240px; }
+.hx[data-phase="linked"] .hx-why { max-height: 9em; opacity: 1; margin-top: 6px; transition-delay: .85s; }
+.hx[data-phase="linked"] .hx-t.is-direct { border-color: var(--green); }
+.hx[data-phase="linked"] .hx-t.is-less { border-color: var(--ink-2); border-style: dashed; }
+.hx[data-phase="linked"] .hx-t.is-other { background: var(--hover); }
+.hx[data-phase="linked"] .hx-t.is-irr { width: 260px; padding: 18px 18px; border-color: var(--r4); background: var(--r4); box-shadow: 0 0 0 10px color-mix(in srgb, var(--r4) 14%, transparent), 0 14px 32px rgba(30,92,134,.28); }
+.hx[data-phase="linked"] .hx-t.is-irr .hx-name { color: #fff; font-size: 1.35rem; }
+.hx[data-phase="linked"] .hx-t.is-irr .hx-why { color: rgba(255,255,255,.92); font-size: .88rem; }
+.hx-stage.has-active .hx-t.is-on { box-shadow: 0 10px 26px rgba(15,26,31,.16); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hx-stage { --green: #74C476; } }
+:root[data-theme="dark"] .hx-stage { --green: #74C476; }
+
 .focus-point { max-width: 64ch; margin: 54px 0 0; font-size: 1.12rem; line-height: 1.6; color: var(--ink); }
 .focus-point strong { font-weight: 600; }
 .focus-q-h { margin: 36px 0 12px; font: 600 1rem/1.3 var(--head); color: var(--ink); }
@@ -31,19 +54,21 @@
 .fq-q { font: 650 1.05rem/1.2 var(--head); }
 .fq-m { font-size: .92rem; line-height: 1.45; color: var(--ink-2); }
 .fq-where { --qc: var(--q-where); } .fq-when { --qc: var(--q-when); } .fq-how { --qc: var(--q-how); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hm-grid { --green: #74C476; } :root:not([data-theme="light"]) .hm-br-direct span { color: #74C476; } }
-:root[data-theme="dark"] .hm-grid { --green: #74C476; }
-:root[data-theme="dark"] .hm-br-direct span { color: #74C476; }
 
-@media (max-width: 980px) {
-  .hm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; gap: 10px; }
-  .hm-br { display: none; }
-  .hm-item { grid-row: auto; min-height: 64px; margin: 0; }
-  .hm-item.is-irr { grid-column: 1 / -1; }
-  .hm-item::before, .hm-item::after { display: none; }
-  .hm-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 12px 0 0; font-size: .85rem; color: var(--ink-2); }
-  .hm-key::before { content: ""; display: inline-block; width: 16px; height: 10px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid #31A354; border-radius: 3px; }
-  .hm-key.is-less::before { border-style: dashed; }
+/* Narrow screens: a plain list, irrigation first, each process with its link; no animation. */
+@media (max-width: 860px) {
+  .hx-toggle, .hx-cap-all, .hx-lines { display: none; }
+  .hx-cap-linked { display: inline !important; }
+  .hx-stage, .hx[data-phase="linked"] .hx-stage { height: auto; padding: 12px; }
+  .hx-list { display: flex; flex-direction: column; gap: 10px; }
+  .hx-t, .hx[data-phase] .hx-t { position: static; width: auto !important; transform: none; text-align: left; transition: none; }
+  .hx-t .hx-why, .hx[data-phase] .hx-why { max-height: none; opacity: 1; margin-top: 4px; }
+  .hx-t.is-direct { border-color: var(--green); }
+  .hx-t.is-less { border-color: var(--ink-2); border-style: dashed; }
+  .hx-t.is-other { background: var(--hover); }
+  .hx-t.is-irr { border-color: var(--r4); background: var(--r4); }
+  .hx-t.is-irr .hx-name { color: #fff; font-size: 1.15rem; }
+  .hx-t.is-irr .hx-why { color: rgba(255,255,255,.92); }
   .focus-q { grid-template-columns: 1fr; }
 }
-@media (prefers-reduced-motion: reduce) { .focus-q a { transition: none; } .focus-q a:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .focus-q a, .hx-stage, .hx-t, .hx-why, .hx-line { transition: none !important; } .focus-q a:hover { transform: none; } }
