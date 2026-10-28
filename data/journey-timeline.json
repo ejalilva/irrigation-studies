@@ -1,5 +1,5 @@
 {
-  "painting": "assets/journey/landscape-v4.webp",
+  "painting": "assets/journey/landscape-v5.webp",
   "landmarks": [
     {
       "key": "sharif",
@@ -27,11 +27,11 @@
     },
     {
       "key": "michigan",
-      "name": "Michigan State",
-      "x": 68.421,
-      "y": 36.982,
-      "w": 6.699,
-      "h": 29.224
+      "name": "Michigan State University",
+      "x": 64.773,
+      "y": 36.663,
+      "w": 16.866,
+      "h": 31.137
     },
     {
       "key": "gatech",
@@ -56,191 +56,260 @@
       "label": "ArcGIS",
       "color": "#2A74B8",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "envi",
       "label": "ENVI",
       "color": "#A1887F",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "rs",
       "label": "Remote sensing",
       "color": "#10806A",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "matlab",
       "label": "MATLAB coding",
       "color": "#C04A1B",
       "text": "#FFFFFF",
-      "fades_to": "#0076A8"
+      "fades_to": "#0076A8",
+      "split": true
     },
     {
       "key": "ux",
       "label": "UX design",
       "color": "#D63384",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "story",
       "label": "Storytelling",
       "color": "#F7B6CF",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "imgproc",
       "label": "Image processing",
       "color": "#4FB3D9",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "model",
       "label": "Model building",
       "color": "#8B5A2B",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "teach",
       "label": "Teaching",
       "color": "#B39DDB",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "linux",
       "label": "Linux",
       "color": "#FCC624",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "bash",
       "label": "Bash",
       "color": "#4EAA25",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "perl",
       "label": "Perl",
       "color": "#39457E",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "web",
       "label": "Website design",
       "color": "#9CCC65",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "lsm",
       "label": "Land surface models",
       "color": "#557A1F",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "da",
       "label": "Data assimilation",
       "color": "#7B4FB0",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "gee",
       "label": "Google Earth Engine",
       "color": "#0B7A45",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "youtube",
       "label": "YouTube",
       "color": "#D9241C",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "python",
       "label": "Python",
       "color": "#FFD43B",
       "text": "#172026",
-      "fades_to": "#3776AB"
+      "fades_to": "#3776AB",
+      "split": false
     },
     {
       "key": "hpc",
       "label": "HPC",
       "color": "#546E7A",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "git",
       "label": "Git",
       "color": "#24292F",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "lis",
       "label": "NASA LIS · Fortran",
       "color": "#0B3D91",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "pkg",
       "label": "Python packages",
       "color": "#FFD43B",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "geostack",
       "label": "Python geospatial stack",
       "color": "#00796B",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "ml",
       "label": "Machine learning",
       "color": "#F7931E",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "dl",
       "label": "Deep learning",
       "color": "#EE4C2C",
       "text": "#000000",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "gfm",
       "label": "Foundation models",
       "color": "#3949AB",
       "text": "#FFFFFF",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     },
     {
       "key": "agents",
       "label": "AI agents",
       "color": "#00ACC1",
       "text": "#172026",
-      "fades_to": null
+      "fades_to": null,
+      "split": false
     }
   ],
+  "logos": {
+    "sharif": {
+      "kind": "img",
+      "value": "sharif.png",
+      "name": "Sharif University of Technology"
+    },
+    "sdk": {
+      "kind": "img",
+      "value": "sdk.png",
+      "name": "SDK, Satellite Driven Knowledge"
+    },
+    "cnr": {
+      "kind": "text",
+      "value": "CNR",
+      "name": "CNR IRPI"
+    },
+    "aut": {
+      "kind": "img",
+      "value": "aut.png",
+      "name": "Amirkabir University of Technology"
+    },
+    "ries": {
+      "kind": "text",
+      "value": "RIES",
+      "name": "Research Institute for Earth Sciences"
+    },
+    "msu": {
+      "kind": "img",
+      "value": "msu.png",
+      "name": "Michigan State University"
+    },
+    "gt": {
+      "kind": "img",
+      "value": "gt.png",
+      "name": "Georgia Tech"
+    },
+    "nasa": {
+      "kind": "img",
+      "value": "nasa.png",
+      "name": "NASA Goddard"
+    }
+  },
   "work": {
     "congress2015": {
       "kind": "paper",
@@ -379,12 +448,13 @@
       "work": [
         "congress2015"
       ],
+      "logo": "sharif",
       "pictures": []
     },
     {
       "period": "2015–19",
       "short": "Startup",
-      "place": "My startup",
+      "place": "SDK, my startup",
       "landmark": "startup",
       "skills": [
         "ux",
@@ -395,6 +465,7 @@
         "dust",
         "tourism"
       ],
+      "logo": "sdk",
       "pictures": []
     },
     {
@@ -410,6 +481,7 @@
       "work": [
         "jhydrol2018"
       ],
+      "logo": "cnr",
       "pictures": []
     },
     {
@@ -424,6 +496,7 @@
       "work": [
         "rse2019"
       ],
+      "logo": "sharif",
       "pictures": [
         {
           "src": "assets/studies/irrigation-2019-study-area.webp",
@@ -434,7 +507,7 @@
     },
     {
       "period": "2019–21",
-      "short": "Postdoc",
+      "short": "1st postdoc",
       "place": "First postdoc, Sharif University",
       "landmark": "sharif",
       "skills": [
@@ -451,6 +524,7 @@
         "su2021",
         "wrr2023"
       ],
+      "logo": "sharif",
       "pictures": [
         {
           "src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp",
@@ -482,6 +556,7 @@
       "work": [
         "youtube"
       ],
+      "logo": "aut",
       "pictures": []
     },
     {
@@ -494,12 +569,13 @@
       "work": [
         "climate2022"
       ],
+      "logo": "ries",
       "pictures": []
     },
     {
       "period": "2022–23",
-      "short": "Michigan State",
-      "place": "Michigan State",
+      "short": "2nd postdoc",
+      "place": "Second postdoc, Michigan State University",
       "landmark": "michigan",
       "skills": [
         "python",
@@ -511,6 +587,7 @@
         "isprs2024",
         "frontiers2026"
       ],
+      "logo": "msu",
       "pictures": []
     },
     {
@@ -521,6 +598,7 @@
       "skills": [],
       "story": "Began an online Master of Science in Analytics.",
       "work": [],
+      "logo": "gt",
       "pictures": []
     },
     {
@@ -542,6 +620,7 @@
         "geostream",
         "wrr2026"
       ],
+      "logo": "nasa",
       "pictures": [
         {
           "src": "assets/studies/agrotrack-2021.png",
@@ -571,6 +650,7 @@
       ],
       "story": "Kept going with the analytics master’s.",
       "work": [],
+      "logo": "gt",
       "pictures": []
     },
     {
@@ -587,6 +667,7 @@
         "agu2025",
         "agent"
       ],
+      "logo": "nasa",
       "pictures": []
     }
   ]

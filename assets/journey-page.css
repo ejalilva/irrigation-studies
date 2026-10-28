@@ -1,11 +1,12 @@
 /* My journey (journey.html). The painting fills the top of the page; the landmark of the current stop grows out of it
-   (a cut-out layer in assets/journey/marks/ scaled up) while the rest of the painting fades back. Below it: the timeline,
+   (a cut-out layer in assets/journey/marks/ scaled up) while the rest of the painting fades back. Below it: the timeline
+   (a logo for each stop),
    pictures that fan out above the current stop (they open in a viewer with their captions), one line for the stop with
    links to its papers, code and videos, and the skills as coloured bars that start at the stop where each was learned
    and reach to the current stop. Built by scripts/build_journey.py; behaviour in assets/journey-page.js. */
-:root { --jy-veil: rgba(255,255,255,.2); --jy-ghost: #6B777C; --jy-dot: #B9C3C7; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; --jy-dot: #4A5D64; } }
-:root[data-theme="dark"] { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; --jy-dot: #4A5D64; }
+:root { --jy-veil: rgba(255,255,255,.2); --jy-ghost: #6B777C; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; } }
+:root[data-theme="dark"] { --jy-veil: rgba(15,26,31,.28); --jy-ghost: #9DAEB2; }
 
 .jy-page { background: var(--paper); }
 
@@ -29,7 +30,7 @@
 /* Each landmark's cut-out sits exactly over its painted self, so it is invisible until it grows. */
 .jy-mark { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: var(--w); height: var(--h); opacity: 0; transform-origin: 50% 92%; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .25s, filter .45s; pointer-events: none; }
 .jy-mark.is-on { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 8px 11px rgba(23,32,38,.28)); }
-.jy-tag { position: absolute; z-index: 4; left: calc(var(--x) + var(--w) / 2); top: calc(var(--y) + var(--h)); transform: translate(-50%, 2px); opacity: 0; padding: 4px 9px; border-radius: 999px; background: #fff; color: #172026; font: 600 .78rem/1.3 var(--head); white-space: nowrap; box-shadow: 0 3px 10px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
+.jy-tag { position: absolute; z-index: 4; left: var(--tx); top: var(--ty); transform: translate(-50%, 2px); opacity: 0; padding: 4px 9px; border-radius: 999px; background: #fff; color: #172026; font: 600 .78rem/1.3 var(--head); white-space: nowrap; box-shadow: 0 3px 10px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
 .jy-tag.is-on { opacity: 1; transform: translate(-50%, 9px); }
 .jy-hit { position: absolute; z-index: 5; left: var(--x); top: var(--y); width: var(--w); height: var(--h); padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; }
 .jy-hit:focus { outline: none; }
@@ -38,18 +39,23 @@
 .jy-path { position: relative; z-index: 8; max-width: 1200px; margin: 0 auto; padding: 36px 24px 0; }
 .jy-scroll { overflow-x: auto; padding: 130px 0 10px; margin-top: -130px; } /* the top padding leaves room for the pictures, which a scroll box would otherwise clip */
 .jy-inner { --col-w: calc((100% - 88px) / var(--n)); position: relative; min-width: 1000px; padding: 0 44px; }
-.jy-track { position: absolute; left: calc(44px + var(--col-w) / 2); right: calc(44px + var(--col-w) / 2); top: 9px; height: 2px; background: var(--line); }
+.jy-track { position: absolute; left: calc(44px + var(--col-w) / 2); right: calc(44px + var(--col-w) / 2); top: 15px; height: 2px; background: var(--line); }
 .jy-progress { position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--end) / var(--last) * 100%); background: var(--ink); transition: width .4s; }
 .jy-stops { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
 .jy-stop { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 0 2px 6px; border: 0; border-radius: 6px; background: none; color: inherit; font: inherit; text-align: center; cursor: pointer; }
 .jy-stop:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
-.jy-dot { display: block; width: 12px; height: 12px; margin-top: 4px; box-sizing: border-box; border-radius: 50%; background: var(--paper); border: 2px solid var(--jy-dot); transition: all .25s; }
+/* Each stop shows the logo of where I was, on a white tile over the track: grey until reached, in colour after,
+   ringed at the current stop. CNR and RIES have text tiles until logo files are added. */
+.jy-logo { display: flex; align-items: center; justify-content: center; height: 32px; min-width: 32px; max-width: 64px; box-sizing: border-box; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #172026; opacity: .5; filter: grayscale(1); transition: opacity .25s, filter .25s, box-shadow .25s, border-color .25s, transform .25s; }
+.jy-logo img { display: block; width: auto; height: 24px; max-width: 56px; object-fit: contain; }
+.jy-logo.is-text { padding: 0 6px; font: 700 .62rem/1 var(--head); letter-spacing: .05em; }
+.jy-stop:hover .jy-logo { opacity: .85; filter: none; }
 .jy-year { font-size: .85rem; font-weight: 600; color: var(--jy-ghost); }
 .jy-place { font-size: .75rem; line-height: 1.3; color: var(--ink-2); }
-.jy-stop.is-same .jy-dot { border-color: var(--ink); }
-.jy-stop.is-past .jy-dot { background: var(--ink); border-color: var(--ink); }
+.jy-stop.is-same .jy-logo { border-color: var(--ink-2); }
+.jy-stop.is-past .jy-logo { opacity: 1; filter: none; }
 .jy-stop.is-past .jy-year { color: var(--ink); }
-.jy-stop.is-now .jy-dot { width: 20px; height: 20px; margin-top: 0; border: 3px solid var(--paper); box-shadow: 0 0 0 2px var(--ink); }
+.jy-stop.is-now .jy-logo { border-color: var(--ink); box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); transform: scale(1.08); }
 .jy-stop.is-now .jy-year { font-weight: 700; }
 
 /* Pictures fan out above the current stop, over the bottom of the painting. */
@@ -79,6 +85,8 @@
 .jy-bar.is-on { width: calc((var(--end) - var(--start) + 1) * 100% / var(--n) - .8%); border: 1px solid var(--bg); background: var(--bg); color: var(--fg); }
 /* MATLAB and Python fade from their first colour (under the label) to their second. */
 .jy-bar.has-fade.is-on { border-color: transparent; background: linear-gradient(90deg, var(--bg) 0, var(--bg) max(var(--solid), 40%), var(--to) 100%) border-box; background: linear-gradient(in oklab 90deg, var(--bg) 0, var(--bg) max(var(--solid), 40%), var(--to) 100%) border-box; }
+/* MATLAB is orange then blue, with a short blend between, like its logo. */
+.jy-bar.has-split.is-on { border-color: transparent; background: linear-gradient(90deg, var(--bg) 0, var(--bg) max(var(--solid), 48%), var(--to) min(100%, calc(max(var(--solid), 48%) + 14rem)), var(--to) 100%) border-box; background: linear-gradient(in oklab 90deg, var(--bg) 0, var(--bg) max(var(--solid), 48%), var(--to) min(100%, calc(max(var(--solid), 48%) + 14rem)), var(--to) 100%) border-box; }
 /* A skill learned at the last stop grows leftward from the right edge, so its label stays inside the page. */
 .jy-bar.at-end { left: auto; right: .4%; }
 /* A skill learned at the stop just reached gives one soft pulse. */
@@ -118,7 +126,11 @@
   .jy-inner { min-width: 0; padding: 0; --col-w: calc(100% / var(--n)); }
   .jy-track { left: calc(var(--col-w) / 2); right: calc(var(--col-w) / 2); }
   .jy-place, .jy-year { display: none; }
-  .jy-stop.is-now .jy-year { display: block; position: absolute; top: 26px; white-space: nowrap; font-size: .8rem; }
+  .jy-stop.is-now .jy-year { display: block; position: absolute; top: 29px; white-space: nowrap; font-size: .8rem; }
+  .jy-track { top: 10px; }
+  .jy-logo { height: 22px; min-width: 22px; max-width: 26px; padding: 2px; border-radius: 5px; }
+  .jy-logo img { height: 16px; max-width: 20px; }
+  .jy-logo.is-text { padding: 0 2px; font-size: .45rem; letter-spacing: 0; }
   .jy-stop { position: relative; padding-bottom: 18px; }
   .jy-inner { display: flex; flex-direction: column; }
   .jy-stops { order: 1; } .jy-stories { order: 2; } .jy-fans { order: 3; } .jy-lanes { order: 4; }
@@ -132,11 +144,11 @@
   .jy-band { display: none; }
   .jy-bars { display: flex; flex-wrap: wrap; gap: 6px; }
   .jy-bar, .jy-bar.is-on { position: static; width: auto; min-width: 0; height: 28px; border-radius: 6px; }
-  .jy-bar.has-fade.is-on { padding-right: 34px; background: linear-gradient(90deg, var(--bg) 0, var(--bg) calc(100% - 30px), var(--to) 100%) border-box; background: linear-gradient(in oklab 90deg, var(--bg) 0, var(--bg) calc(100% - 30px), var(--to) 100%) border-box; }
+  .jy-bar.has-fade.is-on, .jy-bar.has-split.is-on { padding-right: 34px; background: linear-gradient(90deg, var(--bg) 0, var(--bg) calc(100% - 30px), var(--to) 100%) border-box; background: linear-gradient(in oklab 90deg, var(--bg) 0, var(--bg) calc(100% - 30px), var(--to) 100%) border-box; }
   .jy-prev { left: 4px; top: auto; bottom: -56px; }
   .jy-next { right: 4px; top: auto; bottom: -56px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .jy-land, .jy-veil, .jy-mark, .jy-tag, .jy-progress, .jy-dot, .jy-band, .jy-bar, .jy-fan, .jy-card { transition: none; }
+  .jy-land, .jy-veil, .jy-mark, .jy-tag, .jy-progress, .jy-logo, .jy-band, .jy-bar, .jy-fan, .jy-card { transition: none; }
   .jy-bar.is-new { animation: none; }
 }
