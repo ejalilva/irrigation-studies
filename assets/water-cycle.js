@@ -27,7 +27,7 @@ const explorerBox=document.querySelector('#explore');
 // How a part's research is shown, from data-popup on #explore (?popup=summary|hover|click in the address overrides it, to compare):
 // summary: hovering plays the part's animation first; after SUMMARY_DELAY the text under the part's label (no box, transparent)
 //   gives the one-line description, a chip per paper (journal and year, in the journal's colour) and counts of other work;
-//   a click on the part or the text opens the dialog.
+//   a click on the part or the text opens the dialog. The tour shows the same text and chips for each part it plays.
 // hover: a panel with the full research opens over the side of the map (see Hover pop-ups below).
 // click: the plain one-line description at once, and a click opens the dialog.
 const popupMode=new URLSearchParams(location.search).get('popup')||explorerBox.dataset.popup||'click';
@@ -97,7 +97,8 @@ function fillSummary(t){hintPapers.replaceChildren();const P=window.Papers;if(!P
  if(parts.length){const line=document.createElement('p');line.className='hp-count';line.textContent=parts.join(' · ');hintPapers.append(line);}
 }
 function highlight(key){const t=topics[key];if(!t)return;activeTopic=key;cancelHide();
- const rich=summaryMode&&!tour;callout.classList.toggle('rich',rich);if(rich)fillSummary(t);else hintPapers.replaceChildren();
+ // The tour shows the same summary as a hover (paper chips and counts), without the explore cue.
+ const rich=summaryMode;callout.classList.toggle('rich',rich);if(rich)fillSummary(t);else hintPapers.replaceChildren();
  if(!summaryTimer)callout.classList.remove('wait');
  setHint(t.title,t.short,tour?'':exploreCue(t,false));
  document.querySelectorAll('.scene-item').forEach(el=>el.classList.toggle('active',el.dataset.topic===key));
