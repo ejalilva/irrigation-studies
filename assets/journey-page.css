@@ -18,6 +18,10 @@
 .jy-nav a { color: rgba(255,255,255,.92); text-decoration: none; }
 .jy-nav a:hover { color: #fff; text-decoration: underline; }
 .jy-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+.jy-nav .nav-btn { color: rgba(255,255,255,.92); }
+.jy-nav .nav-btn:hover, .jy-nav .nav-menu:hover .nav-btn, .jy-nav .nav-menu.open .nav-btn { color: #fff; }
+.jy-nav .nav-sub a { color: var(--ink); font-weight: 400; text-decoration: none; }
+.jy-nav .nav-sub a:hover { color: var(--ink); text-decoration: none; }
 .jy-title { position: absolute; z-index: 6; left: max(24px, calc((100% - 1072px) / 2)); top: clamp(64px, 11.5%, 112px); margin: 0; font: 500 clamp(2.2rem, 4.2vw, 3.75rem)/1 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }
 
 /* The painting, edge to edge */
@@ -116,6 +120,8 @@
   .jy-name { color: var(--ink); }
   .jy-nav a { color: var(--ink-2); }
   .jy-nav a:hover, .jy-nav a[aria-current="page"] { color: var(--ink); }
+  .jy-nav .nav-btn { color: var(--ink-2); }
+  .jy-nav .nav-btn:hover, .jy-nav .nav-menu:hover .nav-btn, .jy-nav .nav-menu.open .nav-btn { color: var(--ink); }
   .jy-scrim { display: none; }
   .jy-title { left: 16px; top: 14px; font-size: 1.9rem; }
   .jy-tag { font-size: .66rem; padding: 2px 6px; }

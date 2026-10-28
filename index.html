@@ -12,9 +12,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-28b">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-28c">
+<script src="assets/nav.js?v=2026-10-28c" defer></script>
 <link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26f">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-28a">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-28c">
+<link rel="stylesheet" href="assets/focus.css?v=2026-10-28c">
 <script src="assets/journals.js?v=2026-10-26f"></script>
 <script src="assets/water-cycle.js?v=2026-10-28a" defer></script>
 </head>
@@ -25,11 +27,17 @@
   <header class="site-head">
     <a class="site-name" href="index.html">Ehsan Jalilvand</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="#explore">Water cycle</a>
-      <a href="#studies">Irrigation studies</a>
-      <a href="#landscape">Research library</a>
-      <a href="journey.html">My journey</a>
       <a href="about.html">About</a>
+      <div class="nav-menu is-current">
+        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <ul class="nav-sub" id="nav-research">
+          <li><a href="#explore">Water cycle</a></li>
+          <li><a href="#focus">Human-driven processes</a></li>
+          <li><a href="#studies">Irrigation studies</a></li>
+          <li><a href="#landscape">Research library</a></li>
+        </ul>
+      </div>
+      <a href="journey.html">My journey</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </header>
@@ -48,6 +56,42 @@
  
  <noscript><p>Enable JavaScript to explore the map. <a href="human.html">Explore human-driven processes</a> or <a href="index.html#studies">browse irrigation studies</a>.</p></noscript>
  </section>
+    <!-- My focus: human-managed processes in the water cycle, after Ehsan's seminar slides "Human-managed process" and
+         "Irrigation Modeling". Irrigation comes first; the brackets show which processes it interacts with directly
+         and less directly. Styles in assets/focus.css. -->
+    <section class="focus" id="focus" aria-labelledby="focus-h">
+      <p class="cycle-eyebrow">My focus</p>
+      <h2 id="focus-h">Human-driven processes in the water cycle</h2>
+      <p class="intro">People manage water at almost every step of the cycle: they pump aquifers, run reservoirs, divert rivers, drain fields and supply cities. Each process follows human decisions, which large-scale water-cycle models still represent poorly.</p>
+      <div class="hm">
+        <p class="hm-title">Human-managed processes</p>
+        <div class="hm-grid">
+          <span class="hm-br hm-br-direct" aria-hidden="true"><span>Direct interaction</span></span>
+          <ul class="hm-list" aria-label="Human-managed processes, with how each interacts with irrigation">
+            <li class="hm-item is-irr">Irrigation</li>
+            <li class="hm-item is-direct">Groundwater pumping and artificial recharge<span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-direct">Reservoir operation<span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-direct">Surface water abstraction<span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-direct">Water diversion<span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-direct">Tile drainage<span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-direct">Return flow<span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-direct">Water quality <span class="hm-sub">sediment transport, stream temperature</span><span class="sr-only"> (direct interaction with irrigation)</span></li>
+            <li class="hm-item is-less">Land management and dynamic vegetation<span class="sr-only"> (less direct interaction with irrigation)</span></li>
+            <li class="hm-item">Urban water management</li>
+          </ul>
+          <span class="hm-br hm-br-less" aria-hidden="true"><span>Less direct interaction</span></span>
+        </div>
+        <p class="hm-legend" aria-hidden="true"><span class="hm-key is-direct">Direct interaction with irrigation</span><span class="hm-key is-less">Less direct</span></p>
+      </div>
+      <p class="focus-point"><strong>Irrigation is the largest human intervention in the water cycle,</strong> and it touches most of the other managed processes. That makes it a strong place to start: modeling irrigation well captures many of the broader ways people interact with the water system.</p>
+      <h3 class="focus-q-h">Modeling irrigation means answering three questions</h3>
+      <ol class="focus-q">
+        <li class="fq-where"><a href="#studies"><span class="fq-q">Where?</span><span class="fq-m">Mapping irrigated land with geospatial foundation models</span></a></li>
+        <li class="fq-when"><a href="#studies"><span class="fq-q">When?</span><span class="fq-m">AgroTrack: change-point detection and hydrological similarity in thermal data</span></a></li>
+        <li class="fq-how"><a href="#studies"><span class="fq-q">How much?</span><span class="fq-m">Assimilating satellite soil moisture with a particle batch smoother</span></a></li>
+      </ol>
+    </section>
+
     <section aria-labelledby="why">
       <p class="cycle-eyebrow">A closer look · Agricultural water use</p>
       <h2 id="why">Why irrigation matters</h2>

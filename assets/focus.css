@@ -1,0 +1,49 @@
+/* "My focus: human-driven processes in the water cycle" (index.html#focus). A row of human-managed processes with
+   irrigation first; a green bracket above joins irrigation to the processes it interacts with directly, a grey one
+   below reaches the less direct one. On narrow screens the row becomes a grid and a legend replaces the brackets. */
+.focus { padding-top: 8px; }
+.hm { margin: 30px 0 0; }
+.hm-title { margin: 0 0 14px; font: 600 .78rem/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.hm-grid { --green: #31A354; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-template-rows: auto auto auto; }
+.hm-list { display: contents; list-style: none; margin: 0; padding: 0; }
+.hm-item { position: relative; grid-row: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 112px; margin: 12px 4px; padding: 10px 6px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink-2); font-size: .8rem; line-height: 1.3; text-align: center; overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.hm-sub { font-size: .74rem; color: var(--ink-2); }
+.hm-item.is-irr { border-color: var(--r4); background: var(--r4); color: #fff; font-size: 1rem; font-weight: 600; box-shadow: 0 8px 20px rgba(30,92,134,.22); }
+.hm-item.is-direct { border-color: var(--green); color: var(--ink); }
+.hm-item.is-less { border-color: var(--green); border-style: dashed; color: var(--ink); }
+/* ticks from the tiles up to the green bracket and down to the grey one */
+.hm-item.is-irr::before, .hm-item.is-direct::before { content: ""; position: absolute; left: 50%; top: -14px; width: 2px; height: 12px; margin-left: -1px; background: var(--green); }
+.hm-item.is-irr::after, .hm-item.is-less::after { content: ""; position: absolute; left: 50%; bottom: -14px; width: 2px; height: 12px; margin-left: -1px; background: var(--ink-2); }
+.hm-br { position: relative; display: block; }
+.hm-br-direct { grid-row: 1; grid-column: 1 / 9; height: 26px; margin: 0 6.25%; border-bottom: 2px solid var(--green); }
+.hm-br-less { grid-row: 3; grid-column: 1 / 10; height: 2px; margin: 0 5.556%; background: var(--ink-2); }
+.hm-br span { position: absolute; padding: 0 8px; font: 600 .86rem/1 var(--sans); white-space: nowrap; }
+.hm-br-direct span { left: -8px; bottom: 6px; color: #23793B; }
+.hm-br-less span { left: 50%; top: 10px; transform: translateX(-50%); color: var(--ink-2); }
+.hm-legend { display: none; }
+.focus-point { max-width: 64ch; margin: 54px 0 0; font-size: 1.12rem; line-height: 1.6; color: var(--ink); }
+.focus-point strong { font-weight: 600; }
+.focus-q-h { margin: 36px 0 12px; font: 600 1rem/1.3 var(--head); color: var(--ink); }
+.focus-q { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.focus-q a { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 14px 16px 16px; border: 1px solid var(--line); border-top: 4px solid var(--qc); border-radius: 8px; background: var(--paper); color: var(--ink); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.focus-q a:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,26,31,.12); }
+.focus-q a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.fq-q { font: 650 1.05rem/1.2 var(--head); }
+.fq-m { font-size: .92rem; line-height: 1.45; color: var(--ink-2); }
+.fq-where { --qc: var(--q-where); } .fq-when { --qc: var(--q-when); } .fq-how { --qc: var(--q-how); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hm-grid { --green: #74C476; } :root:not([data-theme="light"]) .hm-br-direct span { color: #74C476; } }
+:root[data-theme="dark"] .hm-grid { --green: #74C476; }
+:root[data-theme="dark"] .hm-br-direct span { color: #74C476; }
+
+@media (max-width: 980px) {
+  .hm-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; gap: 10px; }
+  .hm-br { display: none; }
+  .hm-item { grid-row: auto; min-height: 64px; margin: 0; }
+  .hm-item.is-irr { grid-column: 1 / -1; }
+  .hm-item::before, .hm-item::after { display: none; }
+  .hm-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 12px 0 0; font-size: .85rem; color: var(--ink-2); }
+  .hm-key::before { content: ""; display: inline-block; width: 16px; height: 10px; margin-right: 6px; vertical-align: -1px; border: 1.5px solid #31A354; border-radius: 3px; }
+  .hm-key.is-less::before { border-style: dashed; }
+  .focus-q { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .focus-q a { transition: none; } .focus-q a:hover { transform: none; } }
