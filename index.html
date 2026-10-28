@@ -12,9 +12,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-26f">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-28b">
 <link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-26f">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-26g">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-28a">
 <script src="assets/journals.js?v=2026-10-26f"></script>
 <script src="assets/water-cycle.js?v=2026-10-28a" defer></script>
 </head>
@@ -29,7 +29,7 @@
       <a href="#studies">Irrigation studies</a>
       <a href="#landscape">Research library</a>
       <a href="journey.html">My journey</a>
-      <a href="https://www.ehsanjalilvand.com/cv-publications">CV &amp; publications</a>
+      <a href="about.html">About</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </header>
@@ -210,12 +210,13 @@
 
   <footer class="site-foot">
     <p>All views expressed on this site are my own and do not reflect the opinions or positions of my employer or any affiliated organizations.</p>
-    <nav aria-label="Profiles">
-      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en">Google Scholar</a>
-      <a href="https://github.com/ejalilva">GitHub</a>
-      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/">LinkedIn</a>
-      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand">ResearchGate</a>
-      <a href="mailto:ehsan.jalilvand@gmail.com">Email</a>
+    <nav class="foot-links" aria-label="Profiles">
+      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-scholar"/></svg></a>
+      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand" aria-label="ResearchGate" title="ResearchGate"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-researchgate"/></svg></a>
+      <a href="https://github.com/ejalilva" aria-label="GitHub" title="GitHub"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-github"/></svg></a>
+      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-linkedin"/></svg></a>
+      <a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw" aria-label="YouTube" title="YouTube"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-youtube"/></svg></a>
+      <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
     </nav>
   </footer>
 </div>
@@ -267,7 +268,7 @@ const STUDIES = [
       "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
       "Captured widespread fallowing of fields after California's 2021 megadrought."
     ],
-    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}, {"src": "assets/studies/agrotrack-heatmap.webp", "alt": "Heat map of the 2021 irrigation schedule of ten Nebraska fields, by day, from relative electricity consumption, with the start and end of the irrigation season detected by AgroTrack drawn over it.", "caption": "Irrigation schedule of ten Nebraska fields in 2021 (relative electricity consumption), with the start and end of the irrigation season that AgroTrack detected from thermal data.", "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}]
+    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-heatmap.webp", "alt": "Heat map of the 2021 irrigation schedule of ten Nebraska fields, by day, from relative electricity consumption, with the start and end of the irrigation season detected by AgroTrack drawn over it.", "caption": "Irrigation schedule of ten Nebraska fields in 2021 (relative electricity consumption), with the start and end of the irrigation season that AgroTrack detected from thermal data.", "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}]
   },
   {
     year: 2023,
@@ -286,7 +287,7 @@ const STUDIES = [
       "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
       "In synthetic tests, knowing when irrigation happened raised accuracy to a 3% bias and R² = 0.95, which motivated the later work on timing."
     ],
-    image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, land surface model simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and a land surface model.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
+    image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, land surface model simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and a land surface model.", "source": "https://doi.org/10.1029/2022WR033342"}
   },
   {
     year: 2021,
@@ -306,7 +307,7 @@ const STUDIES = [
       "The 1 km SMAP/Sentinel-1 product shows higher mean soil moisture and more variability over irrigated fields.",
       "Using real-time vegetation water content instead of climatology improves retrievals over irrigated cropland."
     ],
-    image: {"src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp", "alt": "May to September 2017 SMAP–Sentinel-1 soil moisture over irrigated and non-irrigated areas, their difference, and daily precipitation.", "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
+    image: {"src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp", "alt": "May to September 2017 SMAP–Sentinel-1 soil moisture over irrigated and non-irrigated areas, their difference, and daily precipitation.", "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.", "source": "https://doi.org/10.1109/JSTARS.2021.3119228"}
   },
   {
     year: 2021,
@@ -346,7 +347,7 @@ const STUDIES = [
       "Irrigated pixels showed a weekly cycle in soil moisture.",
       "Coarse microwave resolution limits the method over small parcels, which set up the move to higher-resolution data."
     ],
-    image: {"src": "assets/studies/irrigation-2019-study-area.webp", "alt": "Map of the 2019 study area showing irrigated pixels 1 and 3 and non-irrigated pixels A, B and C near the Zarrineh and Simineh rivers.", "caption": "Irrigated and non-irrigated pixels in the study area.", "source": "https://www.ehsanjalilvand.com/research/irrigation"}
+    image: {"src": "assets/studies/irrigation-2019-study-area.webp", "alt": "Map of the 2019 study area showing irrigated pixels 1 and 3 and non-irrigated pixels A, B and C near the Zarrineh and Simineh rivers.", "caption": "Irrigated and non-irrigated pixels in the study area.", "source": "https://doi.org/10.1016/j.rse.2019.111226"}
   }
 ];
 
@@ -557,8 +558,8 @@ function renderJourney() {
   box.innerHTML = ["where", "when", "how_much"].map(q => `<span class="j-lane g-${q}" style="grid-row:${LANE[q]}" aria-hidden="true">${QLABEL[q]}?</span>`).join("") +
     `<ol class="j-steps">${CHAPTERS.map((c, i) => `<li class="j-step g-${c.q}${c.next ? " is-next" : ""}" style="grid-column:${i + 2};grid-row:${LANE[c.q]}">
       <button type="button" class="j-node" aria-expanded="false" aria-controls="j-card">
-        <span class="j-top"><span class="j-year">${c.year} <span class="j-q">${QLABEL[c.q]}</span></span><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="80" height="80" decoding="async"></span></span>
-        <span class="j-ch">${chapterName(i)}</span>
+        <span class="j-top"><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="80" height="80" decoding="async"></span></span>
+        <span class="j-ch">${chapterName(i)}<span class="j-year">${c.year}</span><span class="j-q">${QLABEL[c.q]}</span></span>
         <span class="j-title">${esc(c.title)}</span>
         <span class="j-what">${esc(c.what)}</span>
         <span class="j-why">${esc(c.left)}</span>

@@ -431,6 +431,12 @@
   .site-foot { margin-top: 112px; border-top: 1px solid var(--line); padding: 32px 0 56px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; font-size: .9rem; color: var(--ink-2); }
   .site-foot p { margin: 0; max-width: 56ch; }
   .site-foot nav { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+  /* Profile links in the footer are icons (assets/icons.svg); each link names its site for screen readers and on hover. */
+  .site-foot .foot-links { gap: 2px; margin: -8px -9px; }
+  .foot-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: var(--ink-2); transition: color .15s, background-color .15s; }
+  .foot-links a:hover { color: var(--ink); background: var(--hover); }
+  .foot-links a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+  .foot-links svg { width: 20px; height: 20px; fill: currentColor; }
 
   .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 6px; font-size: .92rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
