@@ -12,8 +12,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-28b">
-<link rel="stylesheet" href="assets/about.css?v=2026-10-28a">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-28c">
+<script src="assets/nav.js?v=2026-10-28c" defer></script>
+<link rel="stylesheet" href="assets/about.css?v=2026-10-28e">
 <script src="assets/journals.js?v=2026-10-26f"></script>
 <script src="assets/about.js?v=2026-10-28a" defer></script>
 </head>
@@ -24,17 +25,23 @@
   <header class="site-head">
     <a class="site-name" href="index.html">Ehsan Jalilvand</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="index.html#explore">Water cycle</a>
-      <a href="index.html#studies">Irrigation studies</a>
-      <a href="index.html#landscape">Research library</a>
-      <a href="journey.html">My journey</a>
       <a href="about.html" aria-current="page">About</a>
+      <div class="nav-menu">
+        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <ul class="nav-sub" id="nav-research">
+          <li><a href="index.html#explore">Water cycle</a></li>
+          <li><a href="index.html#focus">Human-driven processes</a></li>
+          <li><a href="index.html#studies">Irrigation studies</a></li>
+          <li><a href="index.html#landscape">Research library</a></li>
+        </ul>
+      </div>
+      <a href="journey.html">My journey</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </header>
 
   <main id="about-main">
-    <!-- The opening: name, roles, a short bio and profile links, with the site's pages stacked as numbered chapters. -->
+    <!-- The opening: photo, name, roles, a short bio and profile links; then a link to the NASA spotlight interview. -->
     <section class="ab-hero" aria-labelledby="ab-name">
       <div class="ab-intro">
         <h1 id="ab-name">Ehsan Jalilvand</h1>
@@ -51,58 +58,19 @@
       <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
     </div>
       </div>
-      <nav class="ab-chapters" aria-label="On this site">
-        <ol>
-          <li><a href="index.html#explore"><span class="ab-n">01</span><span class="ab-t">Water cycle</span><span class="ab-d">My research, part by part</span></a></li>
-          <li><a href="index.html#studies"><span class="ab-n">02</span><span class="ab-t">Irrigation studies</span><span class="ab-d">Where, when and how much</span></a></li>
-          <li><a href="index.html#landscape"><span class="ab-n">03</span><span class="ab-t">Research library</span><span class="ab-d">The field’s key papers</span></a></li>
-          <li><a href="journey.html"><span class="ab-n">04</span><span class="ab-t">My journey</span><span class="ab-d">From Tehran to Goddard</span></a></li>
-        </ol>
-      </nav>
+      <figure class="ab-photo">
+        <img src="assets/about/ehsan.webp?v=2026-10-28c" srcset="assets/about/ehsan-sm.webp?v=2026-10-28c 360w, assets/about/ehsan.webp?v=2026-10-28c 720w" sizes="(max-width: 900px) 70vw, 340px" width="720" height="900" alt="Ehsan Jalilvand, smiling, outdoors among trees.">
+      </figure>
     </section>
 
-    <section class="ab-sec" aria-labelledby="ab-work">
-      <h2 id="ab-work"><span class="ab-sn">01</span>What I work on</h2>
-      <div class="ab-body">
-        <p>Large-scale water-cycle models usually treat human demand for water as a fixed input. People don’t behave that way: farmers decide when and how much to irrigate. I want models to treat those decisions as a dynamic part of the system, learned from satellite observations, so the field can move toward modeling people and water together.</p>
-        <p>That has meant three questions about irrigation: where it happens, when, and how much water it uses. Each answer has raised the next one; the <a href="index.html#studies">irrigation studies</a> tell that story.</p>
-        <ul class="ab-tags" aria-label="Research interests">
-          <li>Hydrological and land surface modeling</li><li>Satellite data assimilation</li><li>Soil moisture remote sensing</li><li>Irrigation mapping and quantification</li><li>Machine learning and geospatial foundation models</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="ab-sec" aria-labelledby="ab-path">
-      <h2 id="ab-path"><span class="ab-sn">02</span>How I got here</h2>
-      <div class="ab-body">
-        <p class="ab-lead">Curiosity, some luck and good collaborators.</p>
-        <p>I didn’t always know I would work on hydrology. In civil engineering, a course in GIS and remote sensing, built on teaching materials Dr. David Maidment had shared openly, got me hooked on watching water from space. Years later I could thank him in person, when he visited Goddard in November 2024.</p>
-        <p>During my PhD at Sharif University of Technology, an email to Luca Brocca led to research in Italy, with him as my co-advisor. We worked with soil moisture as a natural rain gauge, estimating rainfall from how soils wet up, and realized the same idea could reveal irrigation.</p>
-        <p>After my PhD in 2019 I kept building collaborations around irrigation. Work with Ronnie Abolafia-Rosenzweig and Narendra Das led to a postdoc at Michigan State University and my move to the United States in 2022. An invitation from Sujay Kumar then brought me to NASA Goddard.</p>
-        <p class="ab-more"><a href="journey.html">Follow the whole path in My journey →</a></p>
-      </div>
-    </section>
-
-    <section class="ab-sec" aria-labelledby="ab-enjoy">
-      <h2 id="ab-enjoy"><span class="ab-sn">03</span>What I enjoy</h2>
-      <div class="ab-body ab-pair">
-        <div>
-          <h3>Explaining science</h3>
-          <p>I like finding the picture that makes an idea land. On my AGU 2022 poster, a Game of Thrones analogy explained how thawing permafrost could push the climate past a tipping point.</p>
-        </div>
-        <div>
-          <h3>Design</h3>
-          <p>I sketch, build website prototypes (this site among them) and draw the logos for my software, such as GeoStreamPy and AgroTrack.</p>
-        </div>
-        <div>
-          <h3>Outside work</h3>
-          <p>CrossFit, rock climbing and pickleball, and hiking and travelling with my wife, Mahya, and our son. A road trip across Alaska is a favourite.</p>
-        </div>
-      </div>
-    </section>
+    <a class="ab-spot" href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/" target="_blank" rel="noopener">
+      <!-- The interview's own portrait, loaded from the NASA page; if NASA moves it, Ehsan's local photo shows instead. -->
+      <img class="ab-spot-pic" src="https://science.gsfc.nasa.gov/_nuxt/img/profile.01e97ab.avif" width="320" height="320" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='assets/about/ehsan-square.webp?v=2026-10-28d';this.parentNode.classList.add('is-local')">
+      <span class="ab-spot-text"><span class="ab-spot-kind">Interview · NASA Goddard · July 2025</span><span class="ab-spot-title">Early Career Scientist Spotlight: Ehsan Jalilvand</span><span class="ab-spot-where">My research, how I got here, and life outside work.</span><span class="ab-spot-go">Read the interview ↗</span><span class="ab-spot-credit">Photo: Mahya Hashemi</span></span>
+    </a>
 
     <section class="ab-sec" aria-labelledby="ab-edu">
-      <h2 id="ab-edu"><span class="ab-sn">04</span>Education</h2>
+      <h2 id="ab-edu">Education</h2>
       <div class="ab-body">
         <ul class="ab-edu">
           <li><span class="ab-deg">PhD, Civil Engineering (Water Resources Management)</span><span class="ab-where">Sharif University of Technology, Tehran · 2019</span></li>
@@ -114,7 +82,7 @@
     </section>
 
     <section class="ab-sec" id="publications" aria-labelledby="ab-pubs">
-      <h2 id="ab-pubs"><span class="ab-sn">05</span>Publications</h2>
+      <h2 id="ab-pubs">Publications</h2>
       <div class="ab-body">
         <p class="ab-count" id="ab-count"></p>
         <div class="ab-pubs" id="ab-publist"></div>
@@ -122,7 +90,6 @@
       </div>
     </section>
 
-    <p class="ab-spot">More in my <a href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/">NASA Early Career Scientist Spotlight ↗</a></p>
   </main>
 
   <footer class="site-foot">

@@ -1,5 +1,5 @@
-/* About page (about.html). The opening sets the name, roles, a short bio and profile links beside the site's pages,
-   stacked as numbered chapters. Below, each section has its number and heading in a narrow column on the left. */
+/* About page (about.html). The opening sets the name, roles, a short bio and profile links beside a photo; a card links
+   to the NASA spotlight interview; then education and the publication list, each with its heading on the left. */
 .about-page main { padding-bottom: 8px; }
 
 .ab-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 56px 72px; align-items: center; padding: 72px 0 80px; border-bottom: 1px solid var(--line); }
@@ -16,34 +16,31 @@
 .ab-links a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 .ab-links svg { width: 21px; height: 21px; fill: currentColor; }
 
-/* The site's pages, one under another, like chapters */
-.ab-chapters ol { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.ab-chapters li { border-bottom: 1px solid var(--line); }
-.ab-chapters a { display: grid; grid-template-columns: 44px 1fr auto; align-items: baseline; gap: 2px 12px; padding: 18px 4px; color: var(--ink); text-decoration: none; }
-.ab-chapters a::after { content: "→"; grid-column: 3; grid-row: 1 / span 2; align-self: center; color: var(--ink-2); transition: transform .2s; }
-.ab-n { grid-row: 1 / span 2; font: 500 .82rem/1 var(--sans); font-variant-numeric: tabular-nums; letter-spacing: .04em; color: var(--ink-2); }
-.ab-t { font: 500 1.5rem/1.2 var(--head); letter-spacing: -.01em; }
-.ab-d { grid-column: 2; font-size: .9rem; color: var(--ink-2); }
-.ab-chapters a:hover .ab-t { color: var(--link); }
-.ab-chapters a:hover::after { transform: translateX(4px); color: var(--link); }
-.ab-chapters a:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; border-radius: 4px; }
+/* Photo */
+.ab-photo { justify-self: end; width: min(100%, 340px); margin: 0; }
+.ab-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 14px; box-shadow: 0 18px 44px rgba(15,26,31,.18); }
+
+/* Link to the NASA spotlight interview: Ehsan's photo, the interview's title and a "Read" cue, like a link preview */
+.ab-spot { display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: stretch; max-width: 660px; margin: 40px 0 8px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.ab-spot:hover { border-color: var(--link); box-shadow: 0 12px 28px rgba(15,26,31,.13); transform: translateY(-2px); }
+.ab-spot:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+.ab-spot-pic { display: block; width: 100%; height: 100%; min-height: 132px; object-fit: cover; }
+.ab-spot-text { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 16px 20px; }
+.ab-spot-kind { font: 600 .72rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+.ab-spot-title { font: 500 1.15rem/1.3 var(--head); color: var(--ink); }
+.ab-spot-where { font-size: .92rem; line-height: 1.4; color: var(--ink-2); }
+.ab-spot-go { margin-top: 4px; font-size: .92rem; font-weight: 500; color: var(--link); }
+.ab-spot:hover .ab-spot-go { text-decoration: underline; }
+.ab-spot-credit { margin-top: 2px; font-size: .72rem; color: var(--ink-2); }
+.ab-spot.is-local .ab-spot-credit { display: none; }
 
 /* Sections: number and heading on the left, text on the right */
 .ab-sec { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 48px; padding: 56px 0; border-bottom: 1px solid var(--line); }
 .ab-sec h2 { margin: 0; font: 500 1.35rem/1.25 var(--head); color: var(--ink); }
-.ab-sn { display: block; margin-bottom: 8px; font: 500 .82rem/1 var(--sans); font-variant-numeric: tabular-nums; letter-spacing: .04em; color: var(--ink-2); }
+.ab-sec:first-of-type { border-top: 1px solid var(--line); margin-top: 32px; }
 .ab-body { max-width: 68ch; }
 .ab-body p { margin: 0 0 14px; font-size: 1.05rem; line-height: 1.65; color: var(--ink); }
 .ab-body a { color: var(--link); }
-.ab-lead { font-size: 1.25rem !important; line-height: 1.45 !important; }
-.ab-more { margin-top: 18px !important; }
-.ab-more a { text-decoration: none; font-weight: 500; }
-.ab-more a:hover { text-decoration: underline; }
-.ab-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 0; padding: 0; list-style: none; }
-.ab-tags li { padding: 5px 11px; border-radius: 999px; background: var(--tag-bg); font-size: .86rem; color: var(--ink); }
-.ab-pair { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: none; }
-.ab-pair h3 { margin: 0 0 8px; font: 600 1rem/1.3 var(--head); color: var(--ink); }
-.ab-pair p { font-size: 1rem; }
 .ab-edu { margin: 0; padding: 0; list-style: none; }
 .ab-edu li { display: flex; flex-direction: column; gap: 2px; padding: 12px 0; border-top: 1px solid var(--line); }
 .ab-edu li:first-child { border-top: 0; padding-top: 0; }
@@ -67,12 +64,14 @@
 .ab-spot a { color: var(--link); }
 
 @media (max-width: 900px) {
-  .ab-hero { grid-template-columns: 1fr; padding: 48px 0 56px; gap: 40px; }
+  .ab-hero { grid-template-columns: 1fr; padding: 40px 0 48px; gap: 32px; }
+  .ab-photo { justify-self: start; order: -1; width: min(70%, 280px); }
   .ab-sec { grid-template-columns: 1fr; padding: 44px 0; }
-  .ab-pair { grid-template-columns: 1fr; gap: 20px; }
 }
 @media (max-width: 520px) {
-  .ab-t { font-size: 1.3rem; }
+  .ab-spot { grid-template-columns: 96px minmax(0, 1fr); }
+  .ab-spot-pic { min-height: 96px; }
+  .ab-spot-text { padding: 12px 14px; }
   .ab-year { grid-template-columns: 1fr; gap: 6px; }
 }
-@media (prefers-reduced-motion: reduce) { .ab-chapters a::after { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .ab-spot { transition: none; } .ab-spot:hover { transform: none; } }

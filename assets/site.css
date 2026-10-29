@@ -78,6 +78,21 @@
   .site-nav a { color: var(--ink-2); text-decoration: none; }
   .site-nav a:hover { color: var(--ink); text-decoration: underline; }
   .site-nav a[aria-current="page"] { color: var(--ink); font-weight: 500; }
+  /* The "Research" menu (assets/nav.js): its pages drop down under it on hover, click or tap. */
+  .nav-menu { position: relative; display: inline-block; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 5px; padding: 0; border: 0; background: none; font: inherit; line-height: inherit; color: var(--ink-2); cursor: pointer; }
+  .nav-btn:hover, .nav-menu:hover .nav-btn, .nav-menu.open .nav-btn { color: var(--ink); }
+  .nav-btn:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
+  .nav-menu.is-current .nav-btn { color: var(--ink); font-weight: 500; }
+  .nav-caret { width: 9px; height: 6px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+  .nav-menu:hover .nav-caret, .nav-menu.open .nav-caret { transform: rotate(180deg); }
+  .nav-sub { position: absolute; z-index: 40; top: calc(100% + 10px); left: -16px; min-width: 232px; margin: 0; padding: 6px 0; list-style: none; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: 0 14px 34px rgba(15,26,31,.16); text-shadow: none; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s, visibility 0s .15s; }
+  .nav-sub::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; } /* keeps the hover alive on the way down */
+  .nav-menu:hover .nav-sub, .nav-menu.open .nav-sub, html:not(.js-nav) .nav-menu:focus-within .nav-sub { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s; }
+  .nav-sub a, .site-nav .nav-sub a { display: block; padding: 9px 16px; color: var(--ink); font-size: .95rem; font-weight: 400; text-decoration: none; white-space: nowrap; }
+  .nav-sub a:hover, .site-nav .nav-sub a:hover { background: var(--hover); color: var(--ink); text-decoration: none; }
+  .nav-sub a:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+  @media (prefers-reduced-motion: reduce) { .nav-sub, .nav-caret { transition: none; } }
 
   /* Hero */
   .hero { padding-top: 72px; }

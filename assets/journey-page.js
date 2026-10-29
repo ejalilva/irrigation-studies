@@ -1,5 +1,7 @@
 /* My journey (journey.html): links the painting, the timeline, the pictures and the skill bars.
-   - Hovering or focusing a stop previews it; clicking selects it. Arrow keys, Home and End move along the timeline.
+   - Resting the pointer on a stop (briefly, so passing over does not count), focusing it or clicking it selects it, and it
+     stays selected when the pointer moves on, so its links and pictures can be reached. Arrow keys, Home and End move
+     along the timeline.
    - Hovering or focusing a landmark makes it grow; clicking it selects its first stop, and clicking again moves to
      its next stop (Sharif has several).
    - Pictures for the current stop fan out above it. Moving from a stop up to its pictures keeps them open; clicking
@@ -22,10 +24,11 @@
   const last = stops.length - 1;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let sel = reduce ? last : 0, preview = null, previewMark = null, shown = null, timer = 0, touched = false, leaveTimer = 0;
+  let sel = reduce ? last : 0, previewMark = null, shown = null, timer = 0, touched = false, hoverTimer = 0;
+  const HOVER_DWELL = 120;
 
   function render() {
-    const active = preview ?? sel;
+    const active = sel;
     const mark = previewMark || stops[active].dataset.mark;
     inner.style.setProperty('--end', active);
     stops.forEach((b, i) => {
@@ -54,22 +57,14 @@
 
   function stopTour() { touched = true; clearTimeout(timer); timer = 0; }
   function select(i) { sel = Math.max(0, Math.min(last, i)); render(); }
-  // Leaving a stop clears its preview after a moment, so the pointer can travel up to the stop's pictures.
-  function endPreview() { clearTimeout(leaveTimer); leaveTimer = setTimeout(() => { preview = null; render(); }, 220); }
-  function holdPreview() { clearTimeout(leaveTimer); }
 
   stops.forEach((b, i) => {
-    b.addEventListener('pointerenter', () => { stopTour(); holdPreview(); preview = i; render(); });
-    b.addEventListener('pointerleave', endPreview);
-    b.addEventListener('focus', () => { stopTour(); holdPreview(); preview = i; render(); });
-    b.addEventListener('blur', endPreview);
-    b.addEventListener('click', () => { stopTour(); holdPreview(); preview = null; select(i); });
+    b.addEventListener('pointerenter', () => { stopTour(); clearTimeout(hoverTimer); hoverTimer = setTimeout(() => select(i), HOVER_DWELL); });
+    b.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
+    b.addEventListener('focus', () => { stopTour(); select(i); });
+    b.addEventListener('click', () => { stopTour(); clearTimeout(hoverTimer); select(i); });
   });
-  fans.forEach(f => {
-    f.addEventListener('pointerenter', () => { stopTour(); holdPreview(); });
-    f.addEventListener('pointerleave', endPreview);
-    f.addEventListener('focusin', holdPreview);
-  });
+  fans.forEach(f => f.addEventListener('pointerenter', stopTour));
   inner.querySelector('.jy-stops').addEventListener('keydown', e => {
     const i = stops.indexOf(document.activeElement);
     if (i < 0) return;
@@ -92,7 +87,7 @@
       stopTour();
       const here = stops.map((b, i) => b.dataset.mark === key ? i : -1).filter(i => i >= 0);
       const next = stops[sel].dataset.mark === key ? here.find(i => i > sel) ?? here[0] : here[0];
-      preview = null; select(next);
+      select(next);
       const r = inner.getBoundingClientRect();
       if (r.top > innerHeight - 160) inner.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
     });

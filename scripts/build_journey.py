@@ -26,7 +26,7 @@ import html
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-V = "2026-10-28b"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
+V = "2026-10-28c"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
 MARKS = [
@@ -232,6 +232,7 @@ out = f'''<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css?v={V}">
+<script src="assets/nav.js?v={V}" defer></script>
 <link rel="stylesheet" href="assets/journey-page.css?v={V}">
 <script src="assets/journey-page.js?v={V}" defer></script>
 </head>
@@ -241,11 +242,17 @@ out = f'''<!doctype html>
   <div class="jy-top">
     <a class="jy-name" href="index.html">Ehsan Jalilvand</a>
     <nav class="jy-nav" aria-label="Main">
-      <a href="index.html#explore">Water cycle</a>
-      <a href="index.html#studies">Irrigation studies</a>
-      <a href="index.html#landscape">Research library</a>
-      <a href="journey.html" aria-current="page">My journey</a>
       <a href="about.html">About</a>
+      <div class="nav-menu">
+        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <ul class="nav-sub" id="nav-research">
+          <li><a href="index.html#explore">Water cycle</a></li>
+          <li><a href="index.html#focus">Human-driven processes</a></li>
+          <li><a href="index.html#studies">Irrigation studies</a></li>
+          <li><a href="index.html#landscape">Research library</a></li>
+        </ul>
+      </div>
+      <a href="journey.html" aria-current="page">My journey</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </div>
