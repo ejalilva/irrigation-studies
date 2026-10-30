@@ -573,6 +573,5 @@ html.cp-over .cp-shade { opacity: 1; visibility: visible; transition: opacity .3
 .cp-links svg { flex: none; width: 20px; height: 20px; fill: currentColor; }
 .cp-links span:first-of-type { flex: 1; }
 .cp-out { color: var(--ink-2); font-size: .85rem; }
-.cp-where { margin: 0; padding-top: 16px; border-top: 1px dashed var(--line); font-size: .85rem; line-height: 1.55; color: var(--ink-2); }
 .cp :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { body, .cp, .cp-shade { transition: none; } }
