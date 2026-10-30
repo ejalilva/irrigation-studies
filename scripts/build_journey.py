@@ -24,6 +24,7 @@ Edit the lists below, then run:  python scripts/build_journey.py
 from pathlib import Path
 import html
 import json
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 V = "2026-10-30c"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
@@ -333,3 +334,8 @@ record = {
 }
 (ROOT / "data" / "journey-timeline.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 print(f"journey.html: {N} stops, {row} skills, {sum(len(s[7]) for s in STOPS)} pictures and videos")
+
+# Stamp the shared files (site.css, nav.js, icons) with their content fingerprints, like every other page.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from stamp_assets import stamp  # noqa: E402
+stamp([ROOT / "journey.html"])
