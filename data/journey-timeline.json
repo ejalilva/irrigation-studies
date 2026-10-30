@@ -252,6 +252,14 @@
       "split": false
     },
     {
+      "key": "geoml",
+      "label": "Geospatial machine learning",
+      "color": "#C2185B",
+      "text": "#FFFFFF",
+      "fades_to": null,
+      "split": false
+    },
+    {
       "key": "gfm",
       "label": "Foundation models",
       "color": "#3949AB",
@@ -525,7 +533,8 @@
         "perl",
         "web",
         "lsm",
-        "da"
+        "da",
+        "ml"
       ],
       "story": "Detected the irrigation signal in SMAP soil moisture, and assimilated SMAP–Sentinel-1 soil moisture into the VIC model to estimate how much water farms applied.",
       "work": [
@@ -604,8 +613,11 @@
       "short": "Georgia Tech",
       "place": "Georgia Tech, online",
       "landmark": "gatech",
-      "skills": [],
-      "story": "Began an online Master of Science in Analytics.",
+      "skills": [
+        "dl",
+        "geoml"
+      ],
+      "story": "Began an online Master of Science in Analytics, and with it deep learning and applied, geospatial machine learning.",
       "work": [],
       "logo": "gt",
       "pictures": []
@@ -653,10 +665,7 @@
       "short": "Georgia Tech",
       "place": "Georgia Tech, online",
       "landmark": "gatech",
-      "skills": [
-        "ml",
-        "dl"
-      ],
+      "skills": [],
       "story": "Kept going with the analytics master’s.",
       "work": [],
       "logo": "gt",

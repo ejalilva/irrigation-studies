@@ -193,6 +193,8 @@ document.querySelectorAll('[data-topic]').forEach(el=>{
  if(el.tagName.toLowerCase()==='g')el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openTopic(el.dataset.topic);}});
 });
 // Intro tour. When the page opens and the map is in view, each part plays briefly in turn (in badge order) and the map then waits.
+// It plays once per visit (per browser tab session): coming back from another page of the site does not replay it, a new visit does.
+// Until it has had its chance, body has class tour-pending, so the farm's "Start here" cues (assets/farm-cue.js) wait for it.
 // A click, tap, key press or deliberate hover stops it at once. The Play tour button replays it; with reduced motion it only highlights.
 const tourButton=document.querySelector('#tour-toggle');
 const hintPanel=document.querySelector('.hint-panel');
@@ -202,11 +204,19 @@ const explorer=document.querySelector('#explore');
 const tourKeys=[...new Set([...document.querySelectorAll('.landscape .scene-item[data-topic]')].map(e=>e.dataset.topic))].filter(k=>topics[k]).sort((a,b)=>topics[a].n.localeCompare(topics[b].n));
 const tourWith=k=>document.querySelector('.scene-item[data-topic="'+k+'"]')?.dataset.tourWith;
 const tourSteps=tourKeys.filter(k=>!tourWith(k)).map(k=>[k,...tourKeys.filter(o=>tourWith(o)===k)]);
-const tourSeenKey='water-cycle-tour-v2-'+(isHuman?'human':'main');
+const tourSeenKey='water-cycle-tour-v3-'+(isHuman?'human':'main');
 const minStep=Math.max(1600,4800/tourSteps.length),maxStep=3200,maxRate=3;
-// autoDone: the automatic tour has had its chance on this page view. Seen: it finished or the visitor stopped it, so later visits skip it.
-let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{return localStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
-function markTourSeen(){autoDone=true;try{localStorage.setItem(tourSeenKey,'1');}catch(e){}}
+// autoDone: the automatic tour has had its chance on this page view. Seen: it finished or the visitor stopped it, so the rest of the visit skips it.
+let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{return sessionStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
+let cuesHidden=null,cuesInTimer=0;
+function syncTourPending(){
+ const pending=!autoDone&&!tour&&motionEnabled&&!reduced.matches,hidden=pending||!!tour;
+ document.body.classList.toggle('tour-pending',pending);
+ // The cues were held back and now appear: let them arrive with a short entrance.
+ if(cuesHidden&&!hidden){document.body.classList.add('cues-in');clearTimeout(cuesInTimer);cuesInTimer=setTimeout(()=>document.body.classList.remove('cues-in'),1400);}
+ cuesHidden=hidden;
+}
+function markTourSeen(){autoDone=true;try{sessionStorage.setItem(tourSeenKey,'1');}catch(e){}syncTourPending();}
 function cycleLength(a){const d=a.effect&&a.effect.getTiming().duration;return typeof d==='number'?d:0;}
 function partAnimations(key){const els=[...document.querySelectorAll('.scene-item[data-topic="'+key+'"]'),...[...document.querySelectorAll('[data-link]')].filter(el=>linkedTo(el,key))];return [...new Set(els.flatMap(el=>el.getAnimations({subtree:true})))].filter(a=>'animationName' in a);}
 function restoreSpeed(){if(!tour)return;tour.sped.forEach(a=>{a.playbackRate=1;});tour.sped=[];}
@@ -232,6 +242,7 @@ function startTour(){
  document.body.classList.add('touring');
  hintPanel.setAttribute('aria-live','off');
  tourButton.textContent='Stop tour';tourButton.classList.add('on');
+ syncTourPending();
  playTourStep(0);
 }
 // remember: the tour finished, or the visitor chose to stop it (not when it was cut short by scrolling away or switching tabs).
@@ -242,6 +253,7 @@ function stopTour(keepHighlight,remember){
  document.body.classList.remove('touring');
  hintPanel.setAttribute('aria-live','polite');
  tourButton.textContent='Play tour';tourButton.classList.remove('on');
+ syncTourPending();
  if(!keepHighlight)clearHighlight();
 }
 // A resting or nudged mouse that happens to sit over the map should not cancel the tour; moving it across the map should.
@@ -264,9 +276,10 @@ if('IntersectionObserver' in window)new IntersectionObserver(([entry])=>{inView=
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&tour)stopTour();scheduleAutoTour();});
 // Open the page with ?tour to replay the tour as a first-time visitor.
 if(/[?&]tour\b/.test(location.search))autoDone=false;
+syncTourPending();reduced.addEventListener('change',syncTourPending);
 document.querySelector('#close-dialog').addEventListener('click',closeTopic);
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeTopic();}});
-dialog.addEventListener('close',()=>{document.body.style.overflow='';document.body.classList.remove('dialog-open');history.replaceState(null,'',location.pathname+location.search+'#explore');if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{scheduleAutoTour();document.body.style.overflow='';document.body.classList.remove('dialog-open');history.replaceState(null,'',location.pathname+location.search+'#explore');if(returnFocus?.isConnected)returnFocus.focus({preventScroll:true});});
 clearHighlight();const initial=location.hash.match(/^#research\/(\w+)$/);if(initial&&topics[initial[1]]&&!topics[initial[1]].href)openTopic(initial[1]);
 // Links elsewhere on the page (such as the storyline's last step) open a part with href="#research/<key>".
 addEventListener('hashchange',()=>{const m=location.hash.match(/^#research\/(\w+)$/);if(m&&topics[m[1]]&&!topics[m[1]].href&&!dialog.open)openTopic(m[1]);});

@@ -300,7 +300,13 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
 .cue-tag text{fill:#fff;font:600 12px/1 var(--sans);letter-spacing:.02em}
 .cue-tag-bob{animation:cue-bob 2.4s ease-in-out infinite}
 @keyframes cue-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-body.touring :is(.cue-beacon,.cue-tag),.scene-item:is(:hover,:focus-visible,.active) .cue-beacon,body.dialog-open .cue-beacon{opacity:0}
+body:is(.touring,.tour-pending) :is(.cue-beacon,.cue-tag),.scene-item:is(:hover,:focus-visible,.active) .cue-beacon,body.dialog-open .cue-beacon{opacity:0}
+body:is(.touring,.tour-pending) .cue-tag{pointer-events:none}
+/* When the tour ends, the "Start here" tag drops in and the rings fade up (body.cues-in, set for a moment by water-cycle.js). */
+body.cues-in .cue-tag{animation:cue-in .8s cubic-bezier(.2,.8,.3,1.2) .15s both}
+body.cues-in .cue-beacon{animation:cue-fade .9s ease .15s both}
+@keyframes cue-in{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+@keyframes cue-fade{from{opacity:0}to{opacity:1}}
 /* alive: the farm keeps working at rest, as on hover, unless motion is off or a dialog is open. */
 body.has-cue-alive:not(.motion-off):not(.dialog-open):not(.touring) .scene-item[data-topic="human"] .anim{animation-play-state:running!important}
 .cue-coach{position:absolute;z-index:5;width:260px;margin-top:-12px;transform:translateY(-100%);padding:12px 14px;border-radius:10px;background:var(--ink);color:var(--paper);font-size:.88rem;line-height:1.45;box-shadow:0 10px 26px var(--shadow)}
@@ -309,5 +315,5 @@ body.has-cue-alive:not(.motion-off):not(.dialog-open):not(.touring) .scene-item[
 .cue-coach strong{font-weight:600}
 .cue-coach button{padding:4px 12px;border:0;border-radius:999px;background:var(--paper);color:var(--ink);font:500 .82rem/1.4 var(--sans);cursor:pointer}
 .cue-coach[hidden]{display:none}
-@media(prefers-reduced-motion:reduce){.cue-ring{animation:none;opacity:.8;transform:none}.cue-ring:nth-child(2){display:none}.cue-tag-bob{animation:none}}
+@media(prefers-reduced-motion:reduce){.cue-ring{animation:none;opacity:.8;transform:none}.cue-ring:nth-child(2){display:none}.cue-tag-bob{animation:none}body.cues-in :is(.cue-tag,.cue-beacon){animation:none}}
 

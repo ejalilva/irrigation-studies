@@ -5,8 +5,9 @@
      alive   the farm keeps working at rest (the pivot turns, the pump runs), so it is the one part of the map that moves
      coach   a one-time note beside the farm ("Irrigation is my main focus..."), with a Got it button; dismissed for good once
              closed or once the farm has been hovered or clicked
-   Every cue waits while the intro tour plays, steps aside while the farm itself is highlighted, and keeps still with
-   reduced motion. Styles in assets/water-cycle.css (search for "Farm cues"). */
+   Every cue stays hidden until the intro tour has played (it plays by itself once per visit; body.tour-pending until
+   then, body.touring while it runs), steps aside while the farm itself is highlighted, and keeps still with reduced
+   motion; with reduced motion there is no automatic tour, so the cues show at once. Styles in assets/water-cycle.css (search for "Farm cues"). */
 (() => {
   'use strict';
   const explore = document.getElementById('explore');

@@ -14,9 +14,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-30c">
-<script src="assets/nav.js?v=2026-10-30c" defer></script>
-<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-30a">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-30d">
+<script src="assets/nav.js?v=2026-10-30d" defer></script>
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-30b">
 <link rel="stylesheet" href="assets/study-grid.css?v=2026-10-30b">
 <link rel="stylesheet" href="assets/focus.css?v=2026-10-30b">
 <link rel="stylesheet" href="assets/irrigation.css?v=2026-10-30a">
@@ -35,7 +35,7 @@
       <a href="journey.html">My journey</a>
       <a href="gallery.html">Gallery</a>
       <a href="blog.html">Blog</a>
-      <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -321,7 +321,7 @@
       <a href="https://github.com/ejalilva" aria-label="GitHub" title="GitHub"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-github"/></svg></a>
       <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-linkedin"/></svg></a>
       <a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw" aria-label="YouTube" title="YouTube"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-youtube"/></svg></a>
-      <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
+      <a href="#contact" aria-label="Contact" title="Contact"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
     </nav>
   </footer>
 </div>
@@ -949,7 +949,6 @@ const LIT_DATA_URL = "data/papers.json";
 const LIT_REPO = "ejalilva/irrigation-studies";
 const LIT_REVIEW_BRANCH = "agent/new-papers";
 const LIT_PREVIEW = new URLSearchParams(location.search).has("preview");
-const LIT_SUGGEST_TO = "ehsan.jalilvand@gmail.com";
 const LIT_PAGE = 10;          // rows shown before "Show all"
 const LIT_NEW_DAYS = 90;      // "New" badge window
 
@@ -1179,11 +1178,16 @@ function litSuggest(e) {
     msg.textContent = "That paper is already in the table. Search for it above.";
     return;
   }
+  // The suggestion goes through the Contact form (assets/nav.js), opened with the DOI filled in.
   const subject = `Paper suggestion: ${doi}`;
   const body = `Suggested for the irrigation research table:\nhttps://doi.org/${doi}\n`;
-  location.href = `mailto:${LIT_SUGGEST_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  msg.textContent = `Thank you. Your email app should open with the DOI filled in; just press send. If nothing opens, email the DOI to ${LIT_SUGGEST_TO}.`;
-  input.value = "";
+  if (window.siteContact) {
+    window.siteContact.open({ subject, message: body });
+    msg.textContent = "Thank you. The contact form has opened with the DOI filled in; add your email and press Send.";
+    input.value = "";
+  } else {
+    msg.textContent = "Sorry, the suggestion form couldn't open. Please use Contact at the top of the page.";
+  }
 }
 
 function litAuthorShort(a) {
