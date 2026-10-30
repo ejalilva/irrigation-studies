@@ -11,14 +11,43 @@
       "lon": -72.19,
       "text": "NASA’s SMAP validation experiment in the forests of the US Northeast: surface roughness, soil moisture, bulk density and vegetation, measured on the ground under the satellite.",
       "photos": [
-        { "file": "smapvex22-pinboard", "caption": "Measuring surface roughness with a pinboard." },
-        { "file": "smapvex22-tdr", "caption": "Three TDR sensors measuring soil moisture.", "credit": "Photo: Gaetan Pique" },
-        { "file": "smapvex22-bulk-density", "caption": "Measuring bulk density: dig out a ring of soil, dry it, and measure the volume of the hole.", "credit": "Photo: Gaetan Pique" },
-        { "file": "smapvex22-coring", "caption": "Taking soil samples next to the sensors.", "credit": "Photo: Gaetan Pique" },
-        { "file": "smapvex22-tree-height", "caption": "Measuring tree height with a laser rangefinder and hypsometer.", "credit": "Photo: Gaetan Pique" },
-        { "file": "smapvex22-vegetation", "caption": "Vegetation measurements with the Michigan Tech Research Institute team." },
-        { "file": "smapvex22-logger", "caption": "A solar-powered station logging soil moisture through the campaign.", "credit": "Photo: Gaetan Pique" },
-        { "file": "smapvex22-team", "caption": "The field team." }
+        {
+          "file": "smapvex22-pinboard",
+          "caption": "Measuring surface roughness with a pinboard."
+        },
+        {
+          "file": "smapvex22-tdr",
+          "caption": "Three TDR sensors measuring soil moisture.",
+          "credit": "Photo: Gaetan Pique"
+        },
+        {
+          "file": "smapvex22-bulk-density",
+          "caption": "Measuring bulk density: dig out a ring of soil, dry it, and measure the volume of the hole.",
+          "credit": "Photo: Gaetan Pique"
+        },
+        {
+          "file": "smapvex22-coring",
+          "caption": "Taking soil samples next to the sensors.",
+          "credit": "Photo: Gaetan Pique"
+        },
+        {
+          "file": "smapvex22-tree-height",
+          "caption": "Measuring tree height with a laser rangefinder and hypsometer.",
+          "credit": "Photo: Gaetan Pique"
+        },
+        {
+          "file": "smapvex22-vegetation",
+          "caption": "Vegetation measurements with the Michigan Tech Research Institute team."
+        },
+        {
+          "file": "smapvex22-logger",
+          "caption": "A solar-powered station logging soil moisture through the campaign.",
+          "credit": "Photo: Gaetan Pique"
+        },
+        {
+          "file": "smapvex22-team",
+          "caption": "The field team."
+        }
       ]
     },
     {
@@ -31,10 +60,22 @@
       "lon": -84.482,
       "text": "Following soybean and corn through the season, counting leaves and measuring plant height, vegetation water content and leaf area index.",
       "photos": [
-        { "file": "michigan-soybean-leaves", "caption": "Counting soybean leaves." },
-        { "file": "michigan-lai", "caption": "Measuring leaf area index with an LAI meter." },
-        { "file": "michigan-corn", "caption": "Sampling corn for plant height and vegetation water content." },
-        { "file": "michigan-soybean-end", "caption": "Soybean at the end of the season." }
+        {
+          "file": "michigan-soybean-leaves",
+          "caption": "Counting soybean leaves."
+        },
+        {
+          "file": "michigan-lai",
+          "caption": "Measuring leaf area index with an LAI meter."
+        },
+        {
+          "file": "michigan-corn",
+          "caption": "Sampling corn for plant height and vegetation water content."
+        },
+        {
+          "file": "michigan-soybean-end",
+          "caption": "Soybean at the end of the season."
+        }
       ]
     },
     {
@@ -47,7 +88,14 @@
       "lon": -150.1,
       "text": "After more than a year developing and validating a satellite soil moisture product for northern latitudes, more than 1,200 miles across the tundra it was built for.",
       "photos": [
-        { "file": "alaska-2023", "caption": "Alaska, May 2023." }
+        {
+          "file": "alaska-lake-clark",
+          "caption": "On the shore of Cook Inlet in Lake Clark National Park, with the bush plane behind us, 30 May 2023."
+        },
+        {
+          "file": "alaska-2023",
+          "caption": "Alaska, May 2023, in one word."
+        }
       ]
     }
   ]

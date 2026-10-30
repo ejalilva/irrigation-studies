@@ -1,7 +1,8 @@
 /* Gallery (gallery.html): a map with a pin for every place in data/gallery.json. Picking a pin, or a place in the list under
    the map, opens that place's pictures in a panel beside the map; a picture opens large in the viewer, with its caption,
-   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/; the map tiles are OpenStreetMap's standard tiles
-   (no key needed; dark mode darkens them with a CSS filter in assets/gallery.css).
+   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/. The map has a choice of basemaps (BASEMAPS below,
+   none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default, and
+   ?map=<name> in the address or a visitor's last choice overrides it.
    Without JavaScript the place list still links to every picture. */
 (() => {
   'use strict';
@@ -13,6 +14,42 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const src = (p, small) => `assets/gallery/${p.file}${small ? '-sm' : ''}.webp`;
 
+  // Basemaps. labels: true lays place names and borders over a picture-only basemap.
+  const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
+  const BASEMAPS = {
+    terrain: { name: 'Terrain', url: ESRI + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', maxZoom: 19,
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community' },
+    bluemarble: { name: 'NASA Blue Marble relief', labels: true, maxNativeZoom: 8, maxZoom: 12,
+      url: 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/wmts.cgi?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=BlueMarble_ShadedRelief_Bathymetry&STYLE=default&TILEMATRIXSET=GoogleMapsCompatible_Level8&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg',
+      attribution: 'Blue Marble shaded relief and bathymetry from NASA <a href="https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api">GIBS</a>' },
+    physical: { name: 'Physical', labels: true, url: ESRI + 'World_Physical_Map/MapServer/tile/{z}/{y}/{x}', maxNativeZoom: 8, maxZoom: 12,
+      attribution: 'Tiles &copy; Esri &mdash; Source: US National Park Service' },
+    satellite: { name: 'Satellite', labels: true, url: ESRI + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', maxZoom: 19,
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community' },
+    contours: { name: 'Topographic contours', url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', subdomains: 'abc', maxZoom: 17,
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, SRTM | Style &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)' },
+    streets: { name: 'Streets', url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }
+  };
+  const LABELS = { url: ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', maxZoom: 19 };
+  const store = { get() { try { return localStorage.getItem('gallery-basemap'); } catch { return null; } },
+    set(v) { try { localStorage.setItem('gallery-basemap', v); } catch { /* private mode */ } } };
+  function addBasemaps(map) {
+    map.createPane('labels'); map.getPane('labels').style.zIndex = 450; map.getPane('labels').style.pointerEvents = 'none';
+    const layers = {}, byName = {};
+    Object.entries(BASEMAPS).forEach(([key, b]) => {
+      const { name, url, labels, ...opts } = b;
+      const base = L.tileLayer(url, opts);
+      const layer = labels ? L.layerGroup([base, L.tileLayer(LABELS.url, { maxZoom: LABELS.maxZoom, pane: 'labels' })]) : base;
+      layer.key = key; layers[key] = layer; byName[name] = layer;
+    });
+    const asked = new URLSearchParams(location.search).get('map');
+    const start = [asked, store.get(), mapBox.dataset.basemap, 'terrain'].find(k => k && layers[k]);
+    layers[start].addTo(map); mapBox.dataset.base = start;
+    L.control.layers(byName, null, { position: 'topleft', collapsed: true }).addTo(map); // top left: the photo panel covers the right
+    map.on('baselayerchange', e => { mapBox.dataset.base = e.layer.key; store.set(e.layer.key); });
+  }
+
   fetch('data/gallery.json', { cache: 'no-cache' }).then(r => r.json()).then(data => {
     const places = data.places || [];
     let current = null, map = null;
@@ -23,9 +60,7 @@
 
     if (window.L) {
       map = L.map(mapBox, { scrollWheelZoom: false, worldCopyJump: true, zoomSnap: .25, attributionControl: true });
-      // CARTO's basemaps now answer with "API key required" tiles, so the map uses OpenStreetMap's own tiles.
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(map);
+      addBasemaps(map);
       places.forEach(p => {
         const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}"><b>${p.photos.length}</b></span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
         const m = L.marker([p.lat, p.lon], { icon, title: `${p.title}, ${p.where}`, alt: `${p.title}, ${p.where}`, keyboard: true, riseOnHover: true }).addTo(map);

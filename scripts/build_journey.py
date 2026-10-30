@@ -26,7 +26,7 @@ import html
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-V = "2026-10-30b"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
+V = "2026-10-30c"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
 MARKS = [
@@ -264,14 +264,7 @@ out = f'''<!doctype html>
     <div class="jy-brand"><a class="jy-home" href="about.html" aria-label="Ehsan Jalilvand, about me"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"></a><h1 class="jy-title">My journey</h1></div>
     <nav class="jy-nav" aria-label="Main">
       <a href="about.html">About</a>
-      <div class="nav-menu">
-        <a class="nav-top" href="index.html">Research</a><button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research" aria-label="Research sections"><svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
-        <ul class="nav-sub" id="nav-research">
-          <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
-          <li><a href="irrigation.html#studies">My irrigation studies</a></li>
-          <li><a href="irrigation.html#landscape">Research library</a></li>
-        </ul>
-      </div>
+      <a href="index.html">Research</a>
       <a href="journey.html" aria-current="page">My journey</a>
       <a href="gallery.html">Gallery</a>
       <a href="blog.html">Blog</a>
