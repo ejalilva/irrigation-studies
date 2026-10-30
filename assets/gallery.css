@@ -67,7 +67,12 @@
 }
 @media (prefers-reduced-motion: reduce) { .gl-pin::after { animation: none; } .gl-pin, .gl-thumb img { transition: none; } }
 
-/* OpenStreetMap tiles: a little calmer than the originals in light mode, darkened in dark mode. */
-.gl-map .leaflet-tile-pane { filter: saturate(.7) brightness(1.03); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gl-map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); } }
-:root[data-theme="dark"] .gl-map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); }
+/* Basemaps (assets/gallery.js). Only the Streets map is toned down, and darkened in dark mode; the colourful ones stay as they are.
+   The layers button under the zoom buttons switches between them. */
+.gl-map[data-base="streets"] .leaflet-tile-pane { filter: saturate(.7) brightness(1.03); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gl-map[data-base="streets"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); } }
+:root[data-theme="dark"] .gl-map[data-base="streets"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); }
+.gl-map .leaflet-control-layers { border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 18px rgba(15,26,31,.16); font: .85rem/1.5 var(--sans); }
+.gl-map .leaflet-control-layers-expanded { padding: 8px 12px 8px 8px; background: var(--surface); color: var(--ink); }
+.gl-map .leaflet-control-layers label { margin: 2px 0; cursor: pointer; }
+.gl-map .leaflet-control-layers-list { padding-top: 0; } /* Leaflet's list is a <section>; the site pads sections at the top */
