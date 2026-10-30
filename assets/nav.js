@@ -73,8 +73,7 @@
     <div class="cp-done" hidden><p class="cp-done-title">Thank you, your message is on its way.</p><p class="cp-done-copy"></p><button type="button" class="cp-btn cp-again">Write another message</button></div>
     <h3 class="cp-h">Elsewhere</h3>
     <ul class="cp-links">${PROFILES.map(([name, url, icon]) =>
-      `<li><a href="${url}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="${ICONS}#${icon}"/></svg><span>${name}</span><span class="cp-out" aria-hidden="true">↗</span></a></li>`).join('')}</ul>
-    <p class="cp-where">Hydrological Sciences Laboratory<br>NASA Goddard Space Flight Center<br>Greenbelt, Maryland</p>`;
+      `<li><a href="${url}" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="${ICONS}#${icon}"/></svg><span>${name}</span><span class="cp-out" aria-hidden="true">↗</span></a></li>`).join('')}</ul>`;
   const shade = document.createElement('div');
   shade.className = 'cp-shade';
   document.body.append(shade, panel);

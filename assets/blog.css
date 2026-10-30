@@ -22,6 +22,7 @@
 .bl-zoom { display: block; width: 100%; padding: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; cursor: zoom-in; }
 .bl-zoom img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .35s ease; }
 .bl-zoom.is-diagram img { object-fit: contain; padding: 6px; }
+.bl-zoom.is-natural img { aspect-ratio: auto; }
 .bl-zoom:hover img { transform: scale(1.03); }
 .bl-zoom:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
 .bl-fig figcaption { margin-top: 8px; font: 400 .95rem/1.4 var(--bl-sans); color: var(--ink-2); }
