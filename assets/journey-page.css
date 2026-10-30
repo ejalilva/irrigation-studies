@@ -24,6 +24,7 @@
 .jy-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
 .jy-nav .nav-btn { color: rgba(255,255,255,.92); }
 .jy-nav .nav-btn:hover, .jy-nav .nav-menu:hover .nav-btn, .jy-nav .nav-menu.open .nav-btn { color: #fff; }
+.jy-nav .nav-btn:hover, .jy-nav .nav-menu.open .nav-btn { background: rgba(255,255,255,.16); }
 .jy-nav .nav-sub a { color: var(--ink); font-weight: 400; text-decoration: none; }
 .jy-nav .nav-sub a:hover { color: var(--ink); text-decoration: none; }
 .jy-title { margin: 0; font: 500 clamp(1.7rem, 2.8vw, 2.4rem)/1.05 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }

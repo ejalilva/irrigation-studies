@@ -26,7 +26,7 @@ import html
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-V = "2026-10-30a"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
+V = "2026-10-30b"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
 MARKS = [
@@ -252,7 +252,6 @@ out = f'''<!doctype html>
 <link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
-<link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
 <link rel="stylesheet" href="assets/site.css?v={V}">
 <script src="assets/nav.js?v={V}" defer></script>
 <link rel="stylesheet" href="assets/journey-page.css?v={V}">
@@ -262,13 +261,12 @@ out = f'''<!doctype html>
 <a class="skip" href="#jy-path">Skip to the timeline</a>
 <header class="jy-hero">
   <div class="jy-top">
-    <div class="jy-brand"><a class="jy-home" href="index.html" aria-label="Ehsan Jalilvand, home"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"></a><h1 class="jy-title">My journey</h1></div>
+    <div class="jy-brand"><a class="jy-home" href="about.html" aria-label="Ehsan Jalilvand, about me"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"></a><h1 class="jy-title">My journey</h1></div>
     <nav class="jy-nav" aria-label="Main">
       <a href="about.html">About</a>
       <div class="nav-menu">
-        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <a class="nav-top" href="index.html">Research</a><button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research" aria-label="Research sections"><svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
         <ul class="nav-sub" id="nav-research">
-          <li><a href="index.html#explore">Water cycle</a></li>
           <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
           <li><a href="irrigation.html#studies">My irrigation studies</a></li>
           <li><a href="irrigation.html#landscape">Research library</a></li>

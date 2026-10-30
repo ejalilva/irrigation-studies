@@ -31,8 +31,6 @@
 .ab-spot-where { font-size: .92rem; line-height: 1.4; color: var(--ink-2); }
 .ab-spot-go { margin-top: 4px; font-size: .92rem; font-weight: 500; color: var(--link); }
 .ab-spot:hover .ab-spot-go { text-decoration: underline; }
-.ab-spot-credit { margin-top: 2px; font-size: .72rem; color: var(--ink-2); }
-.ab-spot.is-local .ab-spot-credit { display: none; }
 
 /* Sections: number and heading on the left, text on the right */
 .ab-sec { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 48px; padding: 56px 0; border-bottom: 1px solid var(--line); }
@@ -60,8 +58,6 @@
 .ab-pub-meta b { font-weight: 600; color: var(--ink); }
 .ab-pdf { margin-left: 6px; font-size: .8rem; font-weight: 600; }
 
-.ab-spot { margin: 40px 0 0; font-size: .98rem; color: var(--ink-2); }
-.ab-spot a { color: var(--link); }
 
 @media (max-width: 900px) {
   .ab-hero { grid-template-columns: 1fr; padding: 40px 0 48px; gap: 32px; }
@@ -80,7 +76,7 @@
 .ab-jy { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "pic pic" "text go"; align-items: end; gap: 0 20px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); text-decoration: none; transition: box-shadow .2s, transform .2s, border-color .2s; }
 .ab-jy:hover { border-color: var(--link); box-shadow: 0 14px 32px rgba(15,26,31,.15); transform: translateY(-2px); }
 .ab-jy:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
-.ab-jy-pic { grid-area: pic; display: block; width: 100%; height: auto; aspect-ratio: 1100 / 243; object-fit: cover; transition: transform .5s; }
+.ab-jy-pic { grid-area: pic; display: block; width: 100%; height: auto; aspect-ratio: 1400 / 559; object-fit: cover; transition: transform .5s; }
 .ab-jy:hover .ab-jy-pic { transform: scale(1.02); }
 .ab-jy-text { grid-area: text; display: flex; flex-direction: column; gap: 6px; padding: 16px 0 18px 20px; min-width: 0; }
 .ab-jy-title { font: 500 1.2rem/1.3 var(--head); color: var(--ink); }
@@ -96,3 +92,8 @@
 }
 @media (prefers-reduced-motion: reduce) { .ab-jy, .ab-jy-pic, .ab-jy-go { transition: none; } .ab-jy:hover, .ab-jy:hover .ab-jy-pic { transform: none; } }
 
+
+/* The Experience card fills its column (wider than the text sections), and the spotlight card sits in its own section. */
+.ab-jy-sec .ab-body { max-width: none; }
+.ab-spot-sec .ab-spot { margin: 0; }
+@media (max-width: 640px) { .ab-jy-pic { aspect-ratio: 16 / 9; object-position: 40% 50%; } }

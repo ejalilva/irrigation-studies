@@ -14,9 +14,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-30a">
-<script src="assets/nav.js?v=2026-10-28c" defer></script>
-<link rel="stylesheet" href="assets/about.css?v=2026-10-30a">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-30b">
+<script src="assets/nav.js?v=2026-10-30b" defer></script>
+<link rel="stylesheet" href="assets/about.css?v=2026-10-30b">
 <script src="assets/journals.js?v=2026-10-26f"></script>
 <script src="assets/about.js?v=2026-10-28a" defer></script>
 </head>
@@ -25,13 +25,12 @@
 
 <div class="wrap">
   <header class="site-head">
-    <a class="site-name" href="index.html"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
+    <a class="site-name" href="about.html" aria-label="Ehsan Jalilvand, about me"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
     <nav class="site-nav" aria-label="Main">
       <a href="about.html" aria-current="page">About</a>
       <div class="nav-menu">
-        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <a class="nav-top" href="index.html">Research</a><button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research" aria-label="Research sections"><svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
         <ul class="nav-sub" id="nav-research">
-          <li><a href="index.html#explore">Water cycle</a></li>
           <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
           <li><a href="irrigation.html#studies">My irrigation studies</a></li>
           <li><a href="irrigation.html#landscape">Research library</a></li>
@@ -49,7 +48,7 @@
       <div class="ab-intro">
         <h1 id="ab-name">Ehsan Jalilvand</h1>
         <div class="ab-roles-wrap"><ul class="ab-roles" aria-label="Roles">
-          <li>Hydro-data scientist</li><li>Water-cycle modeler</li><li>Remote sensing</li><li>Science communicator</li>
+          <li>Hydro-data scientist</li><li>Water-cycle modeler</li><li>Remote sensing</li><li>Data-driven modeling</li><li>Machine learning</li><li>Deep learning</li><li>AI</li><li>Science communicator</li>
         </ul></div>
         <p class="ab-bio">I’m a research scientist in the Hydrological Sciences Laboratory at NASA’s Goddard Space Flight Center. I bring human water use, above all irrigation, into water-cycle models: I use satellite observations and machine learning to learn the decisions farmers make, and build them into NASA’s Land Information System.</p>
         <div class="ab-links">
@@ -71,7 +70,7 @@
       <h2 id="ab-exp">Experience</h2>
       <div class="ab-body">
         <a class="ab-jy" href="journey.html">
-          <img class="ab-jy-pic" src="assets/about/journey-strip.webp?v=2026-10-30a" width="1100" height="243" alt="" loading="lazy" decoding="async">
+          <img class="ab-jy-pic" src="assets/about/journey-wide.webp?v=2026-10-30b" width="1400" height="559" alt="" loading="lazy" decoding="async">
           <span class="ab-jy-text">
             <span class="ab-jy-title">My journey: every appointment, on one timeline</span>
             <span class="ab-jy-sub">From Sharif University and CNR IRPI in Italy to Michigan State and NASA Goddard: what I worked on at each stop, the papers and code from it, and the skills it added.</span>
@@ -82,11 +81,17 @@
       </div>
     </section>
 
-    <a class="ab-spot" href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/" target="_blank" rel="noopener">
-      <!-- The interview's own portrait, loaded from the NASA page; if NASA moves it, Ehsan's local photo shows instead. -->
-      <img class="ab-spot-pic" src="https://science.gsfc.nasa.gov/_nuxt/img/profile.01e97ab.avif" width="320" height="320" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='assets/about/ehsan-square.webp?v=2026-10-28d';this.parentNode.classList.add('is-local')">
-      <span class="ab-spot-text"><span class="ab-spot-kind">Interview · NASA Goddard · July 2025</span><span class="ab-spot-title">Early Career Scientist Spotlight: Ehsan Jalilvand</span><span class="ab-spot-where">My research, how I got here, and life outside work.</span><span class="ab-spot-go">Read the interview ↗</span><span class="ab-spot-credit">Photo: Mahya Hashemi</span></span>
-    </a>
+    <!-- More about me: the NASA Goddard Early Career Scientist Spotlight interview. -->
+    <section class="ab-sec ab-spot-sec" aria-labelledby="ab-more">
+      <h2 id="ab-more">More about me</h2>
+      <div class="ab-body">
+        <a class="ab-spot" href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/" target="_blank" rel="noopener">
+          <!-- The interview's own portrait, loaded from the NASA page; if NASA moves it, Ehsan's local photo shows instead. -->
+          <img class="ab-spot-pic" src="https://science.gsfc.nasa.gov/_nuxt/img/profile.01e97ab.avif" width="320" height="320" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='assets/about/ehsan-square.webp?v=2026-10-28d';this.parentNode.classList.add('is-local')">
+          <span class="ab-spot-text"><span class="ab-spot-kind">Interview · NASA Goddard · July 2025</span><span class="ab-spot-title">Early Career Scientist Spotlight: Ehsan Jalilvand</span><span class="ab-spot-where">My research, how I got here, and life outside work.</span><span class="ab-spot-go">Read the interview ↗</span></span>
+        </a>
+      </div>
+    </section>
 
     <section class="ab-sec" aria-labelledby="ab-edu">
       <h2 id="ab-edu">Education</h2>

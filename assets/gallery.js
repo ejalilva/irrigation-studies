@@ -1,6 +1,7 @@
 /* Gallery (gallery.html): a map with a pin for every place in data/gallery.json. Picking a pin, or a place in the list under
    the map, opens that place's pictures in a panel beside the map; a picture opens large in the viewer, with its caption,
-   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/; the map tiles are CARTO's light and dark basemaps.
+   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/; the map tiles are OpenStreetMap's standard tiles
+   (no key needed; dark mode darkens them with a CSS filter in assets/gallery.css).
    Without JavaScript the place list still links to every picture. */
 (() => {
   'use strict';
@@ -11,8 +12,6 @@
   if (!mapBox || !panel || !list) return;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const src = (p, small) => `assets/gallery/${p.file}${small ? '-sm' : ''}.webp`;
-  const dark = matchMedia('(prefers-color-scheme: dark)');
-  const theme = () => document.documentElement.dataset.theme || (dark.matches ? 'dark' : 'light');
 
   fetch('data/gallery.json', { cache: 'no-cache' }).then(r => r.json()).then(data => {
     const places = data.places || [];
@@ -24,10 +23,9 @@
 
     if (window.L) {
       map = L.map(mapBox, { scrollWheelZoom: false, worldCopyJump: true, zoomSnap: .25, attributionControl: true });
-      const tiles = () => L.tileLayer(`https://{s}.basemaps.cartocdn.com/${theme() === 'dark' ? 'dark_all' : 'light_all'}/{z}/{x}/{y}{r}.png`,
-        { subdomains: 'abcd', maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' });
-      let layer = tiles().addTo(map);
-      dark.addEventListener('change', () => { map.removeLayer(layer); layer = tiles().addTo(map); });
+      // CARTO's basemaps now answer with "API key required" tiles, so the map uses OpenStreetMap's own tiles.
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(map);
       places.forEach(p => {
         const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}"><b>${p.photos.length}</b></span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
         const m = L.marker([p.lat, p.lon], { icon, title: `${p.title}, ${p.where}`, alt: `${p.title}, ${p.where}`, keyboard: true, riseOnHover: true }).addTo(map);
