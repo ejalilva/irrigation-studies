@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="assets/site.css?v=2026-10-30a">
 <script src="assets/nav.js?v=2026-10-28c" defer></script>
 <link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-30a">
-<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-28c">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-30b">
 <link rel="stylesheet" href="assets/focus.css?v=2026-10-28d">
 <link rel="stylesheet" href="assets/irrigation.css?v=2026-10-30a">
 <script src="assets/focus.js?v=2026-10-28d" defer></script>
@@ -216,7 +216,7 @@
         <div>
           <p class="cycle-eyebrow">My irrigation studies</p>
           <h2 id="studies-h">Every answer revealed another question</h2>
-          <p class="intro">It began with a signal that rainfall could not explain. Each study since answered a question the last one raised, so the work ran backward, from how much to when to where, and now comes full circle to how much with all three.</p>
+          <p class="intro">It began with a signal that rainfall could not explain. Each study since answered a question the last one raised, so the work ran backward, from how much to when to where, and now comes full circle to how much with all three. Open any chapter to read its full story.</p>
         </div>
       </div>
       <!-- The storyline in six chapters, drawn by renderJourney() from CHAPTERS in the script below. -->
@@ -337,6 +337,7 @@
   </footer>
 </div>
 
+<dialog id="chapter-reader" class="chapter-reader" aria-labelledby="cr-title"><div class="cr-inner" id="cr-inner"></div></dialog>
 <dialog id="study-figure-dialog" class="study-figure-dialog" aria-labelledby="figure-title"><header class="figure-dialog-head"><h2 id="figure-title"></h2><button id="figure-close" type="button" aria-label="Close study figure" autofocus>×</button></header><figure><img id="figure-image" alt=""><figcaption id="figure-caption"></figcaption></figure><div class="figure-links"><a id="figure-original" target="_blank" rel="noopener">Open full-size figure ↗</a><a id="figure-source" target="_blank" rel="noopener">Figure source ↗</a></div></dialog>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -382,9 +383,11 @@ const STUDIES = [
     summary: "AgroTrack reads when fields are actually watered from thermal satellite observations.",
     findings: [
       "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
+      "Season length came within 18% in Nebraska and 15% in Mahabad, Iran, and irrigation events were detected with F1 scores of 0.59–0.74 across ten Nebraska sites.",
+      "Cloud cover at the start or end of the season is the main source of error.",
       "Captured widespread fallowing of fields after California's 2021 megadrought."
     ],
-    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-heatmap.webp", "alt": "Heat map of the 2021 irrigation schedule of ten Nebraska fields, by day, from relative electricity consumption, with the start and end of the irrigation season detected by AgroTrack drawn over it.", "caption": "Irrigation schedule of ten Nebraska fields in 2021 (relative electricity consumption), with the start and end of the irrigation season that AgroTrack detected from thermal data.", "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}]
+    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-heatmap.webp", "alt": "Heat map of the 2021 irrigation schedule of ten Nebraska fields, by day, from relative electricity consumption, with the start and end of the irrigation season detected by AgroTrack drawn over it.", "caption": "Irrigation schedule of ten Nebraska fields in 2021 (relative electricity consumption), with the start and end of the irrigation season that AgroTrack detected from thermal data.", "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-frequency-change.webp", "alt": "Map of California's Sacramento Valley showing the change in the number of irrigated days from 2021 to 2022, mostly decreases in red.", "caption": "Change in irrigation frequency from 2021 to 2022 (number of irrigated days). Red shows fields watered less often, many left fallow after the 2021 drought.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-workflow.webp", "alt": "AgroTrack workflow: a bounding box and a thermal mission (MODIS, VIIRS or a future thermal constellation) go into AgroTrack, which extracts irrigation mapping, season timing, event timing, crop type and irrigation magnitude at pixel level.", "caption": "AgroTrack traces farmers' irrigation decisions from their thermal signature: give it a bounding box and a thermal mission, and it returns irrigation attributes for every pixel.", "credit": "From the AgroTrack package", "source": "https://github.com/ejalilva/AgroTrack"}]
   },
   {
     year: 2023,
@@ -401,7 +404,7 @@ const STUDIES = [
     findings: [
       "Estimated irrigation was significantly lower over non-irrigated pixels than over irrigated ones.",
       "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
-      "In synthetic tests, knowing when irrigation happened raised accuracy to a 3% bias and R² = 0.95, which motivated the later work on timing."
+      "In synthetic tests, knowing when irrigation happened cut the mean annual bias from 23% to 0.45% and raised R² from 0.36 to 0.97, which motivated the later work on timing."
     ],
     image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, land surface model simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and a land surface model.", "source": "https://doi.org/10.1029/2022WR033342"}
   },
@@ -423,7 +426,7 @@ const STUDIES = [
       "The 1 km SMAP/Sentinel-1 product shows higher mean soil moisture and more variability over irrigated fields.",
       "Using real-time vegetation water content instead of climatology improves retrievals over irrigated cropland."
     ],
-    image: {"src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp", "alt": "May to September 2017 SMAP–Sentinel-1 soil moisture over irrigated and non-irrigated areas, their difference, and daily precipitation.", "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.", "source": "https://doi.org/10.1109/JSTARS.2021.3119228"}
+    images: [{"src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp", "alt": "May to September 2017 SMAP–Sentinel-1 soil moisture over irrigated and non-irrigated areas, their difference, and daily precipitation.", "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.", "source": "https://doi.org/10.1109/JSTARS.2021.3119228"}, {"src": "assets/studies/smap-sentinel-2021-dynamic-vwc.webp", "alt": "Maps of SMAP–Sentinel-1 soil moisture south of Lake Urmia in March and August 2017, with climatological and with observed vegetation water content, and their differences.", "caption": "SMAP–Sentinel-1 soil moisture with climatological (a, d) and observed (b, e) vegetation water content, and the difference (c, f), in March and August 2017. In August the difference concentrates over the irrigated plain.", "source": "https://doi.org/10.1109/JSTARS.2021.3119228"}]
   },
   {
     year: 2021,
@@ -463,7 +466,7 @@ const STUDIES = [
       "Irrigated pixels showed a weekly cycle in soil moisture.",
       "Coarse microwave resolution limits the method over small parcels, which set up the move to higher-resolution data."
     ],
-    image: {"src": "assets/studies/irrigation-2019-study-area.webp", "alt": "Map of the 2019 study area showing irrigated pixels 1 and 3 and non-irrigated pixels A, B and C near the Zarrineh and Simineh rivers.", "caption": "Irrigated and non-irrigated pixels in the study area.", "source": "https://doi.org/10.1016/j.rse.2019.111226"}
+    images: [{"src": "assets/studies/irrigation-2019-study-area.webp", "alt": "Map of the 2019 study area showing irrigated pixels 1 and 3 and non-irrigated pixels A, B and C near the Zarrineh and Simineh rivers.", "caption": "Irrigated and non-irrigated pixels in the study area.", "source": "https://doi.org/10.1016/j.rse.2019.111226"}, {"src": "assets/studies/amsr2-2019-irrigation-series.webp", "alt": "Monthly irrigation estimated for irrigated pixels 1 and 3 and non-irrigated pixels A, B and C from July 2012 to December 2015, above the AMSR2 soil moisture of each pixel, with a close-up of summer 2015.", "caption": "Irrigation estimated from AMSR2 soil moisture, 2012–2015. Irrigated pixels 1 and 3 peak every summer while non-irrigated pixels A–C stay near zero; the close-up of summer 2015 shows the weekly wetting on irrigated pixels.", "source": "https://doi.org/10.1016/j.rse.2019.111226"}]
   }
 ];
 
@@ -619,30 +622,56 @@ const CHAPTERS = [
   { year: "2019", q: "how_much", icon: "voyage", title: "The Columbus voyage",
     sub: "Aiming for rainfall, we ended up with irrigation.", what: "Set out to estimate rainfall, found irrigation.",
     left: "But small, scattered fields vanish in a 25 km pixel.", study: "amsr2-2019",
-    finding: "Irrigation estimated from AMSR2 soil moisture south of Lake Urmia; after bias correction, R = 0.86 against irrigation records." },
+    finding: "Irrigation estimated from AMSR2 soil moisture south of Lake Urmia; after bias correction, R = 0.86 against irrigation records.",
+    story: ["The plan was to estimate rainfall from satellite soil moisture with SM2RAIN. Over the rainless summers of the farmed plains south of Lake Urmia, though, AMSR2 soil moisture kept rising when no rain fell. That water was irrigation, and inverting the soil water balance turned the wetting into an estimate of how much water farmers applied.",
+      "The raw estimates ran high, so the bias was measured over largely non-irrigated pixels and removed. Irrigated pixels then followed the records closely (R = 0.86), non-irrigated pixels stayed near zero, and soil moisture on irrigated pixels rose and fell on a weekly cycle.",
+      "Elsewhere the method failed. It worked only where large areas are watered at once, with coordinated releases from a dam. Small, scattered plots are diluted in a 25 km pixel, and 72% of the world's farms are smaller than one hectare. The next step was higher resolution."],
+    readFigs: [0, 1],
+    posts: [{ who: "Ehsan Jalilvand", handle: "ehsan1325", date: "13 June 2019", url: "https://twitter.com/ehsan1325/status/1139049484728578048", text: "Because using satellite soil moisture to estimate irrigation was so new, the review took nearly two years, and the paper came out much stronger for it." },
+      { who: "Hydrology IRPI-CNR", handle: "Hydrology_IRPI", date: "14 June 2019", url: "https://twitter.com/Hydrology_IRPI/status/1139561057515646976", text: "Featured among three papers from the previous six months showing the value of satellite soil moisture for quantifying irrigation water." }] },
   { year: "2021", q: "where", icon: "details", title: "The devil is in the details",
     sub: "Closing the gap with higher-resolution soil moisture.", what: "A closer look with 1 km soil moisture.",
     left: "It sees irrigation, but passes over only every 6–12 days.", study: "smap-sentinel-2021",
     finding: "The 1 km product carries irrigation in its mean and variability; dynamic vegetation water content strengthens the signal.",
-    also: { study: "sentinel-2021", text: "Also in 2021: irrigated fields mapped from 10 m Sentinel-1/2 soil moisture" } },
+    also: { study: "sentinel-2021", text: "Also in 2021: irrigated fields mapped from 10 m Sentinel-1/2 soil moisture" },
+    story: ["Does finer soil moisture see irrigation? Over the same plain, SMAP's enhanced 9 km product missed it on small plots. SMAP–Sentinel-1 at 3 km and 1 km did carry the signal, in higher mean soil moisture and above all in its variability over irrigated fields.",
+      "Farming also changes the vegetation that the retrieval has to account for. Replacing climatological vegetation water content with values observed during the season raised soil moisture over irrigated cropland by about 0.05 cm³/cm³ in the irrigation season, and strengthened the signal.",
+      "But Sentinel-1 passes over only every 6 to 12 days. Inverting the water balance needs near-daily data, and an irrigation that falls between two passes is simply missed. The gaps had to be filled with a model."],
+    readFigs: [0, 1],
+    posts: [{ who: "Ehsan Jalilvand", handle: "ehsan1325", date: "14 October 2021", url: "https://twitter.com/ehsan1325/status/1448639409834897409", text: "Many studies use satellite soil moisture to monitor farm water use, but does it truly contain the irrigation signal? This paper answers the question." },
+      { who: "Ronnie Abolafia-Rosenzweig", handle: "AbolafiaRonnie", date: "20 October 2021", url: "https://twitter.com/AbolafiaRonnie/status/1450841406075904003", text: "Retrievals over irrigated land differ markedly when concurrent MODIS observations of vegetation replace the usual climatology." }] },
   { year: "2023", q: "how_much", icon: "shift", title: "Paradigm shift", feeds: true,
     sub: "An irrigation model with the farmer's decision at its center.", what: "Assimilation fills the gaps between passes.",
     left: "Far more accurate when irrigation timing is known.", study: "assimilation-2023",
-    finding: "In synthetic tests, knowing irrigation timing raised R² from 0.36 to 0.97." },
+    finding: "In synthetic tests, knowing irrigation timing raised R² from 0.36 to 0.97.",
+    story: ["Rather than invert sparse observations, let a land surface model carry the soil water between them. Following Abolafia-Rosenzweig et al. (2019), a particle batch smoother runs many candidate irrigation amounts through the VIC model and weights each one by how well its soil moisture matches the SMAP–Sentinel-1 observations in a window, for example three passes in about 18 days. The weighted average is the irrigation estimate, and the model's own irrigation module is not needed.",
+      "Over the real fields, estimated irrigation was far lower on non-irrigated pixels than on irrigated ones, though it fell 18.6% short of the observed water use, probably because the 1 km retrievals lose part of the signal.",
+      "The synthetic experiments showed what was missing. When the timing of irrigation was known, the mean annual bias fell from 23% to 0.45% and R² rose from 0.36 to 0.97. The next question was when farmers irrigate."],
+    readFigs: [0],
+    posts: [{ who: "Ronnie Abolafia-Rosenzweig", handle: "AbolafiaRonnie", date: "2 June 2023", url: "https://twitter.com/AbolafiaRonnie/status/1664738093860265984", text: "Knowing how much water goes to irrigation is key to water and food security; this study estimates it by assimilating satellite soil moisture into a physically based land surface model." }] },
   { year: "2026", q: "when", icon: "patterns", title: "Patterns in the plot", feeds: true, figs: 2,
     sub: "Tracing farmers' irrigation decisions from space.", what: "AgroTrack reads irrigation timing from heat.",
     left: "Next, run the model only where fields are irrigated.", study: "agrotrack-2026",
-    finding: "Season length within 18% (Nebraska) and 15% (Mahabad); irrigation events detected with F1 of 0.59–0.74." },
+    finding: "Season length within 18% (Nebraska) and 15% (Mahabad); irrigation events detected with F1 of 0.59–0.74.",
+    story: ["A watered field stays cooler than the land around it. AgroTrack compares the land surface temperature of each cropland pixel with nearby natural pixels that are hydrologically similar, and change-point detection on that difference marks when the irrigation season starts and ends and when individual irrigation events happen.",
+      "Season length came within 18% in Nebraska and 15% in Mahabad, Iran, and events were found with F1 scores of 0.59–0.74 across ten Nebraska sites. Over California's Sacramento Valley, AgroTrack captured the fields left fallow after the 2021 megadrought. It is also an open-source Python package that needs only a bounding box and a thermal mission.",
+      "With timing in hand, the model should run only where land is actually irrigated, which brought the work back to the first question: where."],
+    lead: 4, compare: [0, 2], readFigs: [3, 1],
+    links: [{ href: "https://github.com/ejalilva/AgroTrack", text: "AgroTrack on GitHub" }] },
   { year: "Now", q: "where", icon: "map", title: "Redraw the map",
     sub: "Completing the last piece: mapping irrigated land as it changes.", what: "Foundation models map irrigated land with few labels.",
     left: "Toward yearly maps of irrigated land.", topic: "mapping", more: "More in Where is irrigation?",
     text: "Fine-tuning NASA's Prithvi-EO-2.0 to map irrigated land with few labels (AGU 2025), and now comparing six geospatial foundation models.",
-    chips: ["Prithvi-EO-2.0", "TerraMind", "Clay", "AlphaEarth", "Tessera", "OlmoEarth"] },
+    chips: ["Prithvi-EO-2.0", "TerraMind", "Clay", "AlphaEarth", "Tessera", "OlmoEarth"],
+    story: ["Today's maps of irrigated land are built from censuses around 2000–2005, aggregated over large areas or smoothed over time, and machine-learning maps need many labelled fields. Geospatial foundation models, pre-trained on large satellite archives, can learn the task from only a few.",
+      "The work began by fine-tuning NASA's Prithvi-EO-2.0 for high-resolution irrigation mapping with limited labels, presented as an oral talk at the AGU Fall Meeting 2025. It now benchmarks six foundation models for mapping irrigated land. This chapter is not yet published."] },
   { year: "Next", q: "how_much", icon: "circle", title: "Coming full circle", next: true,
     sub: "Back to how much, with all three.", what: "Where, when and how much, together.",
     left: "In NASA's Land Information System, with NISAR.", topic: "amount", more: "More in How much water?",
     text: "The maps, the timing and the assimilation come together in NASA's Land Information System, with NISAR soil moisture, to estimate how much water farms use.",
-    chips: ["Where", "When", "How much", "NASA LIS", "NISAR"] }
+    chips: ["Where", "When", "How much", "NASA LIS", "NISAR"],
+    story: ["Where from the foundation-model maps, when from AgroTrack, and how much from the particle batch smoother: the three come together in NASA's Land Information System, with NISAR soil moisture, to estimate how much water farms use.",
+      "The thread through every chapter is the farmer. Irrigation models carry too many assumptions about human decisions, and farmers' real choices differ from the soil-water-deficit rules that models assume. Observing those decisions, rather than assuming them, is the point."] }
 ];
 // Bump ICON_V (and the ?v= on the -back.png masks in assets/study-grid.css) whenever a chapter icon changes, so browsers fetch the new picture.
 const ICON_V = "2026-10-26f";
@@ -663,10 +692,11 @@ function chapterCard(c, i) {
     const also = c.also && studyById(c.also.study);
     return head + fig + (paper ? window.Papers.paperCard(paper, c.finding) : "") +
       (also ? `<p class="jc-also">${esc(c.also.text)} (<a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em></a>).</p>` : "") +
-      `<p class="jc-left"><b>Left open:</b> ${esc(c.left)}</p>`;
+      `<p class="jc-left"><b>Left open:</b> ${esc(c.left)}</p>` + readButton(i);
   }
-  return head + `<div class="jc-body"><p>${esc(c.text)}</p><ul class="jc-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul><a class="jc-more" href="index.html#research/${c.topic}">${esc(c.more)} →</a></div>`;
+  return head + `<div class="jc-body"><p>${esc(c.text)}</p><ul class="jc-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul><a class="jc-more" href="index.html#research/${c.topic}">${esc(c.more)} →</a></div>` + readButton(i);
 }
+const readButton = i => `<a class="jc-read" href="#chapter-${i + 1}" data-read="${i}">Read the full chapter<span aria-hidden="true"> →</span></a>`;
 
 function renderJourney() {
   const box = document.getElementById("journey");
@@ -760,7 +790,11 @@ function renderJourney() {
   });
   card.addEventListener("mouseenter", () => clearTimeout(hideTimer));
   card.addEventListener("mouseleave", () => later());
-  card.addEventListener("click", e => { if (!e.target.closest("[data-figure], a[href*='#research/']")) e.stopPropagation(); });
+  card.addEventListener("click", e => {
+    const read = e.target.closest("[data-read]");
+    if (read) { e.preventDefault(); e.stopPropagation(); hide(); openChapter(+read.dataset.read); return; }
+    if (!e.target.closest("[data-figure], a[href*='#research/']")) e.stopPropagation();
+  });
   box.addEventListener("focusout", e => { if (!box.contains(e.relatedTarget) && !pinned) later(); });
   document.addEventListener("click", () => { if (pinned) hide(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && card.classList.contains("on")) { const n = nodes[current]; hide(); n?.focus(); } });
@@ -818,6 +852,93 @@ function toast(msg) {
 
 
 renderJourney();
+
+/* ---------------------------------------------------------------------
+   The chapter reader: "Read the full chapter" in a chapter's card opens the whole chapter, with its story
+   (story), the study's figures (lead: one full-width figure; compare: two figures on a slider; readFigs: the rest,
+   by index into the study's images), what the study found (the study's findings), the paper, what it left
+   open, links and posts. Each chapter has its own address, irrigation.html#chapter-1 to #chapter-6.
+   --------------------------------------------------------------------- */
+const reader = document.getElementById("chapter-reader"), readerBox = document.getElementById("cr-inner");
+let readerAt = -1;
+function figHTML(s, k, cls) {
+  const img = (s.images || [s.image])[k];
+  if (!img) return "";
+  return `<figure class="cr-fig${cls ? " " + cls : ""}"><a href="${esc(img.src)}" data-figure="${esc(s.id)}" data-figure-index="${k}" aria-label="Enlarge figure: ${esc(img.alt)}"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></a><figcaption>${esc(img.caption)}${img.credit ? ` <span class="cr-credit">${esc(img.credit)}.</span>` : ""}</figcaption></figure>`;
+}
+function compareHTML(s, [a, b]) {
+  const A = s.images[a], B = s.images[b], ya = A.caption.slice(0, 4), yb = B.caption.slice(0, 4);
+  return `<figure class="cr-fig cr-compare"><div class="cmp" style="--pos:50%">
+      <img src="${esc(B.src)}" alt="${esc(B.alt)}" decoding="async"><img class="cmp-top" src="${esc(A.src)}" alt="${esc(A.alt)}" decoding="async">
+      <span class="cmp-tag cmp-a">${esc(ya)}</span><span class="cmp-tag cmp-b">${esc(yb)}</span><span class="cmp-bar" aria-hidden="true"></span>
+      <input type="range" min="0" max="100" value="50" step="1" aria-label="Slide between ${esc(ya)} and ${esc(yb)}"></div>
+    <figcaption>Drag the slider to compare the number of irrigated days in cropland in ${esc(ya)} and ${esc(yb)}, as detected by AgroTrack.</figcaption></figure>`;
+}
+function postHTML(p) {
+  return `<li><a class="cr-post" href="${esc(p.url)}" target="_blank" rel="noopener"><span class="cr-post-who"><b>${esc(p.who)}</b> <span>@${esc(p.handle)} · ${esc(p.date)}</span></span><span class="cr-post-text">${esc(p.text)}</span><span class="cr-post-go">View the post on X<span aria-hidden="true"> ↗</span></span></a></li>`;
+}
+function chapterHTML(i) {
+  const c = CHAPTERS[i], s = c.study && studyById(c.study), paper = s && window.Papers && window.Papers.paperFor(s.doi);
+  const also = c.also && studyById(c.also.study);
+  const nav = (j, dir) => j < 0 || j >= CHAPTERS.length ? "<span></span>" :
+    `<button type="button" class="cr-go cr-${dir}" data-go="${j}"><span class="cr-go-k">${dir === "prev" ? "← " : ""}${chapterName(j)}${dir === "next" ? " →" : ""}</span><span class="cr-go-t">${esc(CHAPTERS[j].title)}</span></button>`;
+  let figs = "";
+  if (s) {
+    figs = (c.lead != null ? figHTML(s, c.lead, "cr-wide") : "") +
+      `<div class="cr-figs">${c.compare ? compareHTML(s, c.compare) : ""}${(c.readFigs || [0]).map(k => figHTML(s, k)).join("")}</div>`;
+  }
+  return `<header class="cr-head g-${c.q}">
+      <div class="cr-head-text"><p class="cr-kick">${chapterName(i)} · ${esc(c.year)} · ${QLABEL[c.q]}?</p><h2 id="cr-title">${esc(c.title)}</h2><p class="cr-sub">${esc(c.sub)}</p></div>
+      <img class="cr-ico" src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="72" height="72">
+      <button type="button" class="cr-close" aria-label="Close chapter">×</button>
+    </header>
+    <div class="cr-body">
+      <div class="cr-story">${(c.story || [c.text]).map(t => `<p>${esc(t)}</p>`).join("")}</div>
+      ${figs}
+      ${s && s.findings ? `<section class="cr-found"><h3>What the study found</h3><ul>${s.findings.map(f => `<li>${esc(f)}</li>`).join("")}</ul></section>` : ""}
+      ${paper ? `<div class="cr-paper">${window.Papers.paperCard(paper, c.finding)}</div>` : ""}
+      ${also ? `<section class="cr-also"><h3>${esc(c.also.text)}</h3>${figHTML(also, 0, "cr-side")}<p>${esc(also.summary)} <a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em> ${esc(also.year)} ↗</a></p></section>` : ""}
+      ${c.chips ? `<ul class="jc-chips cr-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      <p class="cr-left"><b>${c.next ? "Next:" : "Left open:"}</b> ${esc(c.left)}</p>
+      ${(c.links || []).length || c.topic ? `<p class="cr-links">${(c.links || []).map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.text)} ↗</a>`).join("")}${c.topic ? `<a href="index.html#research/${c.topic}">${esc(c.more)} →</a>` : ""}</p>` : ""}
+      ${(c.posts || []).length ? `<section class="cr-posts-box"><h3>Shared on social media</h3><ul class="cr-posts">${c.posts.map(postHTML).join("")}</ul></section>` : ""}
+    </div>
+    <nav class="cr-nav" aria-label="Chapters">${nav(i - 1, "prev")}${nav(i + 1, "next")}</nav>`;
+}
+function openChapter(i) {
+  if (!reader || !CHAPTERS[i]) return;
+  readerAt = i;
+  readerBox.innerHTML = chapterHTML(i);
+  readerBox.scrollTop = 0; reader.scrollTop = 0;
+  readerBox.querySelectorAll(".cmp").forEach(box => {
+    const r = box.querySelector("input");
+    r.addEventListener("input", () => box.style.setProperty("--pos", r.value + "%"));
+  });
+  if (!reader.open) reader.showModal();
+  readerBox.querySelector(".cr-close").focus({ preventScroll: true });
+  history.replaceState(null, "", "#chapter-" + (i + 1));
+}
+if (reader && typeof reader.showModal === "function") {
+  reader.addEventListener("click", e => {
+    if (e.target === reader) { reader.close(); return; }
+    if (e.target.closest(".cr-close")) { reader.close(); return; }
+    const go = e.target.closest("[data-go]");
+    if (go) openChapter(+go.dataset.go);
+  });
+  reader.addEventListener("keydown", e => {
+    if (e.target.matches("input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "ArrowRight" && readerAt < CHAPTERS.length - 1) openChapter(readerAt + 1);
+    if (e.key === "ArrowLeft" && readerAt > 0) openChapter(readerAt - 1);
+  });
+  reader.addEventListener("close", () => {
+    if (/^#chapter-\d+$/.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + "#studies");
+    // Back to the chapter last read, which may differ from the one opened.
+    document.querySelectorAll(".j-node")[readerAt]?.focus({ preventScroll: true });
+  });
+  const fromHash = () => { const m = location.hash.match(/^#chapter-(\d+)$/); if (m) openChapter(+m[1] - 1); };
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+}
 renderRelated();
 drawPanels();
 document.getElementById("scales").classList.add("animate");

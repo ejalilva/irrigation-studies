@@ -57,5 +57,37 @@
     "sourceFigure": "Fig. 8a, extracted from the article PDF Ehsan supplied",
     "encoding": "WebP (quality 88), resized from 1896 to 1500 px wide",
     "retrieved": "2026-10-26"
+  },
+  {
+    "file": "assets/studies/amsr2-2019-irrigation-series.webp",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceImage": "Old site's Irrigation page, 'Irrigation studies' section (JPEG, 1280 × 1228)",
+    "encoding": "WebP quality 86 from the site's JPEG",
+    "retrieved": "2026-10-30",
+    "doi": "10.1016/j.rse.2019.111226"
+  },
+  {
+    "file": "assets/studies/smap-sentinel-2021-dynamic-vwc.webp",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceImage": "Old site's Irrigation page, 'Irrigation studies' section (PNG, 1280 × 719)",
+    "encoding": "WebP quality 86",
+    "retrieved": "2026-10-30",
+    "doi": "10.1109/JSTARS.2021.3119228"
+  },
+  {
+    "file": "assets/studies/agrotrack-frequency-change.webp",
+    "sourcePage": "https://www.ehsanjalilvand.com/research/irrigation",
+    "sourceImage": "Old site's Irrigation page, below the 2021/2022 comparison (PNG, 736 × 971)",
+    "encoding": "Lossless WebP; original pixels retained",
+    "retrieved": "2026-10-30",
+    "doi": "10.1016/j.rse.2025.115153"
+  },
+  {
+    "file": "assets/studies/agrotrack-workflow.webp",
+    "sourcePage": "https://github.com/ejalilva/AgroTrack",
+    "sourceImage": "static/agrotrack_workflow.svg in the AgroTrack repository, rendered at 1925 px and resized to 1600 px on white",
+    "encoding": "WebP quality 90",
+    "retrieved": "2026-10-30",
+    "doi": "10.1016/j.rse.2025.115153"
   }
 ]

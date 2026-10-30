@@ -238,6 +238,16 @@ Chapters 5 and 6 instead show a short text, the models or parts involved, and a 
 
 `renderJourney()` draws everything and redraws the arrows when the layout changes. The figures and paper details still come from `STUDIES` and `assets/journals.js`.
 
+**Chapter reader.** Every study card ends with "Read the full chapter →", which opens the whole chapter in a dialog (`#chapter-reader`, built by `chapterHTML()` in `irrigation.html`). Each chapter has its own address, `irrigation.html#chapter-1` to `#chapter-6`, so a chapter can be linked directly. The reader shows, in order:
+- the chapter's story: `story`, a list of paragraphs written from Ehsan's account of how each study led to the next and from the old site's "Irrigation studies" section
+- the study's figures, chosen by index into the study's `images`: `lead` (one full-width figure), `compare` (two figures on a slider; Chapter four's 2021 and 2022 irrigation-day maps, as on the old site's Juxtapose embed) and `readFigs` (the rest, side by side). Each figure enlarges on click.
+- "What the study found": the study's `findings`, from the old site's bullets
+- the journal card with the chapter's `finding`, the `also` study, `chips`, and what the chapter left open
+- `links` (for example AgroTrack on GitHub) and `posts`: social-media posts about the study, each with `who`, `handle`, `date`, `url` and a one-line `text` in our own words
+- previous and next chapter buttons; the arrow keys also move between chapters
+
+Closing the reader returns focus to the chapter last read and sets the address back to `#studies`. The reader's styles are at the end of `assets/study-grid.css` (`.chapter-reader`, `.cr-*`, `.cmp` for the slider).
+
 ## Figures
 
 The study figures appear in the storyline's study cards (see above) and enlarge in a dialog when clicked. `assets/study-grid.css` styles the storyline, the study cards and that dialog. Each study's figure is its `image` (`src`, `alt`, `caption`, `source`, optional `credit`), or the first of its `images`. A chapter with `figs: 2` shows the first two of its study's `images` side by side, and each enlarges on its own. "Patterns in the plot" uses this to show the 2021 Central Valley irrigation-day map next to Fig. 8a of the paper, the Nebraska irrigation-schedule heat map with the season start and end that AgroTrack detected. That heat map was extracted from the article PDF and saved as `assets/studies/agrotrack-heatmap.webp`; its source is recorded in `data/study-figure-sources.json`.
