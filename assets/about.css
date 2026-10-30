@@ -94,6 +94,9 @@
 
 
 /* The Experience card fills its column (wider than the text sections), and the spotlight card sits in its own section. */
+/* Experience: the heading above, then the My journey card across the full width of the page. */
+.ab-jy-sec { grid-template-columns: 1fr; gap: 20px; }
 .ab-jy-sec .ab-body { max-width: none; }
+.ab-jy-pic { aspect-ratio: 1400 / 520; object-position: 50% 45%; }
 .ab-spot-sec .ab-spot { margin: 0; }
 @media (max-width: 640px) { .ab-jy-pic { aspect-ratio: 16 / 9; object-position: 40% 50%; } }
