@@ -280,9 +280,9 @@
       "name": "SDK, Satellite Driven Knowledge"
     },
     "cnr": {
-      "kind": "text",
-      "value": "CNR",
-      "name": "CNR IRPI"
+      "kind": "img",
+      "value": "cnr.png",
+      "name": "CNR IRPI, Research Institute for Geo-Hydrological Protection"
     },
     "aut": {
       "kind": "img",
@@ -317,17 +317,17 @@
       "title": "Estimating the rate of evaporation from Lake Urmia in 1995 using satellite and gauge data",
       "href": "https://www.researchgate.net/publication/304498967"
     },
-    "dust": {
-      "kind": "video",
-      "label": "UX video: dust monitoring",
-      "title": "UX design of a satellite-based dust monitoring system",
-      "href": null
-    },
     "tourism": {
       "kind": "video",
-      "label": "UX video: local tourism map",
-      "title": "UX design of a map-based local tourism website",
-      "href": null
+      "label": "UX demo: rural tourism map",
+      "title": "Interactive prototype of a map-based platform that connects city visitors with rural life (2017)",
+      "href": "drive:tourism"
+    },
+    "sugarcane": {
+      "kind": "video",
+      "label": "UX demo: crop monitoring",
+      "title": "Interactive prototype of a satellite-based crop monitoring system for a sugarcane producer (2018)",
+      "href": "drive:sugarcane"
     },
     "jhydrol2018": {
       "kind": "paper",
@@ -462,11 +462,20 @@
       ],
       "story": "Co-founded a startup for environmental monitoring from satellite observations.",
       "work": [
-        "dust",
-        "tourism"
+        "tourism",
+        "sugarcane"
       ],
       "logo": "sdk",
-      "pictures": []
+      "pictures": [
+        {
+          "video": "https://drive.google.com/file/d/1HDr4X0e2PxtHK8sgbjbdeUqFbH-TXW7x/preview",
+          "caption": "UX demo, 2017: a map-based platform that connects city visitors with rural life, from baking bread and milking cows to harvesting honey, with local stories pinned to the landmarks."
+        },
+        {
+          "video": "https://drive.google.com/file/d/1gJ6TVFqfdKpTeg63eQYCED_izhKsZl43/preview",
+          "caption": "UX demo, 2018: a crop monitoring system for a sugarcane producer, tracking each plot’s growth through the season with Sentinel-2 and Landsat and flagging problems."
+        }
+      ]
     },
     {
       "period": "2016–17",

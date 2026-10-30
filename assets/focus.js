@@ -1,4 +1,4 @@
-/* "My focus" (index.html#focus): the human-managed processes start side by side, then move into place around
+/* "Why irrigation comes first" (irrigation.html#focus): the human-managed processes start side by side, then move into place around
    irrigation, each showing how it is linked; lines are drawn from irrigation to the processes it touches.
    - It plays once when the diagram comes into view; the button switches between the two views.
    - Hovering a process highlights its line.

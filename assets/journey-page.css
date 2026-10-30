@@ -12,8 +12,12 @@
 
 /* Header and title sit on the sky */
 .jy-hero { position: relative; }
-.jy-top { position: absolute; z-index: 7; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding: 22px max(24px, calc((100% - 1072px) / 2)); text-shadow: 0 1px 8px rgba(10,35,60,.45); }
-.jy-name { font: 500 1.2rem/1.2 var(--head); color: #fff; text-decoration: none; }
+.jy-top { position: absolute; z-index: 7; top: 0; left: 0; right: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding: 22px max(24px, calc((100% - 1072px) / 2)); text-shadow: 0 1px 8px rgba(10,35,60,.45); }
+/* The top bar: the EJ mark (home) and the page's title, "My journey", in place of the name used on other pages. */
+.jy-brand { display: flex; align-items: center; gap: 12px; }
+.jy-home { display: block; border-radius: 50%; }
+.jy-home .ej { width: 38px; height: 38px; box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 2px 10px rgba(10,35,60,.35); }
+.jy-home:hover .ej { box-shadow: 0 0 0 3px #fff, 0 2px 12px rgba(10,35,60,.4); }
 .jy-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
 .jy-nav a { color: rgba(255,255,255,.92); text-decoration: none; }
 .jy-nav a:hover { color: #fff; text-decoration: underline; }
@@ -22,7 +26,7 @@
 .jy-nav .nav-btn:hover, .jy-nav .nav-menu:hover .nav-btn, .jy-nav .nav-menu.open .nav-btn { color: #fff; }
 .jy-nav .nav-sub a { color: var(--ink); font-weight: 400; text-decoration: none; }
 .jy-nav .nav-sub a:hover { color: var(--ink); text-decoration: none; }
-.jy-title { position: absolute; z-index: 6; left: max(24px, calc((100% - 1072px) / 2)); top: clamp(64px, 11.5%, 112px); margin: 0; font: 500 clamp(2.2rem, 4.2vw, 3.75rem)/1 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }
+.jy-title { margin: 0; font: 500 clamp(1.7rem, 2.8vw, 2.4rem)/1.05 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }
 
 /* The painting, edge to edge */
 .jy-scene { position: relative; width: 100%; aspect-ratio: 1672 / 941; overflow: hidden; background: #D4DDCB; }
@@ -70,6 +74,11 @@
 .jy-card img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; background: #EEF1F2; }
 .jy-card:hover, .jy-card:focus-visible { z-index: 2; box-shadow: 0 12px 26px rgba(23,32,38,.35); transform: translateX(calc(var(--k) * 64px)) translateY(-8px) rotate(calc(var(--k) * 5deg)) scale(1.06); }
 .jy-card:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+/* A video card (the startup's UX demos): Drive's thumbnail under a play button; it plays in the viewer. */
+.jy-card.is-video { background: #1F2A30; cursor: pointer; }
+.jy-card.is-video img { opacity: .8; }
+.jy-play { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: rgba(255,255,255,.92); box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+.jy-play::after { content: ""; position: absolute; left: 13px; top: 10px; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent #172026; }
 
 /* The stop's line, and links to its papers, code, videos and talks */
 .jy-stories { max-width: 780px; margin: 22px auto 0; text-align: center; }
@@ -102,6 +111,9 @@
 .jy-viewer { width: min(920px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 8px; background: transparent; color: #fff; overflow: visible; }
 .jy-viewer::backdrop { background: rgba(12,18,22,.88); }
 .jy-viewer figure { margin: 0; }
+.jy-viewer-video { width: 100%; aspect-ratio: 16 / 9; max-height: calc(100dvh - 170px); border-radius: 6px; overflow: hidden; background: #000; }
+.jy-viewer-video[hidden], .jy-viewer img[hidden] { display: none; }
+.jy-viewer-video iframe { display: block; width: 100%; height: 100%; border: 0; }
 .jy-viewer img { display: block; width: 100%; max-height: calc(100dvh - 170px); object-fit: contain; border-radius: 6px; background: #fff; }
 .jy-viewer figcaption { padding: 12px 2px 0; }
 .jy-viewer figcaption p { margin: 0; font-size: 1.05rem; line-height: 1.45; }
@@ -117,13 +129,13 @@
 
 @media (max-width: 760px) {
   .jy-top { position: relative; padding: 16px; text-shadow: none; }
-  .jy-name { color: var(--ink); }
+  .jy-home .ej { width: 32px; height: 32px; box-shadow: none; }
   .jy-nav a { color: var(--ink-2); }
   .jy-nav a:hover, .jy-nav a[aria-current="page"] { color: var(--ink); }
   .jy-nav .nav-btn { color: var(--ink-2); }
   .jy-nav .nav-btn:hover, .jy-nav .nav-menu:hover .nav-btn, .jy-nav .nav-menu.open .nav-btn { color: var(--ink); }
   .jy-scrim { display: none; }
-  .jy-title { left: 16px; top: 14px; font-size: 1.9rem; }
+  .jy-title { color: var(--ink); text-shadow: none; font-size: 1.6rem; }
   .jy-tag { font-size: .66rem; padding: 2px 6px; }
   .jy-path { padding: 24px 16px 0; }
   /* On phones the timeline fits the screen as dots (only the current year is named), the pictures sit in a row under

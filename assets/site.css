@@ -72,8 +72,11 @@
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
   /* Header */
-  .site-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; padding: 20px 0; border-bottom: 1px solid var(--line); }
-  .site-name { font: 500 1.2rem/1.2 var(--head); color: var(--ink); text-decoration: none; }
+  .site-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  /* The EJ mark (assets/ej.svg, the old site's favicon) goes before the name in every page's header. */
+  .site-name { display: inline-flex; align-items: center; gap: 10px; font: 500 1.2rem/1.2 var(--head); color: var(--ink); text-decoration: none; }
+  .ej { display: block; flex: none; width: 30px; height: 30px; border-radius: 50%; }
+  .site-name:hover .ej { box-shadow: 0 0 0 3px var(--tag-bg); }
   .site-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: .95rem; }
   .site-nav a { color: var(--ink-2); text-decoration: none; }
   .site-nav a:hover { color: var(--ink); text-decoration: underline; }
@@ -483,3 +486,22 @@
     .bridge { font-size: 1.15rem; }
   }
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+  /* Under the water-cycle map: the way on to the irrigation page (index.html). */
+  .cycle-cta { display: grid; grid-template-columns: 160px minmax(0, 1fr) auto; align-items: center; gap: 20px; margin: 28px 0 8px; padding: 14px 22px 14px 14px; border: 1px solid var(--line); border-left: 4px solid var(--q-how); border-radius: 12px; color: var(--ink); text-decoration: none; background: var(--surface); transition: box-shadow .2s, transform .2s, border-color .2s; }
+  .cycle-cta:hover { box-shadow: 0 10px 28px var(--shadow); transform: translateY(-1px); }
+  .cycle-cta img { display: block; width: 160px; height: 90px; object-fit: cover; border-radius: 8px; }
+  .cycle-cta-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .cycle-cta-k { font: 500 .72rem/1.5 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+  .cycle-cta-t { font: 500 1.25rem/1.3 var(--head); }
+  .cycle-cta-s { font-size: .9rem; line-height: 1.45; color: var(--ink-2); }
+  .cycle-cta-go { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--ink); color: var(--paper); font-size: 1.25rem; transition: transform .2s; }
+  .cycle-cta:hover .cycle-cta-go { transform: translateX(3px); }
+  @media (max-width: 620px) {
+    .cycle-cta { grid-template-columns: 88px minmax(0, 1fr); gap: 14px; padding: 12px; }
+    .cycle-cta img { width: 88px; height: 66px; }
+    .cycle-cta-t { font-size: 1.05rem; }
+    .cycle-cta-s, .cycle-cta-go { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .cycle-cta, .cycle-cta-go { transition: none; } .cycle-cta:hover { transform: none; } }
+

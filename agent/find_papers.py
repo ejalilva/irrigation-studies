@@ -840,7 +840,7 @@ def main():
     preview = site_url(cfg)
     lines = [f"## Paper agent report, {today}", ""]
     if all_added and preview:
-        lines += [f"**[Preview these papers on the page]({preview}?preview#landscape)**", ""]
+        lines += [f"**[Preview these papers on the page]({preview}irrigation.html?preview#landscape)**", ""]
     lines.append(f"Searched papers published since {since}: {len(added)} new. "
                  f"{len(upgraded)} preprint(s) now peer reviewed. {stats['skipped']} skipped as off-topic in total.")
     for y in years:

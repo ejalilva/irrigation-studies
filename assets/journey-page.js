@@ -101,10 +101,18 @@
     const count = document.getElementById('jy-viewer-count');
     const credit = document.getElementById('jy-viewer-credit');
     let list = [], at = 0, opener = null;
+    // Videos (cards with data-embed) play in Drive's embedded player in place of the picture.
+    const video = document.getElementById('jy-viewer-video');
+    const stopVideo = () => { if (video) { video.replaceChildren(); video.hidden = true; } img.hidden = false; };
     const show = k => {
       at = (k + list.length) % list.length;
       const card = list[at], pic = card.querySelector('img'), story = stories[Number(card.dataset.stage)];
-      img.src = pic.currentSrc || pic.src; img.alt = pic.alt;
+      stopVideo();
+      if (card.dataset.embed && video) {
+        const f = document.createElement('iframe');
+        f.src = card.dataset.embed; f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = card.dataset.caption;
+        video.append(f); video.hidden = false; img.hidden = true; img.removeAttribute('src');
+      } else { img.src = pic.currentSrc || pic.src; img.alt = pic.alt; }
       const head = story ? story.querySelector('strong').textContent.replace(/\.$/, '') : '';
       cap.textContent = ''; const b = document.createElement('strong'); b.textContent = head + '. '; cap.append(b, card.dataset.caption);
       count.textContent = list.length > 1 ? `${at + 1} / ${list.length}` : '';
@@ -126,7 +134,13 @@
       if (e.key === 'ArrowLeft' && list.length > 1) { e.preventDefault(); show(at - 1); }
     });
     viewer.addEventListener('click', e => { if (e.target === viewer) viewer.close(); });
-    viewer.addEventListener('close', () => { if (opener) opener.focus(); });
+    viewer.addEventListener('close', () => { stopVideo(); if (opener) opener.focus(); });
+    // A video link under a stop's line opens the same viewer at that video, instead of a new tab.
+    document.querySelectorAll('.jy-work[data-video]').forEach(a => a.addEventListener('click', e => {
+      const card = document.querySelector(`.jy-card[data-video="${a.dataset.video}"]`);
+      if (!card) return;
+      e.preventDefault(); card.click();
+    }));
   }
 
   // Play the timeline once when the skills first come into view.
