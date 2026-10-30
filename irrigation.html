@@ -14,13 +14,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-30b">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-30c">
 <script src="assets/nav.js?v=2026-10-30b" defer></script>
 <link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-30a">
 <link rel="stylesheet" href="assets/study-grid.css?v=2026-10-30b">
-<link rel="stylesheet" href="assets/focus.css?v=2026-10-28d">
+<link rel="stylesheet" href="assets/focus.css?v=2026-10-30b">
 <link rel="stylesheet" href="assets/irrigation.css?v=2026-10-30a">
-<script src="assets/focus.js?v=2026-10-28d" defer></script>
+<script src="assets/focus.js?v=2026-10-30b" defer></script>
 <script src="assets/journals.js?v=2026-10-26f"></script>
 </head>
 <body class="main-page irrigation-page">
@@ -41,6 +41,7 @@
       </div>
       <a href="journey.html">My journey</a>
       <a href="gallery.html">Gallery</a>
+      <a href="blog.html">Blog</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </header>
@@ -63,30 +64,26 @@
     <section class="focus" id="focus" aria-labelledby="focus-h">
       <p class="cycle-eyebrow">Why irrigation comes first</p>
       <h2 id="focus-h">Human-driven processes in the water cycle</h2>
-      <p class="intro">People manage water at almost every step of the cycle: they pump aquifers, run reservoirs, divert rivers, drain fields and supply cities. Each process follows human decisions, which large-scale water-cycle models still represent poorly.</p>
-      <!-- Human-managed processes: first all of them side by side, then they move into place around irrigation, each
-           with one line on how it is linked (assets/focus.js, styles in assets/focus.css). The list reads in order
-           for screen readers whatever the animation is doing; on phones it is a plain list. -->
-      <div class="hx" id="hx" data-phase="all">
-        <div class="hx-bar">
-          <p class="hx-cap"><span class="hx-cap-all">People manage water in many ways.</span><span class="hx-cap-linked">Irrigation is linked to almost all of them.</span></p>
-          <button type="button" class="hx-toggle" aria-pressed="false" aria-controls="hx-stage">Show how they link to irrigation</button>
+      <p class="intro">One decision to irrigate connects water sources, growing crops and downstream effects.</p>
+      <div class="connections" id="connections" data-view="network">
+        <div class="cx-toolbar" aria-label="Ways to explore the connections">
+          <span class="cx-hint">Explore the connections</span>
+          <div class="cx-views" role="group" aria-label="Diagram view">
+            <button type="button" data-view="network" aria-pressed="true" aria-controls="cx-stage">Connections</button>
+            <button type="button" data-view="pathway" aria-pressed="false" aria-controls="cx-stage">Water pathway</button>
+            <button type="button" data-view="grid" aria-pressed="false" aria-controls="cx-stage">At a glance</button>
+          </div>
         </div>
-        <div class="hx-stage" id="hx-stage">
-          <svg class="hx-lines" aria-hidden="true"></svg>
-          <ul class="hx-list" aria-label="Human-managed processes and how each is linked to irrigation">
-          <li class="hx-t is-irr" data-k="irr" style="--x1:10;--y1:28;--x2:50;--y2:50;--d:0"><strong class="hx-name">Irrigation</strong><span class="hx-why">The largest human intervention in the water cycle.</span></li>
-          <li class="hx-t is-direct" data-k="gw" style="--x1:30;--y1:28;--x2:14;--y2:14;--d:1"><strong class="hx-name">Groundwater pumping and artificial recharge</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Wells pump aquifers to irrigate fields; water that seeps past the roots recharges them.</span></li>
-          <li class="hx-t is-direct" data-k="res" style="--x1:50;--y1:28;--x2:14;--y2:38;--d:2"><strong class="hx-name">Reservoir operation</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Reservoirs store water and release it downstream when crops need it.</span></li>
-          <li class="hx-t is-direct" data-k="sw" style="--x1:70;--y1:28;--x2:14;--y2:62;--d:3"><strong class="hx-name">Surface water abstraction</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Pumps draw water from rivers and lakes straight onto fields.</span></li>
-          <li class="hx-t is-direct" data-k="div" style="--x1:90;--y1:28;--x2:14;--y2:86;--d:4"><strong class="hx-name">Water diversion</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Canals divert river water to irrigation districts, leaving less in the river.</span></li>
-          <li class="hx-t is-direct" data-k="td" style="--x1:10;--y1:72;--x2:86;--y2:56;--d:5"><strong class="hx-name">Tile drainage</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Buried pipes carry excess water from irrigated fields to ditches and streams.</span></li>
-          <li class="hx-t is-direct" data-k="rf" style="--x1:30;--y1:72;--x2:86;--y2:34;--d:6"><strong class="hx-name">Return flow</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Water the crops don’t use flows back to rivers and aquifers.</span></li>
-          <li class="hx-t is-direct" data-k="wq" style="--x1:50;--y1:72;--x2:86;--y2:78;--d:7"><strong class="hx-name">Water quality</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Runoff from irrigated fields carries sediment, and return flows change stream temperature.</span></li>
-          <li class="hx-t is-less" data-k="land" style="--x1:70;--y1:72;--x2:50;--y2:88;--d:8"><strong class="hx-name">Land management and dynamic vegetation</strong><span class="hx-why"><span class="hx-tag">Less direct link</span>Irrigation changes what is grown and how green the land stays through the season.</span></li>
-          <li class="hx-t is-other" data-k="urban" style="--x1:90;--y1:72;--x2:86;--y2:9;--d:9"><strong class="hx-name">Urban water management</strong><span class="hx-why"><span class="hx-tag">Not linked here</span>Draws on the same rivers and aquifers, but is managed separately: outside this first step.</span></li>
-          </ul>
+        <div class="cx-legend" aria-label="Process groups"><span class="cx-source">Water sources</span><span class="cx-field">Fields &amp; crops</span><span class="cx-return">Downstream effects</span><span class="cx-shared">Shared demands</span></div>
+        <div class="cx-stage" id="cx-stage">
+          <svg class="cx-lines" aria-hidden="true"></svg>
+          <div class="cx-lanes" aria-hidden="true"><span>Source &amp; supply</span><span>Apply &amp; grow</span><span>Drain &amp; return</span></div>
+          <ul class="cx-list" aria-label="Processes connected with irrigation"><li class="cx-item cx-field" data-process="irrigation" style="--px:50%;--py:48%"><button type="button" class="cx-node" aria-pressed="true" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#irrigation"/></svg></span><span class="cx-label">Irrigation</span><span class="cx-caption">Crops connect water withdrawals, land management and downstream effects.</span></button></li><li class="cx-item cx-source" data-process="groundwater" style="--px:15%;--py:16%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#groundwater"/></svg></span><span class="cx-label">Groundwater</span><span class="cx-caption">Pumping supplies irrigation; managed recharge can replenish aquifers.</span></button></li><li class="cx-item cx-source" data-process="reservoir" style="--px:15%;--py:40%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#reservoir"/></svg></span><span class="cx-label">Reservoirs</span><span class="cx-caption">Stored water is released when farms and other users need it.</span></button></li><li class="cx-item cx-source" data-process="surface" style="--px:15%;--py:64%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#surface"/></svg></span><span class="cx-label">Surface water</span><span class="cx-caption">River and lake withdrawals supply fields and reduce downstream flow.</span></button></li><li class="cx-item cx-source" data-process="diversion" style="--px:15%;--py:88%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#diversion"/></svg></span><span class="cx-label">Diversion</span><span class="cx-caption">Canals redirect river water to irrigation districts.</span></button></li><li class="cx-item cx-return" data-process="return" style="--px:85%;--py:16%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#return"/></svg></span><span class="cx-label">Return flow</span><span class="cx-caption">Water not consumed can return to rivers or recharge aquifers.</span></button></li><li class="cx-item cx-return" data-process="drainage" style="--px:85%;--py:40%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#drainage"/></svg></span><span class="cx-label">Tile drainage</span><span class="cx-caption">Where installed, buried drains carry excess field water to streams.</span></button></li><li class="cx-item cx-return" data-process="quality" style="--px:85%;--py:64%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#quality"/></svg></span><span class="cx-label">Water quality</span><span class="cx-caption">Return flows can carry nutrients, salts and sediment downstream.</span></button></li><li class="cx-item cx-field" data-process="land" style="--px:50%;--py:88%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#land"/></svg></span><span class="cx-label">Land & vegetation</span><span class="cx-caption">Crop and land choices influence irrigation demand and evapotranspiration.</span></button></li><li class="cx-item cx-shared" data-process="urban" style="--px:85%;--py:88%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#urban"/></svg></span><span class="cx-label">Urban water</span><span class="cx-caption">Cities and farms share water sources; their demands can compete.</span></button></li></ul>
         </div>
+        <p class="cx-key"><span class="cx-key-line" aria-hidden="true"></span>Water or field connection <span class="cx-key-line cx-dashed" aria-hidden="true"></span>Land choices or shared demand</p>
+        <div class="cx-detail cx-field" id="cx-detail" role="status" aria-live="polite"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#irrigation"/></svg></span><p><strong>Irrigation</strong><span>Crops connect water withdrawals, land management and downstream effects.</span></p></div>
+        <p class="cx-instruction">Select an icon for its connection to irrigation. Lines show relationships, not flow volumes.</p>
+        <noscript><p>Enable JavaScript to switch views. Each connection is described above.</p></noscript>
       </div>
       <p class="focus-point"><strong>That makes irrigation a strong place to start:</strong> modeling it well captures many of the broader ways people interact with the water system.</p>
       <h3 class="focus-q-h">Modeling irrigation means answering three questions</h3>
