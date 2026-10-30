@@ -83,6 +83,7 @@ SKILLS = {
     "geostack": ("Python geospatial stack", "#00796B", "#FFFFFF"),
     "ml": ("Machine learning", "#F7931E", "#172026"),
     "dl": ("Deep learning", "#EE4C2C", "#000000"),
+    "geoml": ("Geospatial machine learning", "#C2185B", "#FFFFFF"),
     "gfm": ("Foundation models", "#3949AB", "#FFFFFF"),
     "agents": ("AI agents", "#00ACC1", "#172026"),
 }
@@ -138,7 +139,7 @@ STOPS = [
     ("2019", "PhD · teaching", "Sharif University", "sharif", ["teach"],
      "Finished my PhD with my first irrigation study, and taught undergraduate hydrology.",
      ["rse2019"], [(STUDY + "irrigation-2019-study-area.webp", "Irrigated and non-irrigated pixels in the 2019 study area, south of Lake Urmia.")], "sharif"),
-    ("2019–21", "1st postdoc", "First postdoc, Sharif University", "sharif", ["linux", "bash", "perl", "web", "lsm", "da"],
+    ("2019–21", "1st postdoc", "First postdoc, Sharif University", "sharif", ["linux", "bash", "perl", "web", "lsm", "da", "ml"],
      "Detected the irrigation signal in SMAP soil moisture, and assimilated SMAP–Sentinel-1 soil moisture into the VIC model to estimate how much water farms applied.",
      ["jstars2021", "su2021", "wrr2023"],
      [(STUDY + "smap-sentinel-2021-irrigation-signal.webp", "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture."),
@@ -153,8 +154,8 @@ STOPS = [
     ("2022–23", "2nd postdoc", "Second postdoc, Michigan State University", "michigan", ["python", "hpc"],
      "Built high-resolution SMAP–Sentinel-1 soil moisture for northern latitudes and permafrost, brought human water use into Noah-MP through data assimilation, worked on NISAR soil moisture for field-scale irrigation, and joined NASA JPL’s SMAPVEX22 field campaign.",
      ["compag2024", "isprs2024", "frontiers2026"], [], "msu"),
-    ("2023", "Georgia Tech", "Georgia Tech, online", "gatech", [],
-     "Began an online Master of Science in Analytics.",
+    ("2023", "Georgia Tech", "Georgia Tech, online", "gatech", ["dl", "geoml"],
+     "Began an online Master of Science in Analytics, and with it deep learning and applied, geospatial machine learning.",
      [], [], "gt"),
     ("2023", "NASA", "NASA Goddard", "nasa", ["git", "lis", "pkg", "geostack"],
      "Water cycle and Earth system modeling, bringing satellite observations and machine learning into the models.",
@@ -162,7 +163,7 @@ STOPS = [
      [(STUDY + "agrotrack-2021.png", "AgroTrack: number of irrigated days in cropland, 2021."),
       (STUDY + "agrotrack-heatmap.webp", "Irrigation schedules of ten Nebraska fields in 2021, with the season AgroTrack detected from thermal data.", "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment"),
       (STUDY + "agrotrack-2022.png", "AgroTrack: number of irrigated days in cropland, 2022.")], "nasa"),
-    ("2024", "Georgia Tech", "Georgia Tech, online", "gatech", ["ml", "dl"],
+    ("2024", "Georgia Tech", "Georgia Tech, online", "gatech", [],
      "Kept going with the analytics master’s.",
      [], [], "gt"),
     ("Now", "NASA", "NASA Goddard", "nasa", ["gfm", "agents"],
@@ -261,14 +262,14 @@ out = f'''<!doctype html>
 <a class="skip" href="#jy-path">Skip to the timeline</a>
 <header class="jy-hero">
   <div class="jy-top">
-    <div class="jy-brand"><a class="jy-home" href="about.html" aria-label="Ehsan Jalilvand, about me"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"></a><h1 class="jy-title">My journey</h1></div>
+    <div class="jy-brand"><h1 class="jy-title">My journey</h1></div>
     <nav class="jy-nav" aria-label="Main">
       <a href="about.html">About</a>
       <a href="index.html">Research</a>
       <a href="journey.html" aria-current="page">My journey</a>
       <a href="gallery.html">Gallery</a>
       <a href="blog.html">Blog</a>
-      <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
+      <a href="#contact">Contact</a>
     </nav>
   </div>
   <div class="jy-scene" id="jy-scene">
@@ -311,7 +312,7 @@ out = f'''<!doctype html>
       <a href="https://github.com/ejalilva" aria-label="GitHub" title="GitHub"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-github"/></svg></a>
       <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-linkedin"/></svg></a>
       <a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw" aria-label="YouTube" title="YouTube"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-youtube"/></svg></a>
-      <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
+      <a href="#contact" aria-label="Contact" title="Contact"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
     </nav>
   </footer>
 </div>

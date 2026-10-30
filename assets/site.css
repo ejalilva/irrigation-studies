@@ -440,9 +440,21 @@
   /* Profile links in the footer are icons (assets/icons.svg); each link names its site for screen readers and on hover. */
   .site-foot .foot-links { gap: 2px; margin: -8px -9px; }
   .foot-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: var(--ink-2); transition: color .15s, background-color .15s; }
-  .foot-links a:hover { color: var(--ink); background: var(--hover); }
+  .foot-links a:hover { background: var(--hover); }
   .foot-links a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
   .foot-links svg { width: 20px; height: 20px; fill: currentColor; }
+
+  /* Profile icons in each site's own colour, wherever they appear (footer, About, Contact panel). GitHub's mark only
+     comes in black, so it uses GitHub's purple; the envelope (the contact form) uses the site's blue. */
+  :root { --b-scholar: #4285F4; --b-rg: #00B5A6; --b-github: #6E40C9; --b-linkedin: #0A66C2; --b-youtube: #FF0000; --b-mail: #1E5C86; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --b-scholar: #6FA1F8; --b-rg: #2ED3C4; --b-github: #A984F2; --b-linkedin: #4D9BE6; --b-youtube: #FF4D4D; --b-mail: #8BC2E0; } }
+  :root[data-theme="dark"] { --b-scholar: #6FA1F8; --b-rg: #2ED3C4; --b-github: #A984F2; --b-linkedin: #4D9BE6; --b-youtube: #FF4D4D; --b-mail: #8BC2E0; }
+  :is(.foot-links, .ab-links, .cp-links) a[href*="scholar.google"] svg { color: var(--b-scholar); }
+  :is(.foot-links, .ab-links, .cp-links) a[href*="researchgate.net"] svg { color: var(--b-rg); }
+  :is(.foot-links, .ab-links, .cp-links) a[href*="github.com"] svg { color: var(--b-github); }
+  :is(.foot-links, .ab-links, .cp-links) a[href*="linkedin.com"] svg { color: var(--b-linkedin); }
+  :is(.foot-links, .ab-links, .cp-links) a[href*="youtube.com"] svg { color: var(--b-youtube); }
+  :is(.foot-links, .ab-links) a[href$="#contact"] svg { color: var(--b-mail); }
 
   .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: 6px; font-size: .92rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -494,6 +506,25 @@
   @media (prefers-reduced-motion: reduce) { .cycle-cta, .cycle-cta-go { transition: none; } .cycle-cta:hover { transform: none; } }
 
 
+/* The NASA spotlight interview card, used on the About page and on the blog's spotlight post: the interview's portrait,
+   its title and a "Read" cue, like a link preview. */
+.ab-spot { display: grid; grid-template-columns: 132px minmax(0, 1fr); align-items: stretch; max-width: 660px; margin: 40px 0 8px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.ab-spot:hover { border-color: var(--link); box-shadow: 0 12px 28px rgba(15,26,31,.13); transform: translateY(-2px); }
+.ab-spot:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+.ab-spot-pic { display: block; width: 100%; height: 100%; min-height: 132px; object-fit: cover; }
+.ab-spot-text { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 16px 20px; }
+.ab-spot-kind { font: 600 .72rem/1.2 var(--sans); letter-spacing: .07em; text-transform: uppercase; color: var(--ink-2); }
+.ab-spot-title { font: 500 1.15rem/1.3 var(--head); color: var(--ink); }
+.ab-spot-where { font-size: .92rem; line-height: 1.4; color: var(--ink-2); }
+.ab-spot-go { margin-top: 4px; font-size: .92rem; font-weight: 500; color: var(--link); }
+.ab-spot:hover .ab-spot-go { text-decoration: underline; }
+@media (max-width: 520px) {
+  .ab-spot { grid-template-columns: 96px minmax(0, 1fr); }
+  .ab-spot-pic { min-height: 96px; }
+  .ab-spot-text { padding: 12px 14px; }
+}
+@media (prefers-reduced-motion: reduce) { .ab-spot { transition: none; } .ab-spot:hover { transform: none; } }
+
 /* Contact panel (assets/nav.js). Wide screens: the page moves left to make room (html.cp-push). Narrow screens: the
    panel slides over the page with a shade behind it (html.cp-over). */
 :root { --cp-w: 360px; }
@@ -512,13 +543,25 @@ html.cp-over .cp-shade { opacity: 1; visibility: visible; transition: opacity .3
 .cp-close { flex: none; align-self: flex-start; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer; }
 .cp-close:hover { background: var(--hover); }
 .cp-lead { margin: 0 0 18px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
-.cp-mail { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
-.cp-addr { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .92rem; font-weight: 500; color: var(--ink); text-decoration: none; }
-.cp-addr:hover { text-decoration: underline; }
-.cp-copy { flex: none; padding: 7px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--ink); font: 500 .85rem/1 var(--sans); cursor: pointer; }
-.cp-copy:hover { background: var(--hover); }
-.cp-copy.done { border-color: #2E8B57; color: #2E8B57; }
-.cp-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 26px; }
+.cp-form { display: grid; gap: 12px; margin: 0 0 26px; }
+.cp-form[hidden], .cp-done[hidden] { display: none; }
+.cp-field { display: grid; gap: 5px; font-size: .85rem; font-weight: 500; color: var(--ink); }
+.cp-field em { font-style: normal; font-weight: 400; color: var(--ink-2); }
+.cp-field input, .cp-field textarea { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--paper); color: var(--ink); font: 400 .95rem/1.45 var(--sans); }
+.cp-field textarea { min-height: 128px; resize: vertical; }
+.cp-field input:focus, .cp-field textarea:focus { border-color: var(--link); outline: 2px solid color-mix(in srgb, var(--link) 25%, transparent); outline-offset: 0; }
+.cp-field [aria-invalid="true"] { border-color: #C0392B; }
+.cp-trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.cp-send { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 2px; }
+.cp-send .cp-btn { cursor: pointer; font-family: var(--sans); }
+.cp-send .cp-btn:disabled { opacity: .55; cursor: default; }
+.cp-status { flex: 1 1 160px; margin: 0; font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
+.cp-status[data-kind="error"] { color: #B03A2E; }
+.cp-privacy { margin: 0; font-size: .8rem; color: var(--ink-2); }
+.cp-done { margin: 0 0 26px; padding: 16px 18px; border: 1px solid color-mix(in srgb, #2E8B57 45%, var(--line)); border-radius: 12px; background: color-mix(in srgb, #2E8B57 8%, var(--surface)); }
+.cp-done-title { margin: 0 0 4px; font-weight: 600; color: var(--ink); }
+.cp-done-copy { margin: 0 0 12px; font-size: .9rem; color: var(--ink-2); }
+.cp-again { background: var(--surface); cursor: pointer; font-family: var(--sans); }
 .cp-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: .9rem; font-weight: 500; text-decoration: none; }
 .cp-btn:hover { background: var(--hover); }
 .cp-primary { border-color: var(--ink); background: var(--ink); color: var(--paper); }
@@ -528,7 +571,7 @@ html.cp-over .cp-shade { opacity: 1; visibility: visible; transition: opacity .3
 .cp-links a { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
 .cp-links li:last-child a { border-bottom: 0; }
 .cp-links a:hover { background: var(--hover); }
-.cp-links svg { flex: none; width: 20px; height: 20px; fill: currentColor; color: var(--ink-2); }
+.cp-links svg { flex: none; width: 20px; height: 20px; fill: currentColor; }
 .cp-links span:first-of-type { flex: 1; }
 .cp-out { color: var(--ink-2); font-size: .85rem; }
 .cp-where { margin: 0; padding-top: 16px; border-top: 1px dashed var(--line); font-size: .85rem; line-height: 1.55; color: var(--ink-2); }

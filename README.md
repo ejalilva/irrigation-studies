@@ -25,7 +25,7 @@ The descriptions are AI-assisted and reviewed by hand, but mistakes can slip thr
 
 ## Suggest a paper or a correction
 
-[Open an issue](https://github.com/ejalilva/irrigation-studies/issues) or email ehsan.jalilvand@gmail.com.
+[Open an issue](https://github.com/ejalilva/irrigation-studies/issues) or send a message with the Contact form on the [site](https://ejalilva.github.io/irrigation-studies/about.html#contact).
 
 ## Data
 
