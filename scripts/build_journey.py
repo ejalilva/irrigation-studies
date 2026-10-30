@@ -26,7 +26,7 @@ import html
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-V = "2026-10-28c"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
+V = "2026-10-30a"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
 MARKS = [
@@ -49,7 +49,7 @@ LOGOS = {
     # key: (kind, value, name)   kind: img (file in assets/journey/logos/) or text (a short badge)
     "sharif": ("img", "sharif.png", "Sharif University of Technology"),
     "sdk": ("img", "sdk.png", "SDK, Satellite Driven Knowledge"),
-    "cnr": ("text", "CNR", "CNR IRPI"),
+    "cnr": ("img", "cnr.png", "CNR IRPI, Research Institute for Geo-Hydrological Protection"),
     "aut": ("img", "aut.png", "Amirkabir University of Technology"),
     "ries": ("text", "RIES", "Research Institute for Earth Sciences"),
     "msu": ("img", "msu.png", "Michigan State University"),
@@ -92,8 +92,10 @@ WORK = {
     # key: (kind, label, title, href)   kind: paper, code, video or talk
     "congress2015": ("paper", "Congress paper 2015", "Estimating the rate of evaporation from Lake Urmia in 1995 using satellite and gauge data",
                      "https://www.researchgate.net/publication/304498967"),
-    "dust": ("video", "UX video: dust monitoring", "UX design of a satellite-based dust monitoring system", None),
-    "tourism": ("video", "UX video: local tourism map", "UX design of a map-based local tourism website", None),
+    # The two UX demos from the old site's UX Demo page. The videos stay on Google Drive (shared with anyone who has the
+    # link) and play in the picture viewer; DRIVE_VIDEOS below gives each one's file id.
+    "tourism": ("video", "UX demo: rural tourism map", "Interactive prototype of a map-based platform that connects city visitors with rural life (2017)", "drive:tourism"),
+    "sugarcane": ("video", "UX demo: crop monitoring", "Interactive prototype of a satellite-based crop monitoring system for a sugarcane producer (2018)", "drive:sugarcane"),
     "jhydrol2018": ("paper", "J. Hydrol. 2018", "Estimating the drainage rate from surface soil moisture drydowns: application of the DfD model", DOI + "10.1016/j.jhydrol.2018.08.035"),
     "rse2019": ("paper", "RSE 2019", "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region", DOI + "10.1016/j.rse.2019.111226"),
     "jstars2021": ("paper", "IEEE JSTARS 2021", "Evaluation of SMAP/Sentinel-1 high-resolution soil moisture data to detect irrigation", DOI + "10.1109/JSTARS.2021.3119228"),
@@ -113,6 +115,15 @@ WORK = {
     "agent": ("code", "Paper-finding agent", "The agent that finds new irrigation papers for this site's research library", "https://github.com/ejalilva/irrigation-studies/tree/main/agent"),
 }
 
+# Videos on Google Drive: key -> (file id, caption). They are shown as cards in the stop's fan, with Drive's thumbnail, and
+# play in the viewer through Drive's embedded player.
+DRIVE_VIDEOS = {
+    "tourism": ("1HDr4X0e2PxtHK8sgbjbdeUqFbH-TXW7x", "UX demo, 2017: a map-based platform that connects city visitors with rural life, from baking bread and milking cows to harvesting honey, with local stories pinned to the landmarks."),
+    "sugarcane": ("1gJ6TVFqfdKpTeg63eQYCED_izhKsZl43", "UX demo, 2018: a crop monitoring system for a sugarcane producer, tracking each plot’s growth through the season with Sentinel-2 and Landsat and flagging problems."),
+}
+def drive_embed(key): return f"https://drive.google.com/file/d/{DRIVE_VIDEOS[key][0]}/preview"
+def drive_thumb(key): return f"https://drive.google.com/thumbnail?id={DRIVE_VIDEOS[key][0]}&sz=w800"
+
 STUDY = "assets/studies/"
 STOPS = [
     ("2013", "Sharif", "Sharif University", "sharif", ["arcgis", "envi", "rs", "matlab"],
@@ -120,7 +131,7 @@ STOPS = [
      ["congress2015"], [], "sharif"),
     ("2015–19", "Startup", "SDK, my startup", "startup", ["ux", "story"],
      "Co-founded a startup for environmental monitoring from satellite observations.",
-     ["dust", "tourism"], [], "sdk"),
+     ["tourism", "sugarcane"], [("video:tourism",), ("video:sugarcane",)], "sdk"),
     ("2016–17", "Italy", "CNR IRPI, Italy", "italy", ["imgproc", "model"],
      "Visiting researcher, improving SM2RAIN, a bottom-up approach that estimates rainfall from satellite soil moisture.",
      ["jhydrol2018"], [], "cnr"),
@@ -201,12 +212,19 @@ for i, (year, short, place, mark, skills, line, work, pics, logo) in enumerate(S
         kind, label, title, href = WORK[key]
         if not href:
             continue
-        links.append(f'<a class="jy-work" href="{esc(href)}" target="_blank" rel="noopener" title="{esc(title)}"><svg viewBox="0 0 16 16" aria-hidden="true">{ICON[kind]}</svg>{esc(label)}<span class="sr-only">: {esc(title)}</span></a>')
+        extra = ""
+        if href.startswith("drive:"):
+            vk = href[6:]; extra = f' data-video="{vk}"'; href = f"https://drive.google.com/file/d/{DRIVE_VIDEOS[vk][0]}/view"
+        links.append(f'<a class="jy-work" href="{esc(href)}" target="_blank" rel="noopener" title="{esc(title)}"{extra}><svg viewBox="0 0 16 16" aria-hidden="true">{ICON[kind]}</svg>{esc(label)}<span class="sr-only">: {esc(title)}</span></a>')
     work_html = f'<div class="jy-works">{"".join(links)}</div>' if links else ""
     stories.append(f'<div class="jy-story" data-stage="{i}"><p><strong>{esc(year)} · {esc(place)}.</strong> {esc(line)}</p>{work_html}</div>')
     if pics:
         cards = []
         for k, pic in enumerate(pics):
+            if pic[0].startswith("video:"):
+                vk = pic[0][6:]; caption = DRIVE_VIDEOS[vk][1]
+                cards.append(f'<button type="button" class="jy-card is-video" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="" data-video="{vk}" data-embed="{esc(drive_embed(vk))}" style="--k:{k - (len(pics) - 1) / 2}" aria-label="Play video {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(drive_thumb(vk))}" alt="{esc(caption)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"><span class="jy-play" aria-hidden="true"></span></button>')
+                continue
             src, caption, credit = (pic + (None,))[:3]
             cards.append(f'<button type="button" class="jy-card" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="{esc(credit or "")}" style="--k:{k - (len(pics) - 1) / 2}" aria-label="Open picture {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(src)}" alt="{esc(caption)}" loading="lazy" decoding="async"></button>')
         fans.append(f'<div class="jy-fan" data-stage="{i}" style="--col:{i}">{"".join(cards)}</div>')
@@ -231,6 +249,10 @@ out = f'''<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
+<link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
 <link rel="stylesheet" href="assets/site.css?v={V}">
 <script src="assets/nav.js?v={V}" defer></script>
 <link rel="stylesheet" href="assets/journey-page.css?v={V}">
@@ -240,19 +262,20 @@ out = f'''<!doctype html>
 <a class="skip" href="#jy-path">Skip to the timeline</a>
 <header class="jy-hero">
   <div class="jy-top">
-    <a class="jy-name" href="index.html">Ehsan Jalilvand</a>
+    <div class="jy-brand"><a class="jy-home" href="index.html" aria-label="Ehsan Jalilvand, home"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"></a><h1 class="jy-title">My journey</h1></div>
     <nav class="jy-nav" aria-label="Main">
       <a href="about.html">About</a>
       <div class="nav-menu">
         <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
         <ul class="nav-sub" id="nav-research">
           <li><a href="index.html#explore">Water cycle</a></li>
-          <li><a href="index.html#focus">Human-driven processes</a></li>
-          <li><a href="index.html#studies">Irrigation studies</a></li>
-          <li><a href="index.html#landscape">Research library</a></li>
+          <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
+          <li><a href="irrigation.html#studies">My irrigation studies</a></li>
+          <li><a href="irrigation.html#landscape">Research library</a></li>
         </ul>
       </div>
       <a href="journey.html" aria-current="page">My journey</a>
+      <a href="gallery.html">Gallery</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </div>
@@ -261,7 +284,6 @@ out = f'''<!doctype html>
     <div class="jy-veil" aria-hidden="true"></div>
     <div class="jy-scrim" aria-hidden="true"></div>
     {"".join(scene)}
-    <h1 class="jy-title">My journey</h1>
   </div>
 </header>
 <main class="jy-path" id="jy-path" aria-label="Timeline, work and skills">
@@ -281,6 +303,7 @@ out = f'''<!doctype html>
 <dialog class="jy-viewer" id="jy-viewer" aria-labelledby="jy-viewer-cap">
   <figure>
     <img id="jy-viewer-img" alt="">
+    <div class="jy-viewer-video" id="jy-viewer-video" hidden></div>
     <figcaption><p id="jy-viewer-cap"></p><p class="jy-viewer-meta"><span id="jy-viewer-count"></span><span id="jy-viewer-credit"></span></p></figcaption>
   </figure>
   <button type="button" class="jy-viewer-btn jy-close" id="jy-viewer-close" aria-label="Close">×</button>
@@ -312,8 +335,8 @@ record = {
     "logos": {k: dict(kind=v[0], value=v[1], name=v[2]) for k, v in LOGOS.items()},
     "work": {k: dict(kind=v[0], label=v[1], title=v[2], href=v[3]) for k, v in WORK.items()},
     "stops": [dict(period=y, short=s, place=p, landmark=m, skills=sk, story=t, work=w, logo=lg,
-                   pictures=[dict(src=pc[0], caption=pc[1], credit=(pc[2] if len(pc) > 2 else None)) for pc in pics])
+                   pictures=[(dict(video=drive_embed(pc[0][6:]), caption=DRIVE_VIDEOS[pc[0][6:]][1]) if pc[0].startswith("video:") else dict(src=pc[0], caption=pc[1], credit=(pc[2] if len(pc) > 2 else None))) for pc in pics])
               for y, s, p, m, sk, t, w, pics, lg in STOPS],
 }
 (ROOT / "data" / "journey-timeline.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-print(f"journey.html: {N} stops, {row} skills, {sum(len(s[7]) for s in STOPS)} pictures")
+print(f"journey.html: {N} stops, {row} skills, {sum(len(s[7]) for s in STOPS)} pictures and videos")

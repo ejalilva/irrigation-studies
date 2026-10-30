@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery | Ehsan Jalilvand</title>
+<meta name="description" content="Pictures from Ehsan Jalilvand's field campaigns and talks, on a map of where they were taken.">
+<meta property="og:title" content="Gallery | Ehsan Jalilvand">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-30a">
+<script src="assets/nav.js?v=2026-10-28c" defer></script>
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=1.9.4">
+<script src="assets/vendor/leaflet/leaflet.js?v=1.9.4" defer></script>
+<link rel="stylesheet" href="assets/gallery.css?v=2026-10-30a">
+<script src="assets/gallery.js?v=2026-10-30a" defer></script>
+</head>
+<body class="gallery-page">
+<a class="skip" href="#gl-places">Skip to the list of places</a>
+
+<div class="wrap">
+  <header class="site-head">
+    <a class="site-name" href="index.html"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="about.html">About</a>
+      <div class="nav-menu">
+        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <ul class="nav-sub" id="nav-research">
+          <li><a href="index.html#explore">Water cycle</a></li>
+          <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
+          <li><a href="irrigation.html#studies">My irrigation studies</a></li>
+          <li><a href="irrigation.html#landscape">Research library</a></li>
+        </ul>
+      </div>
+      <a href="journey.html">My journey</a>
+      <a href="gallery.html" aria-current="page">Gallery</a>
+      <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="gl-head">
+      <h1>Gallery</h1>
+      <p class="intro">Field campaigns, talks and the places in between. Pick a pin to see its pictures.</p>
+    </div>
+    <!-- The map and its panel (assets/gallery.js); the places and pictures come from data/gallery.json. -->
+    <div class="gl-stage">
+      <div class="gl-map" id="gl-map" role="region" aria-label="Map of where the pictures were taken"></div>
+      <aside class="gl-panel" id="gl-panel" aria-label="Pictures" hidden></aside>
+    </div>
+    <ul class="gl-places" id="gl-places" aria-label="Places">
+      <noscript>
+        <li><strong>SMAPVEX22 field campaign</strong>, Harvard Forest, Massachusetts, July 2022: <a href="assets/gallery/smapvex22-pinboard.webp">Measuring surface roughness with a pinboard.</a>, <a href="assets/gallery/smapvex22-tdr.webp">Three TDR sensors measuring soil moisture.</a>, <a href="assets/gallery/smapvex22-bulk-density.webp">Measuring bulk density: dig out a ring of soil, dry it, and measure the volume of the hole.</a>, <a href="assets/gallery/smapvex22-coring.webp">Taking soil samples next to the sensors.</a>, <a href="assets/gallery/smapvex22-tree-height.webp">Measuring tree height with a laser rangefinder and hypsometer.</a>, <a href="assets/gallery/smapvex22-vegetation.webp">Vegetation measurements with the Michigan Tech Research Institute team.</a>, <a href="assets/gallery/smapvex22-logger.webp">A solar-powered station logging soil moisture through the campaign.</a>, <a href="assets/gallery/smapvex22-team.webp">The field team.</a></li>
+        <li><strong>Crop growth stages, field measurements</strong>, Michigan State University, East Lansing, July–September 2022: <a href="assets/gallery/michigan-soybean-leaves.webp">Counting soybean leaves.</a>, <a href="assets/gallery/michigan-lai.webp">Measuring leaf area index with an LAI meter.</a>, <a href="assets/gallery/michigan-corn.webp">Sampling corn for plant height and vegetation water content.</a>, <a href="assets/gallery/michigan-soybean-end.webp">Soybean at the end of the season.</a></li>
+        <li><strong>Across Alaska’s tundra</strong>, Alaska, May 2023: <a href="assets/gallery/alaska-2023.webp">Alaska, May 2023.</a></li>
+      </noscript>
+    </ul>
+  </main>
+
+  <footer class="site-foot">
+    <p>All views expressed on this site are my own and do not reflect the opinions or positions of my employer or any affiliated organizations.</p>
+    <nav class="foot-links" aria-label="Profiles">
+      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-scholar"/></svg></a>
+      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand" aria-label="ResearchGate" title="ResearchGate"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-researchgate"/></svg></a>
+      <a href="https://github.com/ejalilva" aria-label="GitHub" title="GitHub"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-github"/></svg></a>
+      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-linkedin"/></svg></a>
+      <a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw" aria-label="YouTube" title="YouTube"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-youtube"/></svg></a>
+      <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
+    </nav>
+  </footer>
+</div>
+
+<dialog class="gl-viewer" id="gl-viewer" aria-labelledby="gl-viewer-cap">
+  <figure>
+    <img id="gl-viewer-img" alt="">
+    <figcaption><p id="gl-viewer-cap"></p><p class="gl-viewer-meta" id="gl-viewer-meta"></p></figcaption>
+  </figure>
+  <button type="button" class="gl-viewer-btn gl-close-v" id="gl-viewer-close" aria-label="Close">×</button>
+  <button type="button" class="gl-viewer-btn gl-prev" id="gl-viewer-prev" aria-label="Previous picture">‹</button>
+  <button type="button" class="gl-viewer-btn gl-next" id="gl-viewer-next" aria-label="Next picture">›</button>
+</dialog>
+</body>
+</html>

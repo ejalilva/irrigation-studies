@@ -1,0 +1,54 @@
+{
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). Add talks and conferences the same way, with kind \"talk\". See docs/MAINTAINING.md (Gallery).",
+  "places": [
+    {
+      "id": "smapvex22",
+      "kind": "field",
+      "title": "SMAPVEX22 field campaign",
+      "where": "Harvard Forest, Massachusetts",
+      "date": "July 2022",
+      "lat": 42.531,
+      "lon": -72.19,
+      "text": "NASA’s SMAP validation experiment in the forests of the US Northeast: surface roughness, soil moisture, bulk density and vegetation, measured on the ground under the satellite.",
+      "photos": [
+        { "file": "smapvex22-pinboard", "caption": "Measuring surface roughness with a pinboard." },
+        { "file": "smapvex22-tdr", "caption": "Three TDR sensors measuring soil moisture.", "credit": "Photo: Gaetan Pique" },
+        { "file": "smapvex22-bulk-density", "caption": "Measuring bulk density: dig out a ring of soil, dry it, and measure the volume of the hole.", "credit": "Photo: Gaetan Pique" },
+        { "file": "smapvex22-coring", "caption": "Taking soil samples next to the sensors.", "credit": "Photo: Gaetan Pique" },
+        { "file": "smapvex22-tree-height", "caption": "Measuring tree height with a laser rangefinder and hypsometer.", "credit": "Photo: Gaetan Pique" },
+        { "file": "smapvex22-vegetation", "caption": "Vegetation measurements with the Michigan Tech Research Institute team." },
+        { "file": "smapvex22-logger", "caption": "A solar-powered station logging soil moisture through the campaign.", "credit": "Photo: Gaetan Pique" },
+        { "file": "smapvex22-team", "caption": "The field team." }
+      ]
+    },
+    {
+      "id": "michigan-crops",
+      "kind": "field",
+      "title": "Crop growth stages, field measurements",
+      "where": "Michigan State University, East Lansing",
+      "date": "July–September 2022",
+      "lat": 42.701,
+      "lon": -84.482,
+      "text": "Following soybean and corn through the season, counting leaves and measuring plant height, vegetation water content and leaf area index.",
+      "photos": [
+        { "file": "michigan-soybean-leaves", "caption": "Counting soybean leaves." },
+        { "file": "michigan-lai", "caption": "Measuring leaf area index with an LAI meter." },
+        { "file": "michigan-corn", "caption": "Sampling corn for plant height and vegetation water content." },
+        { "file": "michigan-soybean-end", "caption": "Soybean at the end of the season." }
+      ]
+    },
+    {
+      "id": "alaska-2023",
+      "kind": "field",
+      "title": "Across Alaska’s tundra",
+      "where": "Alaska",
+      "date": "May 2023",
+      "lat": 62.4,
+      "lon": -150.1,
+      "text": "After more than a year developing and validating a satellite soil moisture product for northern latitudes, more than 1,200 miles across the tundra it was built for.",
+      "photos": [
+        { "file": "alaska-2023", "caption": "Alaska, May 2023." }
+      ]
+    }
+  ]
+}

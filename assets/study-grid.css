@@ -95,3 +95,88 @@
 #figure-caption{font-size:.84rem;color:var(--ink-2);margin-top:12px}
 .figure-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;padding-top:16px;font-size:.82rem}
 @media(max-width:680px){.study-figure-dialog{padding:16px}.figure-dialog-head h2{font-size:1rem}}
+
+/* "Read the full chapter" at the foot of each study card */
+.jc-read{display:block;padding:11px 14px 13px;border-top:1px solid var(--line);font:600 .84rem/1.3 var(--sans);text-decoration:none;color:var(--link)}
+.jc-read:hover,.jc-read:focus-visible{background:var(--hover);text-decoration:underline}
+
+/* The chapter reader: the whole chapter in a dialog, with its story, figures, findings, paper, links and posts.
+   Built by chapterHTML() in irrigation.html; each chapter has the address #chapter-1 to #chapter-6. */
+.chapter-reader{width:min(920px,calc(100% - 32px));max-width:920px;max-height:min(94dvh,1100px);padding:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);box-shadow:0 28px 90px #0006;overflow:auto;overscroll-behavior:contain}
+.chapter-reader::backdrop{background:#10232bd0}
+.cr-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:16px;padding:20px 24px 16px;border-top:5px solid var(--g);border-bottom:1px solid var(--line);background:var(--paper)}
+.cr-head-text{flex:1;min-width:0}
+.cr-kick{margin:0;font:650 .72rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.cr-kick::before{content:"";display:inline-block;width:10px;height:10px;margin-right:7px;border-radius:2px;background:var(--g);vertical-align:-1px}
+.cr-head h2{margin:4px 0 0;font:italic 600 clamp(1.35rem,3.2vw,1.85rem)/1.15 Georgia,"Times New Roman",serif;color:var(--ink);text-wrap:balance}
+.cr-sub{margin:5px 0 0;font-size:.95rem;line-height:1.4;color:var(--ink-2)}
+.cr-ico{flex:none;width:72px;height:72px;filter:drop-shadow(0 2px 3px rgba(15,26,31,.16))}
+.cr-close{flex:none;align-self:flex-start;width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:var(--paper);color:var(--ink);font-size:1.6rem;line-height:1;cursor:pointer}
+.cr-close:hover{background:var(--hover)}
+.cr-body{padding:22px 24px 8px}
+.cr-story{max-width:68ch}
+.cr-story p{margin:0 0 14px;font-size:1.02rem;line-height:1.62;color:var(--ink)}
+.cr-story p:first-child::first-letter{font:600 2.9em/0.9 Georgia,"Times New Roman",serif;float:left;margin:4px 8px 0 0;color:var(--g)}
+.cr-body h3{margin:0 0 10px;font:650 .76rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+/* Figures: white mats so the paper figures read in both themes; a click enlarges one. */
+.cr-fig{margin:0;display:flex;flex-direction:column;min-width:0}
+.cr-fig > a{display:block;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.cr-fig > a:hover{border-color:var(--ink-2)}
+.cr-fig img{display:block;width:100%;height:auto;max-height:420px;object-fit:contain}
+.cr-fig figcaption{margin-top:7px;font-size:.8rem;line-height:1.45;color:var(--ink-2)}
+.cr-credit{font-style:italic}
+.cr-wide{margin:8px 0 18px}
+.cr-figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px;margin:8px 0 22px;align-items:start}
+/* 2021 ↔ 2022 slider: the first year is drawn on top and clipped at the slider. */
+.cmp{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;background:#fff;touch-action:pan-y}
+.cmp img{display:block;width:100%;height:auto;max-height:none}
+.cmp .cmp-top{position:absolute;inset:0;height:100%;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.cmp-bar{position:absolute;top:0;bottom:0;left:var(--pos);width:3px;margin-left:-1.5px;background:var(--ink);pointer-events:none}
+.cmp-bar::after{content:"\2039\00a0\203A";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);font:700 1rem/1 var(--sans)}
+.cmp-tag{position:absolute;top:8px;padding:2px 8px;border-radius:3px;background:#172026d9;color:#fff;font:600 .78rem/1.5 var(--sans);pointer-events:none}
+.cmp-a{left:8px}.cmp-b{right:8px}
+.cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize}
+.cmp:has(input:focus-visible){outline:3px solid var(--link);outline-offset:2px}
+.cr-found{margin:0 0 20px;padding:16px 18px;border-left:4px solid var(--g);border-radius:0 8px 8px 0;background:var(--hover)}
+.cr-found ul{margin:0;padding-left:1.15em}
+.cr-found li{margin:0 0 6px;font-size:.92rem;line-height:1.5}
+.cr-found li:last-child{margin-bottom:0}
+.cr-paper{margin:0 0 18px}
+.cr-also{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:6px 18px;align-items:start;margin:0 0 18px;padding-top:16px;border-top:1px dashed var(--line)}
+.cr-also h3{grid-column:1/-1;margin:0}
+.cr-also p{margin:0;font-size:.9rem;line-height:1.5;color:var(--ink-2)}
+.cr-side figcaption{display:none}
+.cr-chips{margin-top:4px}
+.cr-left{margin:0 0 16px;padding:12px 0 0;border-top:1px dashed var(--line);font-size:.95rem;line-height:1.5;color:var(--ink-2)}
+.cr-left b{color:var(--ink)}
+.cr-links{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0 0 18px;font-size:.9rem}
+.cr-posts-box{margin:4px 0 18px}
+.cr-posts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;margin:0;padding:0;list-style:none}
+.cr-post{display:flex;flex-direction:column;gap:6px;height:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none}
+.cr-post:hover{border-color:var(--ink-2);background:var(--hover)}
+.cr-post-who{font-size:.85rem}
+.cr-post-who span{color:var(--ink-2)}
+.cr-post-text{font-size:.88rem;line-height:1.45}
+.cr-post-go{margin-top:auto;font-size:.8rem;color:var(--link)}
+.cr-nav{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:12px;padding:12px 24px;border-top:1px solid var(--line);background:var(--paper)}
+.cr-go{display:flex;flex-direction:column;gap:2px;max-width:48%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.cr-go:hover{border-color:var(--ink-2);background:var(--hover)}
+.cr-next{margin-left:auto;text-align:right}
+.cr-go-k{font:650 .68rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.cr-go-t{font:italic 600 .95rem/1.25 Georgia,"Times New Roman",serif}
+@media (max-width:680px){
+  .chapter-reader{width:100%;max-width:none;height:100dvh;max-height:none;margin:0;border:0;border-radius:0}
+  .cr-head{padding:14px 16px 12px;gap:12px}
+  .cr-ico{width:52px;height:52px}
+  .cr-body{padding:16px 16px 4px}
+  .cr-story p{font-size:.98rem}
+  .cr-also{grid-template-columns:1fr}
+  .cr-nav{padding:10px 16px}
+  .cr-go-t{font-size:.85rem}
+}
+/* The page's sections are spaced with padding-top; the reader's own sections are not. */
+.chapter-reader section{padding-top:0}
+.chapter-reader .cr-found{padding:16px 18px}
+.chapter-reader .cr-also{padding-top:16px}
+.cr-inner{display:flex;flex-direction:column;min-height:100%}
+.cr-body{flex:1 0 auto}

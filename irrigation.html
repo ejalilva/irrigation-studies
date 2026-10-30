@@ -1,0 +1,1406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Human-driven processes &amp; irrigation | Ehsan Jalilvand</title>
+<meta name="description" content="Why irrigation is the human-driven process to model first, why it matters, what is missing, and Ehsan Jalilvand's studies on where, when and how much farms irrigate, with an essential reading list and a research library kept up to date by an agent.">
+<meta property="og:title" content="Human-driven processes &amp; irrigation | Ehsan Jalilvand">
+<meta property="og:description" content="Studies on detecting where, when and how much farmers irrigate, using satellite soil moisture, thermal data and land surface models.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-30a">
+<script src="assets/nav.js?v=2026-10-28c" defer></script>
+<link rel="stylesheet" href="assets/water-cycle.css?v=2026-10-30a">
+<link rel="stylesheet" href="assets/study-grid.css?v=2026-10-30b">
+<link rel="stylesheet" href="assets/focus.css?v=2026-10-28d">
+<link rel="stylesheet" href="assets/irrigation.css?v=2026-10-30a">
+<script src="assets/focus.js?v=2026-10-28d" defer></script>
+<script src="assets/journals.js?v=2026-10-26f"></script>
+</head>
+<body class="main-page irrigation-page">
+<a class="skip" href="#why">Skip to why irrigation matters</a>
+
+<div class="wrap">
+  <header class="site-head">
+    <a class="site-name" href="index.html"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="about.html">About</a>
+      <div class="nav-menu is-current">
+        <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
+        <ul class="nav-sub" id="nav-research">
+          <li><a href="index.html#explore">Water cycle</a></li>
+          <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
+          <li><a href="irrigation.html#studies">My irrigation studies</a></li>
+          <li><a href="irrigation.html#landscape">Research library</a></li>
+        </ul>
+      </div>
+      <a href="journey.html">My journey</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- The page opens with the case for irrigation as the human-driven process to model first: the hero, then the
+         human-managed processes moving into place around irrigation (assets/focus.js). -->
+    <section class="ir-hero" aria-labelledby="ir-h">
+      <p class="cycle-eyebrow"><a href="index.html#explore">Water cycle</a> · Human-driven processes</p>
+      <h1 id="ir-h">Irrigation, the largest human intervention in the water cycle.</h1>
+      <p class="ir-lead">Farms take most of the fresh water people withdraw. Irrigation ties rivers, aquifers, soil and crops together, so modeling it well captures much of how people reshape the water cycle.</p>
+      <nav class="ir-toc" aria-label="On this page">
+        <a href="#focus">Why irrigation comes first</a><a href="#why">Why it matters</a><a href="#gap">The gap</a><a href="#studies">My studies</a><a href="#reading">Essential reading</a><a href="#landscape">Research library</a>
+      </nav>
+    </section>
+
+    <!-- My focus: human-managed processes in the water cycle, after Ehsan's seminar slides "Human-managed process" and
+         "Irrigation Modeling". Irrigation comes first; the brackets show which processes it interacts with directly
+         and less directly. Styles in assets/focus.css. -->
+    <section class="focus" id="focus" aria-labelledby="focus-h">
+      <p class="cycle-eyebrow">Why irrigation comes first</p>
+      <h2 id="focus-h">Human-driven processes in the water cycle</h2>
+      <p class="intro">People manage water at almost every step of the cycle: they pump aquifers, run reservoirs, divert rivers, drain fields and supply cities. Each process follows human decisions, which large-scale water-cycle models still represent poorly.</p>
+      <!-- Human-managed processes: first all of them side by side, then they move into place around irrigation, each
+           with one line on how it is linked (assets/focus.js, styles in assets/focus.css). The list reads in order
+           for screen readers whatever the animation is doing; on phones it is a plain list. -->
+      <div class="hx" id="hx" data-phase="all">
+        <div class="hx-bar">
+          <p class="hx-cap"><span class="hx-cap-all">People manage water in many ways.</span><span class="hx-cap-linked">Irrigation is linked to almost all of them.</span></p>
+          <button type="button" class="hx-toggle" aria-pressed="false" aria-controls="hx-stage">Show how they link to irrigation</button>
+        </div>
+        <div class="hx-stage" id="hx-stage">
+          <svg class="hx-lines" aria-hidden="true"></svg>
+          <ul class="hx-list" aria-label="Human-managed processes and how each is linked to irrigation">
+          <li class="hx-t is-irr" data-k="irr" style="--x1:10;--y1:28;--x2:50;--y2:50;--d:0"><strong class="hx-name">Irrigation</strong><span class="hx-why">The largest human intervention in the water cycle.</span></li>
+          <li class="hx-t is-direct" data-k="gw" style="--x1:30;--y1:28;--x2:14;--y2:14;--d:1"><strong class="hx-name">Groundwater pumping and artificial recharge</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Wells pump aquifers to irrigate fields; water that seeps past the roots recharges them.</span></li>
+          <li class="hx-t is-direct" data-k="res" style="--x1:50;--y1:28;--x2:14;--y2:38;--d:2"><strong class="hx-name">Reservoir operation</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Reservoirs store water and release it downstream when crops need it.</span></li>
+          <li class="hx-t is-direct" data-k="sw" style="--x1:70;--y1:28;--x2:14;--y2:62;--d:3"><strong class="hx-name">Surface water abstraction</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Pumps draw water from rivers and lakes straight onto fields.</span></li>
+          <li class="hx-t is-direct" data-k="div" style="--x1:90;--y1:28;--x2:14;--y2:86;--d:4"><strong class="hx-name">Water diversion</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Canals divert river water to irrigation districts, leaving less in the river.</span></li>
+          <li class="hx-t is-direct" data-k="td" style="--x1:10;--y1:72;--x2:86;--y2:56;--d:5"><strong class="hx-name">Tile drainage</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Buried pipes carry excess water from irrigated fields to ditches and streams.</span></li>
+          <li class="hx-t is-direct" data-k="rf" style="--x1:30;--y1:72;--x2:86;--y2:34;--d:6"><strong class="hx-name">Return flow</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Water the crops don’t use flows back to rivers and aquifers.</span></li>
+          <li class="hx-t is-direct" data-k="wq" style="--x1:50;--y1:72;--x2:86;--y2:78;--d:7"><strong class="hx-name">Water quality</strong><span class="hx-why"><span class="hx-tag">Direct link</span>Runoff from irrigated fields carries sediment, and return flows change stream temperature.</span></li>
+          <li class="hx-t is-less" data-k="land" style="--x1:70;--y1:72;--x2:50;--y2:88;--d:8"><strong class="hx-name">Land management and dynamic vegetation</strong><span class="hx-why"><span class="hx-tag">Less direct link</span>Irrigation changes what is grown and how green the land stays through the season.</span></li>
+          <li class="hx-t is-other" data-k="urban" style="--x1:90;--y1:72;--x2:86;--y2:9;--d:9"><strong class="hx-name">Urban water management</strong><span class="hx-why"><span class="hx-tag">Not linked here</span>Draws on the same rivers and aquifers, but is managed separately: outside this first step.</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="focus-point"><strong>That makes irrigation a strong place to start:</strong> modeling it well captures many of the broader ways people interact with the water system.</p>
+      <h3 class="focus-q-h">Modeling irrigation means answering three questions</h3>
+      <ol class="focus-q">
+        <li class="fq-where"><a href="#studies"><span class="fq-q">Where?</span><span class="fq-m">Mapping irrigated land with geospatial foundation models</span></a></li>
+        <li class="fq-when"><a href="#studies"><span class="fq-q">When?</span><span class="fq-m">AgroTrack: change-point detection and hydrological similarity in thermal data</span></a></li>
+        <li class="fq-how"><a href="#studies"><span class="fq-q">How much?</span><span class="fq-m">Assimilating satellite soil moisture with a particle batch smoother</span></a></li>
+      </ol>
+    </section>
+
+    <!-- Why irrigation matters, compact: the 100-litre bottles on the left (Ehsan's own picture from the old site), then four themes side by side, each with a picture and
+         two numbers. Text and sources follow the "Irrigation" page of the old Google Site. Styles in assets/irrigation.css. -->
+    <section class="ir-why" id="why" aria-labelledby="why-h">
+      <p class="cycle-eyebrow">Why it matters</p>
+      <h2 id="why-h">Why irrigation matters</h2>
+      <p class="intro">Feeding a growing world depends on irrigated farms, and irrigated farms depend on fresh water that is already scarce.</p>
+      <div class="ir-deck">
+        <figure class="ir-bottle">
+          <img src="assets/why/freshwater.webp?v=2026-10-30a" alt="One hundred one-litre water bottles, and beside them a teaspoon circled in red." loading="lazy" decoding="async" width="709" height="440">
+          <figcaption>
+            <p class="ir-bottle-k">Fresh water is very limited</p>
+            <p>If all the world’s water were condensed into <strong>100 litres</strong>, the fresh water we can use would be only <strong>half a teaspoon</strong>.</p>
+            <p>Salt water is <strong>97.5%</strong> of the total; most of the <strong>2.5%</strong> that is fresh is locked in ice or deep underground.</p>
+            <a class="src" href="https://www.usgs.gov/special-topics/water-science-school/science/where-earths-water">USGS, Where is Earth’s water?</a>
+          </figcaption>
+        </figure>
+        <div class="ir-themes">
+          <article class="ir-theme">
+            <img src="assets/why/food-demand.webp" alt="" loading="lazy" decoding="async">
+            <div class="ir-theme-body">
+            <h3>Food</h3>
+            <p class="ir-stat"><b>×2</b> <span>food demand by 2050, about 30% from population growth and 70% from diets richer in meat. <a class="src" href="https://direct.mit.edu/daed/article/144/4/8/27090/Food-Agriculture-amp-the-Environment-Can-We-Feed">Tilman &amp; Clark, 2015</a></span></p>
+            <p class="ir-stat"><b>2.3 bn</b> <span>people faced moderate or severe food insecurity in 2021. <a class="src" href="https://doi.org/10.4060/cc0639en">FAO, 2022</a></span></p>
+            </div>
+          </article>
+          <article class="ir-theme">
+            <img src="assets/why/irrigated-pivots.webp" alt="" loading="lazy" decoding="async">
+            <div class="ir-theme-body">
+            <h3>Yield</h3>
+            <p class="ir-stat"><b>2×</b> <span>the harvest: irrigated land is at least twice as productive as the same area of rainfed land. <a class="src" href="https://www.worldbank.org/en/topic/water-in-agriculture">World Bank</a></span></p>
+            <p class="ir-stat"><b>42%</b> <span>of the world’s irrigated area is in China and India.</span></p>
+            </div>
+          </article>
+          <article class="ir-theme">
+            <img src="assets/why/water-stress.webp" alt="" loading="lazy" decoding="async">
+            <div class="ir-theme-body">
+            <h3>Water</h3>
+            <p class="ir-stat"><b>70%</b> <span>of fresh water withdrawn worldwide goes to irrigation, over 90% in parts of the Middle East and Southeast Asia. <a class="src" href="https://www.nature.com/articles/nature10452">Foley et al., 2011</a> <a class="src" href="https://www.wri.org/aqueduct">Map: WRI Aqueduct</a></span></p>
+            <p class="ir-stat"><b>40%</b> <span>of irrigated land, and 60% in the US, relies on groundwater, and groundwater depletion roughly doubled from 1960 to 2000. <a class="src" href="https://doi.org/10.1029/2010GL044571">Wada et al., 2010</a></span></p>
+            </div>
+          </article>
+          <article class="ir-theme">
+            <img src="assets/why/climate.webp?v=2026-10-30a" alt="" loading="lazy" decoding="async">
+            <div class="ir-theme-body">
+            <h3>Climate</h3>
+            <p class="ir-stat"><b>70%</b> <span>of the land irrigated in 1995 will need more irrigation water by the 2070s. <a class="src" href="https://doi.org/10.1029/2001WR000355">Döll &amp; Siebert, 2002</a></span></p>
+            <p class="ir-stat"><b>41%</b> <span>of irrigation water is taken from rivers’ environmental flows, at a cost to ecosystems. <a class="src" href="https://doi.org/10.1038/ncomms15900">Jägermeyr et al., 2017</a></span></p>
+            </div>
+          </article>
+        </div>
+      </div>
+      <p class="ir-effects"><span class="ir-effects-k">Irrigation also changes the climate around it:</span>
+        <span class="ir-chip" title="Szilagyi et al., 2020">less rain over the irrigated area</span><span class="ir-chip" title="DeAngelis et al., 2010; Kustu et al., 2011">up to 30% more rain downwind</span><span class="ir-chip" title="Thiery et al., 2020; Lawston et al., 2020">cooler hot days</span><span class="ir-chip" title="Tuinenburg, 2013">a later monsoon</span><span class="ir-chip" title="Raymond et al., 2020; Wang-Erlandsson et al., 2022">humid heat beyond human tolerance</span>
+        <a class="src" href="https://doi.org/10.1038/s43017-023-00438-5">McDermid et al., 2023</a></p>
+    </section>
+
+    <!-- The gap, compact: why farm water use is hard to measure and hard to model, side by side. -->
+    <section class="ir-gap" id="gap" aria-labelledby="gap-h">
+      <p class="cycle-eyebrow">The gap</p>
+      <h2 id="gap-h">No one knows how much water each farm uses</h2>
+      <div class="ir-gap-grid">
+        <img class="ir-gap-pic" src="assets/why/farmer-decisions.svg" alt="A farmer at the edge of an irrigated field, next to a well whose meter shows a question mark, and a signpost reading When? and How much?" loading="lazy" decoding="async">
+        <div class="ir-gap-card">
+          <h3><span class="ir-gap-n">1</span>Hard to measure</h3>
+          <ul>
+            <li><strong>Meters are rare.</strong> Fitting and reading them is costly and slow; only 36% of US groundwater irrigation wells have one. <a class="src" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378">Foster et al., 2020</a></li>
+            <li><strong>Unrecorded withdrawals.</strong> Illegal pumping from rivers and aquifers never shows up in the records.</li>
+            <li><strong>Farmers resist meters,</strong> fearing they will lead to regulation.</li>
+          </ul>
+        </div>
+        <div class="ir-gap-card">
+          <h3><span class="ir-gap-n">2</span>Hard to model</h3>
+          <ul>
+            <li><strong>Fields change.</strong> Crop rotation changes what is planted from year to year.</li>
+            <li><strong>Farmers decide, not crops.</strong> Irrigation follows calendars, leaf colour, curling and wilting, whether a leaf feels cool on a hot day, and the neighbours, not the crop’s water demand.</li>
+            <li><strong>Models give the need, not the use.</strong> Most estimate the water crops require, not what farmers apply.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ir-gap-foot">
+        <p class="ir-bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale. It started with a shortcut: irrigation changes the soil moisture, so soil moisture can stand in for it.</p>
+        <!-- From Ehsan's talk on the 2019 study (the GIF from his old site's irrigation page). Opens large in the figure dialog. -->
+        <a class="ir-talk" href="assets/why/problem-statement.gif" data-figure="talk" data-title="The problem statement, from my talk on the 2019 study" data-caption="Why irrigation is hard to model, and the shortcut that started my work: use soil moisture as a proxy for irrigation. The map shows the share of groundwater irrigation wells with a flow meter in each US state (Foster et al., 2020).">
+          <img src="assets/why/problem-statement.webp" alt="Slide: water withdrawal must be limited and monitored; a US map of the share of irrigation wells with a meter; models need irrigation method, land use, timing and crop phenology, which are usually not available; so use soil moisture as a proxy for irrigation." loading="lazy" decoding="async" width="853" height="480">
+          <span class="ir-talk-cap">From my talk · the problem statement <span aria-hidden="true">⤢</span></span>
+        </a>
+      </div>
+    </section>
+
+    <details class="more"><summary>Seeing irrigation at different scales</summary>      <div class="scales" id="scales">
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="1" role="img" aria-label="One coarse pixel: the irrigation signal is averaged away"></svg>
+          <figcaption><strong>Tens of kilometers</strong><span>Passive microwave (AMSR2)</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="4" role="img" aria-label="A 4 by 4 grid: wetter cells begin to appear in one corner"></svg>
+          <figcaption><strong>9 km</strong><span>SMAP enhanced</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="16" role="img" aria-label="A 16 by 16 grid: wet patches line up with fields"></svg>
+          <figcaption><strong>1 km</strong><span>SMAP/Sentinel-1</span></figcaption>
+        </figure>
+        <figure class="scale">
+          <svg viewBox="0 0 100 100" data-level="80" role="img" aria-label="An 80 by 80 grid: each center-pivot field stands out, most irrigated, two fallow"></svg>
+          <figcaption><strong>200 m</strong><span>NISAR</span></figcaption>
+        </figure>
+      </div>
+      <div class="scales-note">
+        <div class="legend" aria-hidden="true"><span>Drier</span><span class="ramp"></span><span>Wetter</span></div>
+        <p>Illustration: one landscape at four resolutions. The irrigation signal that a coarse pixel averages away becomes visible at 200 m.</p>
+      </div>
+</details>
+
+    <section id="studies" aria-labelledby="studies-h">
+      <div class="studies-head">
+        <div>
+          <p class="cycle-eyebrow">My irrigation studies</p>
+          <h2 id="studies-h">Every answer revealed another question</h2>
+          <p class="intro">It began with a signal that rainfall could not explain. Each study since answered a question the last one raised, so the work ran backward, from how much to when to where, and now comes full circle to how much with all three. Open any chapter to read its full story.</p>
+        </div>
+      </div>
+      <!-- The storyline in six chapters, drawn by renderJourney() from CHAPTERS in the script below. -->
+      <div class="journey" id="journey"></div>
+      <noscript><ol>
+        <li>Chapter one, The Columbus voyage (2019): aimed at rainfall, found irrigation (Remote Sensing of Environment).</li>
+        <li>Chapter two, The devil is in the details (2021): 1 km soil moisture sees irrigation (IEEE JSTARS).</li>
+        <li>Chapter three, Paradigm shift (2023): assimilation fills the gaps between passes (Water Resources Research).</li>
+        <li>Chapter four, Patterns in the plot (2026): irrigation timing from thermal data (Remote Sensing of Environment).</li>
+        <li>Chapter five, Redraw the map (now): irrigated land mapped with foundation models.</li>
+        <li>Chapter six, Coming full circle (next): where, when and how much together.</li>
+      </ol></noscript>
+    </section>
+
+    <section id="reading" aria-labelledby="reading-h" hidden>
+      <h2 id="reading-h">Essential reading</h2>
+      <p class="intro" id="reading-intro"></p>
+      <div class="rtabs" id="reading-tabs" role="group" aria-label="Show papers for"></div>
+      <ol class="rgrid" id="reading-grid"></ol>
+    </section>
+
+    <section id="landscape" aria-labelledby="landscape-h">
+      <h2 id="landscape-h">The research landscape</h2>
+      <p class="intro">Studies from across the field that use satellite data or Earth system models to find where, when and how much farms irrigate. A small agent looks for new papers every week, and I review each one before it is added.</p>
+
+      <!-- How the library stays up to date: the paper-finding agent in four steps (agent/find_papers.py). -->
+      <ol class="ir-agent" aria-label="How the research library stays up to date">
+        <li><span class="ir-agent-n">1</span><b>Search</b><span>Every Monday the agent searches OpenAlex for new irrigation studies.</span></li>
+        <li><span class="ir-agent-n">2</span><b>Read</b><span>Claude reads each abstract and fills in the table’s columns.</span></li>
+        <li><span class="ir-agent-n">3</span><b>Review</b><span>I check every proposed paper before anything is published.</span></li>
+        <li><span class="ir-agent-n">4</span><b>Follow up</b><span>Preprints switch to the peer-reviewed version when it appears.</span></li>
+      </ol>
+      <p class="ir-agent-link"><a href="https://github.com/ejalilva/irrigation-studies/tree/main/agent">See the agent’s code on GitHub ↗</a></p>
+
+      <div class="bleed">
+        <div class="lit-review" id="lit-review" hidden></div>
+        <div class="lit-controls" aria-label="Filter the research table">
+          <div class="seg" role="group" aria-label="Question the study answers" id="lit-qseg">
+            <button type="button" class="q-where" data-q="where" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>Where</button>
+            <button type="button" class="q-when" data-q="when" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>When</button>
+            <button type="button" class="q-how_much" data-q="how_much" aria-pressed="false"><span class="qdot" aria-hidden="true"></span>How much</button>
+          </div>
+          <button type="button" class="lit-filter-btn" id="lit-filter-btn" aria-expanded="false" aria-controls="lit-panel">Filter<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+          <button type="button" class="lit-reset" id="lit-reset" hidden>Clear filters</button>
+          <p id="lit-count" aria-live="polite">Loading studies</p>
+        </div>
+        <div class="lit-panel" id="lit-panel" hidden>
+          <label class="lit-select"><span class="sr">Review status</span>
+            <select id="lit-status">
+              <option value="any">Any status</option>
+              <option value="published">Peer reviewed</option>
+              <option value="preprint">Preprints only</option>
+            </select>
+          </label>
+          <label class="lit-select"><span class="sr">Approach</span>
+            <select id="lit-method"><option value="any">Any approach</option></select>
+          </label>
+          <label class="lit-select"><span class="sr">Region</span>
+            <select id="lit-region"><option value="any">Any region</option></select>
+          </label>
+          <div class="lit-legend">
+            <span><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>
+            <span><span class="pulse" aria-hidden="true"></span>Preprint</span>
+            <span><span class="new">New</span>Last 90 days</span>
+            <span id="lit-legend-ess" hidden><span class="ess" id="lit-legend-ess-mark"></span>Essential reading</span>
+          </div>
+        </div>
+
+        <table class="lit" id="lit">
+          <caption class="sr">Irrigation studies using satellite data or Earth system models. Select a title to see the full details.</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="c-status">Status</th>
+              <th scope="col" class="c-year" data-key="year"><button type="button" class="sort">Year<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-study" data-key="author"><button type="button" class="sort">Study<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-q">Questions answered</th>
+              <th scope="col" class="c-area" data-key="area"><button type="button" class="sort">Study area<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-period" data-key="period"><button type="button" class="sort">Period<svg class="arrow" viewBox="0 0 8 8" aria-hidden="true"><path d="M1 2.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button></th>
+              <th scope="col" class="c-res">Data &amp; code</th>
+            </tr>
+          </thead>
+          <tbody id="lit-body"></tbody>
+        </table>
+
+        <div class="lit-foot">
+          <p id="lit-updated"></p>
+          <div class="acts">
+            <button type="button" class="btn" id="lit-more" hidden>Show all studies</button>
+            <button type="button" class="btn" id="lit-csv">Download as CSV</button>
+          </div>
+        </div>
+        <form class="lit-suggest" id="lit-suggest" novalidate>
+          <label for="lit-doi">Know a paper that's missing?</label>
+          <input id="lit-doi" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste its DOI, e.g. 10.1029/2022WR033342" aria-describedby="lit-suggest-msg">
+          <button type="submit" class="btn">Suggest</button>
+          <p class="lit-suggest-msg" id="lit-suggest-msg" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section aria-labelledby="related-h">
+      <h2 id="related-h">Related agricultural work</h2>
+      <p class="intro">Collaborations on crops, yield and agricultural water management.</p>
+      <ol class="related" id="related"></ol>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <p>All views expressed on this site are my own and do not reflect the opinions or positions of my employer or any affiliated organizations.</p>
+    <nav class="foot-links" aria-label="Profiles">
+      <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-scholar"/></svg></a>
+      <a href="https://www.researchgate.net/profile/Ehsan-Jalilvand" aria-label="ResearchGate" title="ResearchGate"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-researchgate"/></svg></a>
+      <a href="https://github.com/ejalilva" aria-label="GitHub" title="GitHub"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-github"/></svg></a>
+      <a href="https://www.linkedin.com/in/ehsan-jalilvand-1699534a/" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-linkedin"/></svg></a>
+      <a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw" aria-label="YouTube" title="YouTube"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-youtube"/></svg></a>
+      <a href="mailto:ehsan.jalilvand@gmail.com" aria-label="Email" title="Email"><svg aria-hidden="true"><use href="assets/icons.svg?v=2026-10-28a#i-email"/></svg></a>
+    </nav>
+  </footer>
+</div>
+
+<dialog id="chapter-reader" class="chapter-reader" aria-labelledby="cr-title"><div class="cr-inner" id="cr-inner"></div></dialog>
+<dialog id="study-figure-dialog" class="study-figure-dialog" aria-labelledby="figure-title"><header class="figure-dialog-head"><h2 id="figure-title"></h2><button id="figure-close" type="button" aria-label="Close study figure" autofocus>×</button></header><figure><img id="figure-image" alt=""><figcaption id="figure-caption"></figcaption></figure><div class="figure-links"><a id="figure-original" target="_blank" rel="noopener">Open full-size figure ↗</a><a id="figure-source" target="_blank" rel="noopener">Figure source ↗</a></div></dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ======================================================================
+   HOW TO ADD A NEW STUDY
+   Copy any block in STUDIES below, paste it anywhere in the list, and
+   edit the fields. Studies are listed oldest first automatically.
+
+   year      publication year (number)
+   title     paper title
+   authors   author list; "Jalilvand, E." is bolded automatically
+   journal   journal name
+   details   volume, issue, pages or article number
+   doi       DOI without "https://doi.org/"
+   url       optional link to use instead of the DOI
+   methods   any of: "sm", "da", "thermal", "ml" (see METHODS)
+   scale     one of: "coarse", "9km", "1km", "field" (see SCALES)
+   scaleNote optional text that replaces the scale label, e.g. "10 m"
+   summary   one short line shown on the card (findings, authors and citation sit behind "Findings & authors")
+   findings  a short list of key results
+   image     optional { src, alt, caption, source, credit }; the caption shows when the figure is enlarged, the credit (if any) under the figure on the card. Missing images are
+             clearly labeled; no substitute scientific figure is drawn.
+   imageNote optional description for a missing study figure.
+
+   Tip: save original figures in assets/studies and cite their source.
+   Google Sites image links can change; use local copies when possible.
+   ====================================================================== */
+
+const STUDIES = [
+  {
+    year: 2026,
+    title: "Characterization of irrigation timing using thermal satellite observations, a data-driven approach",
+    authors: "Jalilvand, E., Kumar, S.V., Truong, C., Haacker, E., & Mahanama, S.",
+    journal: "Remote Sensing of Environment",
+    details: "333, 115153",
+    doi: "10.1016/j.rse.2025.115153",
+    id: "agrotrack-2026",
+    q: "when",
+    methods: ["thermal", "ml"],
+    scale: "field",
+    summary: "AgroTrack reads when fields are actually watered from thermal satellite observations.",
+    findings: [
+      "Tracks irrigation timing from observations of the fields themselves rather than from modeled crop demand.",
+      "Season length came within 18% in Nebraska and 15% in Mahabad, Iran, and irrigation events were detected with F1 scores of 0.59–0.74 across ten Nebraska sites.",
+      "Cloud cover at the start or end of the season is the main source of error.",
+      "Captured widespread fallowing of fields after California's 2021 megadrought."
+    ],
+    images: [{"src": "assets/studies/agrotrack-2021.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2021.", "caption": "2021: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-heatmap.webp", "alt": "Heat map of the 2021 irrigation schedule of ten Nebraska fields, by day, from relative electricity consumption, with the start and end of the irrigation season detected by AgroTrack drawn over it.", "caption": "Irrigation schedule of ten Nebraska fields in 2021 (relative electricity consumption), with the start and end of the irrigation season that AgroTrack detected from thermal data.", "credit": "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-2022.png", "alt": "AgroTrack map of the number of irrigated days in cropland during 2022.", "caption": "2022: number of irrigated days in cropland.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-frequency-change.webp", "alt": "Map of California's Sacramento Valley showing the change in the number of irrigated days from 2021 to 2022, mostly decreases in red.", "caption": "Change in irrigation frequency from 2021 to 2022 (number of irrigated days). Red shows fields watered less often, many left fallow after the 2021 drought.", "source": "https://doi.org/10.1016/j.rse.2025.115153"}, {"src": "assets/studies/agrotrack-workflow.webp", "alt": "AgroTrack workflow: a bounding box and a thermal mission (MODIS, VIIRS or a future thermal constellation) go into AgroTrack, which extracts irrigation mapping, season timing, event timing, crop type and irrigation magnitude at pixel level.", "caption": "AgroTrack traces farmers' irrigation decisions from their thermal signature: give it a bounding box and a thermal mission, and it returns irrigation attributes for every pixel.", "credit": "From the AgroTrack package", "source": "https://github.com/ejalilva/AgroTrack"}]
+  },
+  {
+    year: 2023,
+    title: "Is it possible to quantify irrigation water-use by assimilating a high-resolution satellite soil moisture product?",
+    authors: "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., Kumar, S.V., Mohammadi, M.R., & Das, N.N.",
+    journal: "Water Resources Research",
+    details: "59(4), e2022WR033342",
+    doi: "10.1029/2022WR033342",
+    id: "assimilation-2023",
+    q: "how_much",
+    methods: ["sm", "da"],
+    scale: "1km",
+    summary: "Estimates how much water was applied by assimilating 1 km SMAP/Sentinel-1 soil moisture.",
+    findings: [
+      "Estimated irrigation was significantly lower over non-irrigated pixels than over irrigated ones.",
+      "Irrigation was underestimated by 18.6%, likely because part of the signal is lost in the 1 km retrievals.",
+      "In synthetic tests, knowing when irrigation happened cut the mean annual bias from 23% to 0.45% and raised R² from 0.36 to 0.97, which motivated the later work on timing."
+    ],
+    image: {"src": "assets/studies/irrigation-assimilation-2023.webp", "alt": "Particle batch smoother workflow linking candidate irrigation amounts, land surface model simulations, soil moisture observations and estimated daily irrigation.", "caption": "Estimating irrigation with a particle batch smoother and a land surface model.", "source": "https://doi.org/10.1029/2022WR033342"}
+  },
+  {
+    year: 2021,
+    title: "Evaluation of SMAP/Sentinel 1 high-resolution soil moisture data to detect irrigation over agricultural domain",
+    authors: "Jalilvand, E., Abolafia-Rosenzweig, R., Tajrishy, M., & Das, N.N.",
+    journal: "IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing",
+    details: "14, 10733–10747",
+    doi: "10.1109/JSTARS.2021.3119228",
+    id: "smap-sentinel-2021",
+    q: "where",
+    methods: ["sm"],
+    scale: "1km",
+    scaleNote: "9 km vs. 1 km",
+    summary: "Tests whether SMAP sees irrigation: the 9 km product against 1 km SMAP/Sentinel-1.",
+    findings: [
+      "The 9 km enhanced product misses irrigation on small plots.",
+      "The 1 km SMAP/Sentinel-1 product shows higher mean soil moisture and more variability over irrigated fields.",
+      "Using real-time vegetation water content instead of climatology improves retrievals over irrigated cropland."
+    ],
+    images: [{"src": "assets/studies/smap-sentinel-2021-irrigation-signal.webp", "alt": "May to September 2017 SMAP–Sentinel-1 soil moisture over irrigated and non-irrigated areas, their difference, and daily precipitation.", "caption": "The seasonal irrigation signal in SMAP–Sentinel-1 soil moisture.", "source": "https://doi.org/10.1109/JSTARS.2021.3119228"}, {"src": "assets/studies/smap-sentinel-2021-dynamic-vwc.webp", "alt": "Maps of SMAP–Sentinel-1 soil moisture south of Lake Urmia in March and August 2017, with climatological and with observed vegetation water content, and their differences.", "caption": "SMAP–Sentinel-1 soil moisture with climatological (a, d) and observed (b, e) vegetation water content, and the difference (c, f), in March and August 2017. In August the difference concentrates over the irrigated plain.", "source": "https://doi.org/10.1109/JSTARS.2021.3119228"}]
+  },
+  {
+    year: 2021,
+    title: "A method to estimate surface soil moisture and map the irrigated cropland area using Sentinel-1 and Sentinel-2 data",
+    authors: "Rabiei, S., Jalilvand, E., & Tajrishy, M.",
+    journal: "Sustainability",
+    details: "13(20), 11355",
+    doi: "10.3390/su132011355",
+    id: "sentinel-2021",
+    q: "where",
+    methods: ["sm", "ml"],
+    scale: "field",
+    scaleNote: "10 m",
+    summary: "Maps irrigated fields from 10 m soil moisture estimated with Sentinel-1 and Sentinel-2.",
+    findings: [
+      "A convolutional neural network performed best, reaching R² = 0.92 (Sentinel-2) and 0.84 (Sentinel-1) against field measurements.",
+      "Irrigated fields had significantly wetter surface soil than rainfed cropland during the irrigation season.",
+      "Classifying the soil moisture maps identified irrigated agriculture with 77% overall accuracy."
+    ],
+    image: {"src": "assets/studies/rabiei-2021-figure13-original.webp", "alt": "High-resolution field imagery and a classified map showing urban land, dry farming, rangeland and irrigated agriculture near Varamin.", "caption": "Land-use classification from Sentinel-2 soil moisture.", "credit": "Rabiei et al. (2021), Figure 13, CC BY", "source": "https://www.mdpi.com/2071-1050/13/20/11355"}
+  },
+  {
+    year: 2019,
+    title: "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region",
+    authors: "Jalilvand, E., Tajrishy, M., Ghazi Zadeh Hashemi, S.A., & Brocca, L.",
+    journal: "Remote Sensing of Environment",
+    details: "231, 111226",
+    doi: "10.1016/j.rse.2019.111226",
+    id: "amsr2-2019",
+    q: "how_much",
+    methods: ["sm"],
+    scale: "coarse",
+    summary: "Estimates how much water farmers apply from AMSR2 satellite soil moisture.",
+    findings: [
+      "SM2RAIN captured irrigation patterns consistent with observations.",
+      "It estimated nearly zero irrigation over non-irrigated pixels.",
+      "Irrigated pixels showed a weekly cycle in soil moisture.",
+      "Coarse microwave resolution limits the method over small parcels, which set up the move to higher-resolution data."
+    ],
+    images: [{"src": "assets/studies/irrigation-2019-study-area.webp", "alt": "Map of the 2019 study area showing irrigated pixels 1 and 3 and non-irrigated pixels A, B and C near the Zarrineh and Simineh rivers.", "caption": "Irrigated and non-irrigated pixels in the study area.", "source": "https://doi.org/10.1016/j.rse.2019.111226"}, {"src": "assets/studies/amsr2-2019-irrigation-series.webp", "alt": "Monthly irrigation estimated for irrigated pixels 1 and 3 and non-irrigated pixels A, B and C from July 2012 to December 2015, above the AMSR2 soil moisture of each pixel, with a close-up of summer 2015.", "caption": "Irrigation estimated from AMSR2 soil moisture, 2012–2015. Irrigated pixels 1 and 3 peak every summer while non-irrigated pixels A–C stay near zero; the close-up of summer 2015 shows the weekly wetting on irrigated pixels.", "source": "https://doi.org/10.1016/j.rse.2019.111226"}]
+  }
+];
+
+/* Related work: same idea, shorter entries. */
+const RELATED = [
+  {
+    year: 2025,
+    title: "Estimating crop biophysical parameters from satellite-based SAR and optical observations using self-supervised learning with geospatial foundation models",
+    venue: "Hashemi, M.G., Alemohammad, H., Jalilvand, E., et al. Remote Sensing of Environment, 327, 114825",
+    doi: "10.1016/j.rse.2025.114825"
+  },
+  {
+    year: 2024,
+    title: "Harnessing SMAP satellite soil moisture product to optimize soil properties to improve water resource management for agriculture",
+    venue: "Nanda, A., Das, N.N., Jalilvand, E., et al. Agricultural Water Management",
+    note: "Six years of SMAP soil moisture used to calibrate soil properties, improving streamflow and agricultural drought estimates.",
+    doi: "10.1016/j.agwat.2024.108918"
+  },
+  {
+    year: 2024,
+    title: "Review of synthetic aperture radar with deep learning in agricultural applications",
+    venue: "Hashemi, M.G., Jalilvand, E., Alemohammad, H., Tan, P.N., & Das, N.N. ISPRS Journal of Photogrammetry and Remote Sensing, 218, 20–49",
+    doi: "10.1016/j.isprsjprs.2024.08.018"
+  },
+  {
+    year: 2024,
+    title: "Yield estimation from SAR data using patch-based deep learning and machine learning techniques",
+    venue: "Hashemi, M.G., Tan, P.N., Jalilvand, E., et al. Computers and Electronics in Agriculture, 226, 109340",
+    doi: "10.1016/j.compag.2024.109340"
+  },
+  {
+    year: 2022,
+    title: "Assessing the impact of Sentinel-1 derived planting dates on rice crop yield modeling",
+    venue: "Hashemi, M.G., Abhishek, A., Jalilvand, E., et al. International Journal of Applied Earth Observation and Geoinformation, 114, 103047",
+    note: "Rice planting dates in Cambodia estimated from Sentinel-1 differed from the fixed crop calendar by up to ±75 days.",
+    doi: "10.1016/j.jag.2022.103047"
+  }
+];
+
+const METHODS = {
+  sm: "Soil moisture",
+  da: "Data assimilation",
+  thermal: "Thermal remote sensing",
+  ml: "Machine learning"
+};
+
+const SCALES = {
+  coarse: { label: "Tens of km", level: 1 },
+  "9km":  { label: "9 km",       level: 4 },
+  "1km":  { label: "1 km",       level: 16 },
+  field:  { label: "Field scale", level: "field" }
+};
+
+const ME = "Jalilvand, E.";
+
+/* ---------------------------------------------------------------------
+   Everything below renders the page. You should not need to edit it.
+   --------------------------------------------------------------------- */
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function linkFor(item) { return item.url || ("https://doi.org/" + item.doi); }
+function citation(s) {
+  return `${s.authors} (${s.year}). ${s.title}. ${s.journal}, ${s.details}. ${linkFor(s)}`;
+}
+
+/* A synthetic landscape used for the resolution illustrations.
+   Background soil is dry; center-pivot fields are wet unless fallow. */
+function makeRng(seed) { return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+const rnd = makeRng(2019);
+/* Square farm sections; each pivot sits in the middle of one. */
+const SEC = 0.165, SX0 = 0.4175 - 3 * SEC, SY0 = 0.3875 - 3 * SEC, NS = 8;
+const SECTIONS = Array.from({ length: NS * NS }, () => 0.08 + rnd() * 0.2);
+function sectionIndex(x, y) {
+  const i = Math.max(0, Math.min(NS - 1, Math.floor((x - SX0) / SEC)));
+  const j = Math.max(0, Math.min(NS - 1, Math.floor((y - SY0) / SEC)));
+  return j * NS + i;
+}
+function bgAt(x, y) { return SECTIONS[sectionIndex(x, y)]; }
+const PIVOTS = [];
+[0.47, 0.635, 0.80].forEach((y, j) => [0.50, 0.665, 0.83].forEach((x, i) => {
+  PIVOTS.push({ x, y, r: 0.074, wet: !((i === 2 && j === 0) || (i === 0 && j === 2)), a: rnd() * Math.PI * 2 });
+}));
+PIVOTS.push({ x: 0.17, y: 0.30, r: 0.074, wet: true, a: rnd() * Math.PI * 2 });
+PIVOTS.push({ x: 0.17, y: 0.135, r: 0.074, wet: false, a: rnd() * Math.PI * 2 });
+const WET = 0.86, FALLOW = 0.04;
+function moisture(x, y) {
+  for (const p of PIVOTS) if (Math.hypot(x - p.x, y - p.y) < p.r) return p.wet ? WET : FALLOW;
+  return bgAt(x, y);
+}
+
+function hex2rgb(h) { h = h.trim().replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function rampColors() {
+  const cs = getComputedStyle(document.documentElement);
+  return ["--r0", "--r1", "--r2", "--r3", "--r4"].map(n => hex2rgb(cs.getPropertyValue(n)));
+}
+function colorFor(v, stops) {
+  const t = Math.max(0, Math.min(1, (v - FALLOW) / (WET - FALLOW))) * (stops.length - 1);
+  const i = Math.min(stops.length - 2, Math.floor(t)), f = t - i;
+  const c = stops[i].map((a, k) => Math.round(a + (stops[i + 1][k] - a) * f));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
+function panelSVG(level, stops) {
+  let out = "";
+  if (level === "field") {
+    // Roads between sections, then each section as a plot of dry soil.
+    out += `<rect width="100" height="100" fill="${colorFor(0.24, stops)}"/>`;
+    const s = SEC * 100, gap = 0.7;
+    for (let j = 0; j < NS; j++) for (let i = 0; i < NS; i++) {
+      const x = (SX0 * 100) + i * s + gap / 2, y = (SY0 * 100) + j * s + gap / 2;
+      out += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(s - gap).toFixed(2)}" height="${(s - gap).toFixed(2)}" fill="${colorFor(SECTIONS[j * NS + i], stops)}"/>`;
+    }
+    for (const p of PIVOTS) {
+      const cx = p.x * 100, cy = p.y * 100, r = p.r * 100;
+      out += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${r.toFixed(2)}" fill="${colorFor(p.wet ? WET : FALLOW, stops)}"/>`;
+      if (p.wet) {
+        out += `<line x1="${cx.toFixed(2)}" y1="${cy.toFixed(2)}" x2="${(cx + Math.cos(p.a) * r).toFixed(2)}" y2="${(cy + Math.sin(p.a) * r).toFixed(2)}" stroke="var(--arm)" stroke-width=".6" stroke-linecap="round"/>`;
+        out += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r=".8" fill="var(--arm)"/>`;
+      }
+    }
+    return out;
+  }
+  const n = level, w = 100 / n, S = Math.max(4, Math.round(64 / n));
+  out += `<g shape-rendering="crispEdges">`;
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    let sum = 0;
+    for (let b = 0; b < S; b++) for (let a = 0; a < S; a++) sum += moisture((i + (a + 0.5) / S) / n, (j + (b + 0.5) / S) / n);
+    out += `<rect x="${(i * w).toFixed(3)}" y="${(j * w).toFixed(3)}" width="${(w + 0.2).toFixed(3)}" height="${(w + 0.2).toFixed(3)}" fill="${colorFor(sum / (S * S), stops)}"/>`;
+  }
+  return out + `</g>`;
+}
+
+function drawPanels() {
+  const stops = rampColors();
+  document.querySelectorAll("svg[data-level]").forEach(svg => {
+    const lv = svg.dataset.level;
+    svg.innerHTML = panelSVG(lv === "field" ? "field" : Number(lv), stops);
+  });
+}
+
+/* ---------------------------------------------------------------------
+   The storyline. Each chapter sits in the lane of the question it answers
+   (q: "where", "when" or "how_much") and ends with what it left open, which
+   led to the next. Chapter titles follow the seminar "Simulating the largest
+   human intervention in the water cycle". A chapter with study set shows that
+   study's figure and journal card; feeds:true joins the dashed bracket into
+   the last chapter. Each chapter's icon is the picture assets/chapters/<icon>.webp, over a
+   card-coloured backing shaped by assets/chapters/<icon>-back.png.
+   --------------------------------------------------------------------- */
+const CHAPTERS = [
+  { year: "2019", q: "how_much", icon: "voyage", title: "The Columbus voyage",
+    sub: "Aiming for rainfall, we ended up with irrigation.", what: "Set out to estimate rainfall, found irrigation.",
+    left: "But small, scattered fields vanish in a 25 km pixel.", study: "amsr2-2019",
+    finding: "Irrigation estimated from AMSR2 soil moisture south of Lake Urmia; after bias correction, R = 0.86 against irrigation records.",
+    story: ["The plan was to estimate rainfall from satellite soil moisture with SM2RAIN. Over the rainless summers of the farmed plains south of Lake Urmia, though, AMSR2 soil moisture kept rising when no rain fell. That water was irrigation, and inverting the soil water balance turned the wetting into an estimate of how much water farmers applied.",
+      "The raw estimates ran high, so the bias was measured over largely non-irrigated pixels and removed. Irrigated pixels then followed the records closely (R = 0.86), non-irrigated pixels stayed near zero, and soil moisture on irrigated pixels rose and fell on a weekly cycle.",
+      "Elsewhere the method failed. It worked only where large areas are watered at once, with coordinated releases from a dam. Small, scattered plots are diluted in a 25 km pixel, and 72% of the world's farms are smaller than one hectare. The next step was higher resolution."],
+    readFigs: [0, 1],
+    posts: [{ who: "Ehsan Jalilvand", handle: "ehsan1325", date: "13 June 2019", url: "https://twitter.com/ehsan1325/status/1139049484728578048", text: "Because using satellite soil moisture to estimate irrigation was so new, the review took nearly two years, and the paper came out much stronger for it." },
+      { who: "Hydrology IRPI-CNR", handle: "Hydrology_IRPI", date: "14 June 2019", url: "https://twitter.com/Hydrology_IRPI/status/1139561057515646976", text: "Featured among three papers from the previous six months showing the value of satellite soil moisture for quantifying irrigation water." }] },
+  { year: "2021", q: "where", icon: "details", title: "The devil is in the details",
+    sub: "Closing the gap with higher-resolution soil moisture.", what: "A closer look with 1 km soil moisture.",
+    left: "It sees irrigation, but passes over only every 6–12 days.", study: "smap-sentinel-2021",
+    finding: "The 1 km product carries irrigation in its mean and variability; dynamic vegetation water content strengthens the signal.",
+    also: { study: "sentinel-2021", text: "Also in 2021: irrigated fields mapped from 10 m Sentinel-1/2 soil moisture" },
+    story: ["Does finer soil moisture see irrigation? Over the same plain, SMAP's enhanced 9 km product missed it on small plots. SMAP–Sentinel-1 at 3 km and 1 km did carry the signal, in higher mean soil moisture and above all in its variability over irrigated fields.",
+      "Farming also changes the vegetation that the retrieval has to account for. Replacing climatological vegetation water content with values observed during the season raised soil moisture over irrigated cropland by about 0.05 cm³/cm³ in the irrigation season, and strengthened the signal.",
+      "But Sentinel-1 passes over only every 6 to 12 days. Inverting the water balance needs near-daily data, and an irrigation that falls between two passes is simply missed. The gaps had to be filled with a model."],
+    readFigs: [0, 1],
+    posts: [{ who: "Ehsan Jalilvand", handle: "ehsan1325", date: "14 October 2021", url: "https://twitter.com/ehsan1325/status/1448639409834897409", text: "Many studies use satellite soil moisture to monitor farm water use, but does it truly contain the irrigation signal? This paper answers the question." },
+      { who: "Ronnie Abolafia-Rosenzweig", handle: "AbolafiaRonnie", date: "20 October 2021", url: "https://twitter.com/AbolafiaRonnie/status/1450841406075904003", text: "Retrievals over irrigated land differ markedly when concurrent MODIS observations of vegetation replace the usual climatology." }] },
+  { year: "2023", q: "how_much", icon: "shift", title: "Paradigm shift", feeds: true,
+    sub: "An irrigation model with the farmer's decision at its center.", what: "Assimilation fills the gaps between passes.",
+    left: "Far more accurate when irrigation timing is known.", study: "assimilation-2023",
+    finding: "In synthetic tests, knowing irrigation timing raised R² from 0.36 to 0.97.",
+    story: ["Rather than invert sparse observations, let a land surface model carry the soil water between them. Following Abolafia-Rosenzweig et al. (2019), a particle batch smoother runs many candidate irrigation amounts through the VIC model and weights each one by how well its soil moisture matches the SMAP–Sentinel-1 observations in a window, for example three passes in about 18 days. The weighted average is the irrigation estimate, and the model's own irrigation module is not needed.",
+      "Over the real fields, estimated irrigation was far lower on non-irrigated pixels than on irrigated ones, though it fell 18.6% short of the observed water use, probably because the 1 km retrievals lose part of the signal.",
+      "The synthetic experiments showed what was missing. When the timing of irrigation was known, the mean annual bias fell from 23% to 0.45% and R² rose from 0.36 to 0.97. The next question was when farmers irrigate."],
+    readFigs: [0],
+    posts: [{ who: "Ronnie Abolafia-Rosenzweig", handle: "AbolafiaRonnie", date: "2 June 2023", url: "https://twitter.com/AbolafiaRonnie/status/1664738093860265984", text: "Knowing how much water goes to irrigation is key to water and food security; this study estimates it by assimilating satellite soil moisture into a physically based land surface model." }] },
+  { year: "2026", q: "when", icon: "patterns", title: "Patterns in the plot", feeds: true, figs: 2,
+    sub: "Tracing farmers' irrigation decisions from space.", what: "AgroTrack reads irrigation timing from heat.",
+    left: "Next, run the model only where fields are irrigated.", study: "agrotrack-2026",
+    finding: "Season length within 18% (Nebraska) and 15% (Mahabad); irrigation events detected with F1 of 0.59–0.74.",
+    story: ["A watered field stays cooler than the land around it. AgroTrack compares the land surface temperature of each cropland pixel with nearby natural pixels that are hydrologically similar, and change-point detection on that difference marks when the irrigation season starts and ends and when individual irrigation events happen.",
+      "Season length came within 18% in Nebraska and 15% in Mahabad, Iran, and events were found with F1 scores of 0.59–0.74 across ten Nebraska sites. Over California's Sacramento Valley, AgroTrack captured the fields left fallow after the 2021 megadrought. It is also an open-source Python package that needs only a bounding box and a thermal mission.",
+      "With timing in hand, the model should run only where land is actually irrigated, which brought the work back to the first question: where."],
+    lead: 4, compare: [0, 2], readFigs: [3, 1],
+    links: [{ href: "https://github.com/ejalilva/AgroTrack", text: "AgroTrack on GitHub" }] },
+  { year: "Now", q: "where", icon: "map", title: "Redraw the map",
+    sub: "Completing the last piece: mapping irrigated land as it changes.", what: "Foundation models map irrigated land with few labels.",
+    left: "Toward yearly maps of irrigated land.", topic: "mapping", more: "More in Where is irrigation?",
+    text: "Fine-tuning NASA's Prithvi-EO-2.0 to map irrigated land with few labels (AGU 2025), and now comparing six geospatial foundation models.",
+    chips: ["Prithvi-EO-2.0", "TerraMind", "Clay", "AlphaEarth", "Tessera", "OlmoEarth"],
+    story: ["Today's maps of irrigated land are built from censuses around 2000–2005, aggregated over large areas or smoothed over time, and machine-learning maps need many labelled fields. Geospatial foundation models, pre-trained on large satellite archives, can learn the task from only a few.",
+      "The work began by fine-tuning NASA's Prithvi-EO-2.0 for high-resolution irrigation mapping with limited labels, presented as an oral talk at the AGU Fall Meeting 2025. It now benchmarks six foundation models for mapping irrigated land. This chapter is not yet published."] },
+  { year: "Next", q: "how_much", icon: "circle", title: "Coming full circle", next: true,
+    sub: "Back to how much, with all three.", what: "Where, when and how much, together.",
+    left: "In NASA's Land Information System, with NISAR.", topic: "amount", more: "More in How much water?",
+    text: "The maps, the timing and the assimilation come together in NASA's Land Information System, with NISAR soil moisture, to estimate how much water farms use.",
+    chips: ["Where", "When", "How much", "NASA LIS", "NISAR"],
+    story: ["Where from the foundation-model maps, when from AgroTrack, and how much from the particle batch smoother: the three come together in NASA's Land Information System, with NISAR soil moisture, to estimate how much water farms use.",
+      "The thread through every chapter is the farmer. Irrigation models carry too many assumptions about human decisions, and farmers' real choices differ from the soil-water-deficit rules that models assume. Observing those decisions, rather than assuming them, is the point."] }
+];
+// Bump ICON_V (and the ?v= on the -back.png masks in assets/study-grid.css) whenever a chapter icon changes, so browsers fetch the new picture.
+const ICON_V = "2026-10-26f";
+const QLABEL = { where: "Where", when: "When", how_much: "How much" };
+// Chapters are named in words, as in a book: "Chapter one", "Chapter two"...
+const CH_WORD = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+const chapterName = i => `Chapter ${CH_WORD[i] || i + 1}`;
+const LANE = { where: 1, when: 2, how_much: 3 };
+const studyById = id => STUDIES.find(s => s.id === id);
+
+function chapterCard(c, i) {
+  const head = `<div class="jc-head"><div><p class="jc-kick">${chapterName(i)} · ${c.year} · ${QLABEL[c.q]}</p><p class="jc-title">${esc(c.title)}</p><p class="jc-sub">${esc(c.sub)}</p></div></div>`;
+  const s = c.study && studyById(c.study), paper = s && window.Papers && window.Papers.paperFor(s.doi);
+  if (s) {
+    // figs: how many of the study's images to show side by side (default 1); each enlarges on its own.
+    const imgs = (s.images || [s.image]).filter(Boolean).slice(0, c.figs || 1);
+    const fig = imgs.length ? `<div class="jc-figs">${imgs.map((img, k) => `<a class="jc-fig" href="${esc(img.src)}" data-figure="${esc(s.id)}" data-figure-index="${k}" aria-label="Enlarge figure: ${esc(img.alt)}"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></a>`).join("")}</div>` : "";
+    const also = c.also && studyById(c.also.study);
+    return head + fig + (paper ? window.Papers.paperCard(paper, c.finding) : "") +
+      (also ? `<p class="jc-also">${esc(c.also.text)} (<a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em></a>).</p>` : "") +
+      `<p class="jc-left"><b>Left open:</b> ${esc(c.left)}</p>` + readButton(i);
+  }
+  return head + `<div class="jc-body"><p>${esc(c.text)}</p><ul class="jc-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul><a class="jc-more" href="index.html#research/${c.topic}">${esc(c.more)} →</a></div>` + readButton(i);
+}
+const readButton = i => `<a class="jc-read" href="#chapter-${i + 1}" data-read="${i}">Read the full chapter<span aria-hidden="true"> →</span></a>`;
+
+function renderJourney() {
+  const box = document.getElementById("journey");
+  if (!box) return;
+  box.innerHTML = ["where", "when", "how_much"].map(q => `<span class="j-lane g-${q}" style="grid-row:${LANE[q]}" aria-hidden="true">${QLABEL[q]}?</span>`).join("") +
+    `<ol class="j-steps">${CHAPTERS.map((c, i) => `<li class="j-step g-${c.q}${c.next ? " is-next" : ""}" style="grid-column:${i + 2};grid-row:${LANE[c.q]}">
+      <button type="button" class="j-node" aria-expanded="false" aria-controls="j-card">
+        <span class="j-top"><span class="j-ico j-ico-${c.icon}" aria-hidden="true"><img src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="80" height="80" decoding="async"></span></span>
+        <span class="j-ch">${chapterName(i)}<span class="j-year">${c.year}</span><span class="j-q">${QLABEL[c.q]}</span></span>
+        <span class="j-title">${esc(c.title)}</span>
+        <span class="j-what">${esc(c.what)}</span>
+        <span class="j-why">${esc(c.left)}</span>
+      </button></li>`).join("")}</ol>
+    <svg class="j-links" aria-hidden="true"></svg><span class="j-together" aria-hidden="true">combined</span>
+    <div class="j-card" id="j-card" role="region" aria-label="Study details"></div>`;
+  const svg = box.querySelector(".j-links"), tag = box.querySelector(".j-together"), card = box.querySelector(".j-card");
+  const nodes = [...box.querySelectorAll(".j-node")], stacked = () => getComputedStyle(svg).display === "none";
+
+  // Arrows from each chapter to the next. Each leaves the middle of the chapter's top or bottom edge (marked by a dot),
+  // turns once with a rounded corner in the empty part of the next chapter's lane, and enters that chapter from the left.
+  // The dashed bracket gathers the chapters marked feeds:true into the last one.
+  const draw = () => {
+    const b = box.getBoundingClientRect(), r = nodes.map(n => n.getBoundingClientRect());
+    svg.setAttribute("viewBox", `0 0 ${b.width} ${b.height}`);
+    if (stacked()) return;
+    const X = v => v - b.left, Y = v => v - b.top;
+    let d = "", dots = "";
+    for (let i = 0; i < r.length - 1; i++) {
+      const a = r[i], c = r[i + 1], cy = c.top + c.height / 2, x2 = X(c.left) - 2, ym = Y(cy);
+      if (cy < a.top - 20 || cy > a.bottom + 20) {
+        const up = cy < a.top, s = up ? -1 : 1, x1 = X(a.left + a.width / 2), y1 = Y(up ? a.top : a.bottom);
+        const R = Math.max(0, Math.min(22, Math.abs(ym - y1) - 4, (x2 - x1) / 2));
+        d += `<path d="M${x1} ${y1}V${ym - s * R}Q${x1} ${ym} ${x1 + R} ${ym}H${x2}"/>`;
+        dots += `<circle cx="${x1}" cy="${y1}" r="4"/>`;
+      } else {
+        const x1 = X(a.right), y1 = Y(a.top + a.height / 2), xm = (x1 + x2) / 2, R = Math.min(10, Math.abs(ym - y1) / 2), s = Math.sign(ym - y1);
+        d += `<path d="${s ? `M${x1} ${y1}H${xm - R}Q${xm} ${y1} ${xm} ${y1 + s * R}V${ym - s * R}Q${xm} ${ym} ${xm + R} ${ym}H${x2}` : `M${x1} ${y1}H${x2}`}"/>`;
+        dots += `<circle cx="${x1}" cy="${y1}" r="4"/>`;
+      }
+    }
+    const last = r[r.length - 1], feeds = CHAPTERS.map((c, i) => c.feeds ? r[i] : null).filter(Boolean);
+    let f = "";
+    if (feeds.length) {
+      const yb = Math.max(...r.map(n => n.bottom)) - b.top + 18, xl = X(last.left + last.width / 2), R = 12;
+      // The other feeds drop onto the bracket first; the first feed's path runs last so the arrowhead lands on the last chapter.
+      let main = "";
+      feeds.forEach((n, k) => {
+        const x = X(n.left + n.width / 2), y = Y(n.bottom);
+        if (k === 0) main = `M${x} ${y}V${yb - R}Q${x} ${yb} ${x + R} ${yb}H${xl - R}Q${xl} ${yb} ${xl} ${yb - R}V${Y(last.bottom) + 2}`;
+        else f += `M${x} ${y}V${yb}`;
+        dots += `<circle cx="${x}" cy="${y}" r="3.5"/>`;
+      });
+      f += main;
+      tag.style.left = ((feeds[0].left + last.left) / 2 + feeds[0].width / 2 - b.left) + "px"; tag.style.top = yb + "px";
+    }
+    svg.innerHTML = `<defs><marker id="j-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto-start-reverse"><path class="j-head" d="M1.5 1.5L11 6L1.5 10.5Q3.6 6 1.5 1.5Z"/></marker></defs>` +
+      d.replace(/<path /g, '<path class="j-arrow" marker-end="url(#j-arrow)" ') +
+      (f ? `<path class="j-feed" d="${f}" marker-end="url(#j-arrow)"/>` : "") + `<g class="j-dots">${dots}</g>`;
+  };
+  draw();
+  if ("ResizeObserver" in window) new ResizeObserver(draw).observe(box);
+  document.fonts?.ready.then(draw);
+
+  // The study card: hover or focus shows it beside the chapter; a click or tap keeps it open (under the chapter when stacked).
+  let current = -1, pinned = false, hideTimer = 0;
+  const show = (i, pin) => {
+    clearTimeout(hideTimer);
+    const node = nodes[i];
+    if (current !== i) { card.innerHTML = chapterCard(CHAPTERS[i], i); current = i; }
+    nodes.forEach(n => n.setAttribute("aria-expanded", String(n === node)));
+    if (stacked()) { card.classList.add("inline"); node.parentElement.appendChild(card); card.style.left = card.style.top = ""; }
+    else {
+      card.classList.remove("inline"); if (card.parentElement !== box) box.appendChild(card);
+      const b = box.getBoundingClientRect(), r = node.getBoundingClientRect(), w = card.offsetWidth || 360, h = card.offsetHeight || 520;
+      let x = r.right - b.left + 14; if (r.right + 14 + w > innerWidth - 12) x = r.left - b.left - 14 - w;
+      // Beside the chapter, kept inside the window where it fits.
+      let y = r.top - b.top - 12;
+      if (r.top - 12 + h > innerHeight - 12) y = Math.max(innerHeight - 12 - h, 12) - b.top;
+      card.style.left = x + "px"; card.style.top = y + "px";
+    }
+    card.classList.add("on"); pinned = pinned || !!pin;
+  };
+  const hide = () => { card.classList.remove("on"); nodes.forEach(n => n.setAttribute("aria-expanded", "false")); pinned = false; };
+  const later = () => { if (!pinned) { clearTimeout(hideTimer); hideTimer = setTimeout(hide, 220); } };
+  const hoverable = matchMedia("(hover: hover)");
+  nodes.forEach((n, i) => {
+    n.addEventListener("mouseenter", () => { if (hoverable.matches && !stacked() && !pinned) show(i); });
+    n.addEventListener("mouseleave", () => { if (hoverable.matches) later(); });
+    n.addEventListener("focus", () => { if (!stacked() && !pinned) show(i); });
+    n.addEventListener("click", e => { e.stopPropagation(); if (pinned && current === i) hide(); else { pinned = false; show(i, true); } });
+  });
+  card.addEventListener("mouseenter", () => clearTimeout(hideTimer));
+  card.addEventListener("mouseleave", () => later());
+  card.addEventListener("click", e => {
+    const read = e.target.closest("[data-read]");
+    if (read) { e.preventDefault(); e.stopPropagation(); hide(); openChapter(+read.dataset.read); return; }
+    if (!e.target.closest("[data-figure], a[href*='#research/']")) e.stopPropagation();
+  });
+  box.addEventListener("focusout", e => { if (!box.contains(e.relatedTarget) && !pinned) later(); });
+  document.addEventListener("click", () => { if (pinned) hide(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && card.classList.contains("on")) { const n = nodes[current]; hide(); n?.focus(); } });
+}
+
+const figureDialog = document.getElementById('study-figure-dialog');
+let figureOpener = null;
+if (figureDialog && typeof figureDialog.showModal === 'function') {
+  document.addEventListener('click', event => {
+    const link = event.target.closest('[data-figure]');
+    if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    // A study's figure, or (with data-title and data-caption on the link) any other picture on the page, such as the talk GIF.
+    const study = studyById(link.dataset.figure);
+    const pic = link.querySelector('img');
+    const figure = study ? (study.images || [study.image])[+link.dataset.figureIndex || 0]
+      : { src: link.getAttribute('href'), alt: pic ? pic.alt : '', caption: link.dataset.caption || '', source: link.getAttribute('href') };
+    figureOpener = link;
+    document.getElementById('figure-title').textContent = study ? study.title : (link.dataset.title || '');
+    const img = document.getElementById('figure-image');
+    img.src = figure.src;
+    img.alt = figure.alt;
+    document.getElementById('figure-caption').textContent = figure.caption + (figure.credit ? ' ' + figure.credit + '.' : '');
+    document.getElementById('figure-original').href = figure.src;
+    document.getElementById('figure-source').href = figure.source;
+    document.getElementById('figure-source').hidden = !study;
+    figureDialog.showModal();
+    document.getElementById('figure-close').focus();
+  });
+  document.getElementById('figure-close').addEventListener('click', () => figureDialog.close());
+  figureDialog.addEventListener('click', event => {
+    if(event.target !== figureDialog) return;
+    const rect = figureDialog.getBoundingClientRect();
+    if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) figureDialog.close();
+  });
+  figureDialog.addEventListener('close', () => figureOpener?.focus({preventScroll:true}));
+}
+
+function renderRelated() {
+  document.getElementById("related").innerHTML = RELATED.slice().sort((a, b) => b.year - a.year).map(r => `
+    <li><span class="yr">${r.year}</span>
+      <div><div class="t"><a href="${esc(linkFor(r))}">${esc(r.title)}</a></div>
+        <p>${esc(r.venue).replace(esc(ME), `<strong>${esc(ME)}</strong>`)}</p>
+        ${r.note ? `<p>${esc(r.note)}</p>` : ""}
+      </div></li>`).join("");
+}
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+
+renderJourney();
+
+/* ---------------------------------------------------------------------
+   The chapter reader: "Read the full chapter" in a chapter's card opens the whole chapter, with its story
+   (story), the study's figures (lead: one full-width figure; compare: two figures on a slider; readFigs: the rest,
+   by index into the study's images), what the study found (the study's findings), the paper, what it left
+   open, links and posts. Each chapter has its own address, irrigation.html#chapter-1 to #chapter-6.
+   --------------------------------------------------------------------- */
+const reader = document.getElementById("chapter-reader"), readerBox = document.getElementById("cr-inner");
+let readerAt = -1;
+function figHTML(s, k, cls) {
+  const img = (s.images || [s.image])[k];
+  if (!img) return "";
+  return `<figure class="cr-fig${cls ? " " + cls : ""}"><a href="${esc(img.src)}" data-figure="${esc(s.id)}" data-figure-index="${k}" aria-label="Enlarge figure: ${esc(img.alt)}"><img src="${esc(img.src)}" alt="${esc(img.alt)}" loading="lazy" decoding="async"></a><figcaption>${esc(img.caption)}${img.credit ? ` <span class="cr-credit">${esc(img.credit)}.</span>` : ""}</figcaption></figure>`;
+}
+function compareHTML(s, [a, b]) {
+  const A = s.images[a], B = s.images[b], ya = A.caption.slice(0, 4), yb = B.caption.slice(0, 4);
+  return `<figure class="cr-fig cr-compare"><div class="cmp" style="--pos:50%">
+      <img src="${esc(B.src)}" alt="${esc(B.alt)}" decoding="async"><img class="cmp-top" src="${esc(A.src)}" alt="${esc(A.alt)}" decoding="async">
+      <span class="cmp-tag cmp-a">${esc(ya)}</span><span class="cmp-tag cmp-b">${esc(yb)}</span><span class="cmp-bar" aria-hidden="true"></span>
+      <input type="range" min="0" max="100" value="50" step="1" aria-label="Slide between ${esc(ya)} and ${esc(yb)}"></div>
+    <figcaption>Drag the slider to compare the number of irrigated days in cropland in ${esc(ya)} and ${esc(yb)}, as detected by AgroTrack.</figcaption></figure>`;
+}
+function postHTML(p) {
+  return `<li><a class="cr-post" href="${esc(p.url)}" target="_blank" rel="noopener"><span class="cr-post-who"><b>${esc(p.who)}</b> <span>@${esc(p.handle)} · ${esc(p.date)}</span></span><span class="cr-post-text">${esc(p.text)}</span><span class="cr-post-go">View the post on X<span aria-hidden="true"> ↗</span></span></a></li>`;
+}
+function chapterHTML(i) {
+  const c = CHAPTERS[i], s = c.study && studyById(c.study), paper = s && window.Papers && window.Papers.paperFor(s.doi);
+  const also = c.also && studyById(c.also.study);
+  const nav = (j, dir) => j < 0 || j >= CHAPTERS.length ? "<span></span>" :
+    `<button type="button" class="cr-go cr-${dir}" data-go="${j}"><span class="cr-go-k">${dir === "prev" ? "← " : ""}${chapterName(j)}${dir === "next" ? " →" : ""}</span><span class="cr-go-t">${esc(CHAPTERS[j].title)}</span></button>`;
+  let figs = "";
+  if (s) {
+    figs = (c.lead != null ? figHTML(s, c.lead, "cr-wide") : "") +
+      `<div class="cr-figs">${c.compare ? compareHTML(s, c.compare) : ""}${(c.readFigs || [0]).map(k => figHTML(s, k)).join("")}</div>`;
+  }
+  return `<header class="cr-head g-${c.q}">
+      <div class="cr-head-text"><p class="cr-kick">${chapterName(i)} · ${esc(c.year)} · ${QLABEL[c.q]}?</p><h2 id="cr-title">${esc(c.title)}</h2><p class="cr-sub">${esc(c.sub)}</p></div>
+      <img class="cr-ico" src="assets/chapters/${c.icon}.webp?v=${ICON_V}" alt="" width="72" height="72">
+      <button type="button" class="cr-close" aria-label="Close chapter">×</button>
+    </header>
+    <div class="cr-body">
+      <div class="cr-story">${(c.story || [c.text]).map(t => `<p>${esc(t)}</p>`).join("")}</div>
+      ${figs}
+      ${s && s.findings ? `<section class="cr-found"><h3>What the study found</h3><ul>${s.findings.map(f => `<li>${esc(f)}</li>`).join("")}</ul></section>` : ""}
+      ${paper ? `<div class="cr-paper">${window.Papers.paperCard(paper, c.finding)}</div>` : ""}
+      ${also ? `<section class="cr-also"><h3>${esc(c.also.text)}</h3>${figHTML(also, 0, "cr-side")}<p>${esc(also.summary)} <a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em> ${esc(also.year)} ↗</a></p></section>` : ""}
+      ${c.chips ? `<ul class="jc-chips cr-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      <p class="cr-left"><b>${c.next ? "Next:" : "Left open:"}</b> ${esc(c.left)}</p>
+      ${(c.links || []).length || c.topic ? `<p class="cr-links">${(c.links || []).map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.text)} ↗</a>`).join("")}${c.topic ? `<a href="index.html#research/${c.topic}">${esc(c.more)} →</a>` : ""}</p>` : ""}
+      ${(c.posts || []).length ? `<section class="cr-posts-box"><h3>Shared on social media</h3><ul class="cr-posts">${c.posts.map(postHTML).join("")}</ul></section>` : ""}
+    </div>
+    <nav class="cr-nav" aria-label="Chapters">${nav(i - 1, "prev")}${nav(i + 1, "next")}</nav>`;
+}
+function openChapter(i) {
+  if (!reader || !CHAPTERS[i]) return;
+  readerAt = i;
+  readerBox.innerHTML = chapterHTML(i);
+  readerBox.scrollTop = 0; reader.scrollTop = 0;
+  readerBox.querySelectorAll(".cmp").forEach(box => {
+    const r = box.querySelector("input");
+    r.addEventListener("input", () => box.style.setProperty("--pos", r.value + "%"));
+  });
+  if (!reader.open) reader.showModal();
+  readerBox.querySelector(".cr-close").focus({ preventScroll: true });
+  history.replaceState(null, "", "#chapter-" + (i + 1));
+}
+if (reader && typeof reader.showModal === "function") {
+  reader.addEventListener("click", e => {
+    if (e.target === reader) { reader.close(); return; }
+    if (e.target.closest(".cr-close")) { reader.close(); return; }
+    const go = e.target.closest("[data-go]");
+    if (go) openChapter(+go.dataset.go);
+  });
+  reader.addEventListener("keydown", e => {
+    if (e.target.matches("input, textarea") || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "ArrowRight" && readerAt < CHAPTERS.length - 1) openChapter(readerAt + 1);
+    if (e.key === "ArrowLeft" && readerAt > 0) openChapter(readerAt - 1);
+  });
+  reader.addEventListener("close", () => {
+    if (/^#chapter-\d+$/.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + "#studies");
+    // Back to the chapter last read, which may differ from the one opened.
+    document.querySelectorAll(".j-node")[readerAt]?.focus({ preventScroll: true });
+  });
+  const fromHash = () => { const m = location.hash.match(/^#chapter-(\d+)$/); if (m) openChapter(+m[1] - 1); };
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+}
+renderRelated();
+drawPanels();
+document.getElementById("scales").classList.add("animate");
+try {
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawPanels);
+} catch (_) {}
+</script>
+
+<script>
+/* ======================================================================
+   RESEARCH LANDSCAPE TABLE
+   The rows live in data/papers.json. The paper-finding agent adds new
+   rows there (through a pull request you approve), and you can edit
+   that file by hand too. Nothing below needs editing.
+   ====================================================================== */
+
+const LIT_DATA_URL = "data/papers.json";
+// Review preview: add ?preview to the page address to see the agent's open pull request.
+const LIT_REPO = "ejalilva/irrigation-studies";
+const LIT_REVIEW_BRANCH = "agent/new-papers";
+const LIT_PREVIEW = new URLSearchParams(location.search).has("preview");
+const LIT_SUGGEST_TO = "ehsan.jalilvand@gmail.com";
+const LIT_PAGE = 10;          // rows shown before "Show all"
+const LIT_NEW_DAYS = 90;      // "New" badge window
+
+const Q_LABELS = { where: "Where", when: "When", how_much: "How much" };
+const METHOD_LABELS = {
+  sm: "Satellite soil moisture",
+  et: "ET and thermal",
+  imagery: "Optical and radar imagery",
+  model: "Land surface models",
+  da: "Data assimilation",
+  ml: "Machine learning"
+};
+const REGION_ORDER = ["Global", "Africa", "Asia", "Europe", "North America", "South America", "Oceania", "Multiple"];
+
+const lit = { all: [], qs: new Set(), status: "any", method: "any", region: "any", text: "", sortKey: "year", sortDir: -1, showAll: false, open: new Set(), picks: new Map(), essential: new Map() };
+const SEAL = `<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="6" fill="currentColor"/><path d="M3.4 6.2l1.7 1.7 3.5-3.6" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const STAR = `<svg class="star" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.47 5.01 5.53.8-4 3.9.94 5.5L10 14.4l-4.94 2.6.94-5.5-4-3.9 5.53-.8z" fill="currentColor"/></svg>`;
+const $ = id => document.getElementById(id);
+
+function litLink(p) { return p.doi ? "https://doi.org/" + p.doi : (p.url || "#"); }
+function litPeriod(p) {
+  if (!p.period || p.period.start == null) return "";
+  const { start, end } = p.period;
+  return end == null || end === start ? String(start) : `${start}–${end}`;
+}
+function litIsNew(p) {
+  if (!p.date) return false;
+  const d = new Date(p.date + "T00:00:00");
+  return !isNaN(d) && (Date.now() - d.getTime()) / 864e5 <= LIT_NEW_DAYS;
+}
+function litQs(p) { return Object.keys(Q_LABELS).filter(k => p.questions && p.questions[k]); }
+function litHay(p) {
+  return [p.title, p.authors, p.venue, p.domain, p.region, p.scale, p.approach, p.summary,
+    (p.keywords || []).join(" "), (p.data || []).join(" "), (p.methods || []).map(m => METHOD_LABELS[m] || m).join(" "),
+    (p.resources || []).map(r => r && r.label).join(" "),
+    litPeriod(p), String(p.year)].join(" ").toLowerCase();
+}
+
+function litMatches(p) {
+  // Selected questions narrow the table to studies that answer every one of them.
+  const qs = litQs(p);
+  for (const q of lit.qs) if (!qs.includes(q)) return false;
+  if (lit.status === "proposed") { if (!p._proposed) return false; }
+  else if (lit.status === "essential") { if (!lit.essential.has(p.id)) return false; }
+  else if (lit.status !== "any" && p.status !== lit.status) return false;
+  if (lit.method !== "any" && !(p.methods || []).includes(lit.method)) return false;
+  if (lit.region !== "any" && p.region !== lit.region) return false;
+  if (lit.text) {
+    const hay = p._hay;
+    if (!lit.text.split(/\s+/).every(t => hay.includes(t))) return false;
+  }
+  return true;
+}
+
+function litCompare(a, b) {
+  const dir = lit.sortDir;
+  const val = p => {
+    switch (lit.sortKey) {
+      case "author": return (p.first_author || p.authors || "").toLowerCase();
+      case "area": return (p.domain || "￿").toLowerCase();
+      case "period": return p.period && p.period.start != null ? (p.period.end || p.period.start) : null;
+      default: return p.year * 10000 + (p.date ? Number(p.date.slice(5, 7)) * 100 + Number(p.date.slice(8, 10)) : 0);
+    }
+  };
+  const va = val(a), vb = val(b);
+  if (va == null && vb == null) return b.year - a.year;
+  if (va == null) return 1;
+  if (vb == null) return -1;
+  if (va < vb) return -1 * dir;
+  if (va > vb) return 1 * dir;
+  return b.year - a.year;
+}
+
+const RES_ICON = {
+  data: `<svg viewBox="0 0 12 12" aria-hidden="true"><ellipse cx="6" cy="2.6" rx="4.4" ry="1.7" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M1.6 2.6v6.8c0 .9 2 1.7 4.4 1.7s4.4-.8 4.4-1.7V2.6M1.6 6c0 .9 2 1.7 4.4 1.7s4.4-.8 4.4-1.7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>`,
+  code: `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4 3L1 6l3 3M8 3l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+const RES_NAME = { data: "Data", code: "Code" };
+
+function litResources(p) {
+  return (p.resources || []).filter(r => r && /^https?:\/\//.test(r.url || "") && RES_NAME[r.type]);
+}
+
+function litResCell(p) {
+  const res = litResources(p);
+  if (!res.length) return `<td class="c-res empty"><span class="muted" aria-label="None found">&ndash;</span></td>`;
+  const chips = ["data", "code"].map(t => {
+    const of = res.filter(r => r.type === t);
+    if (!of.length) return "";
+    const tip = of.map(r => r.label || RES_NAME[t]).join(", ");
+    return `<a class="res" href="${esc(of[0].url)}" target="_blank" rel="noopener" title="${esc(`${RES_NAME[t]}: ${tip}`)}">${RES_ICON[t]}${RES_NAME[t]}${of.length > 1 ? ` (${of.length})` : ""}</a>`;
+  }).join("");
+  return `<td class="c-res"><div class="res-list">${chips}</div></td>`;
+}
+
+function litRow(p, i) {
+  const qs = litQs(p);
+  const qText = qs.length ? "Answers " + qs.map(k => Q_LABELS[k].toLowerCase()).join(", ") : "Question not classified yet";
+  const status = p.status === "preprint"
+    ? `<span class="st st-pre" title="Not yet peer reviewed"><span class="pulse" aria-hidden="true"></span>Preprint</span>`
+    : `<span class="st st-pub"><span class="dot-pub" aria-hidden="true"></span>Peer reviewed</span>`;
+  const essN = lit.essential.get(p.id);
+  const badges = [
+    essN ? `<span class="ess" title="Number ${essN} on the Essential reading list">${SEAL}Essential</span>` : "",
+    litIsNew(p) ? `<span class="new">New</span>` : "",
+    p._proposed ? `<span class="prop">Proposed</span>` : "",
+    LIT_PREVIEW && p._proposed && p.needs_review ? `<span class="chk">Check details</span>` : ""
+  ].join("");
+  const isOpen = lit.open.has(p.id);
+  const area = p.domain ? esc(p.domain) : `<span class="muted">Not stated</span>`;
+  const areaSub = [p.scale ? p.scale[0].toUpperCase() + p.scale.slice(1) + " scale" : "", p.region && p.region !== p.domain ? (p.region === "Multiple" ? "several regions" : p.region) : ""].filter(Boolean).join(", ");
+  const period = litPeriod(p);
+  const res = litResources(p);
+  const pick = lit.picks.get(p.id);
+  return `<tr class="row${isOpen ? " open" : ""}" data-id="${esc(p.id)}">
+      <td class="c-status">${status}${badges ? `<span class="badges">${badges}</span>` : ""}</td>
+      <td class="c-year yr-cell">${p.year}</td>
+      <td class="c-study">
+        <button type="button" class="lt one" aria-expanded="${isOpen}" aria-controls="d-${i}">${esc(p.title)}</button>
+        <span class="by one">${esc(litAuthorShort(p.authors) || p.first_author || "")}, <em>${esc(p.venue || "")}</em></span>
+      </td>
+      <td class="c-q"><div class="q" role="img" aria-label="${esc(qText)}">${Object.keys(Q_LABELS).map(k => `<span class="q-${k}${qs.includes(k) ? " on" : ""}">${Q_LABELS[k]}</span>`).join("")}</div></td>
+      <td class="c-area"><span class="one">${area}</span>${areaSub ? `<span class="sub one">${esc(areaSub)}</span>` : ""}</td>
+      <td class="c-period">${period ? esc(period) : `<span class="muted">&ndash;</span>`}</td>
+      ${litResCell(p)}
+    </tr>
+    <tr class="detail" id="d-${i}"${isOpen ? "" : " hidden"}><td colspan="7"><div>
+      <div>
+        ${essN ? `<p><a class="ess-link" href="#reading" data-ess="${essN}">Number ${essN} on the Essential reading list</a></p>` : ""}
+        ${pick && pick.note ? `<p><strong>Editor&rsquo;s note.</strong> ${esc(pick.note)}</p>` : ""}
+        ${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
+        ${p.status === "preprint" ? `<p class="note">This is a preprint. It has not been peer reviewed yet, so its results may change.</p>` : ""}
+        ${p.note ? `<p class="muted">${esc(p.note)}</p>` : ""}
+        <div class="acts"><a href="${esc(litLink(p))}" target="_blank" rel="noopener">Read the paper</a><button type="button" class="linkbtn" data-litcite="${esc(p.id)}">Copy citation</button></div>
+      </div>
+      <dl>
+        <dt>Authors</dt><dd>${esc(p.authors || "")}</dd>
+        ${p.approach ? `<dt>Approach</dt><dd>${esc(p.approach)}</dd>` : ""}
+        ${(p.methods || []).length ? `<dt>Methods</dt><dd>${esc(p.methods.map(m => METHOD_LABELS[m] || m).join(", "))}</dd>` : ""}
+        ${(p.data || []).length ? `<dt>Data and models</dt><dd>${esc(p.data.join(", "))}</dd>` : ""}
+        ${(p.keywords || []).length ? `<dt>Keywords</dt><dd>${esc(p.keywords.join(", "))}</dd>` : ""}
+        ${res.length ? `<dt>Data &amp; code</dt><dd><ul class="res-links">${res.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label || RES_NAME[r.type])}</a> <span class="muted">(${RES_NAME[r.type].toLowerCase()})</span></li>`).join("")}</ul></dd>` : ""}
+        <dt>${p.doi ? "DOI" : "Link"}</dt><dd>${p.doi ? `<a href="${esc(litLink(p))}" target="_blank" rel="noopener">${esc(p.doi)}</a>` : `<a href="${esc(litLink(p))}">${esc(litLink(p))}</a>`}</dd>
+      </dl>
+    </div></td></tr>`;
+}
+
+function litRender() {
+  const rows = lit.all.filter(litMatches).sort(litCompare);
+  const shown = lit.showAll ? rows : rows.slice(0, LIT_PAGE);
+  const body = $("lit-body");
+  body.innerHTML = shown.length
+    ? shown.map(litRow).join("")
+    : `<tr class="lit-empty"><td colspan="7">No studies match these filters. <button type="button" class="lit-reset" data-reset>Clear filters</button></td></tr>`;
+  const filtered = rows.length !== lit.all.length;
+  const all = lit.all.length;
+  $("lit-count").textContent = shown.length < rows.length
+    ? (filtered ? `Showing ${shown.length} of ${rows.length} matching studies (${all} in all)` : `Showing ${shown.length} of ${all} studies`)
+    : (filtered ? `${rows.length} of ${all} studies match` : `All ${all} studies`);
+  const more = $("lit-more");
+  more.hidden = rows.length <= LIT_PAGE;
+  more.textContent = lit.showAll ? "Show fewer" : `Show all ${rows.length} studies`;
+  const panelFilters = lit.status !== "any" || lit.method !== "any" || lit.region !== "any";
+  $("lit-reset").hidden = !(lit.qs.size || panelFilters);
+  $("lit-filter-btn").classList.toggle("on", panelFilters);
+  document.querySelectorAll("#lit th[data-key]").forEach(th => {
+    if (th.dataset.key === lit.sortKey) th.setAttribute("aria-sort", lit.sortDir === -1 ? "descending" : "ascending");
+    else th.removeAttribute("aria-sort");
+  });
+}
+
+function litToggle(id) {
+  if (lit.open.has(id)) lit.open.delete(id); else lit.open.add(id);
+  const row = document.querySelector(`#lit-body tr.row[data-id="${CSS.escape(id)}"]`);
+  if (!row) return;
+  const open = lit.open.has(id);
+  row.classList.toggle("open", open);
+  row.querySelector(".lt").setAttribute("aria-expanded", String(open));
+  row.nextElementSibling.hidden = !open;
+}
+
+function litResetFilters() {
+  Object.assign(lit, { qs: new Set(), status: "any", method: "any", region: "any", text: "" });
+  $("lit-status").value = "any"; $("lit-method").value = "any"; $("lit-region").value = "any";
+  document.querySelectorAll("#lit-qseg button").forEach(b => b.setAttribute("aria-pressed", "false"));
+  litRender();
+}
+
+function litCitation(p) {
+  return `${p.authors} (${p.year}). ${p.title}. ${p.venue}${p.status === "preprint" ? " [preprint, not peer reviewed]" : ""}. ${litLink(p)}`;
+}
+
+function litCSV() {
+  const cols = ["Status", "Year", "Title", "Authors", "Venue", "Link", "Where", "When", "How much", "Study area", "Region", "Scale", "Period", "Approach", "Methods", "Data and models", "Keywords", "Data and code links"];
+  const cell = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+  const rows = lit.all.filter(litMatches).sort(litCompare).map(p => [
+    p.status === "preprint" ? "Preprint" : "Peer reviewed", p.year, p.title, p.authors, p.venue, litLink(p),
+    p.questions && p.questions.where ? "yes" : "", p.questions && p.questions.when ? "yes" : "", p.questions && p.questions.how_much ? "yes" : "",
+    p.domain, p.region, p.scale, litPeriod(p), p.approach,
+    (p.methods || []).map(m => METHOD_LABELS[m] || m).join("; "), (p.data || []).join("; "), (p.keywords || []).join("; "),
+    litResources(p).map(r => r.url).join("; ")
+  ].map(cell).join(","));
+  const blob = new Blob(["﻿" + [cols.map(cell).join(","), ...rows].join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "irrigation-studies.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+// Accepts a bare DOI, "doi:10...", or a doi.org link.
+function litParseDOI(v) {
+  const d = String(v || "").trim().replace(/^doi:\s*/i, "").replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").trim();
+  return /^10\.\d{4,9}\/\S+$/.test(d) ? d : null;
+}
+
+function litSuggest(e) {
+  e.preventDefault();
+  const input = $("lit-doi"), msg = $("lit-suggest-msg");
+  const doi = litParseDOI(input.value);
+  if (!doi) {
+    input.setAttribute("aria-invalid", "true");
+    msg.textContent = "That doesn't look like a DOI. A DOI starts with 10., for example 10.1029/2022WR033342.";
+    return;
+  }
+  if (lit.all.some(p => (p.doi || "").toLowerCase() === doi.toLowerCase() || p.id === doi.toLowerCase())) {
+    msg.textContent = "That paper is already in the table. Search for it above.";
+    return;
+  }
+  const subject = `Paper suggestion: ${doi}`;
+  const body = `Suggested for the irrigation research table:\nhttps://doi.org/${doi}\n`;
+  location.href = `mailto:${LIT_SUGGEST_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  msg.textContent = `Thank you. Your email app should open with the DOI filled in; just press send. If nothing opens, email the DOI to ${LIT_SUGGEST_TO}.`;
+  input.value = "";
+}
+
+function litAuthorShort(a) {
+  const parts = (a || "").split(",").map(x => x.trim()).filter(Boolean);
+  return parts.length ? parts[0] + (parts.length > 2 || /et al/.test(a) ? " et al." : "") : "";
+}
+
+const reading = { stages: [], tab: "all", open: new Set() };
+
+function readingRender(r) {
+  if (!r || !Array.isArray(r.stages) || !r.stages.length) return;
+  let n = 0;
+  reading.stages = r.stages.map(st => ({
+    key: st.key || "big", title: st.title || "",
+    items: (st.items || []).map(it => Object.assign({ n: ++n }, it))
+  }));
+  $("reading-intro").textContent = r.intro || "";
+  readingDraw();
+  $("reading").hidden = false;
+  // Papers on the reading list are tagged Essential in the table.
+  let k = 0;
+  lit.essential = new Map();
+  r.stages.forEach(st => (st.items || []).forEach(it => { k++; const id = String(it.id || it.doi || "").toLowerCase(); if (id) lit.essential.set(id, k); }));
+  litEssentialReady();
+}
+
+function readingDraw() {
+  const total = reading.stages.reduce((k, st) => k + st.items.length, 0);
+  $("reading-tabs").innerHTML = `<button type="button" class="rtab" data-k="all" aria-pressed="${reading.tab === "all"}">All <small>${total}</small></button>`
+    + reading.stages.map(st => `<button type="button" class="rtab g-${esc(st.key)}" data-k="${esc(st.key)}" aria-pressed="${reading.tab === st.key}"><i aria-hidden="true"></i>${esc(st.title)} <small>${st.items.length}</small></button>`).join("");
+  $("reading-grid").innerHTML = reading.stages.filter(st => reading.tab === "all" || st.key === reading.tab).flatMap(st => st.items.map(it => {
+    const link = it.doi ? "https://doi.org/" + it.doi : (it.url || "#");
+    const open = reading.open.has(it.n);
+    return `<li class="rc g-${esc(st.key)}${open ? " open" : ""}">
+      <button type="button" class="rc-btn" aria-expanded="${open}" aria-controls="rc-${it.n}" data-n="${it.n}">
+        <span class="rc-band"><span>${esc(st.title)}</span><span>${it.n}</span></span>
+        <span class="rc-jr" title="${esc(it.venue || "")}">${esc(it.venue_short || it.venue || "")}</span>
+        <span class="rc-t">${esc(it.title)}</span>
+        <span class="rc-by">${esc(litAuthorShort(it.authors))}, ${esc(String(it.year || ""))}</span>
+      </button>
+      <div class="rc-more" id="rc-${it.n}"${open ? "" : " hidden"}>
+        ${it.why ? `<p>${esc(it.why)}</p>` : ""}
+        <a href="${esc(link)}" target="_blank" rel="noopener">Read the paper &#8599;</a>
+      </div>
+    </li>`;
+  })).join("");
+}
+
+// "Number N on the Essential reading list" in the table opens that card.
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[data-ess]");
+  if (!a) return;
+  const n = Number(a.dataset.ess);
+  e.preventDefault();
+  reading.tab = "all"; reading.open.add(n); readingDraw();
+  const card = $("rc-" + n);
+  if (card) card.parentElement.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+});
+
+$("reading-tabs").addEventListener("click", e => {
+  const b = e.target.closest(".rtab");
+  if (b) { reading.tab = b.dataset.k; readingDraw(); }
+});
+$("reading-grid").addEventListener("click", e => {
+  const b = e.target.closest(".rc-btn");
+  if (!b) return;
+  const n = Number(b.dataset.n);
+  if (reading.open.has(n)) reading.open.delete(n); else reading.open.add(n);
+  const open = reading.open.has(n);
+  b.setAttribute("aria-expanded", String(open));
+  b.parentElement.classList.toggle("open", open);
+  $("rc-" + n).hidden = !open;
+});
+
+function litEssentialReady() {
+  if (!lit.all.length || !lit.essential.size) return;
+  const n = lit.all.filter(p => lit.essential.has(p.id)).length;
+  if (!n) return;
+  $("lit-legend-ess-mark").innerHTML = SEAL + "Essential";
+  $("lit-legend-ess").hidden = false;
+  if (!$("lit-status").querySelector('option[value="essential"]')) {
+    const opt = document.createElement("option");
+    opt.value = "essential"; opt.textContent = `Essential (${n})`;
+    $("lit-status").insertBefore(opt, $("lit-status").options[1] || null);
+  }
+  litRender();
+}
+
+function litInit(data) {
+  lit.all = (data.papers || []).filter(p => p && p.title && p.year).map(p => Object.assign({}, p, { _hay: litHay(p) }));
+
+  const methods = Object.keys(METHOD_LABELS).filter(m => lit.all.some(p => (p.methods || []).includes(m)));
+  $("lit-method").insertAdjacentHTML("beforeend", methods.map(m => `<option value="${m}">${esc(METHOD_LABELS[m])}</option>`).join(""));
+  const regions = REGION_ORDER.filter(r => lit.all.some(p => p.region === r));
+  $("lit-region").insertAdjacentHTML("beforeend", regions.map(r => `<option value="${esc(r)}">${esc(r)}</option>`).join(""));
+
+  if (data.updated) {
+    const d = new Date(data.updated + "T00:00:00");
+    $("lit-updated").textContent = `Last updated ${d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Preprints are flagged until a peer-reviewed version appears.`;
+  }
+  if (LIT_PREVIEW) litShowReview(data);
+  litRender();
+  litEssentialReady();
+}
+
+function litShowReview(data) {
+  const box = $("lit-review");
+  const pulls = `https://github.com/${LIT_REPO}/pulls`;
+  const edit = `https://github.com/${LIT_REPO}/edit/${LIT_REVIEW_BRANCH}/data/papers.json`;
+  const n = lit.all.filter(p => p._proposed).length;
+  box.hidden = false;
+  if (data._previewError) {
+    box.innerHTML = `<p><strong>No papers are waiting for review.</strong> This is the published table. The preview shows the agent's pull request while one is open.</p>
+      <div class="acts"><a href="${pulls}">Pull requests</a></div>`;
+    return;
+  }
+  const opt = document.createElement("option");
+  opt.value = "proposed"; opt.textContent = `Proposed for review (${n})`;
+  $("lit-status").prepend(opt);
+  if (n) { lit.status = "proposed"; $("lit-status").value = "proposed"; lit.showAll = true; $("lit-panel").hidden = false; $("lit-filter-btn").setAttribute("aria-expanded", "true"); }
+  box.innerHTML = `<p><strong>Review preview.</strong> ${n ? `${n} ${n === 1 ? "paper is" : "papers are"} proposed in the agent's pull request and shown here as they would appear once merged.` : "The pull request adds no new papers."} The published page is unchanged until you merge.</p>
+    <p>To reject a paper, untick it in the pull request description; it leaves this preview within a few minutes. To fix a detail, edit the file on the review branch.</p>
+    <div class="acts"><a href="${pulls}">Open the pull request</a><a href="${edit}">Edit details on GitHub</a><a href="${location.pathname}#landscape">Exit preview</a></div>`;
+}
+
+function litWire() {
+  $("lit-qseg").addEventListener("click", e => {
+    const b = e.target.closest("button[data-q]");
+    if (!b) return;
+    const q = b.dataset.q, on = !lit.qs.has(q);
+    if (on) lit.qs.add(q); else lit.qs.delete(q);
+    b.setAttribute("aria-pressed", String(on));
+    litRender();
+  });
+  $("lit-filter-btn").addEventListener("click", () => {
+    const panel = $("lit-panel"), open = panel.hidden;
+    panel.hidden = !open; $("lit-filter-btn").setAttribute("aria-expanded", String(open));
+  });
+  $("lit-status").addEventListener("change", e => { lit.status = e.target.value; litRender(); });
+  $("lit-method").addEventListener("change", e => { lit.method = e.target.value; litRender(); });
+  $("lit-region").addEventListener("change", e => { lit.region = e.target.value; litRender(); });
+  $("lit-reset").addEventListener("click", litResetFilters);
+  $("lit-more").addEventListener("click", () => { lit.showAll = !lit.showAll; litRender(); });
+  $("lit-csv").addEventListener("click", litCSV);
+  $("lit-suggest").addEventListener("submit", litSuggest);
+  $("lit-doi").addEventListener("input", () => { $("lit-doi").removeAttribute("aria-invalid"); $("lit-suggest-msg").textContent = ""; });
+
+  document.querySelector("#lit thead").addEventListener("click", e => {
+    const th = e.target.closest("th[data-key]");
+    if (!th || !e.target.closest("button")) return;
+    const k = th.dataset.key;
+    if (lit.sortKey === k) lit.sortDir *= -1;
+    else { lit.sortKey = k; lit.sortDir = (k === "year" || k === "period") ? -1 : 1; }
+    litRender();
+  });
+
+  $("lit-body").addEventListener("click", async e => {
+    if (e.target.closest("[data-reset]")) { litResetFilters(); return; }
+    const cite = e.target.closest("button[data-litcite]");
+    if (cite) {
+      const p = lit.all.find(x => x.id === cite.dataset.litcite);
+      const text = litCitation(p);
+      try { await navigator.clipboard.writeText(text); }
+      catch (_) {
+        const ta = document.createElement("textarea");
+        ta.value = text; ta.style.position = "absolute"; ta.style.left = "-9999px";
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); } catch (__) {}
+        ta.remove();
+      }
+      toast("Citation copied");
+      return;
+    }
+    if (e.target.closest("a")) return;
+    const row = e.target.closest("tr.row");
+    if (row && (e.target.closest(".lt") || !window.getSelection().toString())) litToggle(row.dataset.id);
+  });
+}
+
+function litFetch(url) {
+  return fetch(url, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+}
+
+function litLoad() {
+  const raw = f => `https://raw.githubusercontent.com/${LIT_REPO}/refs/heads/${LIT_REVIEW_BRANCH}/data/${f}?t=${Date.now()}`;
+  const main = litFetch(LIT_DATA_URL);
+  const picks = litFetch("data/editor_picks.json").catch(() => ({ picks: [] }));
+  if (!LIT_PREVIEW) return Promise.all([main, picks]).then(([d, k]) => Object.assign(d, { _picks: k }));
+  return Promise.all([main, picks, litFetch(raw("papers.json")).catch(() => null), litFetch(raw("editor_picks.json")).catch(() => null)])
+    .then(([pub, pubPicks, review, reviewPicks]) => {
+      if (!review) return Object.assign({}, pub, { _previewError: true, _picks: pubPicks });
+      const published = new Set((pub.papers || []).map(p => p.id));
+      review.papers = (review.papers || []).map(p => Object.assign(p, { _proposed: !published.has(p.id) }));
+      return Object.assign(review, { _picks: reviewPicks || pubPicks });
+    });
+}
+
+litFetch("data/reading_list.json").then(readingRender).catch(() => {});
+
+litWire();
+litLoad()
+  .then(litInit)
+  .catch(() => {
+    $("lit-count").textContent = "";
+    $("lit-body").innerHTML = `<tr class="lit-empty"><td colspan="7">The table could not load. It reads from data/papers.json, which browsers block when you open the page straight from your computer. It works once the page is on GitHub Pages.</td></tr>`;
+  });
+</script>
+</body>
+</html>

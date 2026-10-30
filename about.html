@@ -8,13 +8,15 @@
 <meta property="og:title" content="About | Ehsan Jalilvand">
 <meta property="og:description" content="Hydro-data scientist at NASA Goddard: irrigation, satellite observations and water-cycle models.">
 <meta property="og:type" content="profile">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23CDB47E'/%3E%3Ccircle cx='16' cy='16' r='11' fill='%231E5C86'/%3E%3Cline x1='16' y1='16' x2='26' y2='11' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=2026-10-28c">
+<link rel="stylesheet" href="assets/site.css?v=2026-10-30a">
 <script src="assets/nav.js?v=2026-10-28c" defer></script>
-<link rel="stylesheet" href="assets/about.css?v=2026-10-28e">
+<link rel="stylesheet" href="assets/about.css?v=2026-10-30a">
 <script src="assets/journals.js?v=2026-10-26f"></script>
 <script src="assets/about.js?v=2026-10-28a" defer></script>
 </head>
@@ -23,19 +25,20 @@
 
 <div class="wrap">
   <header class="site-head">
-    <a class="site-name" href="index.html">Ehsan Jalilvand</a>
+    <a class="site-name" href="index.html"><img class="ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
     <nav class="site-nav" aria-label="Main">
       <a href="about.html" aria-current="page">About</a>
       <div class="nav-menu">
         <button type="button" class="nav-btn" aria-expanded="false" aria-controls="nav-research">Research<svg class="nav-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4"/></svg></button>
         <ul class="nav-sub" id="nav-research">
           <li><a href="index.html#explore">Water cycle</a></li>
-          <li><a href="index.html#focus">Human-driven processes</a></li>
-          <li><a href="index.html#studies">Irrigation studies</a></li>
-          <li><a href="index.html#landscape">Research library</a></li>
+          <li><a href="irrigation.html">Human-driven processes &amp; irrigation</a></li>
+          <li><a href="irrigation.html#studies">My irrigation studies</a></li>
+          <li><a href="irrigation.html#landscape">Research library</a></li>
         </ul>
       </div>
       <a href="journey.html">My journey</a>
+      <a href="gallery.html">Gallery</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </header>
@@ -61,6 +64,22 @@
       <figure class="ab-photo">
         <img src="assets/about/ehsan.webp?v=2026-10-28c" srcset="assets/about/ehsan-sm.webp?v=2026-10-28c 360w, assets/about/ehsan.webp?v=2026-10-28c 720w" sizes="(max-width: 900px) 70vw, 340px" width="720" height="900" alt="Ehsan Jalilvand, smiling, outdoors among trees.">
       </figure>
+    </section>
+
+    <!-- Appointments and experience live on My journey; this card is the way there, right under the bio. -->
+    <section class="ab-sec ab-jy-sec" aria-labelledby="ab-exp">
+      <h2 id="ab-exp">Experience</h2>
+      <div class="ab-body">
+        <a class="ab-jy" href="journey.html">
+          <img class="ab-jy-pic" src="assets/about/journey-strip.webp?v=2026-10-30a" width="1100" height="243" alt="" loading="lazy" decoding="async">
+          <span class="ab-jy-text">
+            <span class="ab-jy-title">My journey: every appointment, on one timeline</span>
+            <span class="ab-jy-sub">From Sharif University and CNR IRPI in Italy to Michigan State and NASA Goddard: what I worked on at each stop, the papers and code from it, and the skills it added.</span>
+            <span class="ab-jy-logos" aria-label="Institutions"><img src="assets/journey/logos/sharif.png?v=2026-10-30a" alt="Sharif University of Technology" title="Sharif University of Technology" height="24" loading="lazy" decoding="async"><img src="assets/journey/logos/cnr.png?v=2026-10-30a" alt="CNR IRPI" title="CNR IRPI" height="24" loading="lazy" decoding="async"><img src="assets/journey/logos/aut.png?v=2026-10-30a" alt="Amirkabir University of Technology" title="Amirkabir University of Technology" height="24" loading="lazy" decoding="async"><img src="assets/journey/logos/msu.png?v=2026-10-30a" alt="Michigan State University" title="Michigan State University" height="24" loading="lazy" decoding="async"><img src="assets/journey/logos/gt.png?v=2026-10-30a" alt="Georgia Tech" title="Georgia Tech" height="24" loading="lazy" decoding="async"><img src="assets/journey/logos/nasa.png?v=2026-10-30a" alt="NASA Goddard" title="NASA Goddard" height="24" loading="lazy" decoding="async"></span>
+          </span>
+          <span class="ab-jy-go">See my journey <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
     </section>
 
     <a class="ab-spot" href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/" target="_blank" rel="noopener">
