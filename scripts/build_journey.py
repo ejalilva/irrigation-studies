@@ -274,6 +274,7 @@ out = f'''<!doctype html>
       </div>
       <a href="journey.html" aria-current="page">My journey</a>
       <a href="gallery.html">Gallery</a>
+      <a href="blog.html">Blog</a>
       <a href="mailto:ehsan.jalilvand@gmail.com">Contact</a>
     </nav>
   </div>
