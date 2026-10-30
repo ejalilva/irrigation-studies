@@ -66,3 +66,8 @@
   .gl-prev { left: 4px; top: auto; bottom: -56px; } .gl-next { right: 4px; top: auto; bottom: -56px; }
 }
 @media (prefers-reduced-motion: reduce) { .gl-pin::after { animation: none; } .gl-pin, .gl-thumb img { transition: none; } }
+
+/* OpenStreetMap tiles: a little calmer than the originals in light mode, darkened in dark mode. */
+.gl-map .leaflet-tile-pane { filter: saturate(.7) brightness(1.03); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gl-map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); } }
+:root[data-theme="dark"] .gl-map .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); }

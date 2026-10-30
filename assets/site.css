@@ -82,16 +82,19 @@
   .site-nav a:hover { color: var(--ink); text-decoration: underline; }
   .site-nav a[aria-current="page"] { color: var(--ink); font-weight: 500; }
   /* The "Research" menu (assets/nav.js): its pages drop down under it on hover, click or tap. */
-  .nav-menu { position: relative; display: inline-block; }
-  .nav-btn { display: inline-flex; align-items: center; gap: 5px; padding: 0; border: 0; background: none; font: inherit; line-height: inherit; color: var(--ink-2); cursor: pointer; }
-  .nav-btn:hover, .nav-menu:hover .nav-btn, .nav-menu.open .nav-btn { color: var(--ink); }
-  .nav-btn:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 2px; }
-  .nav-menu.is-current .nav-btn { color: var(--ink); font-weight: 500; }
+  /* "Research" opens the water cycle (index.html); the caret beside it opens its sections. A mouse also opens them by hovering. */
+  .nav-menu { position: relative; display: inline-flex; align-items: center; gap: 2px; }
+  .nav-btn { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-right: -6px; padding: 0; border: 0; border-radius: 4px; background: none; font: inherit; line-height: inherit; color: var(--ink-2); cursor: pointer; }
+  .nav-btn:hover, .nav-menu.open .nav-btn { color: var(--ink); background: var(--hover); }
+  .nav-btn:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+  .nav-menu.is-current .nav-top, .nav-menu.is-current .nav-btn { color: var(--ink); font-weight: 500; }
   .nav-caret { width: 9px; height: 6px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
-  .nav-menu:hover .nav-caret, .nav-menu.open .nav-caret { transform: rotate(180deg); }
+  .nav-menu.open .nav-caret { transform: rotate(180deg); }
+  @media (hover: hover) { .nav-menu:hover .nav-caret { transform: rotate(180deg); } .nav-menu:hover .nav-btn { color: var(--ink); } }
   .nav-sub { position: absolute; z-index: 40; top: calc(100% + 10px); left: -16px; min-width: 232px; margin: 0; padding: 6px 0; list-style: none; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: 0 14px 34px rgba(15,26,31,.16); text-shadow: none; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s, visibility 0s .15s; }
   .nav-sub::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; } /* keeps the hover alive on the way down */
-  .nav-menu:hover .nav-sub, .nav-menu.open .nav-sub, html:not(.js-nav) .nav-menu:focus-within .nav-sub { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s; }
+  .nav-menu.open .nav-sub, html:not(.js-nav) .nav-menu:focus-within .nav-sub { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s; }
+  @media (hover: hover) { .nav-menu:hover .nav-sub { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s; } }
   .nav-sub a, .site-nav .nav-sub a { display: block; padding: 9px 16px; color: var(--ink); font-size: .95rem; font-weight: 400; text-decoration: none; white-space: nowrap; }
   .nav-sub a:hover, .site-nav .nav-sub a:hover { background: var(--hover); color: var(--ink); text-decoration: none; }
   .nav-sub a:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
@@ -505,3 +508,44 @@
   }
   @media (prefers-reduced-motion: reduce) { .cycle-cta, .cycle-cta-go { transition: none; } .cycle-cta:hover { transform: none; } }
 
+
+/* Contact panel (assets/nav.js). Wide screens: the page moves left to make room (html.cp-push). Narrow screens: the
+   panel slides over the page with a shade behind it (html.cp-over). */
+:root { --cp-w: 360px; }
+body { transition: margin-right .3s ease; }
+html.cp-push body { margin-right: var(--cp-w); }
+html.cp-push { overflow-x: hidden; }
+.cp { position: fixed; z-index: 1000; top: 0; right: 0; bottom: 0; width: var(--cp-w); max-width: 100%; overflow-y: auto; padding: 22px 24px 28px; border-left: 1px solid var(--line); background: var(--surface); color: var(--ink); box-shadow: -18px 0 50px rgba(15,26,31,.12); transform: translateX(100%); visibility: hidden; transition: transform .3s ease, visibility 0s linear .3s; font-family: var(--sans); }
+.cp.open { transform: none; visibility: visible; transition: transform .3s ease; }
+.cp-shade { position: fixed; inset: 0; z-index: 999; background: rgba(16,35,43,.45); opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s linear .3s; }
+html.cp-over .cp-shade { opacity: 1; visibility: visible; transition: opacity .3s; }
+.cp-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.cp-ej { flex: none; width: 40px; height: 40px; border-radius: 50%; }
+.cp-head > div { flex: 1; min-width: 0; }
+.cp-kick { margin: 0; font: 600 .7rem/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.cp h2 { margin: 2px 0 0; font: 500 1.4rem/1.2 var(--head); color: var(--ink); }
+.cp-close { flex: none; align-self: flex-start; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.cp-close:hover { background: var(--hover); }
+.cp-lead { margin: 0 0 18px; font-size: .95rem; line-height: 1.55; color: var(--ink-2); }
+.cp-mail { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.cp-addr { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .92rem; font-weight: 500; color: var(--ink); text-decoration: none; }
+.cp-addr:hover { text-decoration: underline; }
+.cp-copy { flex: none; padding: 7px 12px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--ink); font: 500 .85rem/1 var(--sans); cursor: pointer; }
+.cp-copy:hover { background: var(--hover); }
+.cp-copy.done { border-color: #2E8B57; color: #2E8B57; }
+.cp-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 26px; }
+.cp-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: .9rem; font-weight: 500; text-decoration: none; }
+.cp-btn:hover { background: var(--hover); }
+.cp-primary { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.cp-primary:hover { background: var(--ink); opacity: .88; }
+.cp-h { margin: 0 0 6px; font: 600 .7rem/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.cp-links { margin: 0 0 24px; padding: 0; list-style: none; }
+.cp-links a { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.cp-links li:last-child a { border-bottom: 0; }
+.cp-links a:hover { background: var(--hover); }
+.cp-links svg { flex: none; width: 20px; height: 20px; fill: currentColor; color: var(--ink-2); }
+.cp-links span:first-of-type { flex: 1; }
+.cp-out { color: var(--ink-2); font-size: .85rem; }
+.cp-where { margin: 0; padding-top: 16px; border-top: 1px dashed var(--line); font-size: .85rem; line-height: 1.55; color: var(--ink-2); }
+.cp :focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { body, .cp, .cp-shade { transition: none; } }
