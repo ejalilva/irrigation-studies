@@ -13,7 +13,7 @@
 /* The top of the chapter is left to its icon; the chapter name and year share one line just above the title
    ("Chapter one · 2019"). On narrow screens the question tag (Where, When, How much) follows on the same line. */
 .j-top{display:block;min-height:22px;margin-bottom:3px}
-.j-ch{display:flex;flex-wrap:wrap;align-items:center;gap:2px 0;margin:0 0 2px;font:650 .68rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.j-ch{display:flex;flex-wrap:wrap;align-items:center;gap:2px 0;margin:0 0 2px;font:600 .8rem/1.3 var(--sans);color:var(--ink-2);}
 .j-year::before{content:"\00b7";margin:0 .45em}
 .j-q{display:none}
 /* Chapter icon: a picture over the top-right corner of the chapter, breaking out of its border. A card-coloured
@@ -42,14 +42,14 @@
 .j-links .j-feed{stroke-width:2.2;stroke-dasharray:1 7;opacity:.9}
 .j-links .j-head{fill:currentColor;stroke:none}
 .j-links .j-dots circle{fill:currentColor;stroke:var(--paper);stroke-width:2}
-.j-together{position:absolute;z-index:2;transform:translate(-50%,-50%);padding:0 6px;background:var(--paper);font:600 .66rem/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.j-together{position:absolute;z-index:2;transform:translate(-50%,-50%);padding:0 6px;background:var(--paper);font:500 .8rem/1.4 var(--sans);color:var(--ink-2);}
 
 /* Study card: one card, placed beside the chapter on wide screens and under it when the chapters stack. */
 .j-card{position:absolute;z-index:30;width:360px;max-width:calc(100vw - 32px);background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:0 18px 50px rgba(15,26,31,.22);overflow:hidden;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .16s,transform .16s,visibility 0s .16s}
 .j-card.on{opacity:1;visibility:visible;transform:none;transition:opacity .16s,transform .16s}
 .j-card.inline{position:relative;width:auto;max-width:none;margin-top:10px;box-shadow:0 8px 24px rgba(15,26,31,.12)}
 .jc-head{display:flex;gap:10px;align-items:flex-start;padding:12px 14px}
-.jc-kick{margin:0;font:600 .68rem/1.3 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.jc-kick{margin:0;font:600 .8rem/1.3 var(--sans);color:var(--ink-2);}
 .jc-title{margin:2px 0 0;font:italic 600 1.08rem/1.25 Georgia,"Times New Roman",serif;color:var(--ink)}
 .jc-sub{margin:3px 0 0;font-size:.8rem;line-height:1.4;color:var(--ink-2)}
 /* Study figures at the top of the card: one, or several side by side (chapter option figs), each sized by its own shape. */
@@ -106,7 +106,7 @@
 .chapter-reader::backdrop{background:#10232bd0}
 .cr-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:16px;padding:20px 24px 16px;border-top:5px solid var(--g);border-bottom:1px solid var(--line);background:var(--paper)}
 .cr-head-text{flex:1;min-width:0}
-.cr-kick{margin:0;font:650 .72rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.cr-kick{margin:0;font:650 .86rem/1.3 var(--sans);color:var(--ink-2);}
 .cr-kick::before{content:"";display:inline-block;width:10px;height:10px;margin-right:7px;border-radius:2px;background:var(--g);vertical-align:-1px}
 .cr-head h2{margin:4px 0 0;font:italic 600 clamp(1.35rem,3.2vw,1.85rem)/1.15 Georgia,"Times New Roman",serif;color:var(--ink);text-wrap:balance}
 .cr-sub{margin:5px 0 0;font-size:.95rem;line-height:1.4;color:var(--ink-2)}
@@ -117,7 +117,7 @@
 .cr-story{max-width:68ch}
 .cr-story p{margin:0 0 14px;font-size:1.02rem;line-height:1.62;color:var(--ink)}
 .cr-story p:first-child::first-letter{font:600 2.9em/0.9 Georgia,"Times New Roman",serif;float:left;margin:4px 8px 0 0;color:var(--g)}
-.cr-body h3{margin:0 0 10px;font:650 .76rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.cr-body h3{margin:0 0 10px;font:650 .86rem/1.3 var(--sans);color:var(--ink-2);}
 /* Figures: white mats so the paper figures read in both themes; a click enlarges one. */
 .cr-fig{margin:0;display:flex;flex-direction:column;min-width:0}
 .cr-fig > a{display:block;padding:8px;border:1px solid var(--line);border-radius:6px;background:#fff}
@@ -162,7 +162,7 @@
 .cr-go{display:flex;flex-direction:column;gap:2px;max-width:48%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
 .cr-go:hover{border-color:var(--ink-2);background:var(--hover)}
 .cr-next{margin-left:auto;text-align:right}
-.cr-go-k{font:650 .68rem/1.3 var(--sans);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.cr-go-k{font:650 .86rem/1.3 var(--sans);color:var(--ink-2);}
 .cr-go-t{font:italic 600 .95rem/1.25 Georgia,"Times New Roman",serif}
 @media (max-width:680px){
   .chapter-reader{width:100%;max-width:none;height:100dvh;max-height:none;margin:0;border:0;border-radius:0}

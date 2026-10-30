@@ -1,7 +1,7 @@
 /* Shared explorer styling uses the research library's existing theme tokens. */
 .water-cycle {padding-top:42px; --muted:var(--ink-2); --green:var(--link); --accent:var(--r0);}
 .cycle-heading {display:flex;justify-content:space-between;align-items:end;gap:40px;}
-.cycle-eyebrow {font:500 .72rem/1.5 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin:0 0 12px;}
+.cycle-eyebrow {font:500 .86rem/1.5 var(--sans);color:var(--ink-2);margin:0 0 12px;}
 .water-cycle h1 {font-size:clamp(2rem,4.4vw,3.35rem);line-height:1.1;max-width:19ch;}
 .cycle-intro {max-width:39ch;font-size:.95rem;line-height:1.65;color:var(--ink-2);margin:0;}
 .explorer-toolbar {display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
@@ -44,7 +44,7 @@
 #research-dialog::backdrop {background:rgba(15,26,31,.55);backdrop-filter:blur(3px);}
 #research-dialog .dialog-body {padding:38px;}
 #research-dialog .close {position:sticky;float:right;top:12px;margin:12px 12px 0 0;width:34px;height:34px;font-size:24px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:50%;cursor:pointer;z-index:1;}
-:is(#research-dialog,#peek) .eyebrow {font-size:.7rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.07em;}
+:is(#research-dialog,#peek) .eyebrow {font-size:.86rem;color:var(--ink-2);}
 :is(#research-dialog,#peek) h2 {font-size:1.9rem;}
 :is(#research-dialog,#peek) .dialog-intro {font-size:.95rem;color:var(--ink-2);}
 :is(#research-dialog,#peek) .project {padding:20px 0;border-top:1px solid var(--line);}
@@ -213,7 +213,7 @@ body:not(.motion-off):not(.dialog-open) .scene-item .anim.link-run{animation-pla
 
 /* Paper cards in the pop-ups (built by assets/journals.js). Each starts with a small masthead in the journal's own style
    (always on white, like the paper), a rule and a chip in the journal's cover colour (--jc). */
-:is(#research-dialog,#peek) .dialog-group {font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);margin:26px 0 10px;padding-top:18px;border-top:1px solid var(--line);}
+:is(#research-dialog,#peek) .dialog-group {font-size:.86rem;font-weight:600;color:var(--ink-2);margin:26px 0 10px;padding-top:18px;border-top:1px solid var(--line);}
 :is(#research-dialog,#peek) .dialog-group + .project {border-top:0;padding-top:4px;}
 .paper-list {display:grid;gap:14px;}
 .paper-card {border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--paper);}

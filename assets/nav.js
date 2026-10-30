@@ -38,7 +38,7 @@
   // web3forms.com (enter the email that should receive the messages, and the key arrives by email).
   const FORM_KEY = '';
   const ENDPOINT = 'https://api.web3forms.com/submit';
-  const ICONS = 'assets/icons.svg?v=2026-10-28a';
+  const ICONS = 'assets/icons.svg?v=2626736ae0';
   const PROFILES = [
     ['Google Scholar', 'https://scholar.google.com/citations?user=RsLEzG0AAAAJ&hl=en', 'i-scholar'],
     ['ResearchGate', 'https://www.researchgate.net/profile/Ehsan-Jalilvand', 'i-researchgate'],
@@ -56,8 +56,8 @@
   panel.setAttribute('aria-labelledby', 'cp-title');
   panel.innerHTML = `
     <div class="cp-head">
-      <img class="cp-ej" src="assets/ej-64.png?v=2026-10-30a" alt="" width="40" height="40">
-      <div><p class="cp-kick">Contact</p><h2 id="cp-title">Get in touch</h2></div>
+      <img class="cp-ej" src="assets/ej-64.png?v=5f8a71e437" alt="" width="40" height="40">
+      <div><h2 id="cp-title">Get in touch</h2></div>
       <button type="button" class="cp-close" aria-label="Close contact panel">×</button>
     </div>
     <p class="cp-lead">For collaborations, talks, or questions about my papers, data and code, send me a message here and I’ll reply by email.</p>

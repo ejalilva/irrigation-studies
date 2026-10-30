@@ -11,7 +11,7 @@ A living guide to research that uses satellites and Earth system models to find 
 - **The research library**: a table of studies from across the field, filtered by the question each answers (where, when, how much) and sorted by clicking a column heading, with study area, period, review status and links to data and code. Papers on the essential reading list are tagged **Essential**.
 - **My journey**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
 - **Gallery**: field campaigns and talks on a map; pick a pin to see its pictures.
-- **Blog** (`blog.html`): The Big Ratchet / The 4th agricultural revolution, the LinkedIn permafrost article and the NASA Early Career Scientist Spotlight, each with its own post page.
+- **Blog** (`blog.html`): The Big Ratchet (a page here), the LinkedIn permafrost article and the NASA Early Career Scientist Spotlight (both linked straight to the original), each with a picture and a passage in my own words.
 
 
 ## How the table stays up to date
