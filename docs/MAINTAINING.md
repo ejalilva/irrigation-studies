@@ -293,8 +293,8 @@ are in `site/assets/irrigation/`, plus `assets/why/food-demand.webp` and `assets
 - **Story rows** (`.ir-row`): a bold statement (`.ir-say`), then its pictures (`.ir-media`) beside its facts
   (`.ir-text`). `.ir-flip` puts the pictures on the right; `.ir-row-wide` gives a wide picture the full width. On phones
   every row stacks: statement, pictures, facts.
-- **Why it matters**: fresh water is very limited (the 100-litre bottles, with the old page's blue line, "70% of this
-  half teaspoon…"); doubling food production (canal, rainfed vs irrigated, farmer, beside the quick facts in three
+- **Why it matters**: fresh water is very limited (the 100-litre bottles and, under them, the old page's "70% of this
+  half-teaspoon…" lettering, both pictures on a white card because the lettering was drawn for a white page); doubling food production (canal, rainfed vs irrigated, farmer, beside the quick facts in three
   groups); climate change makes it worse (the WRI Aqueduct water-stress map, linking to the interactive map); irrigation
   changes the climate (the McDermid et al., 2023 figure beside its effects).
 - **The gap**: monitoring withdrawals is hard (the Foster et al., 2020 metering map); modeling irrigation is hard (the two
