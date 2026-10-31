@@ -1,6 +1,6 @@
 # When you untick (or re-tick) a paper in the agent's pull request description,
 # this removes (or restores) it on the review branch. Ticking "Editor's pick"
-# under a paper records it, with your note, in data/editor_picks.json.
+# under a paper records it, with your note, in site/data/editor_picks.json.
 
 name: Apply paper review
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: Save the changes to the branch
         run: |
-          git add data/papers.json data/editor_picks.json agent/seen.json agent/rejected.json 2>/dev/null || true
+          git add site/data/papers.json site/data/editor_picks.json agent/seen.json agent/rejected.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Nothing to change."
             exit 0

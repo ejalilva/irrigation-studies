@@ -19,7 +19,7 @@
   const MENU = [
     ['about.html', 'About'],
     ['index.html', 'Research', ['irrigation.html', 'human.html']],
-    ['journey.html', 'My journey', ['journey-initial.html']],
+    ['journey.html', 'My journey'],
     ['gallery.html', 'Gallery'],
     ['blog.html', 'Blog', [/^blog-.+\.html$/]],
     ['#contact', 'Contact']

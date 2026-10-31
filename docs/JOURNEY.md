@@ -1,8 +1,10 @@
 # My journey
 
+Paths in this file are inside `site/` (the published website), except `scripts/` and `docs/`.
+
 `journey.html` is linked as **My journey** in the header of `index.html` and `human.html`. Ehsan chose the design on October 26, 2026 (skill bars that grow along the timeline) and, on October 27, the way pictures and work are shown (option A: pictures fan out above the stop, with links to papers, code and videos under the stop's line).
 
-`journey-initial.html` keeps the first design (October 21, 2026) for comparison: four landmark cut-outs that each open a short story in a pop-up, restored from commit `9e9a3bf`. It can be deleted, with `assets/journey.css`, `assets/journey.js`, `assets/journey/landscape.jpg` and the four `.webp` cut-outs in `assets/journey/`, once it is no longer wanted.
+The first design (October 21, 2026: four landmark cut-outs that each opened a short story in a pop-up) was removed on October 30, 2026. It is in the Git history before pull request #59 (`journey-initial.html`, `assets/journey.css`, `assets/journey.js`, `assets/journey/landscape.jpg` and the four cut-outs) if it is ever wanted again.
 
 History: the first design was added in pull request #13 and taken offline on October 22, 2026 (commit `3236b23`). A second version came in #16 without a header link; #43 restored the link; #44 replaced it with the skill bars; #46 and #47 added pictures, work links, Georgia Tech, smaller landmarks and the stops corrected from Ehsan's LinkedIn experience; the next version adds the isometric Michigan State, the flags, the Sharif University tag and logos on the timeline.
 
@@ -52,8 +54,3 @@ Generation prompt: compositing; preserve the base landscape’s winding paths, r
 
 The image is encoded as WebP for the page. Transparent buttons over the landmark regions take hover, focus, clicks and taps.
 
-## First design: content and editing
-
-The four stories in `journey-initial.html` are adapted from Ehsan's NASA career spotlight (https://science.gsfc.nasa.gov/600/ECSS/Ehsan-Jalilvand/, accessed October 22, 2026). The landscape is `assets/journey/landscape.jpg`; the four landmark illustrations were cut out from their white backgrounds and saved with transparency as `assets/journey/sharif.webp`, `italy.webp`, `michigan.webp` and `nasa.webp`. The map is symbolic: the rocket stands for the NASA chapter, not the Goddard campus.
-
-The story text lives in the four `<article>` elements near the end of `journey-initial.html`; `assets/journey.js` reads them into the pop-up, so there is one copy of each story and they stay readable without JavaScript. Landmark positions are percentage rules in `assets/journey.css`, and the crop of each cutout is its SVG `viewBox` in the HTML (source images are 1254 × 1254). Hover or focus lifts a landmark; clicking opens the pop-up with previous/next buttons; the Motion button and reduced-motion settings stop the movement.

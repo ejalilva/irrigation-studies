@@ -5,7 +5,7 @@ when a file changes its stamp must change too, or a returning visitor gets the o
 on others (that is how My journey once kept an old menu script). This script sets each stamp to the first 10
 characters of the file's MD5, so every page that uses a file always asks for the same, current version.
 
-Run it after changing anything in assets/:   python scripts/stamp_assets.py
+Run it after changing anything in site/assets/:   python scripts/stamp_assets.py
 scripts/build_journey.py runs it on journey.html by itself. Links to files that don't exist are left alone.
 """
 from pathlib import Path
@@ -13,7 +13,7 @@ import hashlib
 import re
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1] / "site"  # the published website
 REF = re.compile(r'(assets/[A-Za-z0-9_./-]+?\.(?:css|js|svg|png|webp|jpe?g|gif|avif|json|woff2?))\?v=[A-Za-z0-9_.{}-]+')
 
 

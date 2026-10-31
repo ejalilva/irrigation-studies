@@ -3,7 +3,7 @@
 Paper-finding agent for the irrigation research table.
 
 What it does, in order:
-  1. Reads the table (data/papers.json) and its settings (agent/config.json).
+  1. Reads the table (site/data/papers.json) and its settings (agent/config.json).
   2. Searches OpenAlex, a free index of scholarly papers that also covers
      preprint servers, for recent studies matching the search phrases.
      In backfill mode it also searches one past year (agent/backfill.json),
@@ -39,7 +39,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_PATH = ROOT / "data" / "papers.json"
+DATA_PATH = ROOT / "site" / "data" / "papers.json"
 CONFIG_PATH = ROOT / "agent" / "config.json"
 SEEN_PATH = ROOT / "agent" / "seen.json"
 BACKFILL_PATH = ROOT / "agent" / "backfill.json"
@@ -902,7 +902,7 @@ def main():
         for p in linked:
             links = ", ".join(f"[{r['label']} ({r['type']})]({r['url']})" for r in p["resources"])
             lines.append(f"- {p['title']}: {links}")
-        lines += ["", "To drop a wrong link, delete it from the paper's `resources` list in `data/papers.json` before merging."]
+        lines += ["", "To drop a wrong link, delete it from the paper's `resources` list in `site/data/papers.json` before merging."]
     lines += ["", "Merge this pull request to publish the ticked papers."]
     report = "\n".join(lines) + "\n"
     print("\n" + report)

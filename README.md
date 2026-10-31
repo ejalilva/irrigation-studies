@@ -1,37 +1,37 @@
-# Irrigation studies
+# Ehsan Jalilvand
 
-A living guide to research that uses satellites and Earth system models to find **where**, **when** and **how much** farms irrigate. Curated by [Ehsan Jalilvand](https://ejalilva.github.io/irrigation-studies/about.html).
+The source of my personal website. I'm a research scientist who brings human water use, above all irrigation, into water-cycle models, using satellite observations and machine learning. The site covers who I am, the research I do, and the path that led here.
 
-**Visit the page: [ejalilva.github.io/irrigation-studies](https://ejalilva.github.io/irrigation-studies/)**
+**[Visit the website](https://ejalilva.github.io/irrigation-studies/about.html)**
 
-## What's on the page
+## What's on the site
 
-- **Research** ([index.html](https://ejalilva.github.io/irrigation-studies/)): an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note with its papers as cards in each journal's own style. The farm, marked so it is the first thing to click, opens the irrigation page.
-- **Human-driven processes & irrigation** ([irrigation.html](https://ejalilva.github.io/irrigation-studies/irrigation.html)): why irrigation is the human-driven process to model first; why it matters and what is missing, in two compact sections; my own studies, told as six chapters ("Every answer revealed another question"); an essential reading list; and the research library below.
-- **The research library**: a table of studies from across the field, filtered by the question each answers (where, when, how much) and sorted by clicking a column heading, with study area, period, review status and links to data and code. Papers on the essential reading list are tagged **Essential**.
-- **My journey**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
-- **Gallery**: field campaigns and talks on a map; pick a pin to see its pictures.
-- **Blog** (`blog.html`): The Big Ratchet (a page here), the LinkedIn permafrost article and the NASA Early Career Scientist Spotlight (both linked straight to the original), each with a picture and a passage in my own words.
+- **[About](https://ejalilva.github.io/irrigation-studies/about.html)**: who I am and what I work on, my experience, education and publications, and links to my profiles.
+- **[Research](https://ejalilva.github.io/irrigation-studies/)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
+- **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation is the human-driven process to model first, my studies on where, when and how much farms irrigate (told as six chapters), an essential reading list, and a research library of studies from across the field.
+- **[My journey](https://ejalilva.github.io/irrigation-studies/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
+- **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Pick a pin to see its pictures.
+- **[Blog](https://ejalilva.github.io/irrigation-studies/blog.html)**: *The Big Ratchet*, my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
+- **Contact**: a message form on every page, alongside Google Scholar, ResearchGate, GitHub, LinkedIn and YouTube.
 
+## The research library
 
-## How the table stays up to date
+The library on the Irrigation page keeps itself up to date. Every week a small program searches [OpenAlex](https://openalex.org) for new irrigation studies, and [Claude](https://www.anthropic.com/claude) reads each abstract and fills in the table: which questions the study answers, where and when it was done, and how. The new rows arrive as a pull request, and I review every one before anything is published. The descriptions are AI-assisted and reviewed by hand, so corrections are welcome.
 
-1. **Search.** Every week a small program searches [OpenAlex](https://openalex.org), an open index of scholarly papers and preprints, for new irrigation studies. It is also working back through earlier years, one year at a time, to 2015. For older years it keeps papers that have been cited a reasonable number of times for their age, so the table favors studies the field has taken up.
-2. **Read and sort.** For each candidate, [Claude](https://www.anthropic.com/claude), an AI model by Anthropic, reads the abstract and fills in the table's columns: is it really about detecting or measuring irrigation, which questions it answers, where and when the study was done, and how.
-3. **Human review.** The program proposes new rows as a pull request. I check each one and reject what doesn't belong, and only then publish. Nothing appears in the table without that review.
-4. **Follow-up.** Preprints are checked every week, and a row switches to the peer-reviewed version once it appears. The program also looks for datasets and software linked to each paper in open registries such as [DataCite](https://datacite.org) and [Crossref](https://www.crossref.org).
+The table is plain JSON in [`site/data/papers.json`](site/data/papers.json), and the page can download it as CSV. To suggest a paper or a correction, [open an issue](https://github.com/ejalilva/irrigation-studies/issues) or use the Contact form on the site.
 
-The descriptions are AI-assisted and reviewed by hand, but mistakes can slip through. Corrections are welcome.
+## How this repository is organized
 
-## Suggest a paper or a correction
+```
+site/        the website itself: the pages, assets/ (styles, scripts, pictures) and data/
+agent/       the program that finds new papers for the research library
+scripts/     build helpers (the My journey page, asset versions)
+docs/        notes for maintaining the site
+.github/     workflows that publish the site, search for papers and apply reviews
+```
 
-[Open an issue](https://github.com/ejalilva/irrigation-studies/issues) or send a message with the Contact form on the [site](https://ejalilva.github.io/irrigation-studies/about.html#contact).
-
-## Data
-
-The table is plain JSON in [`data/papers.json`](data/papers.json), with the reading list in [`data/reading_list.json`](data/reading_list.json). You can also download the table as CSV from the page.
+Everything in `site/` is published to GitHub Pages whenever it changes on `main`. To preview locally, run `python -m http.server -d site` and open http://localhost:8000. After changing anything in `site/assets/`, run `python scripts/stamp_assets.py` so browsers pick up the new files. The details are in [docs/MAINTAINING.md](docs/MAINTAINING.md).
 
 ---
 
-Views expressed here are my own and do not reflect those of my employer. Maintenance notes are in [docs/MAINTAINING.md](docs/MAINTAINING.md).
-
+Views expressed here are my own and do not reflect those of my employer.

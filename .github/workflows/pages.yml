@@ -1,0 +1,46 @@
+# Publishes the website: everything in site/ goes to https://ejalilva.github.io/irrigation-studies/
+# Runs on every change to main that touches site/ (including merged paper reviews), and by hand from the
+# Actions tab (Publish the website > Run workflow).
+#
+# One-time setup: Settings > Pages > Build and deployment > Source must be "GitHub Actions".
+
+name: Publish the website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Get the website files
+        uses: actions/checkout@v6
+
+      - name: Set up Pages
+        uses: actions/configure-pages@v5
+
+      - name: Package site/
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+      - name: Publish
+        id: deploy
+        uses: actions/deploy-pages@v4
