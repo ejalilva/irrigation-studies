@@ -8,7 +8,7 @@ The source of my personal website. I'm a research scientist who brings human wat
 
 - **[About](https://ejalilva.github.io/irrigation-studies/about.html)**: who I am and what I work on, my experience, education and publications, and links to my profiles.
 - **[Research](https://ejalilva.github.io/irrigation-studies/)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
-- **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation is the human-driven process to model first, my studies on where, when and how much farms irrigate (told as six chapters), an essential reading list, and a research library of studies from across the field.
+- **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation matters and why no one knows how much water each farm uses, told with the pictures from my old site; my studies on where, when and how much farms irrigate (told as six chapters); an essential reading list; and a research library of studies from across the field.
 - **[My journey](https://ejalilva.github.io/irrigation-studies/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
 - **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Pick a pin to see its pictures.
 - **[Blog](https://ejalilva.github.io/irrigation-studies/blog.html)**: *The Big Ratchet*, my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
@@ -27,6 +27,7 @@ site/        the website itself: the pages, assets/ (styles, scripts, pictures) 
 agent/       the program that finds new papers for the research library
 scripts/     build helpers (the My journey page, asset versions)
 docs/        notes for maintaining the site
+archive/     pictures and embeds kept from the old Google Site (not published)
 .github/     workflows that publish the site, search for papers and apply reviews
 ```
 

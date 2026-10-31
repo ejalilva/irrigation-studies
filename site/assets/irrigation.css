@@ -1,61 +1,63 @@
-/* The human-driven processes & irrigation page (irrigation.html): the hero, the compact "Why irrigation matters" deck,
-   the gap, and the agent's steps above the research library. The sections that came from the old main page (focus,
-   studies, reading, landscape) keep their styles in focus.css, study-grid.css and site.css. */
+/* The irrigation page (irrigation.html). The top follows the Irrigation page of the old Google Site: a banner photo, then
+   "Why irrigation matters" and "The gap" told as statements, each with its pictures beside the facts (the "story" rows),
+   then the studies. The studies, reading list and library keep their styles in study-grid.css and site.css. */
 
 .irrigation-page main > section { scroll-margin-top: 16px; }
-.irrigation-page .focus { margin-top: 64px; }
 
-/* Hero */
-.ir-hero { padding: 44px 0 8px; }
-.ir-hero .cycle-eyebrow a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
-.ir-hero .cycle-eyebrow a:hover { color: var(--ink); border-color: currentColor; }
-.ir-hero h1 { margin: 0; max-width: 20ch; font: 500 clamp(2.1rem, 4.6vw, 3.4rem)/1.08 var(--head); letter-spacing: -.02em; }
-.ir-lead { max-width: 62ch; margin: 18px 0 0; font-size: 1.12rem; line-height: 1.55; color: var(--ink-2); }
-.ir-toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; }
-.ir-toc a { padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: .86rem; color: var(--ink-2); text-decoration: none; transition: border-color .15s, color .15s, background .15s; }
-.ir-toc a:hover { color: var(--ink); border-color: var(--ink-2); background: var(--hover); }
+/* Hero: the canal-at-dawn banner from the old page, with the title over it. */
+.ir-hero { position: relative; display: flex; align-items: flex-end; min-height: clamp(380px, 44vw, 500px); margin-top: 24px; padding: clamp(22px, 4vw, 44px); border-radius: 16px; overflow: hidden; color: #fff;
+  background: linear-gradient(to top, rgba(8,20,26,.86) 0%, rgba(8,20,26,.55) 42%, rgba(8,20,26,.08) 78%), url("irrigation/hero-canal.webp") center 58% / cover no-repeat, #3B4A3F; }
+.ir-hero h1 { margin: 0; max-width: 20ch; font: 500 clamp(2.1rem, 4.6vw, 3.4rem)/1.08 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+.ir-lead { max-width: 60ch; margin: 16px 0 0; font-size: 1.1rem; line-height: 1.55; color: rgba(255,255,255,.9); }
+.ir-toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; }
+.ir-toc a { padding: 6px 13px; border: 1px solid rgba(255,255,255,.45); border-radius: 999px; font-size: .88rem; color: #fff; text-decoration: none; background: rgba(255,255,255,.08); transition: background .15s, border-color .15s; }
+.ir-toc a:hover { background: rgba(255,255,255,.2); border-color: #fff; }
+.ir-toc a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ir-hero-credit { position: absolute; top: 12px; right: 14px; font-size: .74rem; color: rgba(255,255,255,.78); text-decoration: none; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+.ir-hero-credit:hover { color: #fff; text-decoration: underline; }
 
-/* Why irrigation matters: the bottle beside four themes, each a picture and two numbers. */
-.ir-why { margin-top: 64px; }
-.ir-deck { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 2.6fr); gap: 16px; margin-top: 26px; align-items: stretch; }
-.ir-bottle { margin: 0; display: grid; grid-template-rows: auto 1fr; gap: 12px; padding: 16px; border-radius: 10px; background: linear-gradient(180deg, #E8F2F4, #F6FAFB); border: 1px solid var(--line); }
-.ir-bottle img { display: block; width: 100%; height: auto; max-height: 230px; object-fit: contain; }
-.ir-bottle figcaption { font-size: .88rem; line-height: 1.5; color: var(--ink-2); }
-.ir-bottle figcaption p { margin: 0 0 6px; }
-.ir-bottle strong { color: var(--ink); font-weight: 600; }
-.ir-bottle-k { font: 600 1rem/1.3 var(--head); color: var(--ink) !important; }
-.ir-themes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-/* Each theme: its picture down the left edge, then the theme's name and two numbers. */
-.ir-theme { display: grid; grid-template-columns: 96px minmax(0, 1fr); min-width: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
-.ir-theme img { display: block; width: 100%; height: 100%; min-height: 100%; object-fit: cover; background: var(--tag-bg); }
-.ir-theme-body { min-width: 0; padding: 10px 14px 12px; }
-.ir-theme h3 { margin: 0 0 2px; font: 600 1rem/1.35 var(--sans); color: var(--ink); }
-.ir-stat { margin: 0; padding: 7px 0 0; font-size: .85rem; line-height: 1.45; color: var(--ink-2); }
-.ir-stat + .ir-stat { margin-top: 7px; border-top: 1px dashed var(--line); }
-.ir-stat b { margin-right: .3em; font: 600 1.3rem/1 var(--head); letter-spacing: -.01em; color: var(--r4); white-space: nowrap; }
-.ir-stat span { display: inline; }
-.ir-why .src, .ir-gap .src { font-size: .74rem; white-space: nowrap; }
-.ir-effects { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 16px 0 0; font-size: .88rem; color: var(--ink-2); }
-.ir-effects-k { margin-right: 4px; color: var(--ink); font-weight: 500; }
-.ir-chip { padding: 3px 10px; border-radius: 999px; background: var(--tag-bg); color: var(--ink); font-size: .82rem; }
+/* Story: each row is a statement, then its pictures beside the facts. .ir-flip puts the pictures on the right;
+   .ir-row-wide gives a wide picture the full width, with the facts under it. */
+.ir-why, .ir-gap { margin-top: 56px; }
+:is(.ir-why, .ir-gap) > h2 { margin-top: 0; }
+.ir-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "say say" "media text"; gap: 18px 40px; align-items: start; margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--line); }
+:is(.ir-why, .ir-gap) > h2 + .ir-row { margin-top: 18px; padding-top: 0; border-top: 0; }
+.ir-flip { grid-template-areas: "say say" "text media"; }
+.ir-row-wide { grid-template-columns: minmax(0, 1fr); grid-template-areas: "say" "media" "more"; }
+.ir-say { grid-area: say; max-width: 40ch; margin: 0; font: 600 clamp(1.25rem, 2.1vw, 1.55rem)/1.28 var(--head); letter-spacing: -.01em; color: var(--ink); }
+.ir-media { grid-area: media; display: block; min-width: 0; margin: 0; }
+.ir-text { grid-area: text; min-width: 0; }
+.ir-media img, .ir-clip { display: block; width: 100%; height: auto; border-radius: 10px; }
+.ir-media figcaption, .ir-cap, .ir-note { display: block; margin-top: 8px; font-size: .84rem; line-height: 1.45; color: var(--ink-2); }
+.ir-note { grid-area: more; margin: 0; }
+.ir-text h4 { margin: 20px 0 6px; font: 600 1.02rem/1.35 var(--head); color: var(--ink); }
+.ir-text h4:first-child { margin-top: 0; }
+.ir-text ul { margin: 0; padding-left: 1.15em; }
+.ir-text li { margin: 0 0 8px; font-size: .96rem; line-height: 1.55; color: var(--ink); }
+.ir-text li::marker { color: var(--r3); }
+:is(.ir-why, .ir-gap) .src { font-size: .78rem; white-space: nowrap; color: var(--ink-2); }
+:is(.ir-why, .ir-gap) a.src { color: var(--link); }
 
-/* The gap: why farm water use is hard to measure and hard to model. */
-.ir-gap { margin-top: 56px; }
-.ir-gap-grid { display: grid; grid-template-columns: 180px repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; margin-top: 22px; }
-.ir-gap-pic { display: block; width: 100%; height: 100%; max-height: 220px; object-fit: contain; align-self: center; }
-.ir-gap-card { padding: 16px 18px; border: 1px solid var(--line); border-top: 4px solid var(--q-when); border-radius: 10px; background: var(--surface); }
-.ir-gap-card + .ir-gap-card { border-top-color: var(--r3); }
-.ir-gap-card h3 { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; font: 500 1.12rem/1.3 var(--head); }
-.ir-gap-card ul { margin: 0; padding: 0; list-style: none; }
-.ir-gap-card li { margin: 8px 0 0; font-size: .9rem; line-height: 1.5; color: var(--ink-2); }
-.ir-gap-card li strong { color: var(--ink); font-weight: 600; }
-.ir-gap-foot { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: center; margin-top: 18px; }
-.ir-bridge { max-width: 66ch; margin: 0; padding-left: 14px; border-left: 3px solid var(--r3); font-size: 1rem; color: var(--ink); }
-.ir-talk { position: relative; display: block; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; text-decoration: none; cursor: zoom-in; }
-.ir-talk img { display: block; width: 100%; height: auto; }
-.ir-talk-cap { position: absolute; left: 8px; bottom: 8px; padding: 3px 9px; border-radius: 999px; background: rgba(15,26,31,.78); color: #fff; font-size: .74rem; }
-.ir-talk:hover { box-shadow: 0 8px 22px var(--shadow); }
-.irrigation-page details.more { margin-top: 36px; }
+/* Fresh water: the 100-litre bottles on black, with the old page's blue line under them. */
+.ir-dark { border-radius: 12px; overflow: hidden; background: #000; }
+.ir-dark img { max-height: 340px; object-fit: contain; border-radius: 0; }
+.ir-strip { margin: 0 !important; padding: 10px 16px; background: var(--r4); color: #fff !important; font: italic 600 1.02rem/1.4 var(--head) !important; text-align: center; }
+/* Doubling food production: the canal across the top, the two smaller pictures under it. */
+.ir-mosaic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.ir-mosaic img { aspect-ratio: 670 / 384; object-fit: cover; }
+.ir-mosaic .ir-m-wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+/* The water-stress map links to the interactive map. */
+.ir-map { text-decoration: none; }
+.ir-map img { border: 1px solid var(--line); transition: box-shadow .15s; }
+.ir-map:hover img { box-shadow: 0 10px 26px var(--shadow); }
+.ir-map .ir-cap { color: var(--link); }
+/* Diagrams and maps drawn on white keep a white card in dark mode. */
+.ir-white img { padding: 6px; border: 1px solid var(--line); background: #fff; }
+/* Modeling is hard: the two clips side by side. */
+.ir-clips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ir-clips figure { margin: 0; min-width: 0; }
+.ir-clip { aspect-ratio: 1; object-fit: cover; background: #DCE3D5; }
+.ir-bridge { max-width: 66ch; margin: 36px 0 0; padding-left: 14px; border-left: 3px solid var(--r3); font-size: 1.02rem; line-height: 1.55; color: var(--ink); }
 
 /* The agent's four steps above the research library. */
 .ir-agent { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: none; }
@@ -65,31 +67,22 @@
 .ir-agent li:not(:last-child)::after { content: ""; position: absolute; right: -10px; top: 50%; width: 8px; height: 8px; border-top: 1.5px solid var(--ink-2); border-right: 1.5px solid var(--ink-2); transform: translateY(-50%) rotate(45deg); opacity: .6; }
 .ir-agent-link { margin: 10px 0 0; font-size: .86rem; }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .ir-bottle { background: linear-gradient(180deg, #17303A, #15232A); }
-}
-:root[data-theme="dark"] .ir-bottle { background: linear-gradient(180deg, #17303A, #15232A); }
-
 @media (max-width: 1000px) {
-  .ir-deck { grid-template-columns: 1fr; }
-  .ir-bottle { grid-template-columns: 120px minmax(0, 1fr); grid-template-rows: auto; align-items: center; }
-  .ir-bottle img { max-height: 160px; }
-  .ir-gap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ir-gap-pic { grid-column: 1 / -1; max-height: 150px; }
-  .ir-gap-foot { grid-template-columns: 1fr; }
-  .ir-talk { max-width: 420px; }
   .ir-agent { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ir-agent li:nth-child(2)::after { display: none; }
 }
+@media (max-width: 760px) {
+  .ir-row, .ir-flip { grid-template-columns: minmax(0, 1fr); grid-template-areas: "say" "media" "text"; gap: 14px; }
+  .ir-row-wide { grid-template-areas: "say" "media" "more"; }
+  .ir-hero { min-height: 440px; margin-top: 16px; padding: 44px 18px 22px; border-radius: 12px;
+    background: linear-gradient(to top, rgba(8,20,26,.9) 0%, rgba(8,20,26,.66) 55%, rgba(8,20,26,.42) 100%), url("irrigation/hero-canal.webp") 30% 58% / cover no-repeat, #3B4A3F; }
+  .ir-lead { font-size: 1rem; }
+  .ir-why, .ir-gap { margin-top: 56px; }
+:is(.ir-why, .ir-gap) > h2 { margin-top: 0; }
+  .ir-dark img { max-height: none; }
+}
 @media (max-width: 620px) {
-  .ir-hero { padding-top: 28px; }
-  .ir-why { margin-top: 56px; }
-  /* Phones: the themes become a row of cards you swipe through, so the section stays short. */
-  .ir-themes { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -16px; padding: 0 16px 6px; scrollbar-width: thin; }
-  .ir-theme { flex: 0 0 84%; scroll-snap-align: start; grid-template-columns: 76px minmax(0, 1fr); }
-  .ir-bottle { grid-template-columns: 1fr; padding: 12px; }
-  .ir-bottle img { max-height: 150px; }
-  .ir-gap-grid { grid-template-columns: 1fr; }
   .ir-agent { grid-template-columns: 1fr; }
   .ir-agent li::after { display: none; }
 }
+@media (prefers-reduced-motion: reduce) { .ir-toc a, .ir-map img { transition: none; } }
