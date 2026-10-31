@@ -38,10 +38,12 @@
 :is(.ir-why, .ir-gap) .src { font-size: .78rem; white-space: nowrap; color: var(--ink-2); }
 :is(.ir-why, .ir-gap) a.src { color: var(--link); }
 
-/* Fresh water: the 100-litre bottles on black, with the old page's blue line under them. */
-.ir-dark { border-radius: 12px; overflow: hidden; background: #000; }
-.ir-dark img { max-height: 340px; object-fit: contain; border-radius: 0; }
-.ir-strip { margin: 0 !important; padding: 10px 16px; background: var(--r4); color: #fff !important; font: italic 600 1.02rem/1.4 var(--head) !important; text-align: center; }
+/* Fresh water: the 100-litre bottles and, under them, the old page's "70%" line, both on a white card
+   (the lettering was drawn for a white page), so they read the same in light and dark mode. */
+.ir-fresh { padding: clamp(12px, 2.4vw, 26px) clamp(12px, 2.6vw, 30px); border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.ir-fresh img { max-height: 340px; object-fit: contain; border-radius: 0; }
+.ir-strip { margin: clamp(10px, 1.8vw, 18px) 0 0 !important; }
+.ir-strip img { max-height: none; }
 /* Doubling food production: the canal across the top, the two smaller pictures under it. */
 .ir-mosaic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .ir-mosaic img { aspect-ratio: 670 / 384; object-fit: cover; }
@@ -79,7 +81,7 @@
   .ir-lead { font-size: 1rem; }
   .ir-why, .ir-gap { margin-top: 56px; }
 :is(.ir-why, .ir-gap) > h2 { margin-top: 0; }
-  .ir-dark img { max-height: none; }
+  .ir-fresh img { max-height: none; }
 }
 @media (max-width: 620px) {
   .ir-agent { grid-template-columns: 1fr; }
