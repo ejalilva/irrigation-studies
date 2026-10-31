@@ -90,7 +90,7 @@ jobs:
           branch: agent/new-papers
           delete-branch: true
           add-paths: |
-            data/papers.json
+            site/data/papers.json
             agent/seen.json
             agent/backfill.json
           commit-message: "Agent: add irrigation papers"

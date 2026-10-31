@@ -8,7 +8,7 @@ like
 
     - [x] **[Title](link)** `Journal` · 2026<br><sub>Authors</sub> <!-- id:10.1234/abcd -->
 
-Unticked papers are moved from data/papers.json to agent/rejected.json; their
+Unticked papers are moved from site/data/papers.json to agent/rejected.json; their
 IDs stay in agent/seen.json, so the agent never proposes them again. Ticking a
 paper again moves it back.
 
@@ -17,7 +17,7 @@ Under each paper is a nested line
       - [ ] Rising. Note: <your note> <!-- pick:10.1234/abcd -->
 
 Ticking it marks the paper as Rising (an editor's pick) and adds it, with the
-note if any, to data/editor_picks.json; unticking it removes it. Lines that
+note if any, to site/data/editor_picks.json; unticking it removes it. Lines that
 say "Editor's pick" instead of "Rising", from older pull requests, also work.
 
 Reads the description from the PR_BODY environment variable.
@@ -31,10 +31,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_PATH = ROOT / "data" / "papers.json"
+DATA_PATH = ROOT / "site" / "data" / "papers.json"
 SEEN_PATH = ROOT / "agent" / "seen.json"
 REJECTED_PATH = ROOT / "agent" / "rejected.json"
-PICKS_PATH = ROOT / "data" / "editor_picks.json"
+PICKS_PATH = ROOT / "site" / "data" / "editor_picks.json"
 
 LINE = re.compile(r"^\s*[-*]\s+\[( |x|X)\]\s.*<!--\s*id:(.+?)\s*-->\s*$")
 PICK = re.compile(r"^\s*[-*]\s+\[( |x|X)\]\s*(?:Editor'?s pick|Rising)\.?\s*(?:Note:)?(.*?)<!--\s*pick:(.+?)\s*-->\s*$", re.I)
@@ -75,7 +75,7 @@ def parse_picks(body):
 
 
 def apply_picks(body, rejected_ids, today):
-    """Update data/editor_picks.json from the checklist. Returns True if it changed."""
+    """Update site/data/editor_picks.json from the checklist. Returns True if it changed."""
     picked, unpicked = parse_picks(body)
     if not picked and not unpicked:
         return False

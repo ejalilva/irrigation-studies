@@ -26,7 +26,7 @@ import html
 import json
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1] / "site"  # the published website
 V = "2026-10-30c"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
