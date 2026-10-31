@@ -45,6 +45,11 @@
 .ab-pub-meta { margin: 3px 0 0 !important; font-size: .88rem !important; line-height: 1.5 !important; color: var(--ink-2) !important; }
 .ab-pub-meta b { font-weight: 600; color: var(--ink); }
 .ab-pdf { margin-left: 6px; font-size: .8rem; font-weight: 600; }
+/* The button under the recent years that shows the older papers. */
+.ab-more { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 14px 0 0 72px; padding: 9px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink); font: 500 .92rem/1.35 var(--sans); cursor: pointer; transition: border-color .15s, background-color .15s; }
+.ab-more:hover { border-color: var(--ink-2); background: var(--hover); }
+.ab-more:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.ab-more-n { font-weight: 400; font-size: .84rem; color: var(--ink-2); }
 
 
 @media (max-width: 900px) {
@@ -54,6 +59,7 @@
 }
 @media (max-width: 520px) {
   .ab-year { grid-template-columns: 1fr; gap: 6px; }
+  .ab-more { margin-left: 0; }
 }
 
 /* Experience: a large card that leads to My journey, where the appointments are. */
