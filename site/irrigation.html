@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Human-driven processes &amp; irrigation | Ehsan Jalilvand</title>
-<meta name="description" content="Why irrigation is the human-driven process to model first, why it matters, what is missing, and Ehsan Jalilvand's studies on where, when and how much farms irrigate, with an essential reading list and a research library kept up to date by an agent.">
-<meta property="og:title" content="Human-driven processes &amp; irrigation | Ehsan Jalilvand">
+<title>Irrigation | Ehsan Jalilvand</title>
+<meta name="description" content="Why irrigation matters, why no one knows how much water each farm uses, and Ehsan Jalilvand's studies on where, when and how much farms irrigate, with an essential reading list and a research library kept up to date by an agent.">
+<meta property="og:title" content="Irrigation | Ehsan Jalilvand">
 <meta property="og:description" content="Studies on detecting where, when and how much farmers irrigate, using satellite soil moisture, thermal data and land surface models.">
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/ej-32.png?v=5fc7cda74a" sizes="32x32" type="image/png">
@@ -18,9 +18,7 @@
 <script src="assets/nav.js?v=0301e2bd9c" defer></script>
 <link rel="stylesheet" href="assets/water-cycle.css?v=dc87e78888">
 <link rel="stylesheet" href="assets/study-grid.css?v=e268a9f47b">
-<link rel="stylesheet" href="assets/focus.css?v=6445aba070">
-<link rel="stylesheet" href="assets/irrigation.css?v=e66e05600b">
-<script src="assets/focus.js?v=70d64fe073" defer></script>
+<link rel="stylesheet" href="assets/irrigation.css?v=40e2bf3cbc">
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
 </head>
 <body class="main-page irrigation-page">
@@ -40,164 +38,134 @@
   </header>
 
   <main>
-    <!-- The page opens with the case for irrigation as the human-driven process to model first: the hero, then the
-         human-managed processes moving into place around irrigation (assets/focus.js). -->
+    <!-- The page follows the Irrigation page of Ehsan's old Google Site: the canal banner, why irrigation matters, the gap,
+         then his studies. Pictures and the two clips (GIFs there) come from that page; originals and credits are in
+         archive/old-site/irrigation/. Styles in assets/irrigation.css ("Story"). -->
     <section class="ir-hero" aria-labelledby="ir-h">
-      <p class="cycle-eyebrow"><a href="index.html#explore">Water cycle</a> · Human-driven processes</p>
-      <h1 id="ir-h">Irrigation, the largest human intervention in the water cycle.</h1>
-      <p class="ir-lead">Farms take most of the fresh water people withdraw. Irrigation ties rivers, aquifers, soil and crops together, so modeling it well captures much of how people reshape the water cycle.</p>
-      <nav class="ir-toc" aria-label="On this page">
-        <a href="#focus">Why irrigation comes first</a><a href="#why">Why it matters</a><a href="#gap">The gap</a><a href="#studies">My studies</a><a href="#reading">Essential reading</a><a href="#landscape">Research library</a>
-      </nav>
-    </section>
-
-    <!-- My focus: human-managed processes in the water cycle, after Ehsan's seminar slides "Human-managed process" and
-         "Irrigation Modeling". Irrigation comes first; the brackets show which processes it interacts with directly
-         and less directly. Styles in assets/focus.css. -->
-    <section class="focus" id="focus" aria-labelledby="focus-h">
-      <p class="cycle-eyebrow">Why irrigation comes first</p>
-      <h2 id="focus-h">Human-driven processes in the water cycle</h2>
-      <p class="intro">One decision to irrigate connects water sources, growing crops and downstream effects.</p>
-      <div class="connections" id="connections" data-view="network">
-        <div class="cx-toolbar" aria-label="Ways to explore the connections">
-          <span class="cx-hint">Explore the connections</span>
-          <div class="cx-views" role="group" aria-label="Diagram view">
-            <button type="button" data-view="network" aria-pressed="true" aria-controls="cx-stage">Connections</button>
-            <button type="button" data-view="pathway" aria-pressed="false" aria-controls="cx-stage">Water pathway</button>
-            <button type="button" data-view="grid" aria-pressed="false" aria-controls="cx-stage">At a glance</button>
-          </div>
-        </div>
-        <div class="cx-legend" aria-label="Process groups"><span class="cx-source">Water sources</span><span class="cx-field">Fields &amp; crops</span><span class="cx-return">Downstream effects</span><span class="cx-shared">Shared demands</span></div>
-        <div class="cx-stage" id="cx-stage">
-          <svg class="cx-lines" aria-hidden="true"></svg>
-          <div class="cx-lanes" aria-hidden="true"><span>Source &amp; supply</span><span>Apply &amp; grow</span><span>Drain &amp; return</span></div>
-          <ul class="cx-list" aria-label="Processes connected with irrigation"><li class="cx-item cx-field" data-process="irrigation" style="--px:50%;--py:48%"><button type="button" class="cx-node" aria-pressed="true" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#irrigation"/></svg></span><span class="cx-label">Irrigation</span><span class="cx-caption">Crops connect water withdrawals, land management and downstream effects.</span></button></li><li class="cx-item cx-source" data-process="groundwater" style="--px:15%;--py:16%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#groundwater"/></svg></span><span class="cx-label">Groundwater</span><span class="cx-caption">Pumping supplies irrigation; managed recharge can replenish aquifers.</span></button></li><li class="cx-item cx-source" data-process="reservoir" style="--px:15%;--py:40%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#reservoir"/></svg></span><span class="cx-label">Reservoirs</span><span class="cx-caption">Stored water is released when farms and other users need it.</span></button></li><li class="cx-item cx-source" data-process="surface" style="--px:15%;--py:64%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#surface"/></svg></span><span class="cx-label">Surface water</span><span class="cx-caption">River and lake withdrawals supply fields and reduce downstream flow.</span></button></li><li class="cx-item cx-source" data-process="diversion" style="--px:15%;--py:88%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#diversion"/></svg></span><span class="cx-label">Diversion</span><span class="cx-caption">Canals redirect river water to irrigation districts.</span></button></li><li class="cx-item cx-return" data-process="return" style="--px:85%;--py:16%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#return"/></svg></span><span class="cx-label">Return flow</span><span class="cx-caption">Water not consumed can return to rivers or recharge aquifers.</span></button></li><li class="cx-item cx-return" data-process="drainage" style="--px:85%;--py:40%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#drainage"/></svg></span><span class="cx-label">Tile drainage</span><span class="cx-caption">Where installed, buried drains carry excess field water to streams.</span></button></li><li class="cx-item cx-return" data-process="quality" style="--px:85%;--py:64%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#quality"/></svg></span><span class="cx-label">Water quality</span><span class="cx-caption">Return flows can carry nutrients, salts and sediment downstream.</span></button></li><li class="cx-item cx-field" data-process="land" style="--px:50%;--py:88%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#land"/></svg></span><span class="cx-label">Land & vegetation</span><span class="cx-caption">Crop and land choices influence irrigation demand and evapotranspiration.</span></button></li><li class="cx-item cx-shared" data-process="urban" style="--px:85%;--py:88%"><button type="button" class="cx-node" aria-pressed="false" aria-controls="cx-detail"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#urban"/></svg></span><span class="cx-label">Urban water</span><span class="cx-caption">Cities and farms share water sources; their demands can compete.</span></button></li></ul>
-        </div>
-        <p class="cx-key"><span class="cx-key-line" aria-hidden="true"></span>Water or field connection <span class="cx-key-line cx-dashed" aria-hidden="true"></span>Land choices or shared demand</p>
-        <div class="cx-detail cx-field" id="cx-detail" role="status" aria-live="polite"><span class="cx-icon"><svg aria-hidden="true" viewBox="0 0 32 32"><use href="assets/process-icons.svg#irrigation"/></svg></span><p><strong>Irrigation</strong><span>Crops connect water withdrawals, land management and downstream effects.</span></p></div>
-        <p class="cx-instruction">Select an icon for its connection to irrigation. Lines show relationships, not flow volumes.</p>
-        <noscript><p>Enable JavaScript to switch views. Each connection is described above.</p></noscript>
+      <div class="ir-hero-text">
+        <h1 id="ir-h">Irrigation, the largest human intervention in the water cycle.</h1>
+        <p class="ir-lead">Farms take most of the fresh water people withdraw. Irrigation ties rivers, aquifers, soil and crops together, so modeling it well captures much of how people reshape the water cycle.</p>
+        <nav class="ir-toc" aria-label="On this page">
+          <a href="#why">Why it matters</a><a href="#gap">The gap</a><a href="#studies">My studies</a><a href="#reading">Essential reading</a><a href="#landscape">Research library</a>
+        </nav>
       </div>
-      <p class="focus-point"><strong>That makes irrigation a strong place to start:</strong> modeling it well captures many of the broader ways people interact with the water system.</p>
-      <h3 class="focus-q-h">Modeling irrigation means answering three questions</h3>
-      <ol class="focus-q">
-        <li class="fq-where"><a href="#studies"><span class="fq-q">Where?</span><span class="fq-m">Mapping irrigated land with geospatial foundation models</span></a></li>
-        <li class="fq-when"><a href="#studies"><span class="fq-q">When?</span><span class="fq-m">AgroTrack: change-point detection and hydrological similarity in thermal data</span></a></li>
-        <li class="fq-how"><a href="#studies"><span class="fq-q">How much?</span><span class="fq-m">Assimilating satellite soil moisture with a particle batch smoother</span></a></li>
-      </ol>
+      <a class="ir-hero-credit" href="https://www.maxpixel.net/Water-Canal-Irrigation-Morning-Steam-River-Fog-933638" target="_blank" rel="noopener">Photo: Max Pixel</a>
     </section>
 
-    <!-- Why irrigation matters, compact: the 100-litre bottles on the left (Ehsan's own picture from the old site), then four themes side by side, each with a picture and
-         two numbers. Text and sources follow the "Irrigation" page of the old Google Site. Styles in assets/irrigation.css. -->
     <section class="ir-why" id="why" aria-labelledby="why-h">
       <h2 id="why-h">Why irrigation matters</h2>
-      <p class="intro">Feeding a growing world depends on irrigated farms, and irrigated farms depend on fresh water that is already scarce.</p>
-      <div class="ir-deck">
-        <figure class="ir-bottle">
-          <img src="assets/why/freshwater.webp?v=96636a5fe6" alt="One hundred one-litre water bottles, and beside them a teaspoon circled in red." loading="lazy" decoding="async" width="709" height="440">
-          <figcaption>
-            <p class="ir-bottle-k">Fresh water is very limited</p>
-            <p>If all the world’s water were condensed into <strong>100 litres</strong>, the fresh water we can use would be only <strong>half a teaspoon</strong>.</p>
-            <p>Salt water is <strong>97.5%</strong> of the total; most of the <strong>2.5%</strong> that is fresh is locked in ice or deep underground.</p>
-            <a class="src" href="https://www.usgs.gov/special-topics/water-science-school/science/where-earths-water">USGS, Where is Earth’s water?</a>
-          </figcaption>
-        </figure>
-        <div class="ir-themes">
-          <article class="ir-theme">
-            <img src="assets/why/food-demand.webp" alt="" loading="lazy" decoding="async">
-            <div class="ir-theme-body">
-            <h3>Food</h3>
-            <p class="ir-stat"><b>×2</b> <span>food demand by 2050, about 30% from population growth and 70% from diets richer in meat. <a class="src" href="https://direct.mit.edu/daed/article/144/4/8/27090/Food-Agriculture-amp-the-Environment-Can-We-Feed">Tilman &amp; Clark, 2015</a></span></p>
-            <p class="ir-stat"><b>2.3 bn</b> <span>people faced moderate or severe food insecurity in 2021. <a class="src" href="https://doi.org/10.4060/cc0639en">FAO, 2022</a></span></p>
-            </div>
-          </article>
-          <article class="ir-theme">
-            <img src="assets/why/irrigated-pivots.webp" alt="" loading="lazy" decoding="async">
-            <div class="ir-theme-body">
-            <h3>Yield</h3>
-            <p class="ir-stat"><b>2×</b> <span>the harvest: irrigated land is at least twice as productive as the same area of rainfed land. <a class="src" href="https://www.worldbank.org/en/topic/water-in-agriculture">World Bank</a></span></p>
-            <p class="ir-stat"><b>42%</b> <span>of the world’s irrigated area is in China and India.</span></p>
-            </div>
-          </article>
-          <article class="ir-theme">
-            <img src="assets/why/water-stress.webp" alt="" loading="lazy" decoding="async">
-            <div class="ir-theme-body">
-            <h3>Water</h3>
-            <p class="ir-stat"><b>70%</b> <span>of fresh water withdrawn worldwide goes to irrigation, over 90% in parts of the Middle East and Southeast Asia. <a class="src" href="https://www.nature.com/articles/nature10452">Foley et al., 2011</a> <a class="src" href="https://www.wri.org/aqueduct">Map: WRI Aqueduct</a></span></p>
-            <p class="ir-stat"><b>40%</b> <span>of irrigated land, and 60% in the US, relies on groundwater, and groundwater depletion roughly doubled from 1960 to 2000. <a class="src" href="https://doi.org/10.1029/2010GL044571">Wada et al., 2010</a></span></p>
-            </div>
-          </article>
-          <article class="ir-theme">
-            <img src="assets/why/climate.webp?v=07c1c94dd7" alt="" loading="lazy" decoding="async">
-            <div class="ir-theme-body">
-            <h3>Climate</h3>
-            <p class="ir-stat"><b>70%</b> <span>of the land irrigated in 1995 will need more irrigation water by the 2070s. <a class="src" href="https://doi.org/10.1029/2001WR000355">Döll &amp; Siebert, 2002</a></span></p>
-            <p class="ir-stat"><b>41%</b> <span>of irrigation water is taken from rivers’ environmental flows, at a cost to ecosystems. <a class="src" href="https://doi.org/10.1038/ncomms15900">Jägermeyr et al., 2017</a></span></p>
-            </div>
-          </article>
-        </div>
-      </div>
-      <p class="ir-effects"><span class="ir-effects-k">Irrigation also changes the climate around it:</span>
-        <span class="ir-chip" title="Szilagyi et al., 2020">less rain over the irrigated area</span><span class="ir-chip" title="DeAngelis et al., 2010; Kustu et al., 2011">up to 30% more rain downwind</span><span class="ir-chip" title="Thiery et al., 2020; Lawston et al., 2020">cooler hot days</span><span class="ir-chip" title="Tuinenburg, 2013">a later monsoon</span><span class="ir-chip" title="Raymond et al., 2020; Wang-Erlandsson et al., 2022">humid heat beyond human tolerance</span>
-        <a class="src" href="https://doi.org/10.1038/s43017-023-00438-5">McDermid et al., 2023</a></p>
-    </section>
 
-    <!-- The gap, compact: why farm water use is hard to measure and hard to model, side by side. -->
-    <section class="ir-gap" id="gap" aria-labelledby="gap-h">
-      <p class="cycle-eyebrow">The gap</p>
-      <h2 id="gap-h">No one knows how much water each farm uses</h2>
-      <div class="ir-gap-grid">
-        <img class="ir-gap-pic" src="assets/why/farmer-decisions.svg" alt="A farmer at the edge of an irrigated field, next to a well whose meter shows a question mark, and a signpost reading When? and How much?" loading="lazy" decoding="async">
-        <div class="ir-gap-card">
-          <h3>Hard to measure</h3>
-          <ul>
-            <li><strong>Meters are rare.</strong> Fitting and reading them is costly and slow; only 36% of US groundwater irrigation wells have one. <a class="src" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378">Foster et al., 2020</a></li>
-            <li><strong>Unrecorded withdrawals.</strong> Illegal pumping from rivers and aquifers never shows up in the records.</li>
-            <li><strong>Farmers resist meters,</strong> fearing they will lead to regulation.</li>
-          </ul>
+      <div class="ir-row ir-row-wide">
+        <h3 class="ir-say">Fresh water on the planet is very limited.</h3>
+        <figure class="ir-media ir-dark">
+          <img src="assets/irrigation/fresh-water-100-litres.webp" width="1280" height="383" loading="lazy" decoding="async" alt="One hundred one-litre water bottles and a teaspoon. If the world’s water supply were condensed to 100 litres, fresh water would amount to only half a teaspoon.">
+          <figcaption class="ir-strip">70% of this half teaspoon is used by irrigated agriculture to grow food.</figcaption>
+        </figure>
+        <p class="ir-note">Salt water is 97.5% of Earth’s water, and most of the 2.5% that is fresh is locked in ice or deep underground. <a class="src" href="https://www.usgs.gov/special-topics/water-science-school/science/where-earths-water" target="_blank" rel="noopener">USGS</a></p>
+      </div>
+
+      <div class="ir-row">
+        <h3 class="ir-say">One of the greatest challenges of this century: doubling food production from resources that are already depleted.</h3>
+        <div class="ir-media ir-mosaic">
+          <img class="ir-m-wide" src="assets/irrigation/canal.webp" width="960" height="540" loading="lazy" decoding="async" alt="An irrigation canal running between rows of young crops.">
+          <img src="assets/irrigation/rainfed-irrigated.webp" width="670" height="384" loading="lazy" decoding="async" alt="Rainfed wheat beside an irrigated field under a sprinkler: irrigated land is twice as productive.">
+          <img src="assets/why/food-demand.webp" width="800" height="470" loading="lazy" decoding="async" alt="A farmer carrying two watering cans along a row of seedlings.">
         </div>
-        <div class="ir-gap-card">
-          <h3>Hard to model</h3>
+        <div class="ir-text">
+          <h4>A food crisis is coming.</h4>
           <ul>
-            <li><strong>Fields change.</strong> Crop rotation changes what is planted from year to year.</li>
-            <li><strong>Farmers decide, not crops.</strong> Irrigation follows calendars, leaf colour, curling and wilting, whether a leaf feels cool on a hot day, and the neighbours, not the crop’s water demand.</li>
-            <li><strong>Models give the need, not the use.</strong> Most estimate the water crops require, not what farmers apply.</li>
+            <li>About 2.3 billion people faced moderate or severe food insecurity in 2021. <a class="src" href="https://www.fao.org/interactive/state-of-food-security-nutrition/en/" target="_blank" rel="noopener">FAO, 2022</a></li>
+            <li>Global food demand may double by 2050, about 30% from population growth and 70% from diets shifting toward meat. <a class="src" href="https://direct.mit.edu/daed/article/144/4/8/27090/Food-Agriculture-amp-the-Environment-Can-We-Feed" target="_blank" rel="noopener">Tilman &amp; Clark, 2015</a></li>
+            <li>42% of the world’s irrigated area is in just two countries, China and India, home to almost 40% of the world’s people. <a class="src" href="https://link.springer.com/article/10.1007/s40899-020-00368-w" target="_blank" rel="noopener">Szilagyi et al., 2020</a></li>
+          </ul>
+          <h4>We need irrigation to grow more food.</h4>
+          <ul>
+            <li>Irrigated land is at least twice as productive as rainfed land. <a class="src" href="https://www.worldbank.org/en/topic/water-in-agriculture" target="_blank" rel="noopener">World Bank</a></li>
+          </ul>
+          <h4>But then we would have a water crisis.</h4>
+          <ul>
+            <li>About 70% of the fresh water people withdraw goes to agriculture, and over 90% in parts of the Middle East and South Asia. <a class="src" href="https://www.nature.com/articles/nature10452" target="_blank" rel="noopener">Foley et al., 2011</a></li>
+            <li>About 40% of the world’s irrigated area, and about 60% in the United States, relies on groundwater, and groundwater depletion roughly doubled between 1960 and 2000. <a class="src" href="https://doi.org/10.1029/2010GL044571" target="_blank" rel="noopener">Wada et al., 2010</a></li>
           </ul>
         </div>
       </div>
-      <div class="ir-gap-foot">
-        <p class="ir-bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale. It started with a shortcut: irrigation changes the soil moisture, so soil moisture can stand in for it.</p>
-        <!-- From Ehsan's talk on the 2019 study (the GIF from his old site's irrigation page). Opens large in the figure dialog. -->
-        <a class="ir-talk" href="assets/why/problem-statement.gif" data-figure="talk" data-title="The problem statement, from my talk on the 2019 study" data-caption="Why irrigation is hard to model, and the shortcut that started my work: use soil moisture as a proxy for irrigation. The map shows the share of groundwater irrigation wells with a flow meter in each US state (Foster et al., 2020).">
-          <img src="assets/why/problem-statement.webp" alt="Slide: water withdrawal must be limited and monitored; a US map of the share of irrigation wells with a meter; models need irrigation method, land use, timing and crop phenology, which are usually not available; so use soil moisture as a proxy for irrigation." loading="lazy" decoding="async" width="853" height="480">
-          <span class="ir-talk-cap">From my talk · the problem statement <span aria-hidden="true">⤢</span></span>
+
+      <div class="ir-row ir-flip">
+        <h3 class="ir-say">Climate change makes it worse.</h3>
+        <a class="ir-media ir-map" href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">
+          <img src="assets/why/water-stress.webp" width="900" height="493" loading="lazy" decoding="async" alt="World map of baseline water stress, the ratio of water demand to available supply; the highest stress is in the Middle East, South Asia, northern China and the western United States.">
+          <span class="ir-cap">Water stress: how much of the available water is already in demand. Explore the map at WRI Aqueduct <span aria-hidden="true">↗</span></span>
         </a>
+        <div class="ir-text">
+          <ul>
+            <li>About two-thirds of the area equipped for irrigation in 1995 may need more irrigation water by the 2020s and the 2070s. <a class="src" href="https://www.geo.uni-frankfurt.de/45217733/doell_climaticchange2002_irrigation.pdf" target="_blank" rel="noopener">Döll, 2002</a></li>
+            <li>41% of irrigation water is taken from the flow rivers need to stay healthy, harming ecosystems and habitats. <a class="src" href="https://www.nature.com/articles/ncomms15900" target="_blank" rel="noopener">Jägermeyr et al., 2017</a></li>
+            <li>Irrigation in Europe could rise by about 30% under a high-emission scenario. <a class="src" href="https://hess.copernicus.org/preprints/hess-2021-631/" target="_blank" rel="noopener">Busschaert et al., 2022</a></li>
+            <li>Competition for water is already intense and is expected to get worse. <a class="src" href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">WRI Aqueduct</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ir-row">
+        <h3 class="ir-say">Irrigation changes the climate around it.</h3>
+        <figure class="ir-media ir-white">
+          <img src="assets/irrigation/irrigation-earth-system.webp" width="1280" height="655" loading="lazy" decoding="async" alt="Two cutaway diagrams, dryland and irrigated farmland, comparing their exchanges of water, energy, carbon and nitrogen with the atmosphere and the ground below.">
+          <figcaption>How dryland and irrigated farmland exchange water, energy and carbon with the air and the ground. Adapted from <a href="https://www.nature.com/articles/s43017-023-00438-5" target="_blank" rel="noopener">McDermid et al., 2023, <em>Irrigation in the Earth system</em></a>.</figcaption>
+        </figure>
+        <div class="ir-text">
+        <ul>
+          <li>It can turn evaporation from limited by water to limited by energy, changing the land’s water and energy budgets. <a class="src" href="https://www.nature.com/articles/nclimate1744" target="_blank" rel="noopener">Taylor et al., 2012</a></li>
+          <li>Groundwater-fed irrigation has raised downwind rainfall and streamflow by up to 30% in the US High Plains and California’s Central Valley. <a class="src" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD013892" target="_blank" rel="noopener">DeAngelis et al., 2010</a> <a class="src" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010WR010046" target="_blank" rel="noopener">Kustu et al., 2011</a></li>
+          <li>Less obviously, large-scale irrigation can suppress rain over the irrigated area itself. <a class="src" href="https://link.springer.com/article/10.1007/s40899-020-00368-w" target="_blank" rel="noopener">Szilagyi et al., 2020</a></li>
+          <li>It cools the hottest days of the year. <span class="src">Thiery et al., 2020; Lawston et al., 2020</span></li>
+          <li>It can delay the onset of monsoons. <span class="src">Tuinenburg, 2013</span></li>
+          <li>It can create humid heat waves beyond what people can tolerate. <span class="src">Raymond et al., 2020; Wang-Erlandsson et al., 2022</span></li>
+        </ul>
+        </div>
       </div>
     </section>
 
-    <details class="more"><summary>Seeing irrigation at different scales</summary>      <div class="scales" id="scales">
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="1" role="img" aria-label="One coarse pixel: the irrigation signal is averaged away"></svg>
-          <figcaption><strong>Tens of kilometers</strong><span>Passive microwave (AMSR2)</span></figcaption>
+    <section class="ir-gap" id="gap" aria-labelledby="gap-h">
+      <h2 id="gap-h">The gap: no one knows how much water each farm uses</h2>
+
+      <div class="ir-row ir-flip">
+        <h3 class="ir-say">To manage water withdrawals, we first need to monitor them, and measuring them on the ground is hard.</h3>
+        <figure class="ir-media ir-white">
+          <img src="assets/irrigation/water-meters-us.webp" width="1042" height="597" loading="lazy" decoding="async" alt="Map of US states shaded by the share of groundwater irrigation wells with a flow meter; most states are pale, meaning few wells are metered.">
+          <figcaption>Share of groundwater irrigation wells with a flow meter, by state. <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378" target="_blank" rel="noopener">Foster et al., 2020</a></figcaption>
         </figure>
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="4" role="img" aria-label="A 4 by 4 grid: wetter cells begin to appear in one corner"></svg>
-          <figcaption><strong>9 km</strong><span>SMAP enhanced</span></figcaption>
-        </figure>
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="16" role="img" aria-label="A 16 by 16 grid: wet patches line up with fields"></svg>
-          <figcaption><strong>1 km</strong><span>SMAP/Sentinel-1</span></figcaption>
-        </figure>
-        <figure class="scale">
-          <svg viewBox="0 0 100 100" data-level="80" role="img" aria-label="An 80 by 80 grid: each center-pivot field stands out, most irrigated, two fallow"></svg>
-          <figcaption><strong>200 m</strong><span>NISAR</span></figcaption>
-        </figure>
+        <div class="ir-text">
+          <ul>
+            <li>Meters are costly to install and labor-intensive to read, even in wealthy countries.</li>
+            <li>Some water is taken illegally from rivers and aquifers, and never shows up in the records.</li>
+            <li>Farmers may oppose or lobby against meters, fearing more regulation in the future. <a class="src" href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020WR028378" target="_blank" rel="noopener">Foster et al., 2020</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="scales-note">
-        <div class="legend" aria-hidden="true"><span>Drier</span><span class="ramp"></span><span>Wetter</span></div>
-        <p>Illustration: one landscape at four resolutions. The irrigation signal that a coarse pixel averages away becomes visible at 200 m.</p>
+
+      <div class="ir-row">
+        <h3 class="ir-say">We can use models to estimate irrigation, but modeling it is hard.</h3>
+        <div class="ir-media ir-clips">
+          <figure>
+            <video class="ir-clip" src="assets/irrigation/crop-circles-turkey.mp4" poster="assets/irrigation/crop-circles-turkey.webp" width="512" height="494" autoplay muted loop playsinline preload="metadata" aria-label="Satellite time-lapse of center-pivot fields in Turkey turning green and brown at different times, season after season."></video>
+            <figcaption>Dancing crop circles in Küçükyıldız, Turkey, seen by Sentinel-2. <a href="https://twitter.com/annamaria_84/status/1178727742721921024" target="_blank" rel="noopener">Annamaria Luongo</a>, Sentinel Hub</figcaption>
+          </figure>
+          <figure>
+            <video class="ir-clip" src="assets/irrigation/crop-cycles-bakersfield.mp4" poster="assets/irrigation/crop-cycles-bakersfield.webp" width="512" height="512" autoplay muted loop playsinline preload="metadata" aria-label="Satellite time-lapse of rectangular fields near Bakersfield, California, greening and fading through the crop cycle."></video>
+            <figcaption>Crop cycles near Bakersfield, California: vegetation greenness from Sentinel-2. Valtzen, Sentinel Hub</figcaption>
+          </figure>
+        </div>
+        <div class="ir-text">
+          <ul>
+            <li>The crops grown change constantly, from season to season and year to year (crop rotation).</li>
+            <li>Farmers’ decisions to irrigate do not necessarily follow what the crop needs.</li>
+            <li>Farmers often go by rules of thumb: a change in leaf colour, curling leaves and, in the end, wilting; or leaf temperature, since a cool leaf on a hot day means a well-watered plant, and a warm one a thirsty plant.</li>
+            <li>Most models estimate the irrigation crops require, not the irrigation farmers actually apply.</li>
+          </ul>
+        </div>
       </div>
-</details>
+      <p class="ir-bridge">Satellites revisit every field every few days. My work asks how much of the irrigation signal they can recover, and at what scale. It started with a shortcut: irrigation changes the soil moisture, so soil moisture can stand in for it.</p>
+    </section>
 
     <section id="studies" aria-labelledby="studies-h">
       <div class="studies-head">
@@ -520,81 +488,6 @@ function esc(s) {
 function linkFor(item) { return item.url || ("https://doi.org/" + item.doi); }
 function citation(s) {
   return `${s.authors} (${s.year}). ${s.title}. ${s.journal}, ${s.details}. ${linkFor(s)}`;
-}
-
-/* A synthetic landscape used for the resolution illustrations.
-   Background soil is dry; center-pivot fields are wet unless fallow. */
-function makeRng(seed) { return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
-const rnd = makeRng(2019);
-/* Square farm sections; each pivot sits in the middle of one. */
-const SEC = 0.165, SX0 = 0.4175 - 3 * SEC, SY0 = 0.3875 - 3 * SEC, NS = 8;
-const SECTIONS = Array.from({ length: NS * NS }, () => 0.08 + rnd() * 0.2);
-function sectionIndex(x, y) {
-  const i = Math.max(0, Math.min(NS - 1, Math.floor((x - SX0) / SEC)));
-  const j = Math.max(0, Math.min(NS - 1, Math.floor((y - SY0) / SEC)));
-  return j * NS + i;
-}
-function bgAt(x, y) { return SECTIONS[sectionIndex(x, y)]; }
-const PIVOTS = [];
-[0.47, 0.635, 0.80].forEach((y, j) => [0.50, 0.665, 0.83].forEach((x, i) => {
-  PIVOTS.push({ x, y, r: 0.074, wet: !((i === 2 && j === 0) || (i === 0 && j === 2)), a: rnd() * Math.PI * 2 });
-}));
-PIVOTS.push({ x: 0.17, y: 0.30, r: 0.074, wet: true, a: rnd() * Math.PI * 2 });
-PIVOTS.push({ x: 0.17, y: 0.135, r: 0.074, wet: false, a: rnd() * Math.PI * 2 });
-const WET = 0.86, FALLOW = 0.04;
-function moisture(x, y) {
-  for (const p of PIVOTS) if (Math.hypot(x - p.x, y - p.y) < p.r) return p.wet ? WET : FALLOW;
-  return bgAt(x, y);
-}
-
-function hex2rgb(h) { h = h.trim().replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); }
-function rampColors() {
-  const cs = getComputedStyle(document.documentElement);
-  return ["--r0", "--r1", "--r2", "--r3", "--r4"].map(n => hex2rgb(cs.getPropertyValue(n)));
-}
-function colorFor(v, stops) {
-  const t = Math.max(0, Math.min(1, (v - FALLOW) / (WET - FALLOW))) * (stops.length - 1);
-  const i = Math.min(stops.length - 2, Math.floor(t)), f = t - i;
-  const c = stops[i].map((a, k) => Math.round(a + (stops[i + 1][k] - a) * f));
-  return `rgb(${c[0]},${c[1]},${c[2]})`;
-}
-
-function panelSVG(level, stops) {
-  let out = "";
-  if (level === "field") {
-    // Roads between sections, then each section as a plot of dry soil.
-    out += `<rect width="100" height="100" fill="${colorFor(0.24, stops)}"/>`;
-    const s = SEC * 100, gap = 0.7;
-    for (let j = 0; j < NS; j++) for (let i = 0; i < NS; i++) {
-      const x = (SX0 * 100) + i * s + gap / 2, y = (SY0 * 100) + j * s + gap / 2;
-      out += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${(s - gap).toFixed(2)}" height="${(s - gap).toFixed(2)}" fill="${colorFor(SECTIONS[j * NS + i], stops)}"/>`;
-    }
-    for (const p of PIVOTS) {
-      const cx = p.x * 100, cy = p.y * 100, r = p.r * 100;
-      out += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${r.toFixed(2)}" fill="${colorFor(p.wet ? WET : FALLOW, stops)}"/>`;
-      if (p.wet) {
-        out += `<line x1="${cx.toFixed(2)}" y1="${cy.toFixed(2)}" x2="${(cx + Math.cos(p.a) * r).toFixed(2)}" y2="${(cy + Math.sin(p.a) * r).toFixed(2)}" stroke="var(--arm)" stroke-width=".6" stroke-linecap="round"/>`;
-        out += `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r=".8" fill="var(--arm)"/>`;
-      }
-    }
-    return out;
-  }
-  const n = level, w = 100 / n, S = Math.max(4, Math.round(64 / n));
-  out += `<g shape-rendering="crispEdges">`;
-  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
-    let sum = 0;
-    for (let b = 0; b < S; b++) for (let a = 0; a < S; a++) sum += moisture((i + (a + 0.5) / S) / n, (j + (b + 0.5) / S) / n);
-    out += `<rect x="${(i * w).toFixed(3)}" y="${(j * w).toFixed(3)}" width="${(w + 0.2).toFixed(3)}" height="${(w + 0.2).toFixed(3)}" fill="${colorFor(sum / (S * S), stops)}"/>`;
-  }
-  return out + `</g>`;
-}
-
-function drawPanels() {
-  const stops = rampColors();
-  document.querySelectorAll("svg[data-level]").forEach(svg => {
-    const lv = svg.dataset.level;
-    svg.innerHTML = panelSVG(lv === "field" ? "field" : Number(lv), stops);
-  });
 }
 
 /* ---------------------------------------------------------------------
@@ -928,11 +821,10 @@ if (reader && typeof reader.showModal === "function") {
   fromHash();
 }
 renderRelated();
-drawPanels();
-document.getElementById("scales").classList.add("animate");
-try {
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawPanels);
-} catch (_) {}
+/* The two clips (GIFs on the old site) loop like GIFs; with reduced motion they stay on their poster and get controls. */
+if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.querySelectorAll("video.ir-clip").forEach(v => { v.removeAttribute("autoplay"); v.pause(); v.controls = true; });
+}
 </script>
 
 <script>
