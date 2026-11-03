@@ -32,6 +32,9 @@
 .gl-thumb img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .3s; }
 .gl-grid.is-one .gl-thumb img { aspect-ratio: auto; }
 .gl-thumb:hover img { transform: scale(1.04); }
+/* "wide": true in data/gallery.json: the photo spans both columns at its own shape (the ALASKA letters, the field team). */
+.gl-grid li.is-wide .gl-thumb img { aspect-ratio: auto; }
+.gl-grid li.is-wide .gl-thumb:hover img { transform: scale(1.02); }
 /* A place's video (assets/gallery.js): across the top of the panel, playing silently while the panel is open; a click
    plays it in the viewer with sound. The crossed-out speaker shows it is muted; the play button shows when it is not playing. */
 .gl-grid li.is-wide { grid-column: 1 / -1; }
@@ -62,8 +65,10 @@
 /* The viewer */
 .gl-viewer { width: min(1000px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; background: transparent; color: #fff; overflow: visible; }
 .gl-viewer::backdrop { background: rgba(12,18,22,.9); }
-.gl-viewer figure { margin: 0; }
-.gl-viewer img { display: block; width: 100%; max-height: calc(100dvh - 150px); object-fit: contain; border-radius: 6px; }
+/* A picture keeps its shape and is centred; gallery.js shows small pictures at 1.5 times their own width. */
+.gl-viewer figure { margin: 0; display: grid; justify-items: center; }
+.gl-viewer img { display: block; width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 150px); object-fit: contain; border-radius: 6px; }
+.gl-viewer figure > .gl-viewer-video, .gl-viewer figcaption { justify-self: stretch; }
 .gl-viewer-video { width: 100%; aspect-ratio: 16 / 9; max-height: calc(100dvh - 150px); border-radius: 6px; overflow: hidden; background: #000; }
 .gl-viewer-video video { display: block; width: 100%; height: 100%; background: #000; }
 .gl-viewer-video[hidden], .gl-viewer img[hidden] { display: none; }
