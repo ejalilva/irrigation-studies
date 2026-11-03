@@ -27,7 +27,7 @@ import json
 import sys
 
 ROOT = Path(__file__).resolve().parents[1] / "site"  # the published website
-V = "2026-10-30c"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
+V = "2026-11-03a"  # bump when the CSS, the JS, the painting or a cut-out changes, so browsers fetch the new files
 PAINTING = "assets/journey/landscape-v5.webp"
 
 MARKS = [
@@ -109,6 +109,7 @@ WORK = {
     "frontiers2026": ("paper", "Front. Earth Sci. 2026", "Low-latency, high-resolution SMAP soil moisture retrievals for near-real-time applications", DOI + "10.3389/feart.2026.1854083"),
     "lisf": ("code", "NASA LIS on GitHub", "NASA-LIS/LISF: the Land Information System Framework (contributor)", "https://github.com/NASA-LIS/LISF"),
     "rse2026": ("paper", "RSE 2026 · AgroTrack", "Characterization of irrigation timing using thermal satellite observations, a data-driven approach", DOI + "10.1016/j.rse.2025.115153"),
+    "agu24": ("video", "AGU24 talk", "Presenting AgroTrack at the AGU24 Annual Meeting, Washington, DC, December 2024", "clip:agu24"),
     "agrotrack": ("code", "AgroTrack on GitHub", "AgroTrack: an open-source Python package for irrigation timing", None),
     "geostream": ("code", "GeoStreamPy on GitHub", "GeoStreamPy: stream Google Earth Engine data into xarray", "https://github.com/ejalilva/gee_tools"),
     "wrr2026": ("paper", "WRR 2026", "Beyond SMAP: can GNSS-R platforms ensure continuity of global soil moisture observations?", DOI + "10.1029/2026WR044944"),
@@ -125,6 +126,15 @@ DRIVE_VIDEOS = {
 }
 def drive_embed(key): return f"https://drive.google.com/file/d/{DRIVE_VIDEOS[key][0]}/preview"
 def drive_thumb(key): return f"https://drive.google.com/thumbnail?id={DRIVE_VIDEOS[key][0]}&sz=w800"
+
+# Short clips kept on the site itself: key -> (MP4, poster, caption). Listed in a stop's pictures as ("clip:<key>",), a
+# clip is the large card in front of that stop's fan. It plays silently while the visitor has the stop selected (not
+# during the opening play-through, and never with reduced motion), and a click opens it in the viewer with sound and
+# controls. Encode clips as H.264 MP4 with the moov atom first (ffmpeg -movflags +faststart), about 1280 px wide.
+LOCAL_VIDEOS = {
+    "agu24": ("assets/media/agrotrack-agu24.mp4", "assets/media/agrotrack-agu24.webp",
+              "AGU24, Washington, DC, December 2024: presenting AgroTrack, which finds when farms irrigate from thermal satellite data."),
+}
 
 STUDY = "assets/studies/"
 STOPS = [
@@ -160,8 +170,9 @@ STOPS = [
      [], [], "gt"),
     ("2023", "NASA", "NASA Goddard", "nasa", ["git", "lis", "pkg", "geostack"],
      "Water cycle and Earth system modeling, bringing satellite observations and machine learning into the models.",
-     ["lisf", "rse2026", "agrotrack", "geostream", "wrr2026"],
-     [(STUDY + "agrotrack-2021.png", "AgroTrack: number of irrigated days in cropland, 2021."),
+     ["lisf", "rse2026", "agu24", "agrotrack", "geostream", "wrr2026"],
+     [("clip:agu24",),
+      (STUDY + "agrotrack-2021.png", "AgroTrack: number of irrigated days in cropland, 2021."),
       (STUDY + "agrotrack-heatmap.webp", "Irrigation schedules of ten Nebraska fields in 2021, with the season AgroTrack detected from thermal data.", "Fig. 8a, Jalilvand et al. (2026), Remote Sensing of Environment"),
       (STUDY + "agrotrack-2022.png", "AgroTrack: number of irrigated days in cropland, 2022.")], "nasa"),
     ("2024", "Georgia Tech", "Georgia Tech, online", "gatech", [],
@@ -217,19 +228,35 @@ for i, (year, short, place, mark, skills, line, work, pics, logo) in enumerate(S
         extra = ""
         if href.startswith("drive:"):
             vk = href[6:]; extra = f' data-video="{vk}"'; href = f"https://drive.google.com/file/d/{DRIVE_VIDEOS[vk][0]}/view"
+        elif href.startswith("clip:"):
+            vk = href[5:]; extra = f' data-video="{vk}"'; href = f"{LOCAL_VIDEOS[vk][0]}?v={V}"
         links.append(f'<a class="jy-work" href="{esc(href)}" target="_blank" rel="noopener" title="{esc(title)}"{extra}><svg viewBox="0 0 16 16" aria-hidden="true">{ICON[kind]}</svg>{esc(label)}<span class="sr-only">: {esc(title)}</span></a>')
     work_html = f'<div class="jy-works">{"".join(links)}</div>' if links else ""
     stories.append(f'<div class="jy-story" data-stage="{i}"><p><strong>{esc(year)} · {esc(place)}.</strong> {esc(line)}</p>{work_html}</div>')
     if pics:
         cards = []
+        # A clip sits in front of the fan, in the middle, and the other cards fan out to either side of it (the extra
+        # one on the left): slots -2, -1, 1 for three pictures. Without a clip the cards are spread evenly about 0.
+        fanned = [p for p in pics if not p[0].startswith("clip:")]
+        has_clip = len(fanned) < len(pics)
+        if has_clip:
+            left = (len(fanned) + 1) // 2
+            slots = list(range(-left, 0)) + list(range(1, len(fanned) - left + 1))
+        else:
+            slots = [j - (len(fanned) - 1) / 2 for j in range(len(fanned))]
+        pos = {id(p): s for p, s in zip(fanned, slots)}
         for k, pic in enumerate(pics):
+            if pic[0].startswith("clip:"):
+                vk = pic[0][5:]; mp4, poster, caption = LOCAL_VIDEOS[vk]
+                cards.append(f'<button type="button" class="jy-card is-video is-clip" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="" data-video="{vk}" data-clip="{esc(mp4)}?v={V}" style="--k:0" aria-label="Play with sound: {esc(caption)}"><video src="{esc(mp4)}?v={V}" poster="{esc(poster)}?v={V}" muted loop playsinline preload="none" aria-hidden="true"></video><span class="jy-play" aria-hidden="true"></span><span class="jy-mute" aria-hidden="true"></span></button>')
+                continue
             if pic[0].startswith("video:"):
                 vk = pic[0][6:]; caption = DRIVE_VIDEOS[vk][1]
-                cards.append(f'<button type="button" class="jy-card is-video" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="" data-video="{vk}" data-embed="{esc(drive_embed(vk))}" style="--k:{k - (len(pics) - 1) / 2}" aria-label="Play video {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(drive_thumb(vk))}" alt="{esc(caption)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"><span class="jy-play" aria-hidden="true"></span></button>')
+                cards.append(f'<button type="button" class="jy-card is-video" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="" data-video="{vk}" data-embed="{esc(drive_embed(vk))}" style="--k:{pos[id(pic)]}" aria-label="Play video {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(drive_thumb(vk))}" alt="{esc(caption)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"><span class="jy-play" aria-hidden="true"></span></button>')
                 continue
             src, caption, credit = (pic + (None,))[:3]
-            cards.append(f'<button type="button" class="jy-card" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="{esc(credit or "")}" style="--k:{k - (len(pics) - 1) / 2}" aria-label="Open picture {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(src)}" alt="{esc(caption)}" loading="lazy" decoding="async"></button>')
-        fans.append(f'<div class="jy-fan" data-stage="{i}" style="--col:{i}">{"".join(cards)}</div>')
+            cards.append(f'<button type="button" class="jy-card" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="{esc(credit or "")}" style="--k:{pos[id(pic)]}" aria-label="Open picture {k + 1} of {len(pics)} from {esc(year)}, {esc(place)}"><img src="{esc(src)}" alt="{esc(caption)}" loading="lazy" decoding="async"></button>')
+        fans.append(f'<div class="jy-fan{" has-clip" if has_clip else ""}" data-stage="{i}" style="--col:{i}">{"".join(cards)}</div>')
 
 bars, row = [], 0
 for i, stop in enumerate(STOPS):
@@ -329,7 +356,9 @@ record = {
     "logos": {k: dict(kind=v[0], value=v[1], name=v[2]) for k, v in LOGOS.items()},
     "work": {k: dict(kind=v[0], label=v[1], title=v[2], href=v[3]) for k, v in WORK.items()},
     "stops": [dict(period=y, short=s, place=p, landmark=m, skills=sk, story=t, work=w, logo=lg,
-                   pictures=[(dict(video=drive_embed(pc[0][6:]), caption=DRIVE_VIDEOS[pc[0][6:]][1]) if pc[0].startswith("video:") else dict(src=pc[0], caption=pc[1], credit=(pc[2] if len(pc) > 2 else None))) for pc in pics])
+                   pictures=[(dict(video=drive_embed(pc[0][6:]), caption=DRIVE_VIDEOS[pc[0][6:]][1]) if pc[0].startswith("video:")
+                              else dict(clip=LOCAL_VIDEOS[pc[0][5:]][0], poster=LOCAL_VIDEOS[pc[0][5:]][1], caption=LOCAL_VIDEOS[pc[0][5:]][2]) if pc[0].startswith("clip:")
+                              else dict(src=pc[0], caption=pc[1], credit=(pc[2] if len(pc) > 2 else None))) for pc in pics])
               for y, s, p, m, sk, t, w, pics, lg in STOPS],
 }
 (ROOT / "data" / "journey-timeline.json").write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

@@ -1,5 +1,5 @@
 {
-  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). Add talks and conferences the same way, with kind \"talk\". See docs/MAINTAINING.md (Gallery).",
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). Add talks and conferences the same way, with kind \"talk\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. See docs/MAINTAINING.md (Gallery).",
   "places": [
     {
       "id": "smapvex22",
@@ -97,6 +97,22 @@
           "caption": "Alaska, May 2023, in one word."
         }
       ]
+    },
+    {
+      "id": "agu24",
+      "kind": "talk",
+      "title": "AgroTrack at AGU24",
+      "where": "Walter E. Washington Convention Center, Washington, DC",
+      "date": "December 2024",
+      "lat": 38.9046,
+      "lon": -77.0226,
+      "text": "Presenting AgroTrack at AGU’s Annual Meeting: finding when farms irrigate from thermal satellite data, the study I began when I joined NASA.",
+      "video": {
+        "src": "assets/media/agrotrack-agu24.mp4",
+        "poster": "assets/media/agrotrack-agu24.webp",
+        "caption": "Presenting AgroTrack at AGU24."
+      },
+      "photos": []
     }
   ]
 }

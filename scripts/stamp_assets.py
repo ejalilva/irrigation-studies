@@ -14,7 +14,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1] / "site"  # the published website
-REF = re.compile(r'(assets/[A-Za-z0-9_./-]+?\.(?:css|js|svg|png|webp|jpe?g|gif|avif|json|woff2?))\?v=[A-Za-z0-9_.{}-]+')
+REF = re.compile(r'(assets/[A-Za-z0-9_./-]+?\.(?:css|js|svg|png|webp|jpe?g|gif|avif|json|woff2?|mp4|webm))\?v=[A-Za-z0-9_.{}-]+')
 
 
 def fingerprint(rel):

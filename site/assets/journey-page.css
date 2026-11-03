@@ -75,6 +75,19 @@
 .jy-card.is-video img { opacity: .8; }
 .jy-play { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: rgba(255,255,255,.92); box-shadow: 0 2px 8px rgba(0,0,0,.3); }
 .jy-play::after { content: ""; position: absolute; left: 13px; top: 10px; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent #172026; }
+/* A clip (assets/media/, LOCAL_VIDEOS in scripts/build_journey.py): the large card in front of its stop's fan, with the
+   pictures fanned out to either side. It plays silently while the stop is selected (the crossed-out speaker shows it is
+   muted); a click opens it in the viewer with sound. It stays under 112 px tall so the scroll box (130 px of room above
+   the timeline) never clips it. */
+.jy-card.is-clip { z-index: 3; left: -92px; width: 184px; height: 104px; background: #172026; cursor: pointer; transform: none; }
+.jy-card.is-clip video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; background: #1F2A30; }
+.jy-card.is-clip:hover, .jy-card.is-clip:focus-visible { z-index: 3; transform: translateY(-3px) scale(1.03); }
+.jy-card.is-clip .jy-play { transition: opacity .2s; }
+.jy-card.is-clip.is-playing .jy-play { opacity: 0; }
+.jy-mute { position: absolute; right: 9px; bottom: 9px; width: 24px; height: 24px; border-radius: 50%; opacity: 0; transition: opacity .2s; background: rgba(23,32,38,.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6v4h2.5l3.5 3V3L5 6z' fill='%23fff'/%3E%3Cpath d='M11 6l3.5 4M14.5 6L11 10'/%3E%3C/svg%3E") center / 14px no-repeat; }
+.jy-card.is-clip.is-playing .jy-mute { opacity: 1; }
+.jy-fan.has-clip .jy-card:not(.is-clip) { transform: translateX(calc(var(--k) * 86px)) translateY(calc(var(--k) * var(--k) * 4px - 4px)) rotate(calc(var(--k) * 6deg)); }
+.jy-fan.has-clip .jy-card:not(.is-clip):hover, .jy-fan.has-clip .jy-card:not(.is-clip):focus-visible { z-index: 4; transform: translateX(calc(var(--k) * 90px)) translateY(-8px) rotate(calc(var(--k) * 3deg)) scale(1.06); }
 
 /* The stop's line, and links to its papers, code, videos and talks */
 .jy-stories { max-width: 780px; margin: 22px auto 0; text-align: center; }
@@ -109,7 +122,7 @@
 .jy-viewer figure { margin: 0; }
 .jy-viewer-video { width: 100%; aspect-ratio: 16 / 9; max-height: calc(100dvh - 170px); border-radius: 6px; overflow: hidden; background: #000; }
 .jy-viewer-video[hidden], .jy-viewer img[hidden] { display: none; }
-.jy-viewer-video iframe { display: block; width: 100%; height: 100%; border: 0; }
+.jy-viewer-video iframe, .jy-viewer-video video { display: block; width: 100%; height: 100%; border: 0; background: #000; }
 .jy-viewer img { display: block; width: 100%; max-height: calc(100dvh - 170px); object-fit: contain; border-radius: 6px; background: #fff; }
 .jy-viewer figcaption { padding: 12px 2px 0; }
 .jy-viewer figcaption p { margin: 0; font-size: 1.05rem; line-height: 1.45; }
@@ -150,6 +163,10 @@
   .jy-fan { position: static; width: auto; height: auto; display: none; gap: 8px; justify-content: center; margin-top: 14px; transform: none; }
   .jy-fan.is-on { display: flex; }
   .jy-card, .jy-card:hover, .jy-card:focus-visible { position: relative; left: auto; width: 96px; height: 72px; transform: none; }
+  /* The clip takes the first row, the pictures follow under it. */
+  .jy-fan.has-clip { flex-wrap: wrap; }
+  .jy-card.is-clip, .jy-card.is-clip:hover, .jy-card.is-clip:focus-visible { left: auto; flex: 0 0 100%; max-width: 360px; height: auto; aspect-ratio: 16 / 9; transform: none; }
+  .jy-fan.has-clip .jy-card:not(.is-clip), .jy-fan.has-clip .jy-card:not(.is-clip):hover, .jy-fan.has-clip .jy-card:not(.is-clip):focus-visible { transform: none; }
   .jy-stories { margin-top: 16px; }
   .jy-story p { font-size: 1rem; }
   .jy-lanes { height: auto; margin-top: 20px; }
