@@ -91,8 +91,10 @@
 }
 @media (prefers-reduced-motion: reduce) { .gl-pin::after { animation: none; } .gl-pin, .gl-thumb img, .gl-play, .gl-mute { transition: none; } }
 
-/* Basemaps (assets/gallery.js): Terrain, NASA Blue Marble relief and Dark gray, switched with the layers button under the
-   zoom buttons. While the dark map loads, the map's own background is dark too. */
+/* Basemaps (assets/gallery.js): Toner (the default), Terrain, NASA Blue Marble relief and Dark gray, switched with the
+   layers button under the zoom buttons. While Toner or the dark map loads, the map's own background is the colour of
+   their seas, which fill most of the opening world view. */
+.gl-map[data-base="toner"] { background: #2E2E2E; }
 .gl-map[data-base="dark"] { background: #262626; }
 .gl-map[data-base="dark"] .leaflet-control-attribution { background: rgba(38,38,38,.8); color: #C8C8C8; }
 .gl-map[data-base="dark"] .leaflet-control-attribution a { color: #9FD0FF; }
