@@ -10,7 +10,7 @@ The source of my personal website. I'm a research scientist who brings human wat
 - **[Research](https://ejalilva.github.io/irrigation-studies/)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
 - **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation matters and why no one knows how much water each farm uses, told with the pictures from my old site; my studies on where, when and how much farms irrigate (told as six chapters); an essential reading list; and a research library of studies from across the field.
 - **[My journey](https://ejalilva.github.io/irrigation-studies/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
-- **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Pick a pin to see its pictures.
+- **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Point at a pin to see its pictures and videos.
 - **[Blog](https://ejalilva.github.io/irrigation-studies/blog.html)**: *The Big Ratchet*, my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
 - **Contact**: a message form on every page, alongside Google Scholar, ResearchGate, GitHub, LinkedIn and YouTube.
 

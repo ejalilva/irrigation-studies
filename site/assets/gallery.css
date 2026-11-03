@@ -41,18 +41,13 @@
 .gl-play svg { width: 18px; height: 18px; margin-left: 3px; fill: #172026; }
 .gl-thumb.is-video.is-playing .gl-play { opacity: 0; }
 .gl-thumb.is-video:hover .gl-play, .gl-thumb.is-video:focus-visible .gl-play { opacity: 1; }
+.gl-play .gl-sound { display: none; margin-left: 0; }
+.gl-thumb.is-video.is-playing:hover .gl-play svg:first-child, .gl-thumb.is-video.is-playing:focus-visible .gl-play svg:first-child { display: none; }
+.gl-thumb.is-video.is-playing:hover .gl-sound, .gl-thumb.is-video.is-playing:focus-visible .gl-sound { display: block; }
 .gl-mute { position: absolute; right: 8px; bottom: 8px; width: 24px; height: 24px; border-radius: 50%; opacity: 0; transition: opacity .2s; background: rgba(23,32,38,.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6v4h2.5l3.5 3V3L5 6z' fill='%23fff'/%3E%3Cpath d='M11 6l3.5 4M14.5 6L11 10'/%3E%3C/svg%3E") center / 14px no-repeat; }
 .is-playing .gl-mute { opacity: 1; }
-/* The pin's tooltip for a place with a video: the video playing above the title. */
-.leaflet-tooltip.gl-tip-box { padding: 6px 6px 7px; border: 0; border-radius: 8px; box-shadow: 0 10px 28px rgba(15,26,31,.32); }
-.gl-tip { width: 232px; white-space: normal; }
-.gl-tip-media { position: relative; display: block; margin-bottom: 6px; border-radius: 5px; overflow: hidden; background: #172026; }
-.gl-tip video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-.gl-tip strong { padding: 0 2px; }
-.gl-tip.is-text { width: auto; white-space: nowrap; }
-.gl-tip.is-text .gl-tip-media { display: none; }
-/* A pin whose place has only a video shows a play button instead of a count. */
-.gl-pin.is-play svg { width: 13px; height: 13px; margin-left: 2px; fill: currentColor; }
+/* A pin whose place has only a video shows a video camera instead of a count. */
+.gl-pin.is-video svg { width: 19px; height: 19px; fill: currentColor; }
 
 /* The places, under the map */
 .gl-places { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
@@ -91,11 +86,11 @@
 }
 @media (prefers-reduced-motion: reduce) { .gl-pin::after { animation: none; } .gl-pin, .gl-thumb img, .gl-play, .gl-mute { transition: none; } }
 
-/* Basemaps (assets/gallery.js). Only the Streets map is toned down, and darkened in dark mode; the colourful ones stay as they are.
-   The layers button under the zoom buttons switches between them. */
-.gl-map[data-base="streets"] .leaflet-tile-pane { filter: saturate(.7) brightness(1.03); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gl-map[data-base="streets"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); } }
-:root[data-theme="dark"] .gl-map[data-base="streets"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.9) contrast(.85) saturate(.6); }
+/* Basemaps (assets/gallery.js): Terrain, NASA Blue Marble relief and Dark gray, switched with the layers button under the
+   zoom buttons. While the dark map loads, the map's own background is dark too. */
+.gl-map[data-base="dark"] { background: #262626; }
+.gl-map[data-base="dark"] .leaflet-control-attribution { background: rgba(38,38,38,.8); color: #C8C8C8; }
+.gl-map[data-base="dark"] .leaflet-control-attribution a { color: #9FD0FF; }
 .gl-map .leaflet-control-layers { border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 6px 18px rgba(15,26,31,.16); font: .85rem/1.5 var(--sans); }
 .gl-map .leaflet-control-layers-expanded { padding: 8px 12px 8px 8px; background: var(--surface); color: var(--ink); }
 .gl-map .leaflet-control-layers label { margin: 2px 0; cursor: pointer; }

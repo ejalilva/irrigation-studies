@@ -1,12 +1,14 @@
-/* Gallery (gallery.html): a map with a pin for every place in data/gallery.json. Picking a pin, or a place in the list under
-   the map, opens that place's pictures in a panel beside the map; a picture opens large in the viewer, with its caption,
-   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/. The map has a choice of basemaps (BASEMAPS below,
-   none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default, and
-   ?map=<name> in the address or a visitor's last choice overrides it.
-   A place may have one video (p.video: an MP4 and its poster). It plays silently in the pin's tooltip while the pin is
-   hovered or focused, and at the top of the place's panel while the panel is open; it pauses when the tooltip closes,
-   the panel closes or scrolls out of view, the tab is hidden or the viewer is open. A click opens it in the viewer with
-   sound and controls. With reduced motion or data saver it never plays by itself: the poster shows with a play button.
+/* Gallery (gallery.html): a map with a pin for every place in data/gallery.json. Resting the mouse on a pin (briefly, so
+   passing over it does not count), clicking or tapping it, or picking a place in the list under the map, opens that
+   place's pictures in a panel beside the map. The panel stays open when the mouse moves on, so its pictures can be
+   reached; another pin replaces it, and × or Escape closes it. A picture opens large in the viewer, with its caption,
+   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/. The map has three basemaps (BASEMAPS below,
+   none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default,
+   and ?map=<name> in the address or a visitor's last choice overrides it.
+   A place may have one video (p.video: an MP4 and its poster). It sits in its own box across the top of the panel and
+   plays there, silently, while the panel is open and in view; it pauses when the panel closes or scrolls out of view,
+   the tab is hidden or the viewer is open. A click opens it in the viewer with sound and controls. With reduced motion
+   or data saver it never plays by itself: the poster shows with a play button.
    Without JavaScript the place list still links to every picture. */
 (() => {
   'use strict';
@@ -21,6 +23,11 @@
   // A place's items: its video first, then its pictures.
   const items = p => [...(p.video ? [{ video: p.video, caption: p.video.caption }] : []), ...p.photos];
   const PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z"/></svg>';
+  // Shown over the playing video when the mouse is on it: a click plays it with sound.
+  const SOUND = '<svg class="gl-sound" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6v4h2.6L8 13V3L4.6 6z"/><path d="M10.5 5.5a3.5 3.5 0 010 5M12.3 3.7a6 6 0 010 8.6" fill="none" stroke="#172026" stroke-width="1.4" stroke-linecap="round"/></svg>';
+  // The pin of a place with a video and no pictures: a video camera.
+  const CAMERA = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="13.5" height="12" rx="3"/><path d="M16.5 10.6l4.3-2.9c.6-.4 1.2 0 1.2.7v7.2c0 .7-.6 1.1-1.2.7l-4.3-2.9z"/></svg>';
+  const HOVER_DWELL = 150; // ms the mouse rests on a pin before its panel opens
   const preview = v => `<video src="${esc(v.src)}" poster="${esc(v.poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`;
   const count = p => [p.video ? 'video' : '', p.photos.length ? `${p.photos.length} ${p.photos.length === 1 ? 'picture' : 'pictures'}` : ''].filter(Boolean).join(' and ');
   // Silent previews: each wants to play while it is shown (want()), and only then.
@@ -40,24 +47,19 @@
   }
   document.addEventListener('visibilitychange', syncPreviews);
 
-  // Basemaps. labels: true lays place names and borders over a picture-only basemap.
+  // Basemaps. labels: a layer of place names and borders laid over a basemap that has none of its own.
   const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
+  const PLACES = ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
   const BASEMAPS = {
     terrain: { name: 'Terrain', url: ESRI + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', maxZoom: 19,
       attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community' },
-    bluemarble: { name: 'NASA Blue Marble relief', labels: true, maxNativeZoom: 8, maxZoom: 12,
+    bluemarble: { name: 'NASA Blue Marble relief', labels: PLACES, maxNativeZoom: 8, maxZoom: 12,
       url: 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/wmts.cgi?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=BlueMarble_ShadedRelief_Bathymetry&STYLE=default&TILEMATRIXSET=GoogleMapsCompatible_Level8&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg',
       attribution: 'Blue Marble shaded relief and bathymetry from NASA <a href="https://www.earthdata.nasa.gov/engage/open-data-services-software/earthdata-developer-portal/gibs-api">GIBS</a>' },
-    physical: { name: 'Physical', labels: true, url: ESRI + 'World_Physical_Map/MapServer/tile/{z}/{y}/{x}', maxNativeZoom: 8, maxZoom: 12,
-      attribution: 'Tiles &copy; Esri &mdash; Source: US National Park Service' },
-    satellite: { name: 'Satellite', labels: true, url: ESRI + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', maxZoom: 19,
-      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community' },
-    contours: { name: 'Topographic contours', url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', subdomains: 'abc', maxZoom: 17,
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, SRTM | Style &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)' },
-    streets: { name: 'Streets', url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }
+    dark: { name: 'Dark gray', labels: ESRI + 'Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', maxNativeZoom: 16, maxZoom: 19,
+      url: ESRI + 'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community' }
   };
-  const LABELS = { url: ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', maxZoom: 19 };
   const store = { get() { try { return localStorage.getItem('gallery-basemap'); } catch { return null; } },
     set(v) { try { localStorage.setItem('gallery-basemap', v); } catch { /* private mode */ } } };
   function addBasemaps(map) {
@@ -66,7 +68,7 @@
     Object.entries(BASEMAPS).forEach(([key, b]) => {
       const { name, url, labels, ...opts } = b;
       const base = L.tileLayer(url, opts);
-      const layer = labels ? L.layerGroup([base, L.tileLayer(LABELS.url, { maxZoom: LABELS.maxZoom, pane: 'labels' })]) : base;
+      const layer = labels ? L.layerGroup([base, L.tileLayer(labels, { maxNativeZoom: opts.maxNativeZoom, maxZoom: opts.maxZoom, pane: 'labels' })]) : base;
       layer.key = key; layers[key] = layer; byName[name] = layer;
     });
     const asked = new URLSearchParams(location.search).get('map');
@@ -78,7 +80,7 @@
 
   fetch('data/gallery.json', { cache: 'no-cache' }).then(r => r.json()).then(data => {
     const places = data.places || [];
-    let current = null, map = null;
+    let current = null, map = null, hoverTimer = 0;
     const pins = new Map();
 
     // The list under the map: one button per place.
@@ -88,23 +90,14 @@
       map = L.map(mapBox, { scrollWheelZoom: false, worldCopyJump: true, zoomSnap: .25, attributionControl: true });
       addBasemaps(map);
       places.forEach(p => {
-        const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}${p.photos.length ? '' : ' is-play'}"><b>${p.photos.length || PLAY}</b></span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
+        const glyph = p.photos.length ? `<b>${p.photos.length}</b>` : CAMERA;
+        const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}${p.photos.length ? '' : ' is-video'}">${glyph}</span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
         const m = L.marker([p.lat, p.lon], { icon, title: `${p.title}, ${p.where}`, alt: `${p.title}, ${p.where}`, keyboard: true, riseOnHover: true }).addTo(map);
-        m.on('click', () => open(p.id));
-        if (p.video) {
-          // The tooltip holds the video, so it plays while the pin is hovered or focused. It is the same element every
-          // time, so the video picks up where it stopped. While the panel shows this place, the tooltip is text only.
-          const tip = document.createElement('div');
-          tip.className = 'gl-tip';
-          tip.innerHTML = `<span class="gl-tip-media">${preview(p.video)}<span class="gl-mute" aria-hidden="true"></span></span><strong>${esc(p.title)}</strong><br>${esc(p.date)}`;
-          m.bindTooltip(tip, { direction: 'top', offset: [0, -16], className: 'gl-tip-box' });
-          let tipOpen = false;
-          addPreview(tip.querySelector('video'), tip, () => tipOpen && current?.id !== p.id);
-          m.on('tooltipopen', () => { tipOpen = true; tip.classList.toggle('is-text', current?.id === p.id); syncPreviews(); });
-          m.on('tooltipclose', () => { tipOpen = false; syncPreviews(); });
-        } else {
-          m.bindTooltip(`<strong>${esc(p.title)}</strong><br>${esc(p.date)}`, { direction: 'top', offset: [0, -16] });
-        }
+        m.on('click', () => { clearTimeout(hoverTimer); open(p.id); });
+        // Resting the mouse on a pin opens its panel (a tap does the same on touch screens).
+        m.on('mouseover', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => open(p.id), HOVER_DWELL); });
+        m.on('mouseout', () => clearTimeout(hoverTimer));
+        m.bindTooltip(`<strong>${esc(p.title)}</strong><br>${esc(p.date)}`, { direction: 'top', offset: [0, -16] });
         pins.set(p.id, m);
       });
       map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
@@ -123,21 +116,19 @@
     const panelIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => { panelSeen = es.some(e => e.isIntersecting); syncPreviews(); }, { threshold: 0.5 }) : null;
     function open(id) {
       const p = places.find(x => x.id === id); if (!p) return;
+      if (current === p && !panel.hidden) return; // already open: keep its video playing
       current = p;
       const all = items(p);
       panel.innerHTML = `<button type="button" class="gl-close" aria-label="Close">×</button>
         <p class="gl-kick">${esc(p.date)} · ${esc(p.where)}</p><h2>${esc(p.title)}</h2>${p.text ? `<p class="gl-text">${esc(p.text)}</p>` : ''}
         <ul class="gl-grid${all.length === 1 ? ' is-one' : ''}">${all.map((it, i) => it.video
-          ? `<li class="is-wide"><button type="button" class="gl-thumb is-video" data-i="${i}" aria-label="Play with sound: ${esc(it.caption)}">${preview(it.video)}<span class="gl-play" aria-hidden="true">${PLAY}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
+          ? `<li class="is-wide"><button type="button" class="gl-thumb is-video" data-i="${i}" aria-label="Play with sound: ${esc(it.caption)}">${preview(it.video)}<span class="gl-play" aria-hidden="true">${PLAY}${SOUND}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
           : `<li><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, true)}" alt="${esc(it.caption)}" loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
       panel.hidden = false; panel.scrollTop = 0;
       if (panelPreview) { previews.delete(panelPreview); panelPreview = null; }
       panelIO?.disconnect(); panelSeen = !panelIO;
       const pv = panel.querySelector('.gl-thumb.is-video');
       if (pv) { panelPreview = addPreview(pv.querySelector('video'), pv, () => current === p && !panel.hidden && panelSeen); panelIO?.observe(pv); }
-      // Hovering the pin of the place that is open shows its tooltip as text only.
-      const tip = pins.get(id)?.getTooltip()?.getContent();
-      if (tip instanceof HTMLElement) tip.classList.add('is-text');
       syncPreviews();
       panel.querySelector('.gl-close').addEventListener('click', close);
       panel.querySelectorAll('.gl-thumb').forEach(b => b.addEventListener('click', () => show(+b.dataset.i, b)));
