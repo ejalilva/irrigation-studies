@@ -6,6 +6,10 @@
      its next stop (Sharif has several).
    - Pictures for the current stop fan out above it. Moving from a stop up to its pictures keeps them open; clicking
      one opens the viewer, with its caption, previous/next and Escape to close.
+   - A clip (a card with data-clip, in front of its stop's fan) plays silently while the visitor has that stop selected,
+     and pauses when another stop is selected, when it is scrolled out of view, the tab is hidden or the viewer is open.
+     It does not play during the opening play-through, with reduced motion or with data saver on. A click opens it in
+     the viewer with sound and controls, from the start.
    - The first time the skills come into view, the timeline plays once from 2013 to now, unless the visitor has
      already touched it. With reduced motion the page simply opens at now. */
 (() => {
@@ -27,6 +31,29 @@
   let sel = reduce ? last : 0, previewMark = null, shown = null, timer = 0, touched = false, hoverTimer = 0;
   const HOVER_DWELL = 120;
 
+  // Clips: silent previews that play while their stop is selected (see the note at the top).
+  const quiet = reduce || Boolean(navigator.connection && navigator.connection.saveData);
+  let viewing = false;
+  const clips = [...inner.querySelectorAll('.jy-card.is-clip')].map(card => ({ card, video: card.querySelector('video'), seen: false }));
+  function syncClips() {
+    clips.forEach(c => {
+      const want = !quiet && touched && c.seen && !viewing && !document.hidden && Number(c.card.dataset.stage) === sel;
+      if (want && c.video.paused) c.video.play().catch(() => {});
+      else if (!want && !c.video.paused) c.video.pause();
+    });
+  }
+  clips.forEach(c => {
+    c.video.addEventListener('playing', () => c.card.classList.add('is-playing'));
+    c.video.addEventListener('pause', () => c.card.classList.remove('is-playing'));
+  });
+  if (clips.length && 'IntersectionObserver' in window) {
+    const seen = new IntersectionObserver(entries => entries.forEach(e => {
+      const c = clips.find(x => x.card === e.target); if (c) { c.seen = e.isIntersecting; syncClips(); }
+    }), { threshold: 0.5 });
+    clips.forEach(c => seen.observe(c.card));
+  } else clips.forEach(c => { c.seen = true; });
+  document.addEventListener('visibilitychange', syncClips);
+
   function render() {
     const active = sel;
     const mark = previewMark || stops[active].dataset.mark;
@@ -47,6 +74,7 @@
       }
     });
     shown = active;
+    syncClips();
     scene.classList.add('has-mark');
     marks.forEach(m => m.classList.toggle('is-on', m.dataset.mark === mark));
     // A tag limited to some stops (Sharif University) shows at those stops, or when its landmark itself is hovered.
@@ -108,7 +136,12 @@
       at = (k + list.length) % list.length;
       const card = list[at], pic = card.querySelector('img'), story = stories[Number(card.dataset.stage)];
       stopVideo();
-      if (card.dataset.embed && video) {
+      if (card.dataset.clip && video) {
+        const v = document.createElement('video');
+        v.src = card.dataset.clip; v.poster = card.querySelector('video')?.poster || '';
+        v.controls = true; v.autoplay = true; v.playsInline = true; v.setAttribute('aria-label', card.dataset.caption);
+        video.append(v); video.hidden = false; img.hidden = true; img.removeAttribute('src');
+      } else if (card.dataset.embed && video) {
         const f = document.createElement('iframe');
         f.src = card.dataset.embed; f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = card.dataset.caption;
         video.append(f); video.hidden = false; img.hidden = true; img.removeAttribute('src');
@@ -123,6 +156,7 @@
       cards.forEach((c, k) => c.addEventListener('click', () => {
         stopTour(); list = cards; opener = c;
         viewer.classList.toggle('is-single', cards.length < 2);
+        viewing = true; syncClips();
         show(k); viewer.showModal();
       }));
     });
@@ -134,7 +168,7 @@
       if (e.key === 'ArrowLeft' && list.length > 1) { e.preventDefault(); show(at - 1); }
     });
     viewer.addEventListener('click', e => { if (e.target === viewer) viewer.close(); });
-    viewer.addEventListener('close', () => { stopVideo(); if (opener) opener.focus(); });
+    viewer.addEventListener('close', () => { stopVideo(); viewing = false; syncClips(); if (opener) opener.focus({ preventScroll: true }); });
     // A video link under a stop's line opens the same viewer at that video, instead of a new tab.
     document.querySelectorAll('.jy-work[data-video]').forEach(a => a.addEventListener('click', e => {
       const card = document.querySelector(`.jy-card[data-video="${a.dataset.video}"]`);

@@ -403,6 +403,12 @@
       "title": "Characterization of irrigation timing using thermal satellite observations, a data-driven approach",
       "href": "https://doi.org/10.1016/j.rse.2025.115153"
     },
+    "agu24": {
+      "kind": "video",
+      "label": "AGU24 talk",
+      "title": "Presenting AgroTrack at the AGU24 Annual Meeting, Washington, DC, December 2024",
+      "href": "clip:agu24"
+    },
     "agrotrack": {
       "kind": "code",
       "label": "AgroTrack on GitHub",
@@ -637,12 +643,18 @@
       "work": [
         "lisf",
         "rse2026",
+        "agu24",
         "agrotrack",
         "geostream",
         "wrr2026"
       ],
       "logo": "nasa",
       "pictures": [
+        {
+          "clip": "assets/media/agrotrack-agu24.mp4",
+          "poster": "assets/media/agrotrack-agu24.webp",
+          "caption": "AGU24, Washington, DC, December 2024: presenting AgroTrack, which finds when farms irrigate from thermal satellite data."
+        },
         {
           "src": "assets/studies/agrotrack-2021.png",
           "caption": "AgroTrack: number of irrigated days in cropland, 2021.",

@@ -3,6 +3,10 @@
    previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/. The map has a choice of basemaps (BASEMAPS below,
    none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default, and
    ?map=<name> in the address or a visitor's last choice overrides it.
+   A place may have one video (p.video: an MP4 and its poster). It plays silently in the pin's tooltip while the pin is
+   hovered or focused, and at the top of the place's panel while the panel is open; it pauses when the tooltip closes,
+   the panel closes or scrolls out of view, the tab is hidden or the viewer is open. A click opens it in the viewer with
+   sound and controls. With reduced motion or data saver it never plays by itself: the poster shows with a play button.
    Without JavaScript the place list still links to every picture. */
 (() => {
   'use strict';
@@ -13,6 +17,28 @@
   if (!mapBox || !panel || !list) return;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const src = (p, small) => `assets/gallery/${p.file}${small ? '-sm' : ''}.webp`;
+  const quiet = matchMedia('(prefers-reduced-motion: reduce)').matches || Boolean(navigator.connection && navigator.connection.saveData);
+  // A place's items: its video first, then its pictures.
+  const items = p => [...(p.video ? [{ video: p.video, caption: p.video.caption }] : []), ...p.photos];
+  const PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z"/></svg>';
+  const preview = v => `<video src="${esc(v.src)}" poster="${esc(v.poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`;
+  const count = p => [p.video ? 'video' : '', p.photos.length ? `${p.photos.length} ${p.photos.length === 1 ? 'picture' : 'pictures'}` : ''].filter(Boolean).join(' and ');
+  // Silent previews: each wants to play while it is shown (want()), and only then.
+  const previews = new Set();
+  function syncPreviews() {
+    previews.forEach(pv => {
+      const go = !quiet && !document.hidden && !viewer?.open && pv.want();
+      if (go && pv.video.paused) pv.video.play().catch(() => {});
+      else if (!go && !pv.video.paused) pv.video.pause();
+    });
+  }
+  function addPreview(video, box, want) {
+    const pv = { video, want }; previews.add(pv);
+    video.addEventListener('playing', () => box.classList.add('is-playing'));
+    video.addEventListener('pause', () => box.classList.remove('is-playing'));
+    return pv;
+  }
+  document.addEventListener('visibilitychange', syncPreviews);
 
   // Basemaps. labels: true lays place names and borders over a picture-only basemap.
   const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
@@ -56,16 +82,29 @@
     const pins = new Map();
 
     // The list under the map: one button per place.
-    list.innerHTML = places.map(p => `<li><button type="button" class="gl-place k-${esc(p.kind || 'field')}" data-id="${esc(p.id)}" aria-controls="gl-panel" aria-expanded="false"><span class="gl-place-dot" aria-hidden="true"></span><span class="gl-place-t">${esc(p.title)}</span><span class="gl-place-m">${esc(p.where)} · ${esc(p.date)} · ${p.photos.length} ${p.photos.length === 1 ? 'picture' : 'pictures'}</span></button></li>`).join('');
+    list.innerHTML = places.map(p => `<li><button type="button" class="gl-place k-${esc(p.kind || 'field')}" data-id="${esc(p.id)}" aria-controls="gl-panel" aria-expanded="false"><span class="gl-place-dot" aria-hidden="true"></span><span class="gl-place-t">${esc(p.title)}</span><span class="gl-place-m">${esc(p.where)} · ${esc(p.date)} · ${count(p)}</span></button></li>`).join('');
 
     if (window.L) {
       map = L.map(mapBox, { scrollWheelZoom: false, worldCopyJump: true, zoomSnap: .25, attributionControl: true });
       addBasemaps(map);
       places.forEach(p => {
-        const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}"><b>${p.photos.length}</b></span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
+        const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}${p.photos.length ? '' : ' is-play'}"><b>${p.photos.length || PLAY}</b></span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
         const m = L.marker([p.lat, p.lon], { icon, title: `${p.title}, ${p.where}`, alt: `${p.title}, ${p.where}`, keyboard: true, riseOnHover: true }).addTo(map);
         m.on('click', () => open(p.id));
-        m.bindTooltip(`<strong>${esc(p.title)}</strong><br>${esc(p.date)}`, { direction: 'top', offset: [0, -16] });
+        if (p.video) {
+          // The tooltip holds the video, so it plays while the pin is hovered or focused. It is the same element every
+          // time, so the video picks up where it stopped. While the panel shows this place, the tooltip is text only.
+          const tip = document.createElement('div');
+          tip.className = 'gl-tip';
+          tip.innerHTML = `<span class="gl-tip-media">${preview(p.video)}<span class="gl-mute" aria-hidden="true"></span></span><strong>${esc(p.title)}</strong><br>${esc(p.date)}`;
+          m.bindTooltip(tip, { direction: 'top', offset: [0, -16], className: 'gl-tip-box' });
+          let tipOpen = false;
+          addPreview(tip.querySelector('video'), tip, () => tipOpen && current?.id !== p.id);
+          m.on('tooltipopen', () => { tipOpen = true; tip.classList.toggle('is-text', current?.id === p.id); syncPreviews(); });
+          m.on('tooltipclose', () => { tipOpen = false; syncPreviews(); });
+        } else {
+          m.bindTooltip(`<strong>${esc(p.title)}</strong><br>${esc(p.date)}`, { direction: 'top', offset: [0, -16] });
+        }
         pins.set(p.id, m);
       });
       map.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
@@ -79,13 +118,27 @@
       mapBox.innerHTML = '<p>The map could not load. Pick a place below to see its pictures.</p>';
     }
 
+    // The panel's video plays while the panel is open and at least half of the video is on screen.
+    let panelPreview = null, panelSeen = false;
+    const panelIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => { panelSeen = es.some(e => e.isIntersecting); syncPreviews(); }, { threshold: 0.5 }) : null;
     function open(id) {
       const p = places.find(x => x.id === id); if (!p) return;
       current = p;
+      const all = items(p);
       panel.innerHTML = `<button type="button" class="gl-close" aria-label="Close">×</button>
         <p class="gl-kick">${esc(p.date)} · ${esc(p.where)}</p><h2>${esc(p.title)}</h2>${p.text ? `<p class="gl-text">${esc(p.text)}</p>` : ''}
-        <ul class="gl-grid${p.photos.length === 1 ? ' is-one' : ''}">${p.photos.map((ph, i) => `<li><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${p.photos.length}: ${esc(ph.caption)}"><img src="${src(ph, true)}" alt="${esc(ph.caption)}" loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
+        <ul class="gl-grid${all.length === 1 ? ' is-one' : ''}">${all.map((it, i) => it.video
+          ? `<li class="is-wide"><button type="button" class="gl-thumb is-video" data-i="${i}" aria-label="Play with sound: ${esc(it.caption)}">${preview(it.video)}<span class="gl-play" aria-hidden="true">${PLAY}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
+          : `<li><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, true)}" alt="${esc(it.caption)}" loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
       panel.hidden = false; panel.scrollTop = 0;
+      if (panelPreview) { previews.delete(panelPreview); panelPreview = null; }
+      panelIO?.disconnect(); panelSeen = !panelIO;
+      const pv = panel.querySelector('.gl-thumb.is-video');
+      if (pv) { panelPreview = addPreview(pv.querySelector('video'), pv, () => current === p && !panel.hidden && panelSeen); panelIO?.observe(pv); }
+      // Hovering the pin of the place that is open shows its tooltip as text only.
+      const tip = pins.get(id)?.getTooltip()?.getContent();
+      if (tip instanceof HTMLElement) tip.classList.add('is-text');
+      syncPreviews();
       panel.querySelector('.gl-close').addEventListener('click', close);
       panel.querySelectorAll('.gl-thumb').forEach(b => b.addEventListener('click', () => show(+b.dataset.i, b)));
       list.querySelectorAll('.gl-place').forEach(b => b.setAttribute('aria-expanded', String(b.dataset.id === id)));
@@ -102,24 +155,34 @@
       if (innerWidth <= 760) panel.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     }
     function close() {
-      panel.hidden = true; current = null;
+      panel.hidden = true; current = null; syncPreviews();
       list.querySelectorAll('.gl-place').forEach(b => b.setAttribute('aria-expanded', 'false'));
       pins.forEach(m => m.getElement()?.querySelector('.gl-pin')?.classList.remove('is-on'));
     }
     list.addEventListener('click', e => { const b = e.target.closest('.gl-place'); if (b) open(b.dataset.id); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden && !viewer?.open) close(); });
 
-    // The viewer
+    // The viewer: a picture, or the video with sound and controls, from the start.
     let at = 0, opener = null;
     const vImg = document.getElementById('gl-viewer-img'), vCap = document.getElementById('gl-viewer-cap'), vMeta = document.getElementById('gl-viewer-meta');
+    const vVideo = document.getElementById('gl-viewer-video');
+    const stopVideo = () => { if (vVideo) { vVideo.replaceChildren(); vVideo.hidden = true; } vImg.hidden = false; };
     function show(i, from) {
       if (!viewer?.showModal || !current) return;
-      const ph = current.photos; at = (i + ph.length) % ph.length; opener = from || opener;
-      vImg.src = src(ph[at]); vImg.alt = ph[at].caption;
-      vCap.textContent = ph[at].caption;
-      vMeta.textContent = [current.title + ', ' + current.date, ph.length > 1 ? `${at + 1} / ${ph.length}` : '', ph[at].credit || ''].filter(Boolean).join(' · ');
+      const ph = items(current); at = (i + ph.length) % ph.length; opener = from || opener;
+      const it = ph[at];
+      stopVideo();
+      if (it.video && vVideo) {
+        const v = document.createElement('video');
+        v.src = it.video.src; v.poster = it.video.poster; v.controls = true; v.autoplay = true; v.playsInline = true;
+        v.setAttribute('aria-label', it.caption);
+        vVideo.append(v); vVideo.hidden = false; vImg.hidden = true; vImg.removeAttribute('src'); vImg.alt = '';
+      } else { vImg.src = src(it); vImg.alt = it.caption; }
+      vCap.textContent = it.caption;
+      vMeta.textContent = [current.title + ', ' + current.date, ph.length > 1 ? `${at + 1} / ${ph.length}` : '', it.credit || ''].filter(Boolean).join(' · ');
       viewer.classList.toggle('is-single', ph.length < 2);
       if (!viewer.open) viewer.showModal();
+      syncPreviews();
     }
     if (viewer) {
       document.getElementById('gl-viewer-close').addEventListener('click', () => viewer.close());
@@ -127,7 +190,7 @@
       document.getElementById('gl-viewer-next').addEventListener('click', () => show(at + 1));
       viewer.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(at + 1); if (e.key === 'ArrowLeft') show(at - 1); });
       viewer.addEventListener('click', e => { if (e.target === viewer) viewer.close(); });
-      viewer.addEventListener('close', () => opener?.focus({ preventScroll: true }));
+      viewer.addEventListener('close', () => { stopVideo(); syncPreviews(); opener?.focus({ preventScroll: true }); });
     }
     // Open a place from the address: gallery.html#smapvex22
     const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if (places.some(p => p.id === id)) open(id); };
