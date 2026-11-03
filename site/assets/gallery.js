@@ -2,7 +2,8 @@
    passing over it does not count), clicking or tapping it, or picking a place in the list under the map, opens that
    place's pictures in a panel beside the map. The panel stays open when the mouse moves on, so its pictures can be
    reached; another pin replaces it, and × or Escape closes it. A picture opens large in the viewer, with its caption,
-   previous/next and Escape to close. Leaflet is in assets/vendor/leaflet/. The map has three basemaps (BASEMAPS below,
+   previous/next and Escape to close; small pictures are enlarged at most 1.5 times. A photo with "wide": true spans the
+   panel at its own shape, from its large file. Leaflet is in assets/vendor/leaflet/. The map has three basemaps (BASEMAPS below,
    none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default,
    and ?map=<name> in the address or a visitor's last choice overrides it.
    A place may have one video (p.video: an MP4 and its poster). It sits in its own box across the top of the panel and
@@ -123,7 +124,7 @@
         <p class="gl-kick">${esc(p.date)} · ${esc(p.where)}</p><h2>${esc(p.title)}</h2>${p.text ? `<p class="gl-text">${esc(p.text)}</p>` : ''}
         <ul class="gl-grid${all.length === 1 ? ' is-one' : ''}">${all.map((it, i) => it.video
           ? `<li class="is-wide"><button type="button" class="gl-thumb is-video" data-i="${i}" aria-label="Play with sound: ${esc(it.caption)}">${preview(it.video)}<span class="gl-play" aria-hidden="true">${PLAY}${SOUND}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
-          : `<li><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, true)}" alt="${esc(it.caption)}" loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
+          : `<li${it.wide ? ' class="is-wide"' : ''}><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, !it.wide)}" alt="${esc(it.caption)}" loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
       panel.hidden = false; panel.scrollTop = 0;
       if (panelPreview) { previews.delete(panelPreview); panelPreview = null; }
       panelIO?.disconnect(); panelSeen = !panelIO;
@@ -157,6 +158,10 @@
     let at = 0, opener = null;
     const vImg = document.getElementById('gl-viewer-img'), vCap = document.getElementById('gl-viewer-cap'), vMeta = document.getElementById('gl-viewer-meta');
     const vVideo = document.getElementById('gl-viewer-video');
+    // A large picture fills the viewer (max-width in gallery.css); a small one, such as a crop from a collage, is enlarged
+    // only 1.5 times, so it is not blown up into a blur.
+    function fitSmall() { const n = vImg.naturalWidth; vImg.style.width = n && n < 700 ? `${Math.round(n * 1.5)}px` : ''; }
+    vImg.addEventListener('load', fitSmall);
     const stopVideo = () => { if (vVideo) { vVideo.replaceChildren(); vVideo.hidden = true; } vImg.hidden = false; };
     function show(i, from) {
       if (!viewer?.showModal || !current) return;
@@ -168,7 +173,7 @@
         v.src = it.video.src; v.poster = it.video.poster; v.controls = true; v.autoplay = true; v.playsInline = true;
         v.setAttribute('aria-label', it.caption);
         vVideo.append(v); vVideo.hidden = false; vImg.hidden = true; vImg.removeAttribute('src'); vImg.alt = '';
-      } else { vImg.src = src(it); vImg.alt = it.caption; }
+      } else { vImg.style.width = ''; vImg.src = src(it); vImg.alt = it.caption; if (vImg.complete) fitSmall(); }
       vCap.textContent = it.caption;
       vMeta.textContent = [current.title + ', ' + current.date, ph.length > 1 ? `${at + 1} / ${ph.length}` : '', it.credit || ''].filter(Boolean).join(' · ');
       viewer.classList.toggle('is-single', ph.length < 2);

@@ -1,5 +1,5 @@
 {
-  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). Add talks and conferences the same way, with kind \"talk\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. See docs/MAINTAINING.md (Gallery).",
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped. Add talks and conferences the same way, with kind \"talk\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. See docs/MAINTAINING.md (Gallery).",
   "places": [
     {
       "id": "smapvex22",
@@ -45,8 +45,13 @@
           "credit": "Photo: Gaetan Pique"
         },
         {
+          "file": "smapvex22-owl",
+          "caption": "A barred owl watching us from a dead branch in Harvard Forest, 26 July 2022."
+        },
+        {
           "file": "smapvex22-team",
-          "caption": "The field team."
+          "caption": "The field team.",
+          "wide": true
         }
       ]
     },
@@ -89,12 +94,30 @@
       "text": "After more than a year developing and validating a satellite soil moisture product for northern latitudes, more than 1,200 miles across the tundra it was built for.",
       "photos": [
         {
+          "file": "alaska-2023",
+          "caption": "Alaska, May 2023, in one word.",
+          "wide": true
+        },
+        {
           "file": "alaska-lake-clark",
           "caption": "On the shore of Cook Inlet in Lake Clark National Park, with the bush plane behind us, 30 May 2023."
         },
         {
-          "file": "alaska-2023",
-          "caption": "Alaska, May 2023, in one word."
+          "file": "alaska-sea-stacks",
+          "caption": "Spruce-topped sea stacks from the deck of the boat."
+        },
+        {
+          "file": "alaska-spruce-valley",
+          "caption": "Above a valley of spruce, with snow still on the peaks."
+        },
+        {
+          "file": "alaska-shore",
+          "caption": "Walking the shore at dusk, with snow on the mountains across the water."
+        },
+        {
+          "file": "alaska-last-frontier",
+          "caption": "Alaska, the Last Frontier.",
+          "wide": true
         }
       ]
     },
