@@ -1,6 +1,6 @@
 /* Satellites behind my research: the data for satellites.html and the orbit-ring controller.
 
-   The ring shows SATELLITES in order, the order in which each entered my work. Clicking one (or dragging the ring,
+   The ring shows SATELLITES in order, which is launch order, so going round the ring runs from 1999 to today. Clicking one (or dragging the ring,
    or the arrow keys) brings it to the front, and the panel under the ring lists the studies that used it, as the
    same paper cards the water-cycle map uses (assets/journals.js). satellites.html#smap opens with SMAP in front.
 
@@ -11,9 +11,12 @@
      name      name on the ring
      full      full mission name (optional)
      agency    keys of AGENCIES, lead agency first
-     launched  text after the agency in the panel, e.g. "Launched 2015"
+     launch    launch year, shown on the ring and in the panel as "Launched <year>"
+     launchText replaces "Launched <year>" when that needs more words (optional)
+     program   a programme shown beside the agency, e.g. "Copernicus" (optional)
      img       picture in assets/satellites/ with a transparent background; without one, an outline is shown and
-               the label says the picture is still needed
+               the label says the picture is still needed. cygnss.webp is one CYGNSS picture repeated: the lead
+               satellite and its seven companions; gosat-gw.svg is a drawing made for this site
      sensor    the instrument and what it observes, one line
      role      what this satellite gave my work, one sentence
      papers    published studies, oldest first: { doi, note }. doi is the key of the paper in assets/journals.js
@@ -21,8 +24,10 @@
      work      ongoing or planned work: { title, status, text, planned (dashed card), link (optional) }
      hidden    true keeps a satellite off the ring (its picture can stay in assets/satellites/)
 
-   Land outline of the Earth: assets/satellites/earth-land.png, the share of land in each half-degree cell
-   (from the GLOBE land mask, NOAA, public domain). */
+   The Earth (assets/satellites/): earth-day.webp is NASA's Blue Marble, earth-lights.webp the city lights of NASA's
+   Earth at Night, earth-clouds.webp a NASA cloud map (all public domain; equirectangular, 2048 x 1024, taken from the
+   three-globe examples), and earth-land.png the share of land per half-degree cell (GLOBE land mask, NOAA), used for
+   the sun's glint on the oceans. */
 (function () {
 'use strict';
 
@@ -42,15 +47,32 @@ const LIS_S1_WORK = { title: "SMAP–Sentinel-1 in NASA LIS", status: "In develo
   text: "Assimilation of the SMAP–Sentinel-1 product in NASA's Land Information System, aiming at about 1 km, sub-daily surface and root-zone soil moisture for selected U.S. watersheds." };
 
 const SATELLITES = [
-  { id: "terra", name: "Terra", agency: ["NASA"], launched: "Launched 1999",
-    sensor: "MODIS: vegetation, land surface temperature and land cover",
+  { id: "terra", name: "Terra", agency: ["NASA"], launch: "1999",
+    img: "terra.webp", sensor: "MODIS: vegetation, land surface temperature and land cover",
     role: "MODIS on Terra describes the vegetation in my retrievals and models.",
     papers: [
       { doi: "10.1109/jstars.2021.3119228", note: "MODIS NDVI from Terra gave the observed vegetation water content that strengthened the irrigation signal." },
       { doi: "10.1029/2022wr033342", note: "MODIS leaf area index and albedo, from Terra and Aqua, set the vegetation in the land surface model." },
       { doi: "10.3389/feart.2026.1854083", note: "MODIS land cover and NDVI set the vegetation and roughness parameters of the retrieval." }
     ] },
-  { id: "gcom-w", name: "GCOM-W", full: "Global Change Observation Mission – Water, “Shizuku”", agency: ["JAXA"], launched: "Launched 2012",
+  { id: "aqua", name: "Aqua", agency: ["NASA"], launch: "2002",
+    img: "aqua.webp", sensor: "MODIS and AMSR-E: land surface temperature, vegetation and soil moisture",
+    role: "Land surface temperature from MODIS: irrigated fields run cooler than the natural land around them.",
+    papers: [
+      { doi: "10.1029/2022wr033342", note: "MODIS EVI from Aqua, with leaf area index and albedo from Terra and Aqua, set the model's vegetation." },
+      { doi: "10.1016/j.rse.2025.115153", note: "MODIS land surface temperature shows irrigated fields cooling against a hydrologically similar natural pixel nearby." }
+    ],
+    work: [
+      { title: "AgroTrack", status: "MODIS version released", link: "https://github.com/deepcharles/AgroTrack",
+        text: "An open-source Python package for irrigation timing from satellites. The MODIS version is public." }
+    ] },
+  { id: "smos", name: "SMOS", full: "Soil Moisture and Ocean Salinity", agency: ["ESA"], launch: "2009",
+    img: "smos.webp", sensor: "L-band interferometric radiometer: soil moisture and ocean salinity",
+    role: "SMAP's L-band predecessor, and a possible bridge if SMAP's record ends.",
+    papers: [
+      { doi: "10.1029/2026wr044944", note: "Compared with SMAP for sampling and radio interference, and weighed as an anchor for GNSS-R during a SMAP gap." }
+    ] },
+  { id: "gcom-w", name: "GCOM-W", full: "Global Change Observation Mission – Water, “Shizuku”", agency: ["JAXA"], launch: "2012",
     img: "gcom-w.webp", sensor: "AMSR2 microwave radiometer: soil moisture, snow and rain",
     role: "Where the irrigation work began: AMSR2 soil moisture rose in summers when no rain fell.",
     papers: [
@@ -59,20 +81,18 @@ const SATELLITES = [
     work: [
       { title: "Snow depth from AMSR2", status: "Minor revision", text: "Coauthor of a machine learning, explainable-AI retrieval of near-real-time global snow depth from AMSR2, led by Kehan Yang." }
     ] },
-  { id: "smap", name: "SMAP", full: "Soil Moisture Active Passive", agency: ["NASA"], launched: "Launched 2015",
-    img: "smap.webp", sensor: "L-band radiometer: soil moisture and freeze–thaw",
-    role: "The thread through most of my soil moisture work, from detecting irrigation to assimilation and what should follow SMAP.",
+  { id: "landsat", name: "Landsat 8 and 9", agency: ["NASA", "USGS"], launch: "2013", launchText: "Launched 2013 and 2021",
+    img: "landsat.webp", sensor: "OLI and TIRS: land imagery and thermal at 30 m",
+    role: "With Sentinel-2, the imagery that Earth-observation foundation models learn from.",
+    work: [FM_WORK] },
+  { id: "gpm", name: "GPM", full: "Global Precipitation Measurement", agency: ["NASA", "JAXA"], launch: "2014",
+    img: "gpm.webp", sensor: "Precipitation radar and microwave imager, the reference for IMERG rainfall",
+    role: "Rainfall, so that soil wetting from irrigation can be told apart from wetting by rain.",
     papers: [
-      { doi: "10.1109/jstars.2021.3119228", note: "SMAP's 9 km soil moisture missed irrigation on small plots; the 1 km and 3 km SMAP–Sentinel-1 product showed it." },
-      { doi: "10.3390/su132011355", note: "The 1 km SMAP–Sentinel-1 product was the satellite reference for the new 10 m soil moisture." },
-      { doi: "10.1029/2022wr033342", note: "1 km SMAP–Sentinel-1 soil moisture was assimilated into the VIC model to estimate irrigation water use." },
-      { doi: "10.1016/j.agwat.2024.108918", note: "Six years of SMAP soil moisture tuned soil properties in the VIC model for the Lower Mekong." },
-      { doi: "10.1016/j.rse.2025.115153", note: "SMAP enhanced soil moisture is one of AgroTrack's inputs, alongside MODIS." },
-      { doi: "10.1029/2026wr044944", note: "Can GNSS-R carry global soil moisture on if SMAP ends? As a complement to an L-band mission, not a replacement." },
-      { doi: "10.3389/feart.2026.1854083", note: "A low-latency, enhanced 9 km SMAP retrieval for near-real-time applications." }
-    ],
-    work: [LIS_S1_WORK] },
-  { id: "sentinel-1", name: "Sentinel-1", agency: ["ESA"], launched: "Copernicus, since 2014",
+      { doi: "10.1109/jstars.2021.3119228", note: "IMERG precipitation showed which soil wetting rain could explain." },
+      { doi: "10.1029/2022wr033342", note: "IMERG precipitation drove the VIC land surface model." }
+    ] },
+  { id: "sentinel-1", name: "Sentinel-1", agency: ["ESA"], launch: "2014", program: "Copernicus",
     img: "sentinel-1.webp", sensor: "C-band radar: images through cloud, day and night",
     role: "Radar that resolves fields: it sharpened SMAP to 1 km and mapped crops, planting dates and yield.",
     papers: [
@@ -85,7 +105,20 @@ const SATELLITES = [
       { doi: "10.1016/j.rse.2025.114825", note: "Sentinel-1A VH backscatter fed geospatial foundation models of crop water content and height." }
     ],
     work: [LIS_S1_WORK] },
-  { id: "sentinel-2", name: "Sentinel-2", agency: ["ESA"], launched: "Copernicus, since 2015",
+  { id: "smap", name: "SMAP", full: "Soil Moisture Active Passive", agency: ["NASA"], launch: "2015",
+    img: "smap.webp", sensor: "L-band radiometer: soil moisture and freeze–thaw",
+    role: "The thread through most of my soil moisture work, from detecting irrigation to assimilation and what should follow SMAP.",
+    papers: [
+      { doi: "10.1109/jstars.2021.3119228", note: "SMAP's 9 km soil moisture missed irrigation on small plots; the 1 km and 3 km SMAP–Sentinel-1 product showed it." },
+      { doi: "10.3390/su132011355", note: "The 1 km SMAP–Sentinel-1 product was the satellite reference for the new 10 m soil moisture." },
+      { doi: "10.1029/2022wr033342", note: "1 km SMAP–Sentinel-1 soil moisture was assimilated into the VIC model to estimate irrigation water use." },
+      { doi: "10.1016/j.agwat.2024.108918", note: "Six years of SMAP soil moisture tuned soil properties in the VIC model for the Lower Mekong." },
+      { doi: "10.1016/j.rse.2025.115153", note: "SMAP enhanced soil moisture is one of AgroTrack's inputs, alongside MODIS." },
+      { doi: "10.1029/2026wr044944", note: "Can GNSS-R carry global soil moisture on if SMAP ends? As a complement to an L-band mission, not a replacement." },
+      { doi: "10.3389/feart.2026.1854083", note: "A low-latency, enhanced 9 km SMAP retrieval for near-real-time applications." }
+    ],
+    work: [LIS_S1_WORK] },
+  { id: "sentinel-2", name: "Sentinel-2", agency: ["ESA"], launch: "2015", program: "Copernicus",
     img: "sentinel-2.webp", sensor: "Multispectral imager: vegetation and land at 10 m",
     role: "Optical detail at field scale, for soil moisture and crop properties.",
     papers: [
@@ -93,41 +126,27 @@ const SATELLITES = [
       { doi: "10.1016/j.rse.2025.114825", note: "Sentinel-2 NDVI, NDWI and red-edge bands were among the strongest drivers of crop water content." }
     ],
     work: [FM_WORK] },
-  { id: "gpm", name: "GPM", full: "Global Precipitation Measurement", agency: ["NASA", "JAXA"], launched: "Launched 2014",
-    sensor: "Precipitation radar and microwave imager, the reference for IMERG rainfall",
-    role: "Rainfall, so that soil wetting from irrigation can be told apart from wetting by rain.",
-    papers: [
-      { doi: "10.1109/jstars.2021.3119228", note: "IMERG precipitation showed which soil wetting rain could explain." },
-      { doi: "10.1029/2022wr033342", note: "IMERG precipitation drove the VIC land surface model." }
-    ] },
-  { id: "aqua", name: "Aqua", agency: ["NASA"], launched: "Launched 2002",
-    img: "aqua.webp", sensor: "MODIS and AMSR-E: land surface temperature, vegetation and soil moisture",
-    role: "Land surface temperature from MODIS: irrigated fields run cooler than the natural land around them.",
-    papers: [
-      { doi: "10.1029/2022wr033342", note: "MODIS EVI from Aqua, with leaf area index and albedo from Terra and Aqua, set the model's vegetation." },
-      { doi: "10.1016/j.rse.2025.115153", note: "MODIS land surface temperature shows irrigated fields cooling against a hydrologically similar natural pixel nearby." }
-    ],
-    work: [
-      { title: "AgroTrack", status: "MODIS version released", link: "https://github.com/deepcharles/AgroTrack",
-        text: "An open-source Python package for irrigation timing from satellites. The MODIS version is public." }
-    ] },
-  { id: "smos", name: "SMOS", full: "Soil Moisture and Ocean Salinity", agency: ["ESA"], launched: "Launched 2009",
-    img: "smos.webp", sensor: "L-band interferometric radiometer: soil moisture and ocean salinity",
-    role: "SMAP's L-band predecessor, and a possible bridge if SMAP's record ends.",
-    papers: [
-      { doi: "10.1029/2026wr044944", note: "Compared with SMAP for sampling and radio interference, and weighed as an anchor for GNSS-R during a SMAP gap." }
-    ] },
-  { id: "cygnss", name: "CYGNSS", full: "Cyclone Global Navigation Satellite System", agency: ["NASA"], launched: "Launched 2016",
-    sensor: "Eight microsatellites that read GPS signals reflected off the surface (GNSS-R)",
+  { id: "cygnss", name: "CYGNSS", full: "Cyclone Global Navigation Satellite System", agency: ["NASA"], launch: "2016",
+    img: "cygnss.webp", sensor: "Eight microsatellites that read GPS signals reflected off the surface (GNSS-R)",
     role: "Sub-daily soil moisture from reflected navigation signals.",
     papers: [
       { doi: "10.1029/2026wr044944", note: "CYGNSS sub-daily soil moisture was the main GNSS-R case: it complements SMAP but relies on it for calibration." }
     ] },
-  { id: "landsat", name: "Landsat 8 and 9", agency: ["NASA", "USGS"], launched: "Launched 2013 and 2021",
-    img: "landsat.webp", sensor: "OLI and TIRS: land imagery and thermal at 30 m",
-    role: "With Sentinel-2, the imagery that Earth-observation foundation models learn from.",
-    work: [FM_WORK] },
-  { id: "nisar", name: "NISAR", full: "NASA–ISRO Synthetic Aperture Radar", agency: ["NASA", "ISRO"], launched: "Launched 2025",
+  { id: "iss", name: "ISS", full: "International Space Station, with ECOSTRESS", agency: ["NASA"], launch: "2018", launchText: "ECOSTRESS since 2018",
+    img: "iss.webp", sensor: "ECOSTRESS: thermal images of plant temperature at about 70 m",
+    role: "Finer thermal views, at changing times of day, for irrigation timing.",
+    work: [
+      { title: "AgroTrack with ECOSTRESS", status: "Planned for early 2027", planned: true,
+        text: "An expanded AgroTrack release is to add ECOSTRESS and VIIRS, alongside formal NISAR support." }
+    ] },
+  { id: "gosat-gw", name: "GOSAT-GW", full: "Global Observing Satellite for Greenhouse gases and Water cycle", agency: ["JAXA"], launch: "2025",
+    img: "gosat-gw.svg", sensor: "AMSR3 microwave radiometer: soil moisture, snow and rain",
+    role: "AMSR3 continues the AMSR2 record where the irrigation work began.",
+    work: [
+      { title: "AMSR3 retrieval and assimilation", status: "In development",
+        text: "Machine learning AMSR3 soil moisture retrieval and assimilation for LIS 7.9. A paper is planned for 2027." }
+    ] },
+  { id: "nisar", name: "NISAR", full: "NASA–ISRO Synthetic Aperture Radar", agency: ["NASA", "ISRO"], launch: "2025",
     img: "nisar.webp", sensor: "L- and S-band radar: soil moisture and crops at about 200 m",
     role: "Where, when and how much come together in NASA's Land Information System with NISAR.",
     work: [
@@ -140,29 +159,16 @@ const SATELLITES = [
       { title: "Coming full circle", status: "Next", planned: true, link: "irrigation.html#studies",
         text: "Where from the foundation-model maps, when from AgroTrack and how much from the particle batch smoother, together in NASA LIS with NISAR." }
     ] },
-  { id: "gosat-gw", name: "GOSAT-GW", full: "Global Observing Satellite for Greenhouse gases and Water cycle", agency: ["JAXA"], launched: "Launched 2025",
-    sensor: "AMSR3 microwave radiometer: soil moisture, snow and rain",
-    role: "AMSR3 continues the AMSR2 record where the irrigation work began.",
-    work: [
-      { title: "AMSR3 retrieval and assimilation", status: "In development",
-        text: "Machine learning AMSR3 soil moisture retrieval and assimilation for LIS 7.9. A paper is planned for 2027." }
-    ] },
-  { id: "wsf-m", name: "WSF-M", full: "Weather System Follow-on – Microwave", agency: ["USSF"], launched: "Launched 2024",
+  // Off the ring for now; delete "hidden: true" to bring it back.
+  { id: "wsf-m", name: "WSF-M", full: "Weather System Follow-on – Microwave", agency: ["USSF"], hidden: true, launch: "2024",
     sensor: "Microwave imager: soil moisture, ocean winds and more",
     role: "A new microwave source of soil moisture for NASA's Land Information System.",
     work: [
       { title: "WSF-M in NASA LIS", status: "Delivered, April 2026",
         text: "Machine learning soil moisture retrieval and the first WSF assimilation capability in NASA LIS, delivered with LIS 7.8." }
     ] },
-  { id: "iss", name: "ISS", full: "International Space Station, with ECOSTRESS", agency: ["NASA"], launched: "ECOSTRESS since 2018",
-    img: "iss.webp", sensor: "ECOSTRESS: thermal images of plant temperature at about 70 m",
-    role: "Finer thermal views, at changing times of day, for irrigation timing.",
-    work: [
-      { title: "AgroTrack with ECOSTRESS", status: "Planned for early 2027", planned: true,
-        text: "An expanded AgroTrack release is to add ECOSTRESS and VIIRS, alongside formal NISAR support." }
-    ] },
   // Kept off the ring until a study of mine uses it.
-  { id: "sentinel-3", name: "Sentinel-3", agency: ["ESA"], launched: "Copernicus, since 2016", hidden: true,
+  { id: "sentinel-3", name: "Sentinel-3", agency: ["ESA"], launch: "2016", program: "Copernicus", hidden: true,
     img: "sentinel-3.webp", sensor: "SLSTR and OLCI: land surface temperature and colour", role: "" }
 ].filter(s => !s.hidden);
 
@@ -196,6 +202,7 @@ stage.querySelector(".orbit-hint").textContent = coarse.matches ? "Swipe the rin
 
 const dots = s => s.agency.map(a => `<span class="ag-dot" style="--ag:${AGENCIES[a].color}" title="${esc(AGENCIES[a].name)}"></span>`).join("");
 const count = s => (s.papers || []).length;
+const launched = s => s.launchText || "Launched " + s.launch;
 const buttons = SATELLITES.map((s, i) => {
   const b = document.createElement("button");
   b.type = "button";
@@ -207,9 +214,10 @@ const buttons = SATELLITES.map((s, i) => {
   b.tabIndex = -1;
   const n = count(s);
   const tag = n ? `${n} ${n === 1 ? "study" : "studies"}` : "in progress";
-  b.setAttribute("aria-label", `${s.name}, ${s.agency.map(a => AGENCIES[a].name).join(" and ")}, ${tag}`);
+  b.setAttribute("aria-label", `${s.name}, ${s.agency.map(a => AGENCIES[a].name).join(" and ")}, ${launched(s).toLowerCase()}, ${tag}`);
   b.innerHTML = `<img class="sat-img" src="${S}${s.img || "placeholder.svg"}" alt="" draggable="false" decoding="async">
     <span class="sat-label">${dots(s)}<span class="sat-name">${esc(s.name)}</span><span class="sat-count${n ? "" : " is-work"}">${n || "in progress"}</span></span>
+    <span class="sat-year">${esc(launched(s))}</span>
     ${s.img ? "" : `<span class="sat-missing">Picture needed</span>`}`;
   b.addEventListener("click", e => { if (dragMoved) { e.preventDefault(); return; } select(i, { focus: false }); });
   ring.appendChild(b);
@@ -328,7 +336,7 @@ function renderPanel(s, animate) {
   const agencies = s.agency.map(a => `<span class="sp-ag"><span class="ag-dot" style="--ag:${AGENCIES[a].color}"></span>${esc(AGENCIES[a].name)}</span>`).join("");
   const html = `
     <div class="sp-head">
-      <p class="sp-agency">${agencies}<span class="sp-launch">${esc(s.launched || "")}</span></p>
+      <p class="sp-agency">${agencies}${s.program ? `<span class="sp-program">${esc(s.program)}</span>` : ""}<span class="sp-launch">${esc(launched(s))}</span></p>
       <h2 class="sp-name" id="sp-name">${esc(s.name)}</h2>
       ${s.full ? `<p class="sp-full">${esc(s.full)}</p>` : ""}
       <p class="sp-sensor">${esc(s.sensor)}</p>
@@ -350,88 +358,146 @@ function renderPanel(s, animate) {
   setTimeout(() => { panel.innerHTML = html; panel.classList.remove("swap"); }, 160);
 }
 
-/* ---- Night sky ---- */
+/* ---- Night sky: the Milky Way across the stage, and stars of many brightnesses and colours ---- */
+function hash2(x, y) { let h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
+function vnoise(x, y) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+  const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+function fbm(x, y, o = 5) { let s = 0, a = 0.5, f = 1; for (let i = 0; i < o; i++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; }
 function drawStars() {
   const c = stage.querySelector(".orbit-stars"), dpr = Math.min(2, window.devicePixelRatio || 1);
-  c.width = W * dpr; c.height = H * dpr;
-  const g = c.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
-  let seed = 7;
+  c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+  const g = c.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // deep sky
+  const bg = g.createRadialGradient(W * 0.5, H * 0.42, 0, W * 0.5, H * 0.42, Math.hypot(W, H) * 0.6);
+  bg.addColorStop(0, "#0b1426"); bg.addColorStop(0.55, "#060b17"); bg.addColorStop(1, "#02040a");
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  // the Milky Way: a soft band from lower left to upper right, mottled, with darker dust lanes along its middle
+  const sc = 4, mw = Math.ceil(W / sc), mh = Math.ceil(H / sc), off = document.createElement("canvas");
+  off.width = mw; off.height = mh;
+  const og = off.getContext("2d"), im = og.createImageData(mw, mh), d = im.data;
+  const x0 = -0.05 * mw, y0 = 0.95 * mh, x1 = 1.05 * mw, y1 = 0.02 * mh, len = Math.hypot(x1 - x0, y1 - y0);
+  const nx = -(y1 - y0) / len, ny = (x1 - x0) / len, width = 0.15 * Math.hypot(mw, mh);
+  const band = (x, y) => { const t = ((x - x0) * nx + (y - y0) * ny) / width; return Math.exp(-t * t * 1.6); };
+  for (let y = 0; y < mh; y++) for (let x = 0; x < mw; x++) {
+    const t = ((x - x0) * nx + (y - y0) * ny) / width, along = ((x - x0) * (x1 - x0) + (y - y0) * (y1 - y0)) / len / len;
+    const core = Math.exp(-t * t * 1.6), n = fbm(x / 26, y / 26), n2 = fbm(x / 9 + 40, y / 9 - 7, 4);
+    let dens = core * (0.4 + 1.05 * n * n) * (0.55 + 0.45 * Math.sin(along * Math.PI));
+    const lane = Math.exp(-Math.pow((t + 0.12 * (n2 - 0.5)) * 3.2, 2)) * Math.max(0, n2 * 1.6 - 0.45);
+    dens *= 1 - Math.min(0.85, lane);
+    dens = Math.max(0, Math.min(1, dens));
+    const warm = Math.exp(-t * t * 4);  // warmer, yellowish towards the middle of the band
+    const k = (y * mw + x) * 4;
+    d[k] = 150 + 95 * warm; d[k + 1] = 160 + 70 * warm; d[k + 2] = 215 - 25 * warm; d[k + 3] = 255 * dens * 0.42;
+  }
+  og.putImageData(im, 0, 0);
+  g.imageSmoothingEnabled = true; g.imageSmoothingQuality = "high";
+  g.drawImage(off, 0, 0, W, H);
+  // stars: mostly faint, more of them inside the band, a few bright ones with a glow
+  let seed = 11;
   const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const n = Math.round(W * H / 1500);
+  const COLORS = [[170, 191, 255], [202, 216, 255], [248, 247, 255], [255, 244, 234], [255, 229, 196], [255, 208, 160]];
+  const WEIGHTS = [0.05, 0.12, 0.33, 0.27, 0.15, 0.08];
+  const pick = () => { let r = rnd(), i = 0; while (i < WEIGHTS.length - 1 && (r -= WEIGHTS[i]) > 0) i++; return COLORS[i]; };
+  const n = Math.round(W * H / 260);
   for (let i = 0; i < n; i++) {
-    const x = rnd() * W, y = rnd() * H, r = rnd() < 0.93 ? 0.35 + rnd() * 0.6 : 0.9 + rnd() * 0.7;
-    const tint = rnd();
-    g.fillStyle = tint < 0.1 ? "rgba(255,214,170," : tint < 0.22 ? "rgba(180,205,255," : "rgba(235,240,255,";
-    g.fillStyle += (0.25 + rnd() * 0.65).toFixed(2) + ")";
-    g.beginPath(); g.arc(x, y, r, 0, 2 * Math.PI); g.fill();
+    const x = rnd() * W, y = rnd() * H;
+    if (rnd() > 0.32 + 0.68 * band(x / sc, y / sc) * 1.15) continue;
+    const m = Math.pow(rnd(), 4.2);  // brightness: most stars are faint
+    const [r, gg, b] = pick(), a = 0.14 + 0.86 * m, rad = 0.25 + 1.05 * m;
+    if (m > 0.62) {
+      const gl = g.createRadialGradient(x, y, 0, x, y, rad * 5);
+      gl.addColorStop(0, `rgba(${r},${gg},${b},${(0.26 * m).toFixed(2)})`); gl.addColorStop(1, `rgba(${r},${gg},${b},0)`);
+      g.fillStyle = gl; g.beginPath(); g.arc(x, y, rad * 5, 0, 2 * Math.PI); g.fill();
+    }
+    g.fillStyle = `rgba(${r},${gg},${b},${a.toFixed(2)})`;
+    g.beginPath(); g.arc(x, y, rad, 0, 2 * Math.PI); g.fill();
+    if (m > 0.93) {  // the brightest few get faint diffraction spikes
+      g.strokeStyle = `rgba(${r},${gg},${b},0.14)`; g.lineWidth = 0.5;
+      g.beginPath(); g.moveTo(x - rad * 7, y); g.lineTo(x + rad * 7, y); g.moveTo(x, y - rad * 7); g.lineTo(x, y + rad * 7); g.stroke();
+    }
   }
 }
 
-/* ---- The Earth: an orthographic globe lit from the upper left, turning slowly west to east ---- */
-let tex = null, LW = 0, LH = 0, ectx = null, eimg = null, eRun = false, visible = true, eLast = 0;
-let pIdx = null, pRow = null, pCol = null, pShade = null, pEdge = null;
+/* ---- The Earth: NASA's Blue Marble on an orthographic globe, sunlit from the upper left, with clouds, the
+   sun's glint on the oceans, city lights on the night side and a thin atmosphere; it turns slowly west to east ---- */
+let TW = 0, TH = 0, tDay = null, tCloud = null, tLight = null, tWater = null;
+let ectx = null, eimg = null, eRun = false, visible = true, eLast = 0;
+let pIdx, pRow, pCol, pShade, pSpec, pNight, pRim, pEdge;
 let espin = -45 * Math.PI / 180;  // opens with Lake Urmia, where the irrigation work began, facing the viewer
-const TILT = 22 * Math.PI / 180, LIGHT = (() => { const v = [-0.62, 0.42, 0.66], m = Math.hypot(...v); return v.map(x => x / m); })();
-function surface(latd, lond, f) {  // colour of a half-degree cell: ocean, land (sage, ochre deserts, ice), mixed on coasts
-  const ocean = [26, 74, 128];
-  if (!f) return ocean;
-  // sage, drier (ochre) towards the subtropics and the big deserts, ice at the poles and over Greenland
-  const a = Math.abs(latd);
-  let dry = 0.55 * Math.exp(-Math.pow((a - 24) / 9, 2));
-  if (latd > 12 && latd < 36 && lond > -18 && lond < 62) dry += 0.4 * Math.sin((latd - 12) / 24 * Math.PI);
-  if (latd < -16 && latd > -34 && lond > 116 && lond < 146) dry += 0.35 * Math.sin((-latd - 16) / 18 * Math.PI);
-  dry = Math.min(1, dry);
-  let ice = Math.max(0, Math.min(1, (a - 66) / 8));
-  if (latd > 60 && lond > -70 && lond < -15) ice = Math.max(ice, Math.min(1, (latd - 60) / 4));
-  const sage = [100, 134, 84], ochre = [178, 142, 92], snow = [226, 233, 240];
-  const l = sage.map((v, k) => (v * (1 - dry) + ochre[k] * dry) * (1 - ice) + snow[k] * ice);
-  return ocean.map((o, k) => o * (1 - f) + l[k] * f);
+const TILT = 22 * Math.PI / 180;
+const LIGHT = (() => { const v = [-0.6, 0.38, 0.7], m = Math.hypot(...v); return v.map(x => x / m); })();
+const HALF = (() => { const v = [LIGHT[0], LIGHT[1], LIGHT[2] + 1], m = Math.hypot(...v); return v.map(x => x / m); })();
+function pixels(src, w, h) {
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const g = c.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(src, 0, 0, w, h);
+  return g.getImageData(0, 0, w, h).data;
 }
-function loadLand() {
-  const im = new Image();
-  im.onload = () => {
-    const c = document.createElement("canvas"); c.width = LW = im.width; c.height = LH = im.height;
-    const g = c.getContext("2d"); g.drawImage(im, 0, 0);
-    const d = g.getImageData(0, 0, LW, LH).data; tex = new Uint8ClampedArray(LW * LH * 3);
-    for (let r = 0; r < LH; r++) for (let q = 0; q < LW; q++) {
-      const k = r * LW + q, rgb = surface(90 - (r + 0.5) * 180 / LH, (q + 0.5) * 360 / LW - 180, d[k * 4] / 255);
-      tex[k * 3] = rgb[0]; tex[k * 3 + 1] = rgb[1]; tex[k * 3 + 2] = rgb[2];
+function loadImage(name) {
+  return new Promise((ok, fail) => { const im = new Image(); im.onload = () => ok(im); im.onerror = fail; im.src = S + name; });
+}
+function loadEarth() {
+  Promise.all(["earth-day.webp", "earth-clouds.webp", "earth-lights.webp", "earth-land.png"].map(loadImage)).then(([day, cl, li, land]) => {
+    TW = day.width; TH = day.height;
+    const dd = pixels(day, TW, TH), cd = pixels(cl, TW, TH), ld = pixels(li, TW, TH), wd = pixels(land, TW, TH);
+    const n = TW * TH;
+    tDay = new Uint8ClampedArray(n * 3); tCloud = new Uint8ClampedArray(n); tLight = new Uint8ClampedArray(n); tWater = new Uint8ClampedArray(n);
+    for (let i = 0; i < n; i++) {
+      tDay[i * 3] = dd[i * 4]; tDay[i * 3 + 1] = dd[i * 4 + 1]; tDay[i * 3 + 2] = dd[i * 4 + 2];
+      tCloud[i] = cd[i * 4]; tLight[i] = ld[i * 4]; tWater[i] = 255 - wd[i * 4];
     }
     earthSetup(); startEarth();
-  };
-  im.src = S + "earth-land.png";
+  }).catch(() => {});
 }
+const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 function earthSetup() {
   const c = stage.querySelector(".orbit-earth canvas"), dpr = Math.min(2, window.devicePixelRatio || 1);
   const size = Math.max(2, Math.round(2 * ER * dpr));
   c.width = c.height = size; ectx = c.getContext("2d"); eimg = ectx.createImageData(size, size);
-  if (!LW) return;
-  // per pixel of the disc, worked out once: where it is, its row in the map, its longitude column, light and rim
-  const idx = [], row = [], col = [], shade = [], edge = [];
+  if (!TW) return;
+  // worked out once per pixel of the disc: where it is, its row and longitude in the maps, and its light
+  const idx = [], row = [], col = [], shade = [], spec = [], night = [], rim = [], edge = [];
   for (let j = 0; j < size; j++) for (let i = 0; i < size; i++) {
     const u = (i + 0.5) / size * 2 - 1, v = 1 - (j + 0.5) / size * 2, rr = u * u + v * v;
     if (rr > 1) continue;
     const z = Math.sqrt(1 - rr);
     const yw = v * Math.cos(TILT) + z * Math.sin(TILT), zw = -v * Math.sin(TILT) + z * Math.cos(TILT);
     const lat = Math.asin(Math.max(-1, Math.min(1, yw))), lon = Math.atan2(u, zw);
-    const lit = Math.max(0, u * LIGHT[0] + v * LIGHT[1] + z * LIGHT[2]);
+    const dot = u * LIGHT[0] + v * LIGHT[1] + z * LIGHT[2], day = smooth(-0.12, 0.22, dot);
     idx.push((j * size + i) * 4);
-    row.push(Math.min(LH - 1, Math.floor((Math.PI / 2 - lat) / Math.PI * LH)) * LW);
-    col.push((lon + Math.PI) / (2 * Math.PI) * LW);
-    shade.push(0.06 + 0.94 * Math.pow(lit, 0.85));
-    edge.push(255 * Math.min(1, (1 - Math.sqrt(rr)) * size / 3));
+    row.push(Math.min(TH - 1, Math.floor((Math.PI / 2 - lat) / Math.PI * TH)) * TW);
+    col.push((lon + Math.PI) / (2 * Math.PI) * TW);
+    shade.push(0.02 + day * (0.3 + 0.7 * Math.pow(Math.max(0, dot), 0.75)));
+    spec.push(day * Math.pow(Math.max(0, u * HALF[0] + v * HALF[1] + z * HALF[2]), 60));
+    night.push(1 - smooth(-0.3, 0.06, dot));
+    rim.push(Math.pow(1 - z, 2.6) * (0.25 + 0.75 * day));
+    edge.push(255 * Math.min(1, (1 - Math.sqrt(rr)) * size / 2.5));
   }
   pIdx = Int32Array.from(idx); pRow = Int32Array.from(row); pCol = Float32Array.from(col);
-  pShade = Float32Array.from(shade); pEdge = Uint8ClampedArray.from(edge);
+  pShade = Float32Array.from(shade); pSpec = Float32Array.from(spec); pNight = Float32Array.from(night);
+  pRim = Float32Array.from(rim); pEdge = Uint8ClampedArray.from(edge);
   drawEarth();
 }
 function drawEarth() {
-  if (!tex || !pIdx) return;
-  const d = eimg.data, shift = ((-espin / (2 * Math.PI)) % 1 + 1) % 1 * LW;
+  if (!tDay || !pIdx) return;
+  const d = eimg.data, shift = ((-espin / (2 * Math.PI)) % 1 + 1) % 1 * TW;
   for (let k = 0; k < pIdx.length; k++) {
-    let c = pCol[k] + shift; if (c >= LW) c -= LW;
-    const t = (pRow[k] + (c | 0)) * 3, sh = pShade[k], o = pIdx[k];
-    d[o] = tex[t] * sh; d[o + 1] = tex[t + 1] * sh; d[o + 2] = tex[t + 2] * sh; d[o + 3] = pEdge[k];
+    let c = pCol[k] + shift; if (c >= TW) c -= TW;
+    const t = pRow[k] + (c | 0), t3 = t * 3, o = pIdx[k];
+    const cl = tCloud[t] / 255, cw = cl * 0.92, sh = pShade[k];
+    let r = (tDay[t3] * (1 - cw) + 240 * cw) * sh;
+    let g = (tDay[t3 + 1] * (1 - cw) + 242 * cw) * sh;
+    let b = (tDay[t3 + 2] * (1 - cw) + 248 * cw) * sh;
+    const glint = pSpec[k] * (tWater[t] / 255) * (1 - cl) * 210;
+    const lights = pNight[k] * (tLight[t] / 255) * (1 - cl * 0.85);
+    const rim = pRim[k];
+    d[o] = r + glint + lights * 255 + rim * 70;
+    d[o + 1] = g + glint * 0.95 + lights * 196 + rim * 135;
+    d[o + 2] = b + glint * 0.85 + lights * 120 + rim * 255;
+    d[o + 3] = pEdge[k];
   }
   ectx.putImageData(eimg, 0, 0);
 }
@@ -443,7 +509,7 @@ function startEarth() {
     if (!eRun) return;
     if (visible && !document.hidden) {
       if (!eLast) eLast = now;
-      if (now - eLast > 33) { espin += (now - eLast) * (2 * Math.PI / 120000); eLast = now; drawEarth(); }  // one turn in two minutes
+      if (now - eLast > 33) { espin += (now - eLast) * (2 * Math.PI / 150000); eLast = now; drawEarth(); }  // one turn in two and a half minutes
     } else eLast = 0;
     requestAnimationFrame(tick);
   };
@@ -460,7 +526,7 @@ window.addEventListener("hashchange", () => {
   if (i >= 0) select(i, { keepHash: true });
 });
 measure();
-loadLand();
+loadEarth();
 const fromHash = SATELLITES.findIndex(s => s.id === location.hash.slice(1));
 const start = fromHash >= 0 ? fromHash : SATELLITES.findIndex(s => s.id === "smap");
 // One sweep on arrival: the ring turns a quarter of the way round to the first satellite.
