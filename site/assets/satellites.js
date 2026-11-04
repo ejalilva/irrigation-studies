@@ -32,10 +32,13 @@
      work      ongoing or planned work: { title, status, text (not shown), planned, link (optional) }
      hidden    true keeps a satellite off the ring (its picture can stay in assets/satellites/)
 
-   The sky: assets/satellites/space.webp, the Milky Way photo Ehsan chose. The Earth (assets/satellites/): earth-day.webp is NASA's Blue Marble, earth-lights.webp the city lights of NASA's
-   Earth at Night, earth-clouds.webp a NASA cloud map (all public domain; equirectangular, 2048 x 1024, taken from the
-   three-globe examples), and earth-land.png the share of land per half-degree cell (GLOBE land mask, NOAA), used for
-   the sun's glint on the oceans. */
+   The sky (assets/satellites/): the Milky Way photo Ehsan chose, split in two so it stays sharp on any screen:
+   space-glow.webp, the photo with its stars taken out, and space-stars.bin, those stars, which the script redraws
+   at screen resolution. The Earth (assets/satellites/), drawn with WebGL 2: earth-day-4k.webp is NASA's Blue Marble
+   (4096 x 2048), earth-clouds.webp a NASA cloud map, earth-lights-4k.webp the city lights of NASA's Earth at Night
+   (all public domain, equirectangular, from the three-globe examples), and earth-water.webp where the oceans are
+   (GLOBE land mask, NOAA), for the sun's glint. earth-static.webp is the same globe as a picture, shown until the
+   live one is ready and where WebGL 2 is missing. */
 (function () {
 'use strict';
 
@@ -218,10 +221,11 @@ let mode = new URLSearchParams(location.search).get("view") === "spectrum" ? "sp
 
 /* ---- Build the stage ---- */
 stage.innerHTML = `
-  <div class="sky sky-space" aria-hidden="true"></div>
+  <div class="sky sky-space" aria-hidden="true"><canvas class="sky-stars"></canvas></div>
   <div class="sky sky-spectrum" aria-hidden="true"></div>
   <svg class="orbit-path orbit-back" aria-hidden="true"><path/></svg>
-  <div class="orbit-earth" aria-hidden="true"><canvas></canvas></div>
+  <div class="orbit-earth" aria-hidden="true"></div>
+  <canvas class="earth-gl" aria-hidden="true"></canvas>
   <svg class="orbit-path orbit-front" aria-hidden="true"><path/></svg>
   <svg class="spectrum" aria-hidden="true"></svg>
   <ul class="spectrum-uses" aria-label="What each part of the spectrum shows"></ul>
@@ -311,7 +315,7 @@ function measure() {
   slots = [];
   order.forEach((i, k) => { slots[i] = { x: xs[k], y: H * rowY[k % rows], s: box / BW, row: k % rows }; });
   drawSpectrum();
-  earthSetup();
+  drawStars(); earthResize(); earthGo(false);
 }
 
 /* ---- The spectrum drawing ---- */
@@ -425,7 +429,7 @@ function setMode(m, animate = true) {
   if (m === "spectrum") u.searchParams.set("view", "spectrum"); else u.searchParams.delete("view");
   history.replaceState(null, "", u);
   cancelAnimationFrame(anim);
-  if (m === "orbit") startEarth();
+  earthGo(animate);
   if (!animate || reduced.matches || !cur.length) { place(); return; }
   // each satellite flies from where it is to its place in the other arrangement, one after another from the left
   const from = cur.map(o => Object.assign({}, o)), to = buttons.map((b, i) => stateFor(i));
@@ -522,94 +526,174 @@ function renderPanel(s, animate) {
   setTimeout(() => { panel.innerHTML = html; panel.classList.remove("swap"); }, 160);
 }
 
-/* ---- The Earth: NASA's Blue Marble on an orthographic globe, sunlit from the upper left, with clouds, the
-   sun's glint on the oceans, city lights on the night side and a thin atmosphere; it turns slowly west to east ---- */
-let TW = 0, TH = 0, tDay = null, tCloud = null, tLight = null, tWater = null;
-let ectx = null, eimg = null, eRun = false, visible = true, eLast = 0;
-let pIdx, pRow, pCol, pShade, pSpec, pNight, pRim, pEdge;
+/* ---- The sky: the glow of Ehsan's Milky Way photo (a CSS background), with the photo's own stars redrawn sharp
+   at screen resolution (space-stars.bin: 8 bytes a star, x and y of 65535 across the photo, brightness, colour) ---- */
+let starData = null;
+fetch(S + "space-stars.bin").then(r => r.ok ? r.arrayBuffer() : null).then(b => { if (b) { starData = new DataView(b); drawStars(); } }).catch(() => {});
+function drawStars() {
+  const c = stage.querySelector(".sky-stars");
+  if (!c || !W) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+  const g = c.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  if (!starData) return;
+  // the same fit as the CSS background: cover, centred
+  const IW = 2560, IH = 1706, sc = Math.max(W / IW, H / IH), iw = IW * sc, ih = IH * sc, ox = (W - iw) / 2, oy = (H - ih) / 2;
+  const n = starData.byteLength / 8;
+  for (let k = 0; k < n; k++) {
+    const o = k * 8, x = ox + starData.getUint16(o, true) / 65535 * iw, y = oy + starData.getUint16(o + 2, true) / 65535 * ih;
+    if (x < -4 || y < -4 || x > W + 4 || y > H + 4) continue;
+    const bn = starData.getUint8(o + 4) / 255;
+    const r = 150 + starData.getUint8(o + 5) * 0.4, gg = 150 + starData.getUint8(o + 6) * 0.4, b = 150 + starData.getUint8(o + 7) * 0.4;
+    const rad = 0.28 + 0.95 * Math.pow(bn, 1.25), a = Math.min(1, 0.12 + 0.95 * Math.pow(bn, 0.8));
+    if (bn > 0.7) {
+      const gl = g.createRadialGradient(x, y, 0, x, y, rad * 4.5);
+      gl.addColorStop(0, `rgba(${r | 0},${gg | 0},${b | 0},${(0.28 * bn).toFixed(2)})`); gl.addColorStop(1, `rgba(${r | 0},${gg | 0},${b | 0},0)`);
+      g.fillStyle = gl; g.beginPath(); g.arc(x, y, rad * 4.5, 0, 2 * Math.PI); g.fill();
+    }
+    g.fillStyle = `rgba(${r | 0},${gg | 0},${b | 0},${a.toFixed(2)})`;
+    g.beginPath(); g.arc(x, y, rad, 0, 2 * Math.PI); g.fill();
+  }
+}
+
+/* ---- The Earth, drawn on the GPU (WebGL 2): NASA's Blue Marble (4096 px) on a globe sunlit from the upper left,
+   with clouds, the sun's glint on the oceans, city lights on the night side and the atmosphere. In the orbit view it
+   is the globe in the ring; in the spectrum view it grows and sinks to become the horizon, lit from behind as at
+   sunrise. Until the maps are in (or without WebGL 2) earth-static.webp, the same globe as a picture, stands in. ---- */
+const EARTH_MAPS = ["earth-day-4k.webp", "earth-clouds.webp", "earth-lights-4k.webp", "earth-water.webp"];
+let gl = null, glProg = null, glU = {}, glReady = false, visible = true, eLast = 0, eRun = false;
 let espin = -45 * Math.PI / 180;  // opens with Lake Urmia, where the irrigation work began, facing the viewer
-const TILT = 22 * Math.PI / 180;
-const LIGHT = (() => { const v = [-0.6, 0.38, 0.7], m = Math.hypot(...v); return v.map(x => x / m); })();
-const HALF = (() => { const v = [LIGHT[0], LIGHT[1], LIGHT[2] + 1], m = Math.hypot(...v); return v.map(x => x / m); })();
-function pixels(src, w, h) {
-  const c = document.createElement("canvas"); c.width = w; c.height = h;
-  const g = c.getContext("2d"); g.imageSmoothingQuality = "high"; g.drawImage(src, 0, 0, w, h);
-  return g.getImageData(0, 0, w, h).data;
+const norm = v => { const m = Math.hypot(...v); return v.map(x => x / m); };
+const L_ORBIT = norm([-0.6, 0.38, 0.7]), L_HORIZON = norm([-0.35, 0.45, -0.82]);
+let ePar = null, eFrom = null, eTo = null, eT0 = 0, eDur = 0;
+function earthTarget() {
+  if (mode === "orbit") return { cx, cy, r: ER, tilt: 22, l: L_ORBIT, halo: Math.max(5, ER * 0.05), hi: 0.75 };
+  const R = Math.max(W * 1.15, H * 1.6);
+  return { cx: W / 2, cy: H * (narrow ? 0.83 : 0.81) + R, r: R, tilt: -30, l: L_HORIZON, halo: Math.max(18, R * 0.028), hi: 1 };
+}
+function lerpPar(a, b, e) {
+  const m = (x, y) => x + (y - x) * e;
+  return { cx: m(a.cx, b.cx), cy: m(a.cy, b.cy), r: a.r * Math.pow(b.r / a.r, e), tilt: m(a.tilt, b.tilt),
+    l: norm([m(a.l[0], b.l[0]), m(a.l[1], b.l[1]), m(a.l[2], b.l[2])]), halo: m(a.halo, b.halo), hi: m(a.hi, b.hi) };
+}
+function earthGo(animate) {  // move the Earth to where the current view wants it
+  const to = earthTarget();
+  if (!animate || !ePar || reduced.matches) { ePar = to; eFrom = eTo = null; return; }
+  eFrom = ePar; eTo = to; eT0 = performance.now(); eDur = 1300;
+}
+const VS = `#version 300 es
+in vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
+const FS = `#version 300 es
+precision highp float;
+uniform sampler2D uDay, uCloud, uNight, uWater;
+uniform vec2 uRes, uC; uniform float uR, uSpin, uTilt, uHalo, uHaloI; uniform vec3 uL;
+out vec4 o;
+const float PI = 3.14159265;
+vec4 tex(sampler2D t, vec2 uv) {  // Tarini's trick, so the longitude seam leaves no line
+  float u1 = fract(uv.x), u2 = fract(uv.x + 0.5) - 0.5;
+  return texture(t, vec2(fwidth(u1) < fwidth(u2) - 0.001 ? u1 : u2, uv.y));
+}
+void main() {
+  vec2 f = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y);
+  vec2 p = (f - uC) / uR; p.y = -p.y;
+  float rr = dot(p, p), r = sqrt(rr);
+  vec3 nh = vec3(p / max(r, 1e-4), 0.0);
+  float halo = exp(-max(0.0, (r - 1.0) * uR) / uHalo) * uHaloI * clamp(dot(nh, uL) * 0.9 + 0.35, 0.0, 1.0);
+  vec3 col = vec3(0.0); float a = 0.0;
+  if (r < 1.0) {
+    float z = sqrt(1.0 - rr);
+    vec3 n = vec3(p, z);
+    float yw = n.y * cos(uTilt) + n.z * sin(uTilt), zw = -n.y * sin(uTilt) + n.z * cos(uTilt);
+    float lat = asin(clamp(yw, -1.0, 1.0)), lon = atan(n.x, zw);
+    vec2 uv = vec2((lon + PI - uSpin) / (2.0 * PI), (PI * 0.5 - lat) / PI);
+    vec3 day = tex(uDay, uv).rgb;
+    float cl = tex(uCloud, uv).r, li = tex(uNight, uv).r, wa = tex(uWater, uv).r;
+    float d = dot(n, uL), dayf = smoothstep(-0.12, 0.22, d);
+    float shade = 0.02 + dayf * (0.3 + 0.7 * pow(max(d, 0.0), 0.75));
+    float spec = dayf * pow(max(dot(n, normalize(uL + vec3(0.0, 0.0, 1.0))), 0.0), 60.0);
+    col = mix(day, vec3(0.94, 0.95, 0.97), cl * 0.92) * shade + vec3(0.82, 0.8, 0.74) * spec * wa * (1.0 - cl);
+    col += vec3(1.0, 0.77, 0.47) * li * (1.0 - smoothstep(-0.3, 0.06, d)) * (1.0 - cl * 0.85);
+    col += vec3(0.27, 0.53, 1.0) * pow(1.0 - z, 2.6) * (0.25 + 0.75 * dayf);
+    a = clamp((1.0 - r) * uR / 1.25, 0.0, 1.0);
+  }
+  vec3 hc = vec3(0.36, 0.62, 1.0) * halo;
+  o = vec4(col * a + hc * (1.0 - a), a + halo * (1.0 - a));
+}`;
+function glInit() {
+  const c = stage.querySelector(".earth-gl");
+  gl = c && c.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false });
+  if (!gl) return false;
+  const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null; };
+  const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+  if (!vs || !fs) { gl = null; return false; }
+  glProg = gl.createProgram(); gl.attachShader(glProg, vs); gl.attachShader(glProg, fs); gl.linkProgram(glProg);
+  if (!gl.getProgramParameter(glProg, gl.LINK_STATUS)) { gl = null; return false; }
+  gl.useProgram(glProg);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(glProg, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  ["uDay", "uCloud", "uNight", "uWater", "uRes", "uC", "uR", "uSpin", "uTilt", "uHalo", "uHaloI", "uL"].forEach(k => { glU[k] = gl.getUniformLocation(glProg, k); });
+  return true;
+}
+function glTexture(unit, img) {
+  const t = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const ext = gl.getExtension("EXT_texture_filter_anisotropic");
+  if (ext) gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(8, gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT)));
 }
 function loadImage(name) {
-  return new Promise((ok, fail) => { const im = new Image(); im.onload = () => ok(im); im.onerror = fail; im.src = S + name; });
+  return new Promise((ok, fail) => { const im = new Image(); im.decoding = "async"; im.onload = () => ok(im); im.onerror = fail; im.src = S + name; });
 }
 function loadEarth() {
-  Promise.all(["earth-day.webp", "earth-clouds.webp", "earth-lights.webp", "earth-land.png"].map(loadImage)).then(([day, cl, li, land]) => {
-    TW = day.width; TH = day.height;
-    const dd = pixels(day, TW, TH), cd = pixels(cl, TW, TH), ld = pixels(li, TW, TH), wd = pixels(land, TW, TH);
-    const n = TW * TH;
-    tDay = new Uint8ClampedArray(n * 3); tCloud = new Uint8ClampedArray(n); tLight = new Uint8ClampedArray(n); tWater = new Uint8ClampedArray(n);
-    for (let i = 0; i < n; i++) {
-      tDay[i * 3] = dd[i * 4]; tDay[i * 3 + 1] = dd[i * 4 + 1]; tDay[i * 3 + 2] = dd[i * 4 + 2];
-      tCloud[i] = cd[i * 4]; tLight[i] = ld[i * 4]; tWater[i] = 255 - wd[i * 4];
-    }
-    earthSetup(); startEarth();
+  if (!glInit()) return;  // the still picture stays
+  Promise.all(EARTH_MAPS.map(loadImage)).then(imgs => {
+    gl.useProgram(glProg);
+    imgs.forEach((im, k) => glTexture(k, im));
+    gl.uniform1i(glU.uDay, 0); gl.uniform1i(glU.uCloud, 1); gl.uniform1i(glU.uNight, 2); gl.uniform1i(glU.uWater, 3);
+    glReady = true; earthResize(); renderEarth();
+    stage.classList.add("gl-on");
+    startEarth();
   }).catch(() => {});
 }
-const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-function earthSetup() {
-  const c = stage.querySelector(".orbit-earth canvas"), dpr = Math.min(2, window.devicePixelRatio || 1);
-  const size = Math.max(2, Math.round(2 * ER * dpr));
-  c.width = c.height = size; ectx = c.getContext("2d"); eimg = ectx.createImageData(size, size);
-  if (!TW) return;
-  // worked out once per pixel of the disc: where it is, its row and longitude in the maps, and its light
-  const idx = [], row = [], col = [], shade = [], spec = [], night = [], rim = [], edge = [];
-  for (let j = 0; j < size; j++) for (let i = 0; i < size; i++) {
-    const u = (i + 0.5) / size * 2 - 1, v = 1 - (j + 0.5) / size * 2, rr = u * u + v * v;
-    if (rr > 1) continue;
-    const z = Math.sqrt(1 - rr);
-    const yw = v * Math.cos(TILT) + z * Math.sin(TILT), zw = -v * Math.sin(TILT) + z * Math.cos(TILT);
-    const lat = Math.asin(Math.max(-1, Math.min(1, yw))), lon = Math.atan2(u, zw);
-    const dot = u * LIGHT[0] + v * LIGHT[1] + z * LIGHT[2], day = smooth(-0.12, 0.22, dot);
-    idx.push((j * size + i) * 4);
-    row.push(Math.min(TH - 1, Math.floor((Math.PI / 2 - lat) / Math.PI * TH)) * TW);
-    col.push((lon + Math.PI) / (2 * Math.PI) * TW);
-    shade.push(0.02 + day * (0.3 + 0.7 * Math.pow(Math.max(0, dot), 0.75)));
-    spec.push(day * Math.pow(Math.max(0, u * HALF[0] + v * HALF[1] + z * HALF[2]), 60));
-    night.push(1 - smooth(-0.3, 0.06, dot));
-    rim.push(Math.pow(1 - z, 2.6) * (0.25 + 0.75 * day));
-    edge.push(255 * Math.min(1, (1 - Math.sqrt(rr)) * size / 2.5));
-  }
-  pIdx = Int32Array.from(idx); pRow = Int32Array.from(row); pCol = Float32Array.from(col);
-  pShade = Float32Array.from(shade); pSpec = Float32Array.from(spec); pNight = Float32Array.from(night);
-  pRim = Float32Array.from(rim); pEdge = Uint8ClampedArray.from(edge);
-  drawEarth();
+function earthResize() {
+  if (!gl) return;
+  const c = stage.querySelector(".earth-gl"), dpr = Math.min(2, window.devicePixelRatio || 1);
+  c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+  gl.viewport(0, 0, c.width, c.height);
 }
-function drawEarth() {
-  if (!tDay || !pIdx) return;
-  const d = eimg.data, shift = ((-espin / (2 * Math.PI)) % 1 + 1) % 1 * TW;
-  for (let k = 0; k < pIdx.length; k++) {
-    let c = pCol[k] + shift; if (c >= TW) c -= TW;
-    const t = pRow[k] + (c | 0), t3 = t * 3, o = pIdx[k];
-    const cl = tCloud[t] / 255, cw = cl * 0.92, sh = pShade[k];
-    let r = (tDay[t3] * (1 - cw) + 240 * cw) * sh;
-    let g = (tDay[t3 + 1] * (1 - cw) + 242 * cw) * sh;
-    let b = (tDay[t3 + 2] * (1 - cw) + 248 * cw) * sh;
-    const glint = pSpec[k] * (tWater[t] / 255) * (1 - cl) * 210;
-    const lights = pNight[k] * (tLight[t] / 255) * (1 - cl * 0.85);
-    const rim = pRim[k];
-    d[o] = r + glint + lights * 255 + rim * 70;
-    d[o + 1] = g + glint * 0.95 + lights * 196 + rim * 135;
-    d[o + 2] = b + glint * 0.85 + lights * 120 + rim * 255;
-    d[o + 3] = pEdge[k];
+function renderEarth(now) {
+  if (!glReady) return;
+  if (eTo) {
+    const k = Math.min(1, ((now || performance.now()) - eT0) / eDur);
+    ePar = lerpPar(eFrom, eTo, ease(k));
+    if (k >= 1) { ePar = eTo; eFrom = eTo = null; }
   }
-  ectx.putImageData(eimg, 0, 0);
+  const c = gl.canvas, dpr = c.width / Math.max(1, W), P = ePar;
+  gl.uniform2f(glU.uRes, c.width, c.height);
+  gl.uniform2f(glU.uC, P.cx * dpr, P.cy * dpr);
+  gl.uniform1f(glU.uR, P.r * dpr);
+  gl.uniform1f(glU.uSpin, espin);
+  gl.uniform1f(glU.uTilt, P.tilt * Math.PI / 180);
+  gl.uniform1f(glU.uHalo, P.halo * dpr);
+  gl.uniform1f(glU.uHaloI, P.hi);
+  gl.uniform3f(glU.uL, P.l[0], P.l[1], P.l[2]);
+  gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
 function startEarth() {
-  drawEarth();
-  if (eRun || reduced.matches) return;
+  if (eRun || !glReady) return;
   eRun = true;
   const tick = now => {
-    if (!eRun) return;
-    if (visible && !document.hidden && mode === "orbit") {
+    if (visible && !document.hidden) {
       if (!eLast) eLast = now;
-      if (now - eLast > 33) { espin += (now - eLast) * (2 * Math.PI / 150000); eLast = now; drawEarth(); }  // one turn in two and a half minutes
+      if (!reduced.matches) espin += (now - eLast) * (2 * Math.PI / 150000);  // one turn in two and a half minutes
+      eLast = now; renderEarth(now);
     } else eLast = 0;
     requestAnimationFrame(tick);
   };
@@ -624,7 +708,6 @@ window.addEventListener("hashchange", () => {
   if (i >= 0) select(i, { keepHash: true });
 });
 if ("IntersectionObserver" in window) new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(stage);
-reduced.addEventListener && reduced.addEventListener("change", () => { if (reduced.matches) eRun = false; else startEarth(); });
 modeButtons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === mode)));
 measure();
 loadEarth();

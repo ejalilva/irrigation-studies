@@ -13,7 +13,9 @@
 .orbit[data-mode="spectrum"] {cursor:default;}
 .orbit.dragging {cursor:grabbing;}
 .sky {position:absolute; inset:0; transition:opacity .9s ease;}
-.sky-space {background:#04070f url("satellites/space.webp") center / cover no-repeat;}
+/* the glow of the Milky Way photo; its stars are redrawn sharp on .sky-stars (assets/satellites.js) */
+.sky-space {background:#04070f url("satellites/space-glow.webp") center / cover no-repeat;}
+.sky-stars {position:absolute; inset:0; width:100%; height:100%;}
 .sky-spectrum {opacity:0; background:linear-gradient(180deg, #040b1b 0%, #0a2143 40%, #15426f 64%, #1c5486 74%, #103459 100%);}
 .orbit[data-mode="spectrum"] .sky-space {opacity:0;}
 .orbit[data-mode="spectrum"] .sky-spectrum {opacity:1;}
@@ -26,10 +28,12 @@
 .orbit-front path {stroke-opacity:.6;}
 .orbit[data-mode="spectrum"] .orbit-path {opacity:0;}
 
-.orbit-earth {position:absolute; z-index:100; border-radius:50%; pointer-events:none;
+/* the still Earth: shown until the live globe (.earth-gl) is ready, and where WebGL 2 is missing */
+.orbit-earth {position:absolute; z-index:100; border-radius:50%; pointer-events:none; background:url("satellites/earth-static.webp") center / 100% 100% no-repeat;
   box-shadow:-6px -4px 26px 2px rgba(110,170,255,.28), 0 0 90px 10px rgba(60,110,220,.12);
   transition:opacity .7s ease, transform .9s cubic-bezier(.65,0,.35,1);}
-.orbit-earth canvas {display:block; width:100%; height:100%; border-radius:50%;}
+.orbit.gl-on .orbit-earth {visibility:hidden;}
+.earth-gl {position:absolute; inset:0; z-index:100; width:100%; height:100%; pointer-events:none;}
 .orbit[data-mode="spectrum"] .orbit-earth {opacity:0; transform:translateY(30%) scale(.5);}
 
 /* ---- The spectrum ---- */
@@ -64,7 +68,7 @@
 .use-icon {display:grid; place-items:center; width:calc(var(--ur) * 2); height:calc(var(--ur) * 2); border-radius:50%;
   background:#e9f4f9; color:#0d4a66; box-shadow:0 0 0 3px rgba(255,255,255,.32);}
 .use-icon svg {width:52%; height:52%; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
-.use-label {font-size:.8rem; font-weight:600; white-space:nowrap;}
+.use-label {font-size:.8rem; font-weight:600; white-space:nowrap; text-shadow:0 1px 3px rgba(0,0,0,.7);}
 
 /* ---- Satellites ---- */
 .orbit-ring {position:absolute; inset:0;}
@@ -151,7 +155,7 @@
   .orbit-modes button {padding:7px 12px; font-size:.82rem;}
   .orbit-legend {display:none;}
   .sat-label {font-size:.86rem;}
-  .use-label {font-size:.64rem;}
+  .use-label {width:72px; white-space:normal; text-align:center; font-size:.7rem; line-height:1.15;}
   .sat-panel {grid-template-columns:1fr; padding-top:26px;}
   .sp-head {position:static;}
 }
