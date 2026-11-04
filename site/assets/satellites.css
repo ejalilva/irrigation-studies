@@ -5,14 +5,16 @@
 /* ---- The sky: full width, like a band across the page ---- */
 .orbit {
   --sky-ink:#e6edf6; --sky-ink-2:#a9b8cc; --sky-line:rgba(255,255,255,.22);
-  position:relative; overflow:hidden; margin:20px calc(50% - 50vw) 0;
-  height:clamp(480px, 54vw, 720px);
+  position:relative; overflow:hidden; margin:4px calc(50% - 50vw) 0;
+  height:clamp(560px, 60vw, 820px);
+  /* the top and bottom edges fade into the page through a mask drawn by assets/satellites.js (featherEdges) */
+  -webkit-mask-size:100% 100%; mask-size:100% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   background:#04070f; color:var(--sky-ink);
   touch-action:pan-y; user-select:none; -webkit-user-select:none; cursor:grab;
 }
 .orbit[data-mode="spectrum"] {cursor:default;}
 .orbit.dragging {cursor:grabbing;}
-.sky {position:absolute; inset:0; transition:opacity .9s ease;}
+.sky {position:absolute; inset:0; transition:opacity 1.6s ease;}
 /* the glow of the Milky Way photo; its stars are redrawn sharp on .sky-stars (assets/satellites.js) */
 .sky-space {background:#04070f url("satellites/space-glow.webp") center / cover no-repeat;}
 .sky-stars {position:absolute; inset:0; width:100%; height:100%;}
@@ -20,7 +22,7 @@
 .orbit[data-mode="spectrum"] .sky-space {opacity:0;}
 .orbit[data-mode="spectrum"] .sky-spectrum {opacity:1;}
 
-.orbit-path {position:absolute; inset:0; width:100%; height:100%; pointer-events:none; transition:opacity .5s ease;}
+.orbit-path {position:absolute; inset:0; width:100%; height:100%; pointer-events:none; transition:opacity .9s ease;}
 .orbit-back {z-index:1;}
 .orbit-front {z-index:101;}
 .orbit-path path {fill:none; stroke:#a7c6ea; stroke-width:1.4;}
@@ -31,26 +33,26 @@
 /* the still Earth: shown until the live globe (.earth-gl) is ready, and where WebGL 2 is missing */
 .orbit-earth {position:absolute; z-index:100; border-radius:50%; pointer-events:none; background:url("satellites/earth-static.webp") center / 100% 100% no-repeat;
   box-shadow:-6px -4px 26px 2px rgba(110,170,255,.28), 0 0 90px 10px rgba(60,110,220,.12);
-  transition:opacity .7s ease, transform .9s cubic-bezier(.65,0,.35,1);}
+  transition:opacity 1.2s ease, transform 1.8s cubic-bezier(.65,0,.35,1);}
 .orbit.gl-on .orbit-earth {visibility:hidden;}
 .earth-gl {position:absolute; inset:0; z-index:100; width:100%; height:100%; pointer-events:none;}
 .orbit[data-mode="spectrum"] .orbit-earth {opacity:0; transform:translateY(30%) scale(.5);}
 
 /* ---- The spectrum ---- */
-.spectrum {position:absolute; inset:0; width:100%; height:100%; z-index:120; pointer-events:none; opacity:0; transition:opacity .5s ease;}
-.orbit[data-mode="spectrum"] .spectrum {opacity:1; transition-delay:.3s;}
+.spectrum {position:absolute; inset:0; width:100%; height:100%; z-index:120; pointer-events:none; opacity:0; transition:opacity .9s ease;}
+.orbit[data-mode="spectrum"] .spectrum {opacity:1; transition-delay:.6s;}
 .spectrum text {font-family:var(--sans);}
 .sp-beam {opacity:.3;}
 .sp-atmos {fill:rgba(225,236,248,.18); stroke:rgba(235,243,252,.42); stroke-width:1;}
-.sp-wave {fill:none; stroke:rgba(255,255,255,.78); stroke-width:1.5; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset 1.6s ease;}
-.orbit[data-mode="spectrum"] .sp-wave {stroke-dashoffset:0; transition-delay:.45s;}
+.sp-wave {fill:none; stroke:rgba(255,255,255,.78); stroke-width:1.5; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset 3s ease-in-out;}
+.orbit[data-mode="spectrum"] .sp-wave {stroke-dashoffset:0; transition-delay:.8s;}
 .sp-bar {fill:rgba(4,9,18,.88);}
 .sp-band {fill:#fff; font-size:13px; font-weight:600; text-anchor:middle;}
 .sp-band-out {font-size:12px;}
 .sp-tick {stroke:rgba(255,255,255,.6);}
 .sp-tickl {fill:rgba(255,255,255,.88); font-size:12px; font-weight:500; text-anchor:middle;}
-.sp-leads, .sp-uselines {opacity:0; transition:opacity .4s ease;}
-.orbit[data-mode="spectrum"] .sp-leads, .orbit[data-mode="spectrum"] .sp-uselines {opacity:1; transition-delay:1s;}
+.sp-leads, .sp-uselines {opacity:0; transition:opacity .8s ease;}
+.orbit[data-mode="spectrum"] .sp-leads, .orbit[data-mode="spectrum"] .sp-uselines {opacity:1; transition-delay:2.4s;}
 .sp-leads path, .sp-uselines path {fill:none; stroke:rgba(255,255,255,.45); stroke-width:1; stroke-dasharray:2 3;}
 .sp-leads path.on {stroke:#ffd23f; stroke-dasharray:none; stroke-width:1.6;}
 .lead-dot {fill:rgba(255,255,255,.85);}
@@ -58,13 +60,13 @@
 
 .spectrum-uses {position:absolute; inset:0; z-index:130; margin:0; padding:0; list-style:none; pointer-events:none;}
 .spectrum-uses li {position:absolute; display:flex; flex-direction:column; align-items:center; gap:6px;
-  transform:translate(-50%, calc(-1 * var(--ur) + 12px)); opacity:0; transition:opacity .35s ease, transform .35s ease;}
+  transform:translate(-50%, calc(-1 * var(--ur) + 12px)); opacity:0; transition:opacity .7s ease, transform .7s ease;}
 .orbit[data-mode="spectrum"] .spectrum-uses li {opacity:1; transform:translate(-50%, calc(-1 * var(--ur)));}
-.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(1) {transition-delay:1.05s;}
-.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(2) {transition-delay:1.12s;}
-.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(3) {transition-delay:1.19s;}
-.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(4) {transition-delay:1.26s;}
-.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(5) {transition-delay:1.33s;}
+.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(1) {transition-delay:2.5s;}
+.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(2) {transition-delay:2.62s;}
+.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(3) {transition-delay:2.74s;}
+.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(4) {transition-delay:2.86s;}
+.orbit[data-mode="spectrum"] .spectrum-uses li:nth-child(5) {transition-delay:2.98s;}
 .use-icon {display:grid; place-items:center; width:calc(var(--ur) * 2); height:calc(var(--ur) * 2); border-radius:50%;
   background:#e9f4f9; color:#0d4a66; box-shadow:0 0 0 3px rgba(255,255,255,.32);}
 .use-icon svg {width:52%; height:52%; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
@@ -77,6 +79,7 @@
 .orbit.dragging .sat {cursor:grabbing;}
 .orbit.switching .sat {pointer-events:none;}
 .sat-img {display:block; width:100%; height:calc(var(--sw) * .8); object-fit:contain; pointer-events:none;
+  transform:scale(var(--ks, 1));
   filter:drop-shadow(0 0 .6px rgba(255,255,255,.75)) drop-shadow(0 0 1.4px rgba(200,225,255,.45)) drop-shadow(0 10px 18px rgba(0,0,0,.55));
   transition:filter .2s;}
 .sat:hover .sat-img, .sat:focus-visible .sat-img {
@@ -86,7 +89,7 @@
 .sat[aria-selected="true"]::before {opacity:1;}
 .orbit[data-mode="spectrum"] .sat[aria-selected="true"]::before {background:radial-gradient(closest-side, rgba(255,210,63,.3), transparent);}
 
-.sat-label {display:flex; justify-content:center; align-items:center; gap:7px; margin-top:4px; white-space:nowrap;
+.sat-label {display:flex; justify-content:center; align-items:center; gap:7px; margin-top:calc(4px + (var(--ks, 1) - 1) * var(--sw) * .4); white-space:nowrap;
   font-size:.9rem; font-weight:600; line-height:1.2; opacity:0; transition:opacity .2s;}
 .sat-sub {display:block; margin-top:2px; text-align:center; white-space:nowrap; font-size:.74rem; font-weight:500; color:var(--sky-ink-2); opacity:0; transition:opacity .2s;}
 .sat-wave {display:none;}
@@ -104,7 +107,7 @@
 .ag-dot {display:inline-block; flex:none; width:9px; height:9px; border-radius:50%; background:var(--ag); box-shadow:0 0 0 1.5px rgba(5,10,22,.6);}
 
 /* ---- Controls on the sky ---- */
-.orbit-modes {position:absolute; z-index:300; top:16px; right:max(16px, calc(50% - 560px)); display:flex; gap:2px; padding:3px;
+.orbit-modes {position:absolute; z-index:300; top:62px; right:max(16px, calc(50% - 560px)); display:flex; gap:2px; padding:3px;
   border-radius:999px; background:rgba(8,16,34,.6); box-shadow:inset 0 0 0 1px var(--sky-line);
   backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
 .orbit-modes button {display:inline-flex; align-items:center; gap:7px; padding:8px 16px; border:0; border-radius:999px; background:none;
@@ -114,7 +117,8 @@
 .orbit-modes button:focus-visible {outline:2px solid #ffd23f; outline-offset:2px;}
 .orbit-modes svg {width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
 
-.orbit-controls {position:absolute; z-index:300; left:50%; bottom:16px; transform:translateX(-50%); display:flex; gap:12px; transition:opacity .3s;}
+/* the arrows sit either side of the front satellite's name */
+.orbit-controls {position:absolute; z-index:300; left:50%; bottom:70px; transform:translateX(-50%); display:flex; gap:min(300px, 58vw); transition:opacity .3s;}
 .orbit[data-mode="spectrum"] .orbit-controls {opacity:0; pointer-events:none;}
 .orbit-step {display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; border:1px solid var(--sky-line);
   background:rgba(8,16,34,.6); color:var(--sky-ink); cursor:pointer; backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
@@ -123,9 +127,10 @@
 .orbit-step:focus-visible {outline:2px solid #ffd23f; outline-offset:2px;}
 .orbit-step svg {width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 
-.orbit-legend {position:absolute; z-index:300; top:24px; left:max(16px, calc(50% - 536px)); display:flex; flex-wrap:wrap; gap:6px 16px;
-  margin:0; padding:0; list-style:none; font-size:.82rem; color:var(--sky-ink-2); pointer-events:none;}
-.orbit-legend li {display:inline-flex; align-items:center; gap:7px;}
+.orbit-legend {position:absolute; z-index:300; top:68px; left:max(16px, calc(50% - 536px)); display:flex; flex-wrap:wrap; gap:8px 26px;
+  margin:0; padding:0; list-style:none; font-size:.98rem; font-weight:600; color:var(--sky-ink); pointer-events:none;}
+.orbit-legend li {display:inline-flex; align-items:center; gap:9px;}
+.orbit-legend .ag-dot {width:12px; height:12px;}
 
 /* ---- The panel under the sky ---- */
 .sat-panel {display:grid; grid-template-columns:minmax(220px, 280px) minmax(0, 1fr); gap:24px 48px; padding:32px 0 8px; outline:none;
@@ -150,8 +155,9 @@
 .sat-credits {margin:28px 0 0; font-size:.75rem; color:var(--ink-2);}
 
 @media (max-width: 760px) {
-  .orbit {height:clamp(500px, 132vw, 640px);}
-  .orbit-modes {top:12px; right:12px;}
+  .orbit {height:clamp(560px, 148vw, 700px);}
+  .orbit-modes {top:38px; right:12px;}
+  .orbit-controls {bottom:44px;}
   .orbit-modes button {padding:7px 12px; font-size:.82rem;}
   .orbit-legend {display:none;}
   .sat-label {font-size:.86rem;}

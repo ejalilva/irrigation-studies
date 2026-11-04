@@ -22,6 +22,8 @@
      program   a programme shown beside the agency, e.g. "Copernicus" (optional)
      wave      the wavelength in metres where the satellite sits on the spectrum (the band my studies used)
      waveText  the wavelengths it measures, shown under its name on the spectrum
+     size      draws the picture larger than its box (thin or sparse pictures, such as SMAP and NISAR, look small),
+               e.g. 1.35; Sentinel-1 is the reference at 1
      img       picture in assets/satellites/ with a transparent background; without one, an outline is shown and
                the label says the picture is still needed. cygnss.webp is one CYGNSS picture repeated: the lead
                satellite and its seven companions; gosat-gw.svg is a drawing made for this site
@@ -77,13 +79,13 @@ const SATELLITES = [
       { title: "AgroTrack", status: "MODIS version released", link: "https://github.com/deepcharles/AgroTrack",
         text: "An open-source Python package for irrigation timing from satellites. The MODIS version is public." }
     ] },
-  { id: "smos", name: "SMOS", full: "Soil Moisture and Ocean Salinity", agency: ["ESA"], launch: "2009", wave: 0.21, waveText: "21 cm",
+  { id: "smos", name: "SMOS", full: "Soil Moisture and Ocean Salinity", agency: ["ESA"], launch: "2009", size: 1.15, wave: 0.21, waveText: "21 cm",
     img: "smos.webp", sensor: "L-band interferometric radiometer: soil moisture and ocean salinity",
     role: "SMAP's L-band predecessor, and a possible bridge if SMAP's record ends.",
     papers: [
       { doi: "10.1029/2026wr044944", note: "Compared with SMAP for sampling and radio interference, and weighed as an anchor for GNSS-R during a SMAP gap." }
     ] },
-  { id: "gcom-w", name: "GCOM-W", full: "Global Change Observation Mission – Water, “Shizuku”", agency: ["JAXA"], launch: "2012", wave: 0.03, waveText: "3 mm–4 cm",
+  { id: "gcom-w", name: "GCOM-W", full: "Global Change Observation Mission – Water, “Shizuku”", agency: ["JAXA"], launch: "2012", size: 1.15, wave: 0.03, waveText: "3 mm–4 cm",
     img: "gcom-w.webp", sensor: "AMSR2 microwave radiometer: soil moisture, snow and rain",
     role: "Where the irrigation work began: AMSR2 soil moisture rose in summers when no rain fell.",
     papers: [
@@ -96,7 +98,7 @@ const SATELLITES = [
     img: "landsat.webp", sensor: "OLI and TIRS: land imagery and thermal at 30 m",
     role: "With Sentinel-2, the imagery that Earth-observation foundation models learn from.",
     work: [FM_WORK] },
-  { id: "gpm", name: "GPM", full: "Global Precipitation Measurement", agency: ["NASA", "JAXA"], launch: "2014", wave: 0.012, waveText: "8 mm and 2.2 cm",
+  { id: "gpm", name: "GPM", full: "Global Precipitation Measurement", agency: ["NASA", "JAXA"], launch: "2014", size: 1.2, wave: 0.012, waveText: "8 mm and 2.2 cm",
     img: "gpm.webp", sensor: "Precipitation radar and microwave imager, the reference for IMERG rainfall",
     role: "Rainfall, so that soil wetting from irrigation can be told apart from wetting by rain.",
     papers: [
@@ -116,7 +118,7 @@ const SATELLITES = [
       { doi: "10.1016/j.rse.2025.114825", note: "Sentinel-1A VH backscatter fed geospatial foundation models of crop water content and height." }
     ],
     work: [LIS_S1_WORK] },
-  { id: "smap", name: "SMAP", full: "Soil Moisture Active Passive", agency: ["NASA"], launch: "2015", wave: 0.21, waveText: "21 cm",
+  { id: "smap", name: "SMAP", full: "Soil Moisture Active Passive", agency: ["NASA"], launch: "2015", size: 1.35, wave: 0.21, waveText: "21 cm",
     img: "smap.webp", sensor: "L-band radiometer: soil moisture and freeze–thaw",
     role: "The thread through most of my soil moisture work, from detecting irrigation to assimilation and what should follow SMAP.",
     papers: [
@@ -137,27 +139,27 @@ const SATELLITES = [
       { doi: "10.1016/j.rse.2025.114825", note: "Sentinel-2 NDVI, NDWI and red-edge bands were among the strongest drivers of crop water content." }
     ],
     work: [FM_WORK] },
-  { id: "cygnss", name: "CYGNSS", full: "Cyclone Global Navigation Satellite System", agency: ["NASA"], launch: "2016", wave: 0.19, waveText: "19 cm",
+  { id: "cygnss", name: "CYGNSS", full: "Cyclone Global Navigation Satellite System", agency: ["NASA"], launch: "2016", size: 1.25, wave: 0.19, waveText: "19 cm",
     img: "cygnss.webp", sensor: "Eight microsatellites that read GPS signals reflected off the surface (GNSS-R)",
     role: "Sub-daily soil moisture from reflected navigation signals.",
     papers: [
       { doi: "10.1029/2026wr044944", note: "CYGNSS sub-daily soil moisture was the main GNSS-R case: it complements SMAP but relies on it for calibration." }
     ] },
-  { id: "iss", name: "ISS", full: "International Space Station, with ECOSTRESS", agency: ["NASA"], launch: "2018", wave: 10e-6, waveText: "8–12 µm", launchText: "ECOSTRESS since 2018",
+  { id: "iss", name: "ISS", full: "International Space Station, with ECOSTRESS", agency: ["NASA"], launch: "2018", size: 1.05, wave: 10e-6, waveText: "8–12 µm", launchText: "ECOSTRESS since 2018",
     img: "iss.webp", sensor: "ECOSTRESS: thermal images of plant temperature at about 70 m",
     role: "Finer thermal views, at changing times of day, for irrigation timing.",
     work: [
       { title: "AgroTrack with ECOSTRESS", status: "Planned for early 2027", planned: true,
         text: "An expanded AgroTrack release is to add ECOSTRESS and VIIRS, alongside formal NISAR support." }
     ] },
-  { id: "gosat-gw", name: "GOSAT-GW", full: "Global Observing Satellite for Greenhouse gases and Water cycle", agency: ["JAXA"], launch: "2025", wave: 0.02, waveText: "1.6 mm–4 cm",
+  { id: "gosat-gw", name: "GOSAT-GW", full: "Global Observing Satellite for Greenhouse gases and Water cycle", agency: ["JAXA"], launch: "2025", size: 1.1, wave: 0.02, waveText: "1.6 mm–4 cm",
     img: "gosat-gw.svg", sensor: "AMSR3 microwave radiometer: soil moisture, snow and rain",
     role: "AMSR3 continues the AMSR2 record where the irrigation work began.",
     work: [
       { title: "AMSR3 retrieval and assimilation", status: "In development",
         text: "Machine learning AMSR3 soil moisture retrieval and assimilation for LIS 7.9. A paper is planned for 2027." }
     ] },
-  { id: "nisar", name: "NISAR", full: "NASA–ISRO Synthetic Aperture Radar", agency: ["NASA", "ISRO"], launch: "2025", wave: 0.15, waveText: "9 and 24 cm",
+  { id: "nisar", name: "NISAR", full: "NASA–ISRO Synthetic Aperture Radar", agency: ["NASA", "ISRO"], launch: "2025", size: 1.45, wave: 0.15, waveText: "9 and 24 cm",
     img: "nisar.webp", sensor: "L- and S-band radar: soil moisture and crops at about 200 m",
     role: "Where, when and how much come together in NASA's Land Information System with NISAR.",
     work: [
@@ -256,6 +258,7 @@ const buttons = SATELLITES.map((s, i) => {
   const b = document.createElement("button");
   b.type = "button";
   b.className = "sat" + (s.img ? "" : " is-placeholder");
+  b.style.setProperty("--ks", s.size || 1);
   b.id = "sat-tab-" + s.id;
   b.setAttribute("role", "tab");
   b.setAttribute("aria-controls", "sat-panel");
@@ -271,7 +274,7 @@ const buttons = SATELLITES.map((s, i) => {
 });
 
 /* ---- Geometry ---- */
-let W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
+let FEATHER = 64, W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
 let pos = 0, current = -1, anim = 0;
 const cur = [];  // the last state drawn for each satellite: { x, y, s, o, z, label }
 // the spectrum: x for a wavelength, the bar, and each satellite's slot
@@ -290,7 +293,8 @@ function spread(want, gap, lo, hi) {  // positions in order, at least gap apart,
 function measure() {
   W = stage.clientWidth; H = stage.clientHeight;
   narrow = W < 700;
-  cx = W / 2; cy = H * 0.40;
+  FEATHER = narrow ? 40 : 64;  // depth of the soft top and bottom edges (see featherEdges)
+  cx = W / 2; cy = H * 0.43;
   Rx = narrow ? W * 0.42 : Math.min(W * 0.40, 540);
   Ry = Math.min(Rx * (narrow ? 0.52 : 0.30), H * 0.24);
   ER = Ry * (narrow ? 0.86 : 0.94);
@@ -307,16 +311,57 @@ function measure() {
   // spectrum layout
   const m = narrow ? 16 : Math.max(32, (W - 1200) / 2);
   SX0 = m; SX1 = W - m;
-  BAR = Math.round(H * (narrow ? 0.66 : 0.70)); BARH = narrow ? 20 : 24; PH = narrow ? 92 : 150;
+  BAR = Math.round(H * (narrow ? 0.66 : 0.68)); BARH = narrow ? 20 : 24; PH = narrow ? 92 : 150;
   const rows = narrow ? 3 : 2, box = narrow ? 70 : 120;
-  const rowY = narrow ? [0.16, 0.28, 0.40] : [0.17, 0.33];
+  const rowY = narrow ? [0.19, 0.30, 0.41] : [0.22, 0.37];
   const order = SATELLITES.map((s, i) => i).sort((a, b) => SATELLITES[b].wave - SATELLITES[a].wave || a - b);
   const xs = spread(order.map(i => lx(SATELLITES[i].wave)), narrow ? (SX1 - SX0) / (N - 1) : 96, SX0 + box * 0.4, SX1 - box * 0.4);
   slots = [];
   order.forEach((i, k) => { slots[i] = { x: xs[k], y: H * rowY[k % rows], s: box / BW, row: k % rows }; });
   drawSpectrum();
-  drawStars(); earthResize(); earthGo(false);
+  drawStars(); earthResize(); earthGo(false); featherEdges();
 }
+
+/* ---- Soft edges: the top and bottom of the sky dissolve into the page like the hem of a cloth, through a mask that
+   is drawn once per size: a gently billowing edge, broken up into wisps as it fades ---- */
+let featherURL = "";
+function featherEdges() {
+  const sc = 0.5, w = Math.max(2, Math.round(W * sc)), h = Math.max(2, Math.round(H * sc));
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const g = c.getContext("2d"), im = g.createImageData(w, h), d = im.data;
+  const F = FEATHER * sc;
+  // the hem: long, soft folds (two slow waves and a little low-frequency drift), different at the top and bottom
+  const hem = (x, ph) => F * 0.5 + F * 0.2 * (0.65 * Math.sin(x / (w * 0.09) + ph) + 0.35 * Math.sin(x / (w * 0.037) + ph * 2.3))
+    + F * 0.16 * (fbm(x / 70 + ph * 10, ph * 7, 2) - 0.5);
+  const top = [], bot = [];
+  for (let x = 0; x < w; x++) { top.push(hem(x, 0.7)); bot.push(hem(x, 2.9)); }
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const dt = y - top[x], db = (h - 1 - y) - bot[x], dd = Math.min(dt, db);
+    let a = 1;
+    if (dd < F * 0.6) {
+      // a long fade, softly mottled like light through thin cloth
+      const n = fbm(x / 34, y / 22 + (dt < db ? 0 : 40), 2) - 0.5;
+      const t = (dd + F * 0.5) / F + n * 0.22;
+      a = Math.max(0, Math.min(1, t)); a = a * a * (3 - 2 * a);
+    }
+    d[(y * w + x) * 4 + 3] = 255 * a;
+  }
+  g.putImageData(im, 0, 0);
+  c.toBlob(b => {
+    if (!b) return;
+    const url = URL.createObjectURL(b);
+    stage.style.webkitMaskImage = stage.style.maskImage = `url(${url})`;
+    if (featherURL) URL.revokeObjectURL(featherURL);
+    featherURL = url;
+  });
+}
+function hash2(x, y) { let h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
+function vnoise(x, y) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+  const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), e = hash2(xi + 1, yi + 1);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + e) * u * v;
+}
+function fbm(x, y, o) { let s = 0, a = 0.5, f = 1; for (let i = 0; i < o; i++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; }
 
 /* ---- The spectrum drawing ---- */
 function smoothPath(pts) {  // Catmull-Rom through the points, as cubic Béziers
@@ -348,7 +393,7 @@ function drawSpectrum() {
     return `<path class="lead" data-i="${i}" d="M${sl.x.toFixed(1)} ${y0.toFixed(1)} L${x1.toFixed(1)} ${BAR - 2}"/><circle class="lead-dot" data-i="${i}" cx="${x1.toFixed(1)}" cy="${BAR}" r="3"/>`;
   }).join("");
   // what each part of the spectrum shows: circles under the scale
-  const ur = narrow ? 22 : 30, uy = Math.round(H * (narrow ? 0.85 : 0.86));
+  const ur = narrow ? 22 : 30, uy = Math.round(H * (narrow ? 0.83 : 0.835));
   const ux = spread(USES.map(u => lx(u.wave)), narrow ? 82 : ur * 2 + 40, SX0 + (narrow ? 30 : ur), SX1 - (narrow ? 30 : ur));
   useItems.forEach((li, k) => { li.style.left = ux[k] + "px"; li.style.top = uy + "px"; li.style.setProperty("--ur", ur + "px"); });
   const useLines = USES.map((u, k) => `<path d="M${ux[k].toFixed(1)} ${uy - ur - 4} L${lx(u.wave).toFixed(1)} ${BAR + BARH + 22}"/>`).join("");
@@ -388,13 +433,13 @@ function orbitState(i) {
   const d = Math.cos(a), t = (d + 1) / 2;
   return {
     x: cx + Rx * Math.sin(a), y: cy + Ry * d,
-    s: (0.3 + 0.7 * Math.pow(t, EXP)) * (1 + 0.18 * Math.max(0, (d - 0.9) / 0.1)),
+    s: (0.3 + 0.7 * Math.pow(t, EXP)) * (1 + (i === current ? 0.26 : 0.14) * Math.max(0, (d - 0.9) / 0.1)),
     o: 0.4 + 0.6 * t, z: 100 + Math.round(d * 90) + (d > 0 ? 2 : 0), label: d > LABEL
   };
 }
 function spectrumState(i) {
   const sl = slots[i], on = i === current;
-  return { x: sl.x, y: sl.y, s: sl.s * (on ? 1.22 : 1), o: 1, z: on ? 260 : 200 + i, label: narrow ? on : true };  // on a phone only the chosen one is labelled
+  return { x: sl.x, y: sl.y, s: sl.s * (on ? 1.45 : 1), o: 1, z: on ? 260 : 200 + i, label: narrow ? on : true };  // on a phone only the chosen one is labelled
 }
 const stateFor = i => mode === "orbit" ? orbitState(i) : spectrumState(i);
 function draw(i, st) {
@@ -434,7 +479,7 @@ function setMode(m, animate = true) {
   // each satellite flies from where it is to its place in the other arrangement, one after another from the left
   const from = cur.map(o => Object.assign({}, o)), to = buttons.map((b, i) => stateFor(i));
   const rank = to.map((t, i) => i).sort((a, b) => to[a].x - to[b].x).reduce((r, i, k) => (r[i] = k, r), []);
-  const t0 = performance.now(), D = 950, LAG = 32;
+  const t0 = performance.now(), D = 1700, LAG = 60;
   stage.classList.add("switching");
   const tick = now => {
     let done = true;
@@ -569,7 +614,7 @@ let ePar = null, eFrom = null, eTo = null, eT0 = 0, eDur = 0;
 function earthTarget() {
   if (mode === "orbit") return { cx, cy, r: ER, tilt: 22, l: L_ORBIT, halo: Math.max(5, ER * 0.05), hi: 0.75 };
   const R = Math.max(W * 1.15, H * 1.6);
-  return { cx: W / 2, cy: H * (narrow ? 0.83 : 0.81) + R, r: R, tilt: -30, l: L_HORIZON, halo: Math.max(18, R * 0.028), hi: 1 };
+  return { cx: W / 2, cy: H * (narrow ? 0.8 : 0.78) + R, r: R, tilt: -30, l: L_HORIZON, halo: Math.max(18, R * 0.028), hi: 1 };
 }
 function lerpPar(a, b, e) {
   const m = (x, y) => x + (y - x) * e;
@@ -579,7 +624,7 @@ function lerpPar(a, b, e) {
 function earthGo(animate) {  // move the Earth to where the current view wants it
   const to = earthTarget();
   if (!animate || !ePar || reduced.matches) { ePar = to; eFrom = eTo = null; return; }
-  eFrom = ePar; eTo = to; eT0 = performance.now(); eDur = 1300;
+  eFrom = ePar; eTo = to; eT0 = performance.now(); eDur = 2200;
 }
 const VS = `#version 300 es
 in vec2 p; void main() { gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -692,7 +737,9 @@ function startEarth() {
   const tick = now => {
     if (visible && !document.hidden) {
       if (!eLast) eLast = now;
-      if (!reduced.matches) espin += (now - eLast) * (2 * Math.PI / 150000);  // one turn in two and a half minutes
+      // one turn in two and a half minutes in the ring; as the horizon the Earth is far bigger, so it turns far slower,
+      // until its surface drifts by only a few pixels a second and does not pull the eye from the chart
+      if (!reduced.matches) espin += (now - eLast) * (2 * Math.PI / 150000) * Math.pow(Math.min(1, ER / ePar.r), 1.6);
       eLast = now; renderEarth(now);
     } else eLast = 0;
     requestAnimationFrame(tick);
