@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150" fill="none" stroke="#b9c6d8" stroke-width="2.5" stroke-linejoin="round">
+  <!-- A generic satellite outline, shown until a satellite's own picture is added. -->
+  <g stroke-dasharray="6 5">
+    <path d="M14 52 L74 40 L80 96 L20 108 Z"/>
+    <path d="M166 40 L226 52 L220 108 L160 96 Z"/>
+  </g>
+  <path d="M80 68 H98 M142 68 H160"/>
+  <rect x="98" y="44" width="44" height="50" rx="4"/>
+  <path d="M120 94 V108 M108 120 Q120 104 132 120"/>
+  <circle cx="120" cy="30" r="6"/>
+  <path d="M120 36 V44"/>
+</svg>
