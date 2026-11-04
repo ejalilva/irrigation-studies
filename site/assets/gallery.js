@@ -3,9 +3,10 @@
    place's pictures in a panel beside the map. The panel stays open when the mouse moves on, so its pictures can be
    reached; another pin replaces it, and × or Escape closes it. A picture opens large in the viewer, with its caption,
    previous/next and Escape to close; small pictures are enlarged at most 1.5 times. A photo with "wide": true spans the
-   panel at its own shape, from its large file. Leaflet is in assets/vendor/leaflet/. The map has three basemaps (BASEMAPS below,
-   none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default,
-   and ?map=<name> in the address or a visitor's last choice overrides it.
+   panel at its own shape, from its large file. Leaflet is in assets/vendor/leaflet/. The map has four basemaps (BASEMAPS below,
+   none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default
+   (Toner), and ?map=<name> in the address or a visitor's last choice overrides it. Toner is drawn by MapLibre
+   (assets/vendor/maplibre/), which loads only when that map is shown.
    A place may have one video (p.video: an MP4 and its poster). It sits in its own box across the top of the panel and
    plays there, silently, while the panel is open and in view; it pauses when the panel closes or scrolls out of view,
    the tab is hidden or the viewer is open. A click opens it in the viewer with sound and controls. With reduced motion
@@ -48,10 +49,105 @@
   }
   document.addEventListener('visibilitychange', syncPreviews);
 
+  // Toner: Stamen's black-and-white map, drawn in the browser by MapLibre from OpenFreeMap's free vector tiles (no key,
+  // no account, no limits). The style is adapted from MapTiler's open Toner GL style (licence in assets/vendor/maplibre/).
+  // TONER.water is the colour of seas, lakes and rivers: a lighter black than Stamen's pure black, so the oceans don't
+  // weigh down the world view. Roads, borders and labels stay pure black (TONER.ink).
+  const TONER = { paper: '#FFFFFF', ink: '#000000', water: '#2E2E2E', waterText: '#FFFFFF' };
+  const OFM = 'https://tiles.openfreemap.org/';
+  const TONER_CREDIT = 'Toner style &copy; <a href="https://github.com/openmaptiles/maptiler-toner-gl-style">MapTiler</a>, after <a href="https://stamen.com">Stamen</a> | <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openmaptiles.org/">OpenMapTiles</a>, data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  function tonerStyle(c) {
+    const z = (...stops) => ['interpolate', ['linear'], ['zoom'], ...stops];
+    const name = ['coalesce', ['get', 'name:en'], ['get', 'name:latin'], ['get', 'name']];
+    const REG = ['Noto Sans Regular'], BOLD = ['Noto Sans Bold'], ITAL = ['Noto Sans Italic'];
+    const black = a => `rgba(0,0,0,${a})`;
+    const halo = (w = 2) => ({ 'text-color': c.ink, 'text-halo-color': c.paper, 'text-halo-width': w });
+    const land = (id, layer, filter, pattern, extra = {}) => ({ id, type: 'fill', source: 'omt', 'source-layer': layer, filter, paint: { 'fill-pattern': pattern }, ...extra });
+    const line = (id, filter, paint, extra = {}) => ({ id, type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['all', ['==', ['geometry-type'], 'LineString'], filter], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint, ...extra });
+    const label = (id, layer, filter, layout, paint, extra = {}) => ({ id, type: 'symbol', source: 'omt', 'source-layer': layer, filter, layout: { 'text-field': name, ...layout }, paint, ...extra });
+    const notSea = ['!=', ['get', 'maritime'], 1];
+    return {
+      version: 8,
+      sources: { omt: { type: 'vector', url: OFM + 'planet' } },
+      glyphs: OFM + 'fonts/{fontstack}/{range}.pbf',
+      layers: [
+        { id: 'paper', type: 'background', paint: { 'background-color': c.paper } },
+        // Stipple for national parks and protected land, then grass, woods and cemeteries close up.
+        land('park', 'park', ['==', ['geometry-type'], 'Polygon'], 'toner-dots-sparse', { minzoom: 4, paint: { 'fill-pattern': 'toner-dots-sparse', 'fill-opacity': z(4, .45, 8, .8) } }),
+        land('grass', 'landcover', ['==', ['get', 'class'], 'grass'], 'toner-dots', { minzoom: 10 }),
+        land('wood', 'landcover', ['==', ['get', 'class'], 'wood'], 'toner-dots', { minzoom: 9 }),
+        land('cemetery', 'landuse', ['==', ['get', 'class'], 'cemetery'], 'toner-cross', { minzoom: 12 }),
+        { id: 'water', type: 'fill', source: 'omt', 'source-layer': 'water', filter: ['all', ['!=', ['get', 'brunnel'], 'tunnel'], ['!=', ['get', 'intermittent'], 1]], paint: { 'fill-color': c.water } },
+        { id: 'river', type: 'line', source: 'omt', 'source-layer': 'waterway', minzoom: 7, filter: ['all', ['==', ['get', 'class'], 'river'], ['!=', ['get', 'brunnel'], 'tunnel']], layout: { 'line-cap': 'round' }, paint: { 'line-color': c.water, 'line-width': z(7, .6, 12, 1.6, 16, 5) } },
+        { id: 'stream', type: 'line', source: 'omt', 'source-layer': 'waterway', minzoom: 12, filter: ['!=', ['get', 'class'], 'river'], paint: { 'line-color': c.water, 'line-width': z(12, .5, 16, 1.5) } },
+        line('rail', ['==', ['get', 'class'], 'rail'], { 'line-color': z(13, 'rgb(216,216,216)', 17, 'rgb(38,38,38)'), 'line-width': z(13, .85, 17, 2) }, { minzoom: 13 }),
+        line('rail-hatch', ['==', ['get', 'class'], 'rail'], { 'line-color': 'rgb(38,38,38)', 'line-dasharray': [.2, 1], 'line-width': z(15, 2, 17, 6) }, { minzoom: 15 }),
+        { id: 'bridge-area', type: 'fill', source: 'omt', 'source-layer': 'transportation', filter: ['all', ['==', ['geometry-type'], 'Polygon'], ['any', ['==', ['get', 'brunnel'], 'bridge'], ['==', ['get', 'class'], 'pier']]], paint: { 'fill-color': c.paper } },
+        line('pier', ['==', ['get', 'class'], 'pier'], { 'line-color': c.paper, 'line-width': z(15, 1, 17, 4) }),
+        line('path', ['==', ['get', 'class'], 'path'], { 'line-color': c.paper, 'line-width': z(14, 2, 17, 4) }, { minzoom: 15 }),
+        line('road-minor', ['in', ['get', 'class'], ['literal', ['secondary', 'tertiary', 'minor', 'service']]], { 'line-color': z(10, black(.3), 12, black(.5), 15, c.ink), 'line-width': z(13, .5, 15, 3, 17, 8) }, { minzoom: 10 }),
+        line('road-primary', ['==', ['get', 'class'], 'primary'], { 'line-color': z(8, black(.19), 10, black(.6), 17, c.ink), 'line-width': z(12, .75, 15, 6, 17, 8) }, { minzoom: 8 }),
+        line('highway-casing', ['in', ['get', 'class'], ['literal', ['motorway', 'trunk']]], { 'line-color': z(6, 'rgb(219,219,219)', 10, c.paper), 'line-width': z(10, 4, 16, 16) }, { minzoom: 8 }),
+        line('highway', ['in', ['get', 'class'], ['literal', ['motorway', 'trunk']]], { 'line-color': z(6, black(.02), 10, black(.6), 16, c.ink), 'line-width': z(7, 1, 10, 2, 16, 8) }, { minzoom: 6 }),
+        { id: 'building', type: 'fill', source: 'omt', 'source-layer': 'building', minzoom: 14, paint: { 'fill-pattern': 'toner-hatch', 'fill-opacity': z(14, 0, 15, 1) } },
+        { id: 'building-edge', type: 'line', source: 'omt', 'source-layer': 'building', minzoom: 15, paint: { 'line-color': c.ink, 'line-width': .75 } },
+        { id: 'border-state', type: 'line', source: 'omt', 'source-layer': 'boundary', minzoom: 3, maxzoom: 14, filter: ['all', ['==', ['get', 'admin_level'], 4], notSea], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': z(5, 'rgb(80,80,80)', 6, c.ink), 'line-dasharray': [1, 2], 'line-width': ['interpolate', ['exponential', 1.3], ['zoom'], 5, 1, 7, 1.6, 14, 5] } },
+        { id: 'border-country', type: 'line', source: 'omt', 'source-layer': 'boundary', minzoom: 1, filter: ['all', ['==', ['get', 'admin_level'], 2], notSea, ['!=', ['get', 'disputed'], 1]], layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': c.ink, 'line-width': z(1, .8, 4, 1.5, 7, 3, 22, 6) } },
+        { id: 'border-disputed', type: 'line', source: 'omt', 'source-layer': 'boundary', minzoom: 1, filter: ['all', ['==', ['get', 'admin_level'], 2], notSea, ['==', ['get', 'disputed'], 1]], paint: { 'line-color': c.ink, 'line-dasharray': [2, 2], 'line-width': z(1, .8, 4, 1.5, 7, 2.5) } },
+        label('water-line-label', 'water_name', ['==', ['geometry-type'], 'LineString'], { 'symbol-placement': 'line', 'symbol-spacing': 350, 'text-font': ITAL, 'text-size': 14, 'text-letter-spacing': .2 }, { 'text-color': c.waterText }, { minzoom: 7 }),
+        label('river-label', 'waterway', ['==', ['geometry-type'], 'LineString'], { 'symbol-placement': 'line', 'symbol-spacing': 200, 'text-font': ITAL, 'text-size': z(14, 12, 18, 19) }, { 'text-color': c.waterText }, { minzoom: 14 }),
+        label('sea-label', 'water_name', ['all', ['==', ['geometry-type'], 'Point'], ['!=', ['get', 'class'], 'ocean']], { 'text-font': ITAL, 'text-size': 14, 'text-letter-spacing': .1, 'text-max-width': 6 }, { 'text-color': c.waterText }, { minzoom: 4 }),
+        label('ocean-label', 'water_name', ['all', ['==', ['geometry-type'], 'Point'], ['==', ['get', 'class'], 'ocean']], { 'text-font': ITAL, 'text-size': 14, 'text-letter-spacing': .2, 'text-max-width': 5, 'text-transform': 'uppercase' }, { 'text-color': c.waterText }, { minzoom: 1 }),
+        label('road-label', 'transportation_name', ['in', ['get', 'class'], ['literal', ['primary', 'secondary', 'tertiary', 'trunk', 'minor', 'service']]], { 'symbol-placement': 'line', 'text-font': BOLD, 'text-size': z(13, 12, 14, 13) }, halo(3), { minzoom: 14.5 }),
+        label('park-label', 'park', ['==', ['geometry-type'], 'Point'], { 'text-font': ITAL, 'text-size': 12, 'text-max-width': 8 }, halo(2), { minzoom: 9 }),
+        label('village-label', 'place', ['in', ['get', 'class'], ['literal', ['village', 'hamlet']]], { 'text-font': REG, 'text-size': z(12, 12, 16, 18), 'text-max-width': 10 }, halo(2), { minzoom: 12 }),
+        label('town-label', 'place', ['==', ['get', 'class'], 'town'], { 'text-font': BOLD, 'text-size': z(8, 14, 16, 18), 'text-max-width': 10 }, halo(2), { minzoom: 9, maxzoom: 16 }),
+        label('city-label', 'place', ['==', ['get', 'class'], 'city'], { 'text-font': BOLD, 'text-size': z(4, 13, 7, 15, 8, 18, 16, 22), 'text-max-width': 10 }, halo(2), { minzoom: 4, maxzoom: 16 }),
+        label('state-label', 'place', ['==', ['get', 'class'], 'state'], { 'text-font': BOLD, 'text-size': 12, 'text-transform': 'uppercase', 'text-letter-spacing': .1, 'text-max-width': 10 }, halo(1.5), { minzoom: 4, maxzoom: 7 }),
+        label('country-label', 'place', ['==', ['get', 'class'], 'country'], { 'text-font': BOLD, 'text-size': z(2, 12, 4, 16, 5, 20), 'text-max-width': 10, 'text-padding': 2 }, halo(2), { minzoom: 2 }),
+        label('continent-label', 'place', ['==', ['get', 'class'], 'continent'], { 'text-font': BOLD, 'text-size': z(0, 16, 2, 22), 'text-max-width': 10 }, halo(2), { maxzoom: 2 })
+      ]
+    };
+  }
+  // Toner's fill patterns, drawn here instead of loaded from a sprite: stipple dots, a cross for cemeteries and hatching
+  // for buildings, in ink on a clear background.
+  const PATTERNS = {
+    'toner-dots': [6, g => { g.arc(1.5, 1.5, .8, 0, 7); g.moveTo(5.3, 4.5); g.arc(4.5, 4.5, .8, 0, 7); g.fill(); }],
+    'toner-dots-sparse': [8, g => { g.arc(2, 2, .7, 0, 7); g.moveTo(6.7, 6); g.arc(6, 6, .7, 0, 7); g.fill(); }],
+    'toner-cross': [10, g => { g.fillRect(4.5, 2.5, 1, 5); g.fillRect(2.5, 4.5, 5, 1); }],
+    'toner-hatch': [5, g => { g.lineWidth = 1; [-5, 0, 5].forEach(o => { g.moveTo(o, 5); g.lineTo(o + 5, 0); }); g.stroke(); }]
+  };
+  function pattern(id, ink) {
+    const [size, draw] = PATTERNS[id], ratio = 2, canvas = document.createElement('canvas');
+    canvas.width = canvas.height = size * ratio;
+    const g = canvas.getContext('2d');
+    g.scale(ratio, ratio); g.fillStyle = g.strokeStyle = ink; g.beginPath(); draw(g);
+    return g.getImageData(0, 0, canvas.width, canvas.height);
+  }
+  // MapLibre and its Leaflet bridge load only when the Toner map is first shown. scripts/stamp_assets.py keeps their
+  // version stamps current.
+  let glReady = null;
+  function loadGL() {
+    const add = (tag, attrs) => new Promise((ok, fail) => {
+      const el = Object.assign(document.createElement(tag), attrs);
+      el.onload = ok; el.onerror = () => fail(new Error('Could not load ' + (attrs.src || attrs.href)));
+      document.head.append(el);
+    });
+    if (!glReady) {
+      add('link', { rel: 'stylesheet', href: 'assets/vendor/maplibre/maplibre-gl.css?v=9ec5b4801e' }).catch(() => {});
+      glReady = add('script', { src: 'assets/vendor/maplibre/maplibre-gl.js?v=417d85083d' }).then(() => add('script', { src: 'assets/vendor/maplibre/leaflet-maplibre-gl.js?v=8508bc69c8' }));
+      glReady.catch(() => { glReady = null; });
+    }
+    return glReady;
+  }
+  const webgl = () => { try { const c = document.createElement('canvas'); return Boolean(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } };
+
   // Basemaps. labels: a layer of place names and borders laid over a basemap that has none of its own.
+  // gl: a map drawn with MapLibre (Toner), which needs WebGL; without it the map falls back to Terrain.
   const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
   const PLACES = ESRI + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
   const BASEMAPS = {
+    toner: { name: 'Toner (black and white)', gl: TONER },
     terrain: { name: 'Terrain', url: ESRI + 'World_Topo_Map/MapServer/tile/{z}/{y}/{x}', maxZoom: 19,
       attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community' },
     bluemarble: { name: 'NASA Blue Marble relief', labels: PLACES, maxNativeZoom: 8, maxZoom: 12,
@@ -61,22 +157,50 @@
       url: ESRI + 'Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
       attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community' }
   };
-  const store = { get() { try { return localStorage.getItem('gallery-basemap'); } catch { return null; } },
-    set(v) { try { localStorage.setItem('gallery-basemap', v); } catch { /* private mode */ } } };
+  // The remembered choice is stored under a new name since Toner became the default (November 2026), so every visitor
+  // sees Toner once, whatever they picked before.
+  const store = { get() { try { return localStorage.getItem('gallery-basemap-2'); } catch { return null; } },
+    set(v) { try { localStorage.setItem('gallery-basemap-2', v); } catch { /* private mode */ } } };
   function addBasemaps(map) {
     map.createPane('labels'); map.getPane('labels').style.zIndex = 450; map.getPane('labels').style.pointerEvents = 'none';
     const layers = {}, byName = {};
+    // Falls back to Terrain when a MapLibre map can't be drawn (no WebGL, or its scripts didn't load). The fallback is
+    // not remembered, so the visitor gets Toner again on a device that can draw it.
+    const fallBack = layer => {
+      if (!map.hasLayer(layer)) return;
+      map.removeLayer(layer); layers.terrain.addTo(map); mapBox.dataset.base = 'terrain';
+    };
+    // A MapLibre map behind a plain Leaflet layer, so the layers button can list it before MapLibre has loaded.
+    const GLLayer = L.Layer.extend({
+      initialize(options) { L.setOptions(this, options); },
+      onAdd(m) {
+        if (!webgl()) { setTimeout(() => fallBack(this)); return; }
+        loadGL().then(() => {
+          if (!this._map || this._gl) return;
+          const colours = this.options.colours;
+          this._gl = L.maplibreGL({ style: tonerStyle(colours), attributionControl: { customAttribution: TONER_CREDIT } }).addTo(m);
+          const gl = this._gl.getMaplibreMap();
+          gl.on('styleimagemissing', e => { if (PATTERNS[e.id] && !gl.hasImage(e.id)) gl.addImage(e.id, pattern(e.id, colours.ink), { pixelRatio: 2 }); });
+        }).catch(err => { console.warn('The Toner map could not be drawn, so Terrain is shown instead.', err); fallBack(this); });
+      },
+      onRemove(m) { if (this._gl) { m.removeLayer(this._gl); this._gl = null; } }
+    });
     Object.entries(BASEMAPS).forEach(([key, b]) => {
-      const { name, url, labels, ...opts } = b;
-      const base = L.tileLayer(url, opts);
-      const layer = labels ? L.layerGroup([base, L.tileLayer(labels, { maxNativeZoom: opts.maxNativeZoom, maxZoom: opts.maxZoom, pane: 'labels' })]) : base;
+      const { name, url, labels, gl, ...opts } = b;
+      let layer;
+      if (gl) layer = new GLLayer({ colours: gl });
+      else {
+        const base = L.tileLayer(url, opts);
+        layer = labels ? L.layerGroup([base, L.tileLayer(labels, { maxNativeZoom: opts.maxNativeZoom, maxZoom: opts.maxZoom, pane: 'labels' })]) : base;
+      }
       layer.key = key; layers[key] = layer; byName[name] = layer;
     });
     const asked = new URLSearchParams(location.search).get('map');
-    const start = [asked, store.get(), mapBox.dataset.basemap, 'terrain'].find(k => k && layers[k]);
+    const start = [asked, store.get(), mapBox.dataset.basemap, 'toner'].find(k => k && layers[k]);
     layers[start].addTo(map); mapBox.dataset.base = start;
-    L.control.layers(byName, null, { position: 'topleft', collapsed: true }).addTo(map); // top left: the photo panel covers the right
-    map.on('baselayerchange', e => { mapBox.dataset.base = e.layer.key; store.set(e.layer.key); });
+    const menu = L.control.layers(byName, null, { position: 'topleft', collapsed: true }).addTo(map); // top left: the photo panel covers the right
+    // Leaflet also reports the first basemap and the fallback as a change; only a pick in the menu is remembered.
+    map.on('baselayerchange', e => { mapBox.dataset.base = e.layer.key; if (menu._handlingClick) store.set(e.layer.key); });
   }
 
   fetch('data/gallery.json', { cache: 'no-cache' }).then(r => r.json()).then(data => {
