@@ -274,7 +274,7 @@ const buttons = SATELLITES.map((s, i) => {
 });
 
 /* ---- Geometry ---- */
-let FEATHER = 64, W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
+let FEATHER = 64, SIDE = 48, W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
 let pos = 0, current = -1, anim = 0;
 const cur = [];  // the last state drawn for each satellite: { x, y, s, o, z, label }
 // the spectrum: x for a wavelength, the bar, and each satellite's slot
@@ -294,8 +294,10 @@ function measure() {
   W = stage.clientWidth; H = stage.clientHeight;
   narrow = W < 700;
   FEATHER = narrow ? 40 : 64;  // depth of the soft top and bottom edges (see featherEdges)
+  SIDE = Math.max(14, -parseFloat(getComputedStyle(stage).marginLeft) || 0);  // the sides fade over the margin beyond the text column
+  stage.style.setProperty("--side", SIDE + "px");
   cx = W / 2; cy = H * 0.43;
-  Rx = narrow ? W * 0.42 : Math.min(W * 0.40, 540);
+  Rx = narrow ? W * 0.41 : Math.min(W * 0.39, 540);
   Ry = Math.min(Rx * (narrow ? 0.52 : 0.30), H * 0.24);
   ER = Ry * (narrow ? 0.86 : 0.94);
   BW = narrow ? W * 0.36 : Math.max(150, Math.min(W * 0.19, 260));
@@ -309,7 +311,7 @@ function measure() {
     svg.querySelector("path").setAttribute("d", `M${cx - Rx} ${cy} A${Rx} ${Ry} 0 0 ${sweep} ${cx + Rx} ${cy}`);
   }
   // spectrum layout
-  const m = narrow ? 16 : Math.max(32, (W - 1200) / 2);
+  const m = SIDE + (narrow ? 10 : 20);
   SX0 = m; SX1 = W - m;
   BAR = Math.round(H * (narrow ? 0.66 : 0.68)); BARH = narrow ? 20 : 24; PH = narrow ? 92 : 150;
   const rows = narrow ? 3 : 2, box = narrow ? 70 : 120;
@@ -322,28 +324,30 @@ function measure() {
   drawStars(); earthResize(); earthGo(false); featherEdges();
 }
 
-/* ---- Soft edges: the top and bottom of the sky dissolve into the page like the hem of a cloth, through a mask that
-   is drawn once per size: a gently billowing edge, broken up into wisps as it fades ---- */
+/* ---- Soft edges: all four sides of the sky dissolve into the page like the hem of a cloth, through a mask drawn
+   once per size. The top and bottom fade over FEATHER px; the sides over SIDE px, the small margin the sky takes
+   beyond the text column (its negative margin in assets/satellites.css). ---- */
 let featherURL = "";
 function featherEdges() {
   const sc = 0.5, w = Math.max(2, Math.round(W * sc)), h = Math.max(2, Math.round(H * sc));
   const c = document.createElement("canvas"); c.width = w; c.height = h;
   const g = c.getContext("2d"), im = g.createImageData(w, h), d = im.data;
-  const F = FEATHER * sc;
-  // the hem: long, soft folds (two slow waves and a little low-frequency drift), different at the top and bottom
-  const hem = (x, ph) => F * 0.5 + F * 0.2 * (0.65 * Math.sin(x / (w * 0.09) + ph) + 0.35 * Math.sin(x / (w * 0.037) + ph * 2.3))
-    + F * 0.16 * (fbm(x / 70 + ph * 10, ph * 7, 2) - 0.5);
-  const top = [], bot = [];
-  for (let x = 0; x < w; x++) { top.push(hem(x, 0.7)); bot.push(hem(x, 2.9)); }
+  const F = FEATHER * sc, Fs = SIDE * sc;
+  // the hem: long, soft folds (two slow waves and a little low-frequency drift), different on each side
+  const hem = (t, len, depth, ph) => depth * 0.5 + depth * 0.18 * (0.7 * Math.sin(t / (len * 0.09) + ph) + 0.3 * Math.sin(t / (len * 0.04) + ph * 2.3))
+    + depth * 0.1 * (fbm(t / 90 + ph * 10, ph * 7, 2) - 0.5);
+  const top = [], bot = [], lef = [], rig = [];
+  for (let x = 0; x < w; x++) { top.push(hem(x, w, F, 0.7)); bot.push(hem(x, w, F, 2.9)); }
+  for (let y = 0; y < h; y++) { lef.push(hem(y, w, Fs, 1.6)); rig.push(hem(y, w, Fs, 4.1)); }
+  // a long fade, softly mottled like light through thin cloth
+  const fade = (dist, depth, x, y, k) => {
+    if (dist >= depth * 0.6) return 1;
+    const t = (dist + depth * 0.5) / depth + (fbm(x / 40 + k, y / 30 + k, 2) - 0.5) * 0.14;
+    const a = Math.max(0, Math.min(1, t)); return a * a * (3 - 2 * a);
+  };
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    const dt = y - top[x], db = (h - 1 - y) - bot[x], dd = Math.min(dt, db);
-    let a = 1;
-    if (dd < F * 0.6) {
-      // a long fade, softly mottled like light through thin cloth
-      const n = fbm(x / 34, y / 22 + (dt < db ? 0 : 40), 2) - 0.5;
-      const t = (dd + F * 0.5) / F + n * 0.22;
-      a = Math.max(0, Math.min(1, t)); a = a * a * (3 - 2 * a);
-    }
+    const dt = y - top[x], db = (h - 1 - y) - bot[x], dl = x - lef[y], dr = (w - 1 - x) - rig[y];
+    const a = fade(Math.min(dt, db), F, x, y, dt < db ? 0 : 40) * (Fs > 0 ? fade(Math.min(dl, dr), Fs, x, y, dl < dr ? 80 : 120) : 1);
     d[(y * w + x) * 4 + 3] = 255 * a;
   }
   g.putImageData(im, 0, 0);
@@ -416,7 +420,7 @@ function drawSpectrum() {
     ${bands.map(([name, a, b]) => {
       const x0 = lx(a), x1 = lx(b), w = x1 - x0;
       return w > 70 ? `<text class="sp-band" x="${((x0 + x1) / 2).toFixed(1)}" y="${BAR + BARH * 0.7}">${name}</text>`
-        : `<text class="sp-band sp-band-out" x="${((x0 + x1) / 2).toFixed(1)}" y="${BAR - 8}">${name}</text>`;
+        : `<text class="sp-band sp-band-out" x="${Math.min((x0 + x1) / 2, SX1 - 22).toFixed(1)}" y="${BAR - 8}">${name}</text>`;
     }).join("")}
     ${ticks.map(([l, t]) => `<path class="sp-tick" d="M${lx(l).toFixed(1)} ${BAR + BARH} v6"/><text class="sp-tickl" x="${lx(l).toFixed(1)}" y="${BAR + BARH + 20}">${t}</text>`).join("")}
     <g class="sp-uselines">${useLines}</g>`;

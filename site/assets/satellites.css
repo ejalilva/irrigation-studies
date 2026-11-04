@@ -5,8 +5,10 @@
 /* ---- The sky: full width, like a band across the page ---- */
 .orbit {
   --sky-ink:#e6edf6; --sky-ink-2:#a9b8cc; --sky-line:rgba(255,255,255,.22);
-  position:relative; overflow:hidden; margin:4px calc(50% - 50vw) 0;
-  height:clamp(560px, 60vw, 820px);
+  /* as wide as the text column, plus a small margin each side (up to 56px) that the soft side edges fade over */
+  --bleed:min(56px, calc((100vw - 100%) / 2)); --side:48px;  /* --side: the same margin in px, set by assets/satellites.js */
+  position:relative; overflow:hidden; margin:4px calc(-1 * var(--bleed)) 0;
+  height:clamp(560px, 56vw, 780px);
   /* the top and bottom edges fade into the page through a mask drawn by assets/satellites.js (featherEdges) */
   -webkit-mask-size:100% 100%; mask-size:100% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   background:#04070f; color:var(--sky-ink);
@@ -107,7 +109,7 @@
 .ag-dot {display:inline-block; flex:none; width:9px; height:9px; border-radius:50%; background:var(--ag); box-shadow:0 0 0 1.5px rgba(5,10,22,.6);}
 
 /* ---- Controls on the sky ---- */
-.orbit-modes {position:absolute; z-index:300; top:62px; right:max(16px, calc(50% - 560px)); display:flex; gap:2px; padding:3px;
+.orbit-modes {position:absolute; z-index:300; top:62px; right:calc(var(--side) + 8px); display:flex; gap:2px; padding:3px;
   border-radius:999px; background:rgba(8,16,34,.6); box-shadow:inset 0 0 0 1px var(--sky-line);
   backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
 .orbit-modes button {display:inline-flex; align-items:center; gap:7px; padding:8px 16px; border:0; border-radius:999px; background:none;
@@ -127,7 +129,7 @@
 .orbit-step:focus-visible {outline:2px solid #ffd23f; outline-offset:2px;}
 .orbit-step svg {width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
 
-.orbit-legend {position:absolute; z-index:300; top:68px; left:max(16px, calc(50% - 536px)); display:flex; flex-wrap:wrap; gap:8px 26px;
+.orbit-legend {position:absolute; z-index:300; top:68px; left:calc(var(--side) + 12px); display:flex; flex-wrap:wrap; gap:8px 26px;
   margin:0; padding:0; list-style:none; font-size:.98rem; font-weight:600; color:var(--sky-ink); pointer-events:none;}
 .orbit-legend li {display:inline-flex; align-items:center; gap:9px;}
 .orbit-legend .ag-dot {width:12px; height:12px;}
@@ -156,7 +158,8 @@
 
 @media (max-width: 760px) {
   .orbit {height:clamp(560px, 148vw, 700px);}
-  .orbit-modes {top:38px; right:12px;}
+  .orbit-modes {right:calc(var(--side) + 4px);}
+  .orbit-modes {top:38px;}
   .orbit-controls {bottom:44px;}
   .orbit-modes button {padding:7px 12px; font-size:.82rem;}
   .orbit-legend {display:none;}
