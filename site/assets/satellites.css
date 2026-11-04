@@ -3,14 +3,16 @@
    follows the site theme. */
 
 /* ---- The sky: full width, like a band across the page ---- */
+/* The bar above the sky: the agency key and the Orbit / Spectrum switch, on the page's own colours. */
+.orbit-bar {display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px 24px; margin-top:26px;}
+/* The frame: as wide as the text column, plus a small margin each side (up to 56px). It holds the sky and the arrows. */
+.orbit-frame {--bleed:min(56px, calc((100vw - 100%) / 2)); position:relative; margin:6px calc(-1 * var(--bleed)) 0;}
 .orbit {
   --sky-ink:#e6edf6; --sky-ink-2:#a9b8cc; --sky-line:rgba(255,255,255,.22);
-  /* as wide as the text column, plus a small margin each side (up to 56px) that the soft side edges fade over */
-  --bleed:min(56px, calc((100vw - 100%) / 2)); --side:48px;  /* --side: the same margin in px, set by assets/satellites.js */
-  position:relative; overflow:hidden; margin:4px calc(-1 * var(--bleed)) 0;
-  height:clamp(560px, 56vw, 780px);
-  /* the top and bottom edges fade into the page through a mask drawn by assets/satellites.js (featherEdges) */
-  -webkit-mask-size:100% 100%; mask-size:100% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  position:relative; overflow:hidden;
+  height:clamp(600px, 62vw, 880px);
+  /* the edges fade gradually into the page through a mask of gradients set by assets/satellites.js (applyMask) */
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   background:#04070f; color:var(--sky-ink);
   touch-action:pan-y; user-select:none; -webkit-user-select:none; cursor:grab;
 }
@@ -108,31 +110,26 @@
 
 .ag-dot {display:inline-block; flex:none; width:9px; height:9px; border-radius:50%; background:var(--ag); box-shadow:0 0 0 1.5px rgba(5,10,22,.6);}
 
-/* ---- Controls on the sky ---- */
-.orbit-modes {position:absolute; z-index:300; top:62px; right:calc(var(--side) + 8px); display:flex; gap:2px; padding:3px;
-  border-radius:999px; background:rgba(8,16,34,.6); box-shadow:inset 0 0 0 1px var(--sky-line);
-  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
-.orbit-modes button {display:inline-flex; align-items:center; gap:7px; padding:8px 16px; border:0; border-radius:999px; background:none;
-  color:var(--sky-ink-2); font:600 .88rem/1 var(--sans); cursor:pointer; transition:background .25s, color .25s;}
-.orbit-modes button:hover {color:var(--sky-ink);}
-.orbit-modes button[aria-pressed="true"] {background:#e6edf6; color:#0a1328;}
-.orbit-modes button:focus-visible {outline:2px solid #ffd23f; outline-offset:2px;}
+/* ---- Controls ---- */
+.orbit-modes {display:flex; gap:2px; padding:3px; border-radius:999px; background:var(--tag-bg);}
+.orbit-modes button {display:inline-flex; align-items:center; gap:7px; padding:8px 18px; border:0; border-radius:999px; background:none;
+  color:var(--ink-2); font:600 .92rem/1 var(--sans); cursor:pointer; transition:background .25s, color .25s;}
+.orbit-modes button:hover {color:var(--ink);}
+.orbit-modes button[aria-pressed="true"] {background:var(--ink); color:var(--paper);}
 .orbit-modes svg {width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;}
 
-/* the arrows sit either side of the front satellite's name */
-.orbit-controls {position:absolute; z-index:300; left:50%; bottom:70px; transform:translateX(-50%); display:flex; gap:min(300px, 58vw); transition:opacity .3s;}
-.orbit[data-mode="spectrum"] .orbit-controls {opacity:0; pointer-events:none;}
-.orbit-step {display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; border:1px solid var(--sky-line);
-  background:rgba(8,16,34,.6); color:var(--sky-ink); cursor:pointer; backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-  transition:background .2s, border-color .2s;}
-.orbit-step:hover {background:rgba(30,50,90,.8); border-color:rgba(255,255,255,.5);}
+.orbit-legend {display:flex; flex-wrap:wrap; gap:8px 22px; margin:0; padding:0; list-style:none; font-size:.95rem; font-weight:600; color:var(--ink);}
+.orbit-legend li {display:inline-flex; align-items:center; gap:8px;}
+.orbit-legend .ag-dot {width:11px; height:11px; box-shadow:none;}
+
+/* the arrows sit either side of the front satellite's name; solid, so they read on the sky and on the fade */
+.orbit-controls {position:absolute; z-index:300; left:50%; bottom:clamp(40px, 9%, 84px); transform:translateX(-50%); display:flex; gap:min(300px, 58vw); transition:opacity .3s;}
+.orbit-frame[data-mode="spectrum"] .orbit-controls {opacity:0; pointer-events:none;}
+.orbit-step {display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; border:1px solid rgba(255,255,255,.18);
+  background:#0c1833; color:#e6edf6; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.25); transition:background .2s;}
+.orbit-step:hover {background:#1a2d55;}
 .orbit-step:focus-visible {outline:2px solid #ffd23f; outline-offset:2px;}
 .orbit-step svg {width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
-
-.orbit-legend {position:absolute; z-index:300; top:68px; left:calc(var(--side) + 12px); display:flex; flex-wrap:wrap; gap:8px 26px;
-  margin:0; padding:0; list-style:none; font-size:.98rem; font-weight:600; color:var(--sky-ink); pointer-events:none;}
-.orbit-legend li {display:inline-flex; align-items:center; gap:9px;}
-.orbit-legend .ag-dot {width:12px; height:12px;}
 
 /* ---- The panel under the sky ---- */
 .sat-panel {display:grid; grid-template-columns:minmax(220px, 280px) minmax(0, 1fr); gap:24px 48px; padding:32px 0 8px; outline:none;
@@ -158,11 +155,9 @@
 
 @media (max-width: 760px) {
   .orbit {height:clamp(560px, 148vw, 700px);}
-  .orbit-modes {right:calc(var(--side) + 4px);}
-  .orbit-modes {top:38px;}
-  .orbit-controls {bottom:44px;}
-  .orbit-modes button {padding:7px 12px; font-size:.82rem;}
-  .orbit-legend {display:none;}
+  .orbit-bar {gap:10px;}
+  .orbit-legend {gap:6px 14px; font-size:.82rem;}
+  .orbit-modes button {padding:7px 14px; font-size:.86rem;}
   .sat-label {font-size:.86rem;}
   .use-label {width:72px; white-space:normal; text-align:center; font-size:.7rem; line-height:1.15;}
   .sat-panel {grid-template-columns:1fr; padding-top:26px;}

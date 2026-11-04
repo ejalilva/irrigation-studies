@@ -231,23 +231,35 @@ stage.innerHTML = `
   <svg class="orbit-path orbit-front" aria-hidden="true"><path/></svg>
   <svg class="spectrum" aria-hidden="true"></svg>
   <ul class="spectrum-uses" aria-label="What each part of the spectrum shows"></ul>
-  <div class="orbit-ring" role="tablist" aria-label="Satellites"></div>
+  <div class="orbit-ring" role="tablist" aria-label="Satellites"></div>`;
+// The sky fades into the page (applyMask), so everything that must stay readable sits outside it: the agency key and
+// the Orbit / Spectrum switch in a bar above, the arrows in a frame that holds the sky but is not faded with it.
+const frame = document.createElement("div");
+frame.className = "orbit-frame";
+stage.parentNode.insertBefore(frame, stage); frame.appendChild(stage);
+frame.insertAdjacentHTML("beforeend", `<div class="orbit-controls">
+    <button class="orbit-step prev" type="button" aria-label="Previous satellite">${svgIcon("prev")}</button>
+    <button class="orbit-step next" type="button" aria-label="Next satellite">${svgIcon("next")}</button>
+  </div>`);
+const bar = document.createElement("div");
+bar.className = "orbit-bar";
+bar.innerHTML = `<ul class="orbit-legend" aria-label="Agencies"></ul>
   <div class="orbit-modes" role="group" aria-label="Arrange the satellites">
     <button type="button" data-mode="orbit">${svgIcon("orbit")}Orbit</button>
     <button type="button" data-mode="spectrum">${svgIcon("wave")}Spectrum</button>
-  </div>
-  <div class="orbit-controls">
-    <button class="orbit-step prev" type="button" aria-label="Previous satellite">${svgIcon("prev")}</button>
-    <button class="orbit-step next" type="button" aria-label="Next satellite">${svgIcon("next")}</button>
-  </div>
-  <ul class="orbit-legend" aria-label="Agencies"></ul>`;
-stage.dataset.mode = mode;
+  </div>`;
+frame.parentNode.insertBefore(bar, frame);
+// how the sky fades into the page: "oval" (follows the ring), "glow" (round, centred on the Earth) or "fade" (a long,
+// even fade at the edges); satellites.html?edge=glow tries another
+const EDGE = (q => ["oval", "glow", "fade"].includes(q) ? q : "oval")(new URLSearchParams(location.search).get("edge"));
+stage.dataset.mode = frame.dataset.mode = mode;
+frame.dataset.edge = EDGE;
 const ring = stage.querySelector(".orbit-ring");
 const specSvg = stage.querySelector(".spectrum");
 const usesList = stage.querySelector(".spectrum-uses");
-const modeButtons = [...stage.querySelectorAll(".orbit-modes button")];
+const modeButtons = [...bar.querySelectorAll(".orbit-modes button")];
 const used = [...new Set(SATELLITES.flatMap(s => s.agency))];
-stage.querySelector(".orbit-legend").innerHTML = Object.keys(AGENCIES).filter(k => used.includes(k))
+bar.querySelector(".orbit-legend").innerHTML = Object.keys(AGENCIES).filter(k => used.includes(k))
   .map(k => `<li><span class="ag-dot" style="--ag:${AGENCIES[k].color}"></span>${esc(AGENCIES[k].name)}</li>`).join("");
 usesList.innerHTML = USES.map(u => `<li><span class="use-icon">${svgIcon(u.icon)}</span><span class="use-label">${esc(u.label)}</span></li>`).join("");
 const useItems = [...usesList.children];
@@ -274,7 +286,7 @@ const buttons = SATELLITES.map((s, i) => {
 });
 
 /* ---- Geometry ---- */
-let FEATHER = 64, SIDE = 48, W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
+let SIDE = 48, W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
 let pos = 0, current = -1, anim = 0;
 const cur = [];  // the last state drawn for each satellite: { x, y, s, o, z, label }
 // the spectrum: x for a wavelength, the bar, and each satellite's slot
@@ -293,9 +305,7 @@ function spread(want, gap, lo, hi) {  // positions in order, at least gap apart,
 function measure() {
   W = stage.clientWidth; H = stage.clientHeight;
   narrow = W < 700;
-  FEATHER = narrow ? 40 : 64;  // depth of the soft top and bottom edges (see featherEdges)
-  SIDE = Math.max(14, -parseFloat(getComputedStyle(stage).marginLeft) || 0);  // the sides fade over the margin beyond the text column
-  stage.style.setProperty("--side", SIDE + "px");
+  SIDE = Math.max(14, -parseFloat(getComputedStyle(frame).marginLeft) || 0);  // the margin beyond the text column
   cx = W / 2; cy = H * 0.43;
   Rx = narrow ? W * 0.41 : Math.min(W * 0.39, 540);
   Ry = Math.min(Rx * (narrow ? 0.52 : 0.30), H * 0.24);
@@ -311,7 +321,7 @@ function measure() {
     svg.querySelector("path").setAttribute("d", `M${cx - Rx} ${cy} A${Rx} ${Ry} 0 0 ${sweep} ${cx + Rx} ${cy}`);
   }
   // spectrum layout
-  const m = SIDE + (narrow ? 10 : 20);
+  const m = SIDE + (narrow ? 12 : 44);
   SX0 = m; SX1 = W - m;
   BAR = Math.round(H * (narrow ? 0.66 : 0.68)); BARH = narrow ? 20 : 24; PH = narrow ? 92 : 150;
   const rows = narrow ? 3 : 2, box = narrow ? 70 : 120;
@@ -321,51 +331,55 @@ function measure() {
   slots = [];
   order.forEach((i, k) => { slots[i] = { x: xs[k], y: H * rowY[k % rows], s: box / BW, row: k % rows }; });
   drawSpectrum();
-  drawStars(); earthResize(); earthGo(false); featherEdges();
+  drawStars(); earthResize(); earthGo(false); maskGo(false);
 }
 
-/* ---- Soft edges: all four sides of the sky dissolve into the page like the hem of a cloth, through a mask drawn
-   once per size. The top and bottom fade over FEATHER px; the sides over SIDE px, the small margin the sky takes
-   beyond the text column (its negative margin in assets/satellites.css). ---- */
-let featherURL = "";
-function featherEdges() {
-  const sc = 0.5, w = Math.max(2, Math.round(W * sc)), h = Math.max(2, Math.round(H * sc));
-  const c = document.createElement("canvas"); c.width = w; c.height = h;
-  const g = c.getContext("2d"), im = g.createImageData(w, h), d = im.data;
-  const F = FEATHER * sc, Fs = SIDE * sc;
-  // the hem: long, soft folds (two slow waves and a little low-frequency drift), different on each side
-  const hem = (t, len, depth, ph) => depth * 0.5 + depth * 0.18 * (0.7 * Math.sin(t / (len * 0.09) + ph) + 0.3 * Math.sin(t / (len * 0.04) + ph * 2.3))
-    + depth * 0.1 * (fbm(t / 90 + ph * 10, ph * 7, 2) - 0.5);
-  const top = [], bot = [], lef = [], rig = [];
-  for (let x = 0; x < w; x++) { top.push(hem(x, w, F, 0.7)); bot.push(hem(x, w, F, 2.9)); }
-  for (let y = 0; y < h; y++) { lef.push(hem(y, w, Fs, 1.6)); rig.push(hem(y, w, Fs, 4.1)); }
-  // a long fade, softly mottled like light through thin cloth
-  const fade = (dist, depth, x, y, k) => {
-    if (dist >= depth * 0.6) return 1;
-    const t = (dist + depth * 0.5) / depth + (fbm(x / 40 + k, y / 30 + k, 2) - 0.5) * 0.14;
-    const a = Math.max(0, Math.min(1, t)); return a * a * (3 - 2 * a);
-  };
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    const dt = y - top[x], db = (h - 1 - y) - bot[x], dl = x - lef[y], dr = (w - 1 - x) - rig[y];
-    const a = fade(Math.min(dt, db), F, x, y, dt < db ? 0 : 40) * (Fs > 0 ? fade(Math.min(dl, dr), Fs, x, y, dl < dr ? 80 : 120) : 1);
-    d[(y * w + x) * 4 + 3] = 255 * a;
+/* ---- Soft edges: the sky fades gradually into the page through a CSS mask of three gradients: an ellipse (EDGE
+   "oval" follows the ring, "glow" is centred on the Earth) and two long linear fades that bring every edge to
+   nothing. Each eases out over many stops, so there is no visible line. In the spectrum the ellipse opens wide so the
+   chart stays clear, and the mask morphs between the two with the satellites. ---- */
+const ease5 = t => t * t * t * (t * (t * 6 - 15) + 10);  // smootherstep: no visible start or end to the fade
+function edgePar(m) {
+  const t = narrow ? 30 : 44;
+  if (EDGE === "fade") return m === "orbit"
+    ? { t: H * (narrow ? 0.15 : 0.2), s: SIDE + (narrow ? 26 : 80), ex: cx, ey: cy, rx: W, ry: H, k0: 50, k1: 51 }
+    : { t: H * 0.1, s: SIDE + 30, ex: cx, ey: cy, rx: W, ry: H, k0: 50, k1: 51 };
+  // the spectrum needs the whole width: a wide ellipse and longer fades at the edges
+  if (m === "spectrum") return { t: H * 0.1, s: SIDE + 30, ex: W / 2, ey: H * 0.5, rx: W * 0.95, ry: H * 1.15, k0: 0.62, k1: 1.25 };
+  if (EDGE === "glow") return { t, s: SIDE, ex: cx, ey: cy + H * 0.06, rx: W * 0.56, ry: H * 0.68, k0: 0.3, k1: 1 };
+  return { t, s: SIDE, ex: cx, ey: cy + H * 0.07, rx: Rx + BW * 0.32, ry: H * 0.43, k0: 0.8, k1: 1.13 };  // oval
+}
+function linearLayer(dir, len, d) {
+  const st = [];
+  for (let i = 0; i <= 10; i++) st.push(`rgba(0,0,0,${ease5(i / 10).toFixed(3)}) ${(i / 10 * d).toFixed(1)}px`);
+  for (let i = 10; i >= 0; i--) st.push(`rgba(0,0,0,${ease5(i / 10).toFixed(3)}) ${(len - i / 10 * d).toFixed(1)}px`);
+  return `linear-gradient(${dir}, ${st.join(", ")})`;
+}
+function applyMask(p) {
+  const layers = [linearLayer("to bottom", H, p.t), linearLayer("to right", W, p.s)];
+  if (p.k0 < 20) {
+    const st = ["#000 0%"];
+    for (let i = 0; i <= 12; i++) st.push(`rgba(0,0,0,${(1 - ease5(i / 12)).toFixed(3)}) ${((p.k0 + (p.k1 - p.k0) * i / 12) * 100).toFixed(1)}%`);
+    layers.unshift(`radial-gradient(${p.rx.toFixed(1)}px ${p.ry.toFixed(1)}px at ${p.ex.toFixed(1)}px ${p.ey.toFixed(1)}px, ${st.join(", ")})`);
   }
-  g.putImageData(im, 0, 0);
-  c.toBlob(b => {
-    if (!b) return;
-    const url = URL.createObjectURL(b);
-    stage.style.webkitMaskImage = stage.style.maskImage = `url(${url})`;
-    if (featherURL) URL.revokeObjectURL(featherURL);
-    featherURL = url;
-  });
+  stage.style.webkitMaskImage = stage.style.maskImage = layers.join(", ");
+  stage.style.maskComposite = layers.map(() => "intersect").join(", ");
+  stage.style.webkitMaskComposite = layers.map(() => "source-in").join(", ");
 }
-function hash2(x, y) { let h = (x * 374761393 + y * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967295; }
-function vnoise(x, y) {
-  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
-  const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), e = hash2(xi + 1, yi + 1);
-  return a + (b - a) * u + (c - a) * v + (a - b - c + e) * u * v;
+let mPar = null, mAnim = 0;
+function maskGo(animate) {
+  const to = edgePar(mode);
+  cancelAnimationFrame(mAnim);
+  if (!animate || !mPar || reduced.matches) { mPar = to; applyMask(to); return; }
+  const from = mPar, t0 = performance.now(), D = 2200;
+  const tick = now => {
+    const k = Math.min(1, (now - t0) / D), e = ease(k);
+    mPar = {}; for (const key in to) mPar[key] = from[key] + (to[key] - from[key]) * e;
+    applyMask(mPar);
+    if (k < 1) mAnim = requestAnimationFrame(tick);
+  };
+  mAnim = requestAnimationFrame(tick);
 }
-function fbm(x, y, o) { let s = 0, a = 0.5, f = 1; for (let i = 0; i < o; i++) { s += a * vnoise(x * f, y * f); f *= 2.03; a *= 0.5; } return s; }
 
 /* ---- The spectrum drawing ---- */
 function smoothPath(pts) {  // Catmull-Rom through the points, as cubic Béziers
@@ -472,13 +486,13 @@ function turnTo(target, ms) {
 }
 function setMode(m, animate = true) {
   if (m === mode && animate) return;
-  mode = m; stage.dataset.mode = m;
+  mode = m; stage.dataset.mode = frame.dataset.mode = m;
   modeButtons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === m)));
   const u = new URL(location.href);
   if (m === "spectrum") u.searchParams.set("view", "spectrum"); else u.searchParams.delete("view");
   history.replaceState(null, "", u);
   cancelAnimationFrame(anim);
-  earthGo(animate);
+  earthGo(animate); maskGo(animate);
   if (!animate || reduced.matches || !cur.length) { place(); return; }
   // each satellite flies from where it is to its place in the other arrangement, one after another from the left
   const from = cur.map(o => Object.assign({}, o)), to = buttons.map((b, i) => stateFor(i));
@@ -514,8 +528,8 @@ function select(i, opts = {}) {
   renderPanel(SATELLITES[i], !opts.first);
   if (!opts.keepHash) history.replaceState(null, "", location.pathname + location.search + "#" + SATELLITES[i].id);
 }
-stage.querySelector(".prev").addEventListener("click", () => select(current - 1));
-stage.querySelector(".next").addEventListener("click", () => select(current + 1));
+frame.querySelector(".prev").addEventListener("click", () => select(current - 1));
+frame.querySelector(".next").addEventListener("click", () => select(current + 1));
 ring.addEventListener("keydown", e => {
   const k = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[e.key];
   if (k) { e.preventDefault(); select(current + k, { focus: true }); }
@@ -526,7 +540,7 @@ ring.addEventListener("keydown", e => {
 /* Dragging the ring (orbit only): the front follows the pointer; on release it settles on the nearest satellite. */
 let dragX = null, dragPos = 0, dragMoved = false, lastX = 0, lastT = 0, vel = 0;
 stage.addEventListener("pointerdown", e => {
-  if (mode !== "orbit" || e.button !== 0 || e.target.closest(".orbit-controls, .orbit-modes")) return;
+  if (mode !== "orbit" || e.button !== 0) return;
   dragX = e.clientX; dragPos = pos; dragMoved = false; lastX = e.clientX; lastT = e.timeStamp; vel = 0;
 });
 stage.addEventListener("pointermove", e => {
