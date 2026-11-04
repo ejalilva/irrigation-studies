@@ -6,13 +6,14 @@
 .cycle-intro {max-width:39ch;font-size:.95rem;line-height:1.65;color:var(--ink-2);margin:0;}
 .explorer-toolbar {display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
 .toolbar-actions {display:flex;flex-shrink:0;gap:8px;}
-/* Explore by: switches between the water-cycle map (index.html) and the satellites (satellites.html). */
-.explorer-toolbar:has(.view-switch) {justify-content:space-between;}
-.view-switch {display:flex;align-items:center;gap:4px;font-size:.85rem;}
-.view-switch .vs-label {margin-right:6px;color:var(--ink-2);}
-.view-switch a {padding:6px 14px;border-radius:20px;color:var(--ink);text-decoration:none;box-shadow:inset 0 0 0 1px var(--line);}
-.view-switch a:hover {background:var(--hover);}
-.view-switch a[aria-current="page"] {background:var(--ink);color:var(--paper);box-shadow:none;font-weight:600;}
+/* Ways into my research: two tabs at the top of index.html (Water cycle) and satellites.html (Satellites). */
+.explorer-toolbar:has(.view-tabs) {justify-content:space-between;}
+.view-tabs {display:inline-flex; gap:4px; padding:4px; border-radius:999px; background:var(--tag-bg);}
+.view-tabs a {display:inline-flex; align-items:center; gap:9px; padding:11px 22px; border-radius:999px; color:var(--ink-2); font-size:1rem; font-weight:600; line-height:1; text-decoration:none; transition:background .2s, color .2s;}
+.view-tabs a:hover {color:var(--ink);}
+.view-tabs a[aria-current="page"] {background:var(--ink); color:var(--paper);}
+.view-tabs svg {width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;}
+@media (max-width: 480px) {.view-tabs a {padding:10px 16px; font-size:.95rem;}}
 /* Play tour: vibrant orange with black text in both themes. */
 .tour-toggle {font:600 .8rem/1 var(--sans);color:#111;background:#ff8a1f;border:0;border-radius:20px;padding:8px 16px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.12);}
 .tour-toggle:hover {background:#ff7a00;}
