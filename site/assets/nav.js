@@ -18,7 +18,7 @@
   // [link, label, pages that belong under it (shown as the current section)]
   const MENU = [
     ['about.html', 'About'],
-    ['index.html', 'Research', ['irrigation.html', 'human.html']],
+    ['index.html', 'Research', ['irrigation.html', 'human.html', 'satellites.html']],
     ['journey.html', 'My journey'],
     ['gallery.html', 'Gallery'],
     ['blog.html', 'Blog', [/^blog-.+\.html$/]],
