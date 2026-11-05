@@ -33,33 +33,34 @@
 .ab-deg { font-weight: 500; color: var(--ink); }
 .ab-where { font-size: .92rem; color: var(--ink-2); }
 
-/* Publications, newest first, grouped by year */
-.ab-count { color: var(--ink-2) !important; font-size: .95rem !important; }
-.ab-year { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 16px; padding: 14px 0; border-top: 1px solid var(--line); }
-.ab-year > h3 { margin: 2px 0 0; font: 600 .95rem/1.4 var(--sans); font-variant-numeric: tabular-nums; color: var(--ink-2); }
-.ab-year ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
-.ab-pub { display: block; }
-.ab-chip { display: inline-block; margin-right: 7px; vertical-align: 1px; padding: 0 6px; border-radius: 3px; background: var(--jc); color: #fff; font: 600 .66rem/1.45 var(--sans); letter-spacing: .02em; white-space: nowrap; box-shadow: 0 0 0 1px var(--chip-ring); }
-.ab-pub-title { font-weight: 500; line-height: 1.4; color: var(--ink) !important; text-decoration: none; }
-.ab-pub-title:hover { color: var(--link) !important; text-decoration: underline; }
-.ab-pub-meta { margin: 3px 0 0 !important; font-size: .88rem !important; line-height: 1.5 !important; color: var(--ink-2) !important; }
-.ab-pub-meta b { font-weight: 600; color: var(--ink); }
-.ab-pdf { margin-left: 6px; font-size: .8rem; font-weight: 600; }
-/* The button under the recent years that shows the older papers. */
-.ab-more { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 14px 0 0 72px; padding: 9px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink); font: 500 .92rem/1.35 var(--sans); cursor: pointer; transition: border-color .15s, background-color .15s; }
-.ab-more:hover { border-color: var(--ink-2); background: var(--hover); }
-.ab-more:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
-.ab-more-n { font-weight: 400; font-size: .84rem; color: var(--ink-2); }
-
+/* Research: two cards leading to the research pages, the water cycle (index.html) and the satellites (satellites.html).
+   The satellites picture carries each satellite's name (positions in % of the picture, from the orbit view). */
+.ab-rs-sec { grid-template-columns: 1fr; gap: 20px; }
+.ab-rs-sec .ab-body { max-width: none; }
+.ab-rs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.ab-rs-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr; grid-template-areas: "pic pic" "text go"; align-items: center; gap: 0 16px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); text-decoration: none; transition: box-shadow .2s, transform .2s, border-color .2s; }
+.ab-body .ab-rs-card { color: var(--ink); }
+.ab-rs-card:hover { border-color: var(--link); box-shadow: 0 14px 32px rgba(15,26,31,.15); transform: translateY(-2px); }
+.ab-rs-card:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+.ab-rs-pic { grid-area: pic; position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: #f4f7f6; }
+.ab-rs-pic.is-sky { background: #04070f; }
+.ab-rs-pic img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.ab-rs-card:hover .ab-rs-pic img { transform: scale(1.02); }
+.ab-rs-labels span { position: absolute; transform: translate(-50%, 0); padding: 1px 6px; border-radius: 999px; background: rgba(6,12,26,.66); color: #e6edf6; font: 600 .68rem/1.4 var(--sans); white-space: nowrap; pointer-events: none; }
+.ab-rs-text { grid-area: text; display: flex; flex-direction: column; gap: 4px; padding: 16px 0 18px 20px; min-width: 0; }
+.ab-rs-title { font: 400 1.35rem/1.2 var(--head); }
+.ab-rs-sub { font-size: .92rem; line-height: 1.45; color: var(--ink-2); }
+.ab-rs-go { grid-area: go; margin-right: 20px; padding: 9px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); font-weight: 600; white-space: nowrap; transition: transform .2s; }
+.ab-rs-card:hover .ab-rs-go { transform: translateX(3px); }
+@media (max-width: 760px) {
+  .ab-rs { grid-template-columns: 1fr; }
+  .ab-rs-labels span { font-size: .62rem; padding: 0 5px; }
+}
 
 @media (max-width: 900px) {
   .ab-hero { grid-template-columns: 1fr; padding: 40px 0 48px; gap: 32px; }
   .ab-photo { justify-self: start; order: -1; width: min(70%, 280px); }
   .ab-sec { grid-template-columns: 1fr; padding: 44px 0; }
-}
-@media (max-width: 520px) {
-  .ab-year { grid-template-columns: 1fr; gap: 6px; }
-  .ab-more { margin-left: 0; }
 }
 
 /* Experience: a large card that leads to My journey, where the appointments are. */

@@ -11,13 +11,13 @@
 <link rel="icon" href="assets/ej-32.png?v=5fc7cda74a" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/ej-64.png?v=5f8a71e437" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=f78fc0a1f9">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=3f73e8bf25">
-<script src="assets/nav.js?v=febc8b7d0e" defer></script>
-<link rel="stylesheet" href="assets/water-cycle.css?v=0fb6dccd4e">
+<link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=769266b4b3">
+<script src="assets/nav.js?v=a7f021a1d2" defer></script>
+<link rel="stylesheet" href="assets/water-cycle.css?v=81ba53d0c3">
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
+<script src="assets/publications.js?v=fdcd771629" defer></script>
 <script src="assets/water-cycle.js?v=716b04b2e1" defer></script>
 <script src="assets/farm-cue.js?v=d2e3e050a1" defer></script>
 <script>
@@ -47,7 +47,7 @@ if(ids.indexOf(h)>=0||/[?&]preview\b/.test(location.search))location.replace('ir
   <main>
 <section class="water-cycle" aria-labelledby="cycle-title">
  <div class="cycle-heading"><div><h1 id="cycle-title">My research</h1></div><p class="cycle-intro">I study how water moves through landscapes, how people reshape its journey, and what satellites reveal about both.</p></div>
- <nav class="research-tabs" aria-label="Ways into my research"><a href="index.html" aria-current="page"><span class="rt-mark" aria-hidden="true"></span><img src="assets/research-tabs/water-cycle.webp?v=f1407fe1c8" alt="" width="240" height="150"><span class="rt-text"><span class="rt-name">Water cycle</span><span class="rt-sub">Studies on each part of the water cycle, from snow to farms</span></span></a><a href="satellites.html"><img src="assets/research-tabs/satellites.webp?v=762989d88e" alt="" width="240" height="150"><span class="rt-text"><span class="rt-name">Satellites</span><span class="rt-sub">The same studies, grouped by the satellite behind each one</span></span></a></nav>
+ <nav class="research-tabs" aria-label="Ways into my research"><a href="index.html" aria-current="page"><span class="rt-mark" aria-hidden="true"></span><img src="assets/research-tabs/water-cycle.webp?v=f1407fe1c8" alt="" width="240" height="150"><span class="rt-text"><span class="rt-name">Water cycle</span><span class="rt-sub">Studies on each part of the water cycle</span></span></a><a href="satellites.html"><img src="assets/research-tabs/satellites.webp?v=762989d88e" alt="" width="240" height="150"><span class="rt-text"><span class="rt-name">Satellites</span><span class="rt-sub">The same studies, grouped by the satellite behind each one</span></span></a></nav>
  <div class="explorer-toolbar"><div class="toolbar-actions"><button class="tour-toggle" id="tour-toggle" type="button">Play tour</button></div></div>
  <div class="explorer" id="explore" data-popup="summary" data-cue="beacon,tag"><svg class="landscape" xmlns="http://www.w3.org/2000/svg" viewBox="0 65 1130 640" aria-labelledby="scene-title scene-desc">
 <title id="scene-title">A watershed, seen through my research</title><desc id="scene-desc">An isometric watershed that drains to a coast, with eight interactive areas: snow and frozen ground, rain, a lake, vegetation, soil moisture in the surface layer and root zone, drainage, rivers, and a farm linking to a second landscape, where a center pivot draws on a groundwater well whose pumping lowers the water table around it in a cone of depression, and a diversion dam on the river feeds canals that irrigate rectangular fields one at a time. Tab to each area and press Enter, or choose the matching buttons below.</desc>
@@ -65,6 +65,7 @@ if(ids.indexOf(h)>=0||/[?&]preview\b/.test(location.search))location.replace('ir
       <span class="cycle-cta-text"><span class="cycle-cta-k">My focus · Human-driven processes</span><span class="cycle-cta-t">Irrigation, the largest human intervention in the water cycle</span><span class="cycle-cta-s">Why it matters, what is missing, my studies on where, when and how much farms irrigate, and a research library.</span></span>
       <span class="cycle-cta-go" aria-hidden="true">→</span>
     </a>
+    <section class="pubs" id="pubs" aria-labelledby="pubs-title"><noscript><h2 id="pubs-title">Publications</h2><p>Enable JavaScript to see the list.</p></noscript></section>
   </main>
 
   <footer class="site-foot">

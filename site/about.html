@@ -11,14 +11,16 @@
 <link rel="icon" href="assets/ej-32.png?v=5fc7cda74a" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/ej-64.png?v=5f8a71e437" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=f78fc0a1f9">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=3f73e8bf25">
-<script src="assets/nav.js?v=febc8b7d0e" defer></script>
-<link rel="stylesheet" href="assets/about.css?v=22a3c0dc4f">
+<link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css?v=769266b4b3">
+<script src="assets/nav.js?v=a7f021a1d2" defer></script>
+<link rel="stylesheet" href="assets/about.css?v=67b46eeb88">
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
-<script src="assets/about.js?v=1dd97f10bb" defer></script>
+<script>
+/* The publications moved to the Research page: old links to about.html#publications go there. */
+if (location.hash === "#publications") location.replace("index.html#pubs");
+</script>
 </head>
 <body class="about-page">
 <a class="skip" href="#about-main">Skip to content</a>
@@ -99,12 +101,19 @@
       </div>
     </section>
 
-    <section class="ab-sec" id="publications" aria-labelledby="ab-pubs">
-      <h2 id="ab-pubs">Publications</h2>
-      <div class="ab-body">
-        <p class="ab-count" id="ab-count"></p>
-        <div class="ab-pubs" id="ab-publist"></div>
-        <noscript><p>See the full list on <a href="https://scholar.google.com/citations?user=RsLEzG0AAAAJ&amp;hl=en">Google Scholar</a>.</p></noscript>
+    <section class="ab-sec ab-rs-sec" id="research" aria-labelledby="ab-rs">
+      <h2 id="ab-rs">Research</h2>
+      <div class="ab-body ab-rs">
+        <a class="ab-rs-card" href="index.html">
+          <span class="ab-rs-pic"><img src="assets/about/research-water-cycle.webp?v=42243e3e29" width="1200" height="750" alt="" loading="lazy" decoding="async"></span>
+          <span class="ab-rs-text"><span class="ab-rs-title">Water cycle</span><span class="ab-rs-sub">Studies on each part of the water cycle</span></span>
+          <span class="ab-rs-go">Explore <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="ab-rs-card" href="satellites.html">
+          <span class="ab-rs-pic is-sky"><img src="assets/about/research-satellites.webp?v=45d85d91d1" width="1200" height="750" alt="" loading="lazy" decoding="async"><span class="ab-rs-labels" aria-hidden="true"><span style="left:60.6%;top:21.1%">Terra</span><span style="left:39.4%;top:21.1%">Aqua</span><span style="left:20.6%;top:26.2%">SMOS</span><span style="left:8.6%;top:34.6%">GCOM-W</span><span style="left:6.1%;top:44.7%">Landsat</span><span style="left:13.6%;top:57.4%">GPM</span><span style="left:29.4%;top:67.0%">Sentinel-1</span><span style="left:50.0%;top:79.3%">SMAP</span><span style="left:70.6%;top:67.0%">Sentinel-2</span><span style="left:86.4%;top:57.1%">CYGNSS</span><span style="left:93.9%;top:44.9%">ISS</span><span style="left:91.4%;top:34.5%">GOSAT-GW</span><span style="left:79.4%;top:27.1%">NISAR</span></span></span>
+          <span class="ab-rs-text"><span class="ab-rs-title">Satellites</span><span class="ab-rs-sub">The same studies, grouped by the satellite behind each one</span></span>
+          <span class="ab-rs-go">Explore <span aria-hidden="true">→</span></span>
+        </a>
       </div>
     </section>
 

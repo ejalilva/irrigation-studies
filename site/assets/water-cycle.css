@@ -343,3 +343,38 @@ body.has-cue-alive:not(.motion-off):not(.dialog-open):not(.touring) .scene-item[
 .cue-coach[hidden]{display:none}
 @media(prefers-reduced-motion:reduce){.cue-ring{animation:none;opacity:.8;transform:none}.cue-ring:nth-child(2){display:none}.cue-tag-bob{animation:none}body.cues-in :is(.cue-tag,.cue-beacon){animation:none}}
 
+
+/* Publications on the research pages (assets/publications.js): by year, by part of the water cycle or by satellite. */
+.pubs {display:grid; grid-template-columns:minmax(200px, 288px) minmax(0, 1fr); gap:20px 32px; margin-top:56px; padding-top:40px; border-top:1px solid var(--line);}
+.pubs-head h2 {margin:0; font-size:1.6rem;}
+.pubs-count {margin:6px 0 0; font-size:.9rem; color:var(--ink-2);}
+.pubs-tabs {display:inline-flex; flex-wrap:wrap; gap:2px; padding:3px; border-radius:999px; background:var(--tag-bg);}
+.pubs-tabs button {padding:8px 16px; border:0; border-radius:999px; background:none; color:var(--ink-2); font:600 .9rem/1 var(--sans); cursor:pointer; transition:background .2s, color .2s;}
+.pubs-tabs button:hover {color:var(--ink);}
+.pubs-tabs button[aria-selected="true"] {background:var(--ink); color:var(--paper);}
+.pubs-panel {margin-top:18px; border-top:1px solid var(--line);}
+.pubs-list {margin:0; padding:0; list-style:none;}
+.pubs-item {display:grid; grid-template-columns:52px minmax(0, 1fr); gap:12px; padding:14px 0;}
+.pubs-by-year .pubs-item.pubs-newyear {border-top:1px solid var(--line);}
+.pubs-year {font-weight:600; font-variant-numeric:tabular-nums; color:var(--ink-2);}
+.pubs-body {display:flex; flex-direction:column; gap:5px; min-width:0;}
+.pubs-title {color:var(--ink); font-size:1.05rem; line-height:1.4; text-decoration:none;}
+.pubs-title:hover {color:var(--link); text-decoration:underline;}
+.pubs-meta {font-size:.86rem; line-height:1.5; color:var(--ink-2);}
+.pubs-meta b {color:var(--ink); font-weight:600;}
+.pubs-chip {display:inline-block; margin-right:8px; padding:1px 7px; border-radius:3px; background:var(--jc); color:#fff; font-size:.72rem; font-weight:700; box-shadow:0 0 0 1px var(--chip-ring); vertical-align:1px;}
+.pubs-pdf {font-weight:600; margin-left:4px;}
+.pubs-group {border-bottom:1px solid var(--line);}
+.pubs-group summary {display:flex; align-items:baseline; gap:12px; padding:14px 2px; cursor:pointer; list-style:none;}
+.pubs-group summary::-webkit-details-marker {display:none;}
+.pubs-group summary::after {content:"+"; margin-left:auto; font-size:1.2rem; line-height:1; color:var(--ink-2);}
+.pubs-group[open] summary::after {content:"–";}
+.pubs-gname {font:400 1.15rem/1.3 var(--head);}
+.pubs-gcount {font-size:.86rem; color:var(--ink-2);}
+.pubs-group .pubs-list {padding-bottom:6px;}
+.pubs-all {margin-top:18px; padding:10px 18px; border:1px solid var(--line); border-radius:999px; background:var(--surface); color:var(--ink); font:600 .92rem/1 var(--sans); cursor:pointer;}
+.pubs-all:hover {border-color:var(--ink-2);}
+@media (max-width: 760px) {
+  .pubs {grid-template-columns:1fr; margin-top:40px; padding-top:28px;}
+  .pubs-item {grid-template-columns:44px minmax(0, 1fr); gap:10px;}
+}
