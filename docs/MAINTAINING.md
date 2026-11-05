@@ -55,6 +55,10 @@ docs/                 these notes and docs/JOURNEY.md
 | `.github/workflows/find-papers.yml` | Weekly search and the year-by-year backfill; opens the review pull request. |
 | `.github/workflows/apply-review.yml` | Runs when you tick or untick a paper in the pull request description. |
 
+## Trying new fonts (temporary)
+
+Add `?font=survey`, `?font=mission`, `?font=field` or `?font=atlas` to any page's address to see that pairing on the whole site (titles and text); a picker in the bottom-right corner switches between them, and "Current" goes back to Fira Sans. The choice is remembered only in your own browser; visitors who never use `?font` see no change. The code is the last block of `assets/nav.js`; remove it once a pairing is chosen and set in `assets/site.css` (`--head`, `--sans`).
+
 ## Research landscape table
 
 The page fetches `data/papers.json` at load time, so it must be served over HTTP. Opening the file directly (`file://`) leaves the table empty. To preview locally:
