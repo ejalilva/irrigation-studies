@@ -1,6 +1,6 @@
 /* The irrigation storyline ("Every answer revealed another question"): six chapters in three lanes, one per question
    (Where, When, How much), with elbow arrows from each chapter to the next and a dashed "combined" bracket that feeds the
-   last chapter. Hovering, focusing or tapping a chapter opens its study card. Drawn by renderJourney() in index.html. */
+   last chapter. Hovering, focusing or tapping a chapter opens its study card. Drawn by renderJourney() in irrigation.html. */
 .journey{--bleed:clamp(0px,calc((100vw - 1072px) / 2 - 20px),170px);position:relative;display:grid;grid-template-columns:104px repeat(6,minmax(0,1fr));column-gap:28px;row-gap:6px;margin:52px calc(-1 * var(--bleed)) 4px;padding-bottom:30px}
 .journey .j-steps{display:contents;list-style:none;margin:0;padding:0}
 .j-lane{grid-column:1/-1;display:flex;align-items:center;gap:9px;min-height:84px;margin:0 -12px;padding:0 12px;border-radius:8px;background:var(--tint);font:650 1.06rem/1.2 var(--sans);color:var(--ink)}

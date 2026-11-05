@@ -11,7 +11,7 @@ body.sat-page {overflow-x:clip;}
 .orbit {
   --sky-ink:#e6edf6; --sky-ink-2:#a9b8cc; --sky-line:rgba(255,255,255,.22);
   position:relative; overflow:hidden;
-  height:clamp(680px, 70vw, 1000px);
+  height:clamp(750px, 77vw, 1100px);
   /* the edges fade gradually into the page through a mask of gradients set by assets/satellites.js (applyMask) */
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   background:#04070f; color:var(--sky-ink);
@@ -159,7 +159,7 @@ body.sat-page {overflow-x:clip;}
 .sat-credits {margin:28px 0 0; font-size:.75rem; color:var(--ink-2);}
 
 @media (max-width: 760px) {
-  .orbit {height:clamp(620px, 168vw, 800px);}
+  .orbit {height:clamp(680px, 185vw, 880px);}
   .orbit-bar {gap:10px;}
   .orbit-legend {gap:6px 14px; font-size:.82rem;}
   .orbit-modes button {padding:7px 14px; font-size:.86rem;}

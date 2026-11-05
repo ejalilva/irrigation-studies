@@ -2,7 +2,7 @@
 
 Paths in this file are inside `site/` (the published website), except `scripts/` and `docs/`.
 
-`journey.html` is linked as **My journey** in the header of `index.html` and `human.html`. Ehsan chose the design on October 26, 2026 (skill bars that grow along the timeline) and, on October 27, the way pictures and work are shown (option A: pictures fan out above the stop, with links to papers, code and videos under the stop's line).
+`journey.html` is linked as **My journey** in the header menu of every page. Ehsan chose the design on October 26, 2026 (skill bars that grow along the timeline) and, on October 27, the way pictures and work are shown (option A: pictures fan out above the stop, with links to papers, code and videos under the stop's line).
 
 The first design (October 21, 2026: four landmark cut-outs that each opened a short story in a pop-up) was removed on October 30, 2026. It is in the Git history before pull request #59 (`journey-initial.html`, `assets/journey.css`, `assets/journey.js`, `assets/journey/landscape.jpg` and the four cut-outs) if it is ever wanted again.
 
