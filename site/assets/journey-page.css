@@ -34,7 +34,7 @@
 /* Each landmark's cut-out sits exactly over its painted self, so it is invisible until it grows. */
 .jy-mark { position: absolute; z-index: 3; left: var(--x); top: var(--y); width: var(--w); height: var(--h); opacity: 0; transform-origin: 50% 92%; transition: transform .45s cubic-bezier(.2,.8,.2,1), opacity .25s, filter .45s; pointer-events: none; }
 .jy-mark.is-on { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 8px 11px rgba(23,32,38,.28)); }
-.jy-tag { position: absolute; z-index: 4; left: var(--tx); top: var(--ty); transform: translate(-50%, 2px); opacity: 0; padding: 4px 9px; border-radius: 999px; background: #fff; color: #172026; font: 600 .78rem/1.3 var(--head); white-space: nowrap; box-shadow: 0 3px 10px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
+.jy-tag { position: absolute; z-index: 4; left: var(--tx); top: var(--ty); transform: translate(-50%, 2px); opacity: 0; padding: 4px 9px; border-radius: 999px; background: #fff; color: #172026; font: 600 .78rem/1.3 var(--sans); white-space: nowrap; box-shadow: 0 3px 10px rgba(23,32,38,.18); pointer-events: none; transition: opacity .25s, transform .35s; }
 .jy-tag.is-on { opacity: 1; transform: translate(-50%, 9px); }
 .jy-hit { position: absolute; z-index: 5; left: var(--x); top: var(--y); width: var(--w); height: var(--h); padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; }
 .jy-hit:focus { outline: none; }
@@ -52,7 +52,7 @@
    ringed at the current stop. CNR and RIES have text tiles until logo files are added. */
 .jy-logo { display: flex; align-items: center; justify-content: center; height: 32px; min-width: 32px; max-width: 64px; box-sizing: border-box; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #172026; opacity: .5; filter: grayscale(1); transition: opacity .25s, filter .25s, box-shadow .25s, border-color .25s, transform .25s; }
 .jy-logo img { display: block; width: auto; height: 24px; max-width: 56px; object-fit: contain; }
-.jy-logo.is-text { padding: 0 6px; font: 700 .62rem/1 var(--head); letter-spacing: .05em; }
+.jy-logo.is-text { padding: 0 6px; font: 700 .62rem/1 var(--sans); letter-spacing: .05em; }
 .jy-stop:hover .jy-logo { opacity: .85; filter: none; }
 .jy-year { font-size: .85rem; font-weight: 600; color: var(--jy-ghost); }
 .jy-place { font-size: .75rem; line-height: 1.3; color: var(--ink-2); }
@@ -128,7 +128,7 @@
 .jy-viewer figcaption p { margin: 0; font-size: 1.05rem; line-height: 1.45; }
 .jy-viewer figcaption strong { font-weight: 600; }
 .jy-viewer .jy-viewer-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 4px; font-size: .85rem; color: #C9D3D6; }
-.jy-viewer-btn { position: absolute; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; font: 400 1.5rem/1 var(--head); cursor: pointer; }
+.jy-viewer-btn { position: absolute; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; font: 400 1.5rem/1 var(--sans); cursor: pointer; }
 .jy-viewer-btn:hover { background: rgba(255,255,255,.28); }
 .jy-viewer-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .jy-close { top: -52px; right: 0; }

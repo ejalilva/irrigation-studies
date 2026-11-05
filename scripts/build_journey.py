@@ -275,9 +275,8 @@ out = f'''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My journey | Ehsan Jalilvand</title>
 <meta name="description" content="Ehsan Jalilvand's journey from Sharif University to NASA Goddard: what he worked on at each stop, the skills each added, and the papers and code behind them.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">

@@ -164,3 +164,4 @@
   window.addEventListener('hashchange', () => { if (location.hash === '#contact') open(); });
   window.siteContact = { open: fill => open(document.activeElement, fill || {}), linkedin: LINKEDIN };
 })();
+

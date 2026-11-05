@@ -204,10 +204,12 @@ const explorer=document.querySelector('#explore');
 const tourKeys=[...new Set([...document.querySelectorAll('.landscape .scene-item[data-topic]')].map(e=>e.dataset.topic))].filter(k=>topics[k]).sort((a,b)=>topics[a].n.localeCompare(topics[b].n));
 const tourWith=k=>document.querySelector('.scene-item[data-topic="'+k+'"]')?.dataset.tourWith;
 const tourSteps=tourKeys.filter(k=>!tourWith(k)).map(k=>[k,...tourKeys.filter(o=>tourWith(o)===k)]);
+// Coming back from the satellites (the Water cycle tab) plays the tour again, as on a first visit.
+function fromSatellites(){try{const r=new URL(document.referrer);return r.origin===location.origin&&/\/satellites\.html$/.test(r.pathname);}catch(e){return false;}}
 const tourSeenKey='water-cycle-tour-v3-'+(isHuman?'human':'main');
 const minStep=Math.max(1600,4800/tourSteps.length),maxStep=3200,maxRate=3;
 // autoDone: the automatic tour has had its chance on this page view. Seen: it finished or the visitor stopped it, so the rest of the visit skips it.
-let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{return sessionStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
+let tour=null,inView=false,autoPending=0,tourMoved=0,lastPointer=null,autoDone=(()=>{try{if(fromSatellites())return false;return sessionStorage.getItem(tourSeenKey)==='1';}catch(e){return false;}})();
 let cuesHidden=null,cuesInTimer=0;
 function syncTourPending(){
  const pending=!autoDone&&!tour&&motionEnabled&&!reduced.matches,hidden=pending||!!tour;
