@@ -291,8 +291,8 @@ out = f'''<!doctype html>
   <div class="jy-top">
     <div class="jy-brand"><h1 class="jy-title">My journey</h1></div>
     <nav class="jy-nav" aria-label="Main">
-      <a href="about.html">About</a>
-      <a href="index.html">Research</a>
+      <a href="index.html">About</a>
+      <a href="research.html">Research</a>
       <a href="journey.html" aria-current="page">My journey</a>
       <a href="gallery.html">Gallery</a>
       <a href="blog.html">Blog</a>

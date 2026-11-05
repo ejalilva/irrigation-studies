@@ -6,7 +6,7 @@
 .cycle-intro {max-width:39ch;font-size:.95rem;line-height:1.65;color:var(--ink-2);margin:0;}
 .explorer-toolbar {display:flex;justify-content:flex-end;align-items:center;gap:16px;margin-top:24px;font-size:.75rem;color:var(--ink-2);}
 .toolbar-actions {display:flex;flex-shrink:0;gap:8px;}
-/* Ways into my research: two picture tabs under "My research" on index.html (Water cycle) and satellites.html
+/* Ways into my research: two picture tabs under "My research" on research.html (Water cycle) and satellites.html
    (Satellites). The current one is filled; the dark fill (.rt-mark) slides across when you switch, where the
    browser supports view transitions between pages. */
 .research-tabs {display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; margin-top:28px;}

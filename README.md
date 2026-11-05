@@ -2,12 +2,12 @@
 
 The source of my personal website. I'm a research scientist who brings human water use, above all irrigation, into water-cycle models, using satellite observations and machine learning. The site covers who I am, the research I do, and the path that led here.
 
-**[Visit the website](https://ejalilva.github.io/irrigation-studies/about.html)**
+**[Visit the website](https://ejalilva.github.io/irrigation-studies/)**
 
 ## What's on the site
 
-- **[About](https://ejalilva.github.io/irrigation-studies/about.html)**: who I am and what I work on, my experience, education and publications, and links to my profiles.
-- **[Research](https://ejalilva.github.io/irrigation-studies/)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
+- **[About](https://ejalilva.github.io/irrigation-studies/)** (the home page): who I am and what I work on, my experience, education and studies, and links to my profiles.
+- **[Research](https://ejalilva.github.io/irrigation-studies/research.html)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
 - **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation matters and why no one knows how much water each farm uses, told with the pictures from my old site; my studies on where, when and how much farms irrigate (told as six chapters); an essential reading list; and a research library of studies from across the field.
 - **[My journey](https://ejalilva.github.io/irrigation-studies/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
 - **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Point at a pin to see its pictures and videos.

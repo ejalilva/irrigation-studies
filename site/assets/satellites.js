@@ -7,8 +7,9 @@
      chart): the atmosphere's windows, a wave that gets shorter to the right, the bands and, under the scale, what
      each part of the spectrum shows (USES). Each satellite flies to the wavelength it measures.
    The panel under the sky lists the selected satellite's studies, as the paper cards of the water-cycle map
-   (assets/journals.js). satellites.html#smap opens with SMAP selected; satellites.html?view=spectrum opens the
-   spectrum.
+   (assets/journals.js). Clicking a satellite (not the arrows, the arrow keys or a drag, which are for browsing) also
+   pans the page down to its studies once the ring has turned, keeping the satellite in view above them.
+   satellites.html#smap opens with SMAP selected; satellites.html?view=spectrum opens the spectrum.
 
    AGENCIES   name and the colour of its dot (light enough to read on the night sky)
 
@@ -276,7 +277,7 @@ const buttons = SATELLITES.map((s, i) => {
   b.innerHTML = `<img class="sat-img" src="${S}${s.img || "placeholder.svg"}" alt="" draggable="false" decoding="async">
     <span class="sat-label">${dots(s)}<span class="sat-name">${esc(s.name)}</span></span>
     <span class="sat-sub sat-year">${esc(s.launch)}</span><span class="sat-sub sat-wave">${esc(s.waveText)}</span>`;
-  b.addEventListener("click", e => { if (dragMoved) { e.preventDefault(); return; } select(i); });
+  b.addEventListener("click", e => { if (dragMoved) { e.preventDefault(); return; } showStudies(select(i)); });
   ring.appendChild(b);
   return b;
 });
@@ -491,18 +492,38 @@ function setMode(m, animate = true) {
 modeButtons.forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
 
 function nearest(i) { return i + N * Math.round((pos - i) / N); }
+// returns how long the ring takes to turn, in ms
 function select(i, opts = {}) {
   i = ((i % N) + N) % N;
   const target = nearest(i), changed = i !== current;
+  const ms = mode === "orbit" && !opts.instant && !reduced.matches ? Math.min(900, 360 + 130 * Math.abs(target - pos)) : 0;
   current = i;
-  if (mode === "orbit") turnTo(target, opts.instant ? 0 : Math.min(900, 360 + 130 * Math.abs(target - pos)));
+  if (mode === "orbit") turnTo(target, ms);
   else { pos = target; place(); }
   markLeaders();
-  if (!changed) return;
+  if (!changed) return ms;
   buttons.forEach((b, j) => { b.setAttribute("aria-selected", String(j === i)); b.tabIndex = j === i ? 0 : -1; });
   if (opts.focus) buttons[i].focus({ preventScroll: true });
   renderPanel(SATELLITES[i], !opts.first);
   if (!opts.keepHash) history.replaceState(null, "", location.pathname + location.search + "#" + SATELLITES[i].id);
+  return ms;
+}
+/* After a click on a satellite: once the ring has (nearly) turned, scroll so the studies under the sky come into view,
+   with the satellite still showing above them. The panel's top lands between 24px and 40% of the window from the
+   top; nothing moves if the studies are already well in view. Scrolling or touching the page before then cancels it. */
+let studiesT = 0;
+const cancelStudies = () => clearTimeout(studiesT);
+["wheel", "touchstart"].forEach(t => window.addEventListener(t, cancelStudies, { passive: true }));
+function showStudies(turnMs) {
+  clearTimeout(studiesT);
+  studiesT = setTimeout(() => {
+    const vh = window.innerHeight, top = panel.getBoundingClientRect().top;
+    if (top > 0 && top < vh * 0.55) return;
+    // where the panel's top should end up: low enough to keep the satellite (24px margin), at most 40% down
+    const gap = top - buttons[current].getBoundingClientRect().top;
+    const to = Math.min(vh * 0.4, Math.max(24, gap + 24));
+    window.scrollTo({ top: Math.max(0, scrollY + top - to), behavior: reduced.matches ? "auto" : "smooth" });
+  }, reduced.matches ? 0 : Math.max(200, turnMs * 0.8));
 }
 frame.querySelector(".prev").addEventListener("click", () => select(current - 1));
 frame.querySelector(".next").addEventListener("click", () => select(current + 1));

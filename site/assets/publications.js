@@ -1,4 +1,4 @@
-/* Publications on the research pages (index.html and satellites.html): every paper in assets/journals.js, listed by
+/* Publications on the research pages (research.html and satellites.html): every paper in assets/journals.js, listed by
    year (the default), by part of the water cycle or by satellite. The list starts with the last RECENT_YEARS years;
    "Show all" at the bottom lists every paper.
 

@@ -13,10 +13,10 @@
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=f78fc0a1f9">
 <link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=769266b4b3">
-<script src="assets/nav.js?v=a7f021a1d2" defer></script>
-<link rel="stylesheet" href="assets/water-cycle.css?v=81ba53d0c3">
-<link rel="stylesheet" href="assets/study-grid.css?v=e268a9f47b">
+<link rel="stylesheet" href="assets/site.css?v=ea362022be">
+<script src="assets/nav.js?v=639125ae95" defer></script>
+<link rel="stylesheet" href="assets/water-cycle.css?v=ce0f7e208d">
+<link rel="stylesheet" href="assets/study-grid.css?v=026f51cbf4">
 <link rel="stylesheet" href="assets/irrigation.css?v=b6d5971363">
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
 </head>
@@ -25,10 +25,10 @@
 
 <div class="wrap">
   <header class="site-head">
-    <a class="site-name" href="about.html" aria-label="Ehsan Jalilvand, about me"><img class="ej" src="assets/ej-64.png?v=5f8a71e437" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
+    <a class="site-name" href="index.html" aria-label="Ehsan Jalilvand, about me"><img class="ej" src="assets/ej-64.png?v=5f8a71e437" alt="" width="30" height="30"><span>Ehsan Jalilvand</span></a>
     <nav class="site-nav" aria-label="Main">
-      <a href="about.html">About</a>
-      <a href="index.html" data-section="current">Research</a>
+      <a href="index.html">About</a>
+      <a href="research.html" data-section="current">Research</a>
       <a href="journey.html">My journey</a>
       <a href="gallery.html">Gallery</a>
       <a href="blog.html">Blog</a>
@@ -574,7 +574,7 @@ function chapterCard(c, i) {
       (also ? `<p class="jc-also">${esc(c.also.text)} (<a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em></a>).</p>` : "") +
       `<p class="jc-left"><b>Left open:</b> ${esc(c.left)}</p>` + readButton(i);
   }
-  return head + `<div class="jc-body"><p>${esc(c.text)}</p><ul class="jc-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul><a class="jc-more" href="index.html#research/${c.topic}">${esc(c.more)} →</a></div>` + readButton(i);
+  return head + `<div class="jc-body"><p>${esc(c.text)}</p><ul class="jc-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul><a class="jc-more" href="research.html#research/${c.topic}">${esc(c.more)} →</a></div>` + readButton(i);
 }
 const readButton = i => `<a class="jc-read" href="#chapter-${i + 1}" data-read="${i}">Read the full chapter<span aria-hidden="true"> →</span></a>`;
 
@@ -780,7 +780,7 @@ function chapterHTML(i) {
       ${also ? `<section class="cr-also"><h3>${esc(c.also.text)}</h3>${figHTML(also, 0, "cr-side")}<p>${esc(also.summary)} <a href="${esc(linkFor(also))}" target="_blank" rel="noopener"><em>${esc(also.journal)}</em> ${esc(also.year)} ↗</a></p></section>` : ""}
       ${c.chips ? `<ul class="jc-chips cr-chips">${c.chips.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
       <p class="cr-left"><b>${c.next ? "Next:" : "Left open:"}</b> ${esc(c.left)}</p>
-      ${(c.links || []).length || c.topic ? `<p class="cr-links">${(c.links || []).map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.text)} ↗</a>`).join("")}${c.topic ? `<a href="index.html#research/${c.topic}">${esc(c.more)} →</a>` : ""}</p>` : ""}
+      ${(c.links || []).length || c.topic ? `<p class="cr-links">${(c.links || []).map(l => `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.text)} ↗</a>`).join("")}${c.topic ? `<a href="research.html#research/${c.topic}">${esc(c.more)} →</a>` : ""}</p>` : ""}
       ${(c.posts || []).length ? `<section class="cr-posts-box"><h3>Shared on social media</h3><ul class="cr-posts">${c.posts.map(postHTML).join("")}</ul></section>` : ""}
     </div>
     <nav class="cr-nav" aria-label="Chapters">${nav(i - 1, "prev")}${nav(i + 1, "next")}</nav>`;

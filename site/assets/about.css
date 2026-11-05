@@ -33,7 +33,7 @@
 .ab-deg { font-weight: 500; color: var(--ink); }
 .ab-where { font-size: .92rem; color: var(--ink-2); }
 
-/* Research: two cards leading to the research pages, the water cycle (index.html) and the satellites (satellites.html).
+/* My studies: two cards leading to the research pages, the water cycle (research.html) and the satellites (satellites.html).
    The satellites picture carries each satellite's name (positions in % of the picture, from the orbit view). */
 .ab-rs-sec { grid-template-columns: 1fr; gap: 20px; }
 .ab-rs-sec .ab-body { max-width: none; }
