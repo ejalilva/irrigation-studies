@@ -5,12 +5,13 @@
 /* ---- The sky: full width, like a band across the page ---- */
 /* The bar above the sky: the agency key and the Orbit / Spectrum switch, on the page's own colours. */
 .orbit-bar {display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px 24px; margin-top:26px;}
-/* The frame: as wide as the text column, plus a small margin each side (up to 56px). It holds the sky and the arrows. */
-.orbit-frame {--bleed:min(56px, calc((100vw - 100%) / 2)); position:relative; margin:6px calc(-1 * var(--bleed)) 0;}
+/* The frame: the full width of the window. It holds the sky and the arrows. */
+body.sat-page {overflow-x:clip;}
+.orbit-frame {position:relative; margin:6px calc(50% - 50vw) 0;}
 .orbit {
   --sky-ink:#e6edf6; --sky-ink-2:#a9b8cc; --sky-line:rgba(255,255,255,.22);
   position:relative; overflow:hidden;
-  height:clamp(600px, 62vw, 880px);
+  height:clamp(680px, 70vw, 1000px);
   /* the edges fade gradually into the page through a mask of gradients set by assets/satellites.js (applyMask) */
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
   background:#04070f; color:var(--sky-ink);
@@ -37,10 +38,10 @@
 /* the still Earth: shown until the live globe (.earth-gl) is ready, and where WebGL 2 is missing */
 .orbit-earth {position:absolute; z-index:100; border-radius:50%; pointer-events:none; background:url("satellites/earth-static.webp") center / 100% 100% no-repeat;
   box-shadow:-6px -4px 26px 2px rgba(110,170,255,.28), 0 0 90px 10px rgba(60,110,220,.12);
-  transition:opacity 1.2s ease, transform 1.8s cubic-bezier(.65,0,.35,1);}
+  transition:left 2.2s cubic-bezier(.65,0,.35,1), top 2.2s cubic-bezier(.65,0,.35,1), width 2.2s cubic-bezier(.65,0,.35,1), height 2.2s cubic-bezier(.65,0,.35,1);}
 .orbit.gl-on .orbit-earth {visibility:hidden;}
 .earth-gl {position:absolute; inset:0; z-index:100; width:100%; height:100%; pointer-events:none;}
-.orbit[data-mode="spectrum"] .orbit-earth {opacity:0; transform:translateY(30%) scale(.5);}
+.orbit-earth.no-move {transition:none;}
 
 /* ---- The spectrum ---- */
 .spectrum {position:absolute; inset:0; width:100%; height:100%; z-index:120; pointer-events:none; opacity:0; transition:opacity .9s ease;}
@@ -104,6 +105,10 @@
 .orbit[data-mode="spectrum"] .sat-wave {display:block; font-size:calc(.72rem * var(--k, 1)); color:#d4e0ee;}
 .orbit[data-mode="spectrum"] .sat-label {font-size:calc(.8rem * var(--k, 1)); gap:calc(6px * var(--k, 1));}
 .orbit[data-mode="spectrum"] .sat-label .ag-dot {width:calc(8px * var(--k, 1)); height:calc(8px * var(--k, 1));}
+/* the satellite brought to the front: a larger caption */
+.orbit[data-mode="orbit"] .sat[aria-selected="true"] .sat-label {font-size:1.18rem; gap:9px;}
+.orbit[data-mode="orbit"] .sat[aria-selected="true"] .sat-label .ag-dot {width:11px; height:11px;}
+.orbit[data-mode="orbit"] .sat[aria-selected="true"] .sat-year {font-size:.9rem; margin-top:4px;}
 .sat:focus-visible {outline:none;}
 .sat:focus-visible .sat-name {outline:2px solid #ffd23f; outline-offset:3px; border-radius:3px;}
 .sat.is-placeholder .sat-img {opacity:.5; padding:12% 20%;}
@@ -123,7 +128,7 @@
 .orbit-legend .ag-dot {width:11px; height:11px; box-shadow:none;}
 
 /* the arrows sit either side of the front satellite's name; solid, so they read on the sky and on the fade */
-.orbit-controls {position:absolute; z-index:300; left:50%; bottom:clamp(40px, 9%, 84px); transform:translateX(-50%); display:flex; gap:min(300px, 58vw); transition:opacity .3s;}
+.orbit-controls {position:absolute; z-index:300; left:50%; bottom:15%; transform:translateX(-50%); display:flex; gap:min(300px, 58vw); transition:opacity .3s;}
 .orbit-frame[data-mode="spectrum"] .orbit-controls {opacity:0; pointer-events:none;}
 .orbit-step {display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; border:1px solid rgba(255,255,255,.18);
   background:#0c1833; color:#e6edf6; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.25); transition:background .2s;}
@@ -154,7 +159,7 @@
 .sat-credits {margin:28px 0 0; font-size:.75rem; color:var(--ink-2);}
 
 @media (max-width: 760px) {
-  .orbit {height:clamp(560px, 148vw, 700px);}
+  .orbit {height:clamp(620px, 168vw, 800px);}
   .orbit-bar {gap:10px;}
   .orbit-legend {gap:6px 14px; font-size:.82rem;}
   .orbit-modes button {padding:7px 14px; font-size:.86rem;}

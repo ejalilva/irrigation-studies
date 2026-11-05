@@ -26,7 +26,7 @@
                e.g. 1.35; Sentinel-1 is the reference at 1
      img       picture in assets/satellites/ with a transparent background; without one, an outline is shown and
                the label says the picture is still needed. cygnss.webp is one CYGNSS picture repeated: the lead
-               satellite and its seven companions; gosat-gw.svg is a drawing made for this site
+               satellite and two of its companions (the constellation has eight); gosat-gw.svg is a drawing made for this site
      sensor    the instrument and what it observes, one line
      role      what this satellite gave my work, one sentence (kept for reference, not shown)
      papers    published studies, oldest first: { doi, note }. doi is the key of the paper in assets/journals.js
@@ -139,7 +139,7 @@ const SATELLITES = [
       { doi: "10.1016/j.rse.2025.114825", note: "Sentinel-2 NDVI, NDWI and red-edge bands were among the strongest drivers of crop water content." }
     ],
     work: [FM_WORK] },
-  { id: "cygnss", name: "CYGNSS", full: "Cyclone Global Navigation Satellite System", agency: ["NASA"], launch: "2016", size: 1.25, wave: 0.19, waveText: "19 cm",
+  { id: "cygnss", name: "CYGNSS", full: "Cyclone Global Navigation Satellite System", agency: ["NASA"], launch: "2016", size: 1.15, wave: 0.19, waveText: "19 cm",
     img: "cygnss.webp", sensor: "Eight microsatellites that read GPS signals reflected off the surface (GNSS-R)",
     role: "Sub-daily soil moisture from reflected navigation signals.",
     papers: [
@@ -249,11 +249,7 @@ bar.innerHTML = `<ul class="orbit-legend" aria-label="Agencies"></ul>
     <button type="button" data-mode="spectrum">${svgIcon("wave")}Spectrum</button>
   </div>`;
 frame.parentNode.insertBefore(bar, frame);
-// how the sky fades into the page: "oval" (follows the ring), "glow" (round, centred on the Earth) or "fade" (a long,
-// even fade at the edges); satellites.html?edge=glow tries another
-const EDGE = (q => ["oval", "glow", "fade"].includes(q) ? q : "oval")(new URLSearchParams(location.search).get("edge"));
 stage.dataset.mode = frame.dataset.mode = mode;
-frame.dataset.edge = EDGE;
 const ring = stage.querySelector(".orbit-ring");
 const specSvg = stage.querySelector(".spectrum");
 const usesList = stage.querySelector(".spectrum-uses");
@@ -286,7 +282,7 @@ const buttons = SATELLITES.map((s, i) => {
 });
 
 /* ---- Geometry ---- */
-let SIDE = 48, W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
+let W = 0, H = 0, cx = 0, cy = 0, Rx = 0, Ry = 0, ER = 0, BW = 0, LABEL = 0.6, EXP = 5, narrow = false;
 let pos = 0, current = -1, anim = 0;
 const cur = [];  // the last state drawn for each satellite: { x, y, s, o, z, label }
 // the spectrum: x for a wavelength, the bar, and each satellite's slot
@@ -305,23 +301,21 @@ function spread(want, gap, lo, hi) {  // positions in order, at least gap apart,
 function measure() {
   W = stage.clientWidth; H = stage.clientHeight;
   narrow = W < 700;
-  SIDE = Math.max(14, -parseFloat(getComputedStyle(frame).marginLeft) || 0);  // the margin beyond the text column
-  cx = W / 2; cy = H * 0.43;
+  cx = W / 2; cy = H * (narrow ? 0.44 : 0.43);
   Rx = narrow ? W * 0.41 : Math.min(W * 0.39, 540);
   Ry = Math.min(Rx * (narrow ? 0.52 : 0.30), H * 0.24);
   ER = Ry * (narrow ? 0.86 : 0.94);
   BW = narrow ? W * 0.36 : Math.max(150, Math.min(W * 0.19, 260));
   LABEL = narrow ? 0.95 : 0.6; EXP = narrow ? 8 : 5;
   stage.style.setProperty("--sw", BW + "px");
-  const earth = stage.querySelector(".orbit-earth");
-  Object.assign(earth.style, { width: 2 * ER + "px", height: 2 * ER + "px", left: cx - ER + "px", top: cy - ER + "px" });
+
   for (const [sel, sweep] of [[".orbit-back", 1], [".orbit-front", 0]]) {
     const svg = stage.querySelector(sel);
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.querySelector("path").setAttribute("d", `M${cx - Rx} ${cy} A${Rx} ${Ry} 0 0 ${sweep} ${cx + Rx} ${cy}`);
   }
   // spectrum layout
-  const m = SIDE + (narrow ? 12 : 44);
+  const m = narrow ? 18 : Math.max(44, (W - 1240) / 2);
   SX0 = m; SX1 = W - m;
   BAR = Math.round(H * (narrow ? 0.66 : 0.68)); BARH = narrow ? 20 : 24; PH = narrow ? 92 : 150;
   const rows = narrow ? 3 : 2, box = narrow ? 70 : 120;
@@ -334,37 +328,19 @@ function measure() {
   drawStars(); earthResize(); earthGo(false); maskGo(false);
 }
 
-/* ---- Soft edges: the sky fades gradually into the page through a CSS mask of three gradients: an ellipse (EDGE
-   "oval" follows the ring, "glow" is centred on the Earth) and two long linear fades that bring every edge to
-   nothing. Each eases out over many stops, so there is no visible line. In the spectrum the ellipse opens wide so the
-   chart stays clear, and the mask morphs between the two with the satellites. ---- */
+/* ---- Soft edges: the band runs the full width of the window, and its top and bottom fade gradually into the page
+   through a CSS mask: one vertical gradient that eases out over many stops, so there is no visible line. The fades
+   are long in the orbit view and shorter in the spectrum, which needs the room, and the mask morphs between the two
+   with the satellites. ---- */
 const ease5 = t => t * t * t * (t * (t * 6 - 15) + 10);  // smootherstep: no visible start or end to the fade
 function edgePar(m) {
-  const t = narrow ? 30 : 44;
-  if (EDGE === "fade") return m === "orbit"
-    ? { t: H * (narrow ? 0.15 : 0.2), s: SIDE + (narrow ? 26 : 80), ex: cx, ey: cy, rx: W, ry: H, k0: 50, k1: 51 }
-    : { t: H * 0.1, s: SIDE + 30, ex: cx, ey: cy, rx: W, ry: H, k0: 50, k1: 51 };
-  // the spectrum needs the whole width: a wide ellipse and longer fades at the edges
-  if (m === "spectrum") return { t: H * 0.1, s: SIDE + 30, ex: W / 2, ey: H * 0.5, rx: W * 0.95, ry: H * 1.15, k0: 0.62, k1: 1.25 };
-  if (EDGE === "glow") return { t, s: SIDE, ex: cx, ey: cy + H * 0.06, rx: W * 0.56, ry: H * 0.68, k0: 0.3, k1: 1 };
-  return { t, s: SIDE, ex: cx, ey: cy + H * 0.07, rx: Rx + BW * 0.32, ry: H * 0.43, k0: 0.8, k1: 1.13 };  // oval
-}
-function linearLayer(dir, len, d) {
-  const st = [];
-  for (let i = 0; i <= 10; i++) st.push(`rgba(0,0,0,${ease5(i / 10).toFixed(3)}) ${(i / 10 * d).toFixed(1)}px`);
-  for (let i = 10; i >= 0; i--) st.push(`rgba(0,0,0,${ease5(i / 10).toFixed(3)}) ${(len - i / 10 * d).toFixed(1)}px`);
-  return `linear-gradient(${dir}, ${st.join(", ")})`;
+  return { t: H * (m === "orbit" ? (narrow ? 0.17 : 0.22) : (narrow ? 0.12 : 0.15)) };
 }
 function applyMask(p) {
-  const layers = [linearLayer("to bottom", H, p.t), linearLayer("to right", W, p.s)];
-  if (p.k0 < 20) {
-    const st = ["#000 0%"];
-    for (let i = 0; i <= 12; i++) st.push(`rgba(0,0,0,${(1 - ease5(i / 12)).toFixed(3)}) ${((p.k0 + (p.k1 - p.k0) * i / 12) * 100).toFixed(1)}%`);
-    layers.unshift(`radial-gradient(${p.rx.toFixed(1)}px ${p.ry.toFixed(1)}px at ${p.ex.toFixed(1)}px ${p.ey.toFixed(1)}px, ${st.join(", ")})`);
-  }
-  stage.style.webkitMaskImage = stage.style.maskImage = layers.join(", ");
-  stage.style.maskComposite = layers.map(() => "intersect").join(", ");
-  stage.style.webkitMaskComposite = layers.map(() => "source-in").join(", ");
+  const st = [], N = 16;
+  for (let i = 0; i <= N; i++) st.push(`rgba(0,0,0,${ease5(i / N).toFixed(3)}) ${(i / N * p.t).toFixed(1)}px`);
+  for (let i = N; i >= 0; i--) st.push(`rgba(0,0,0,${ease5(i / N).toFixed(3)}) ${(H - i / N * p.t).toFixed(1)}px`);
+  stage.style.webkitMaskImage = stage.style.maskImage = `linear-gradient(to bottom, ${st.join(", ")})`;
 }
 let mPar = null, mAnim = 0;
 function maskGo(animate) {
@@ -641,6 +617,10 @@ function lerpPar(a, b, e) {
 }
 function earthGo(animate) {  // move the Earth to where the current view wants it
   const to = earthTarget();
+  // the still picture follows too (CSS transitions it), so the Earth is there even without WebGL 2
+  const still = stage.querySelector(".orbit-earth");
+  still.classList.toggle("no-move", !animate);
+  Object.assign(still.style, { width: 2 * to.r + "px", height: 2 * to.r + "px", left: to.cx - to.r + "px", top: to.cy - to.r + "px" });
   if (!animate || !ePar || reduced.matches) { ePar = to; eFrom = eTo = null; return; }
   eFrom = ePar; eTo = to; eT0 = performance.now(); eDur = 2200;
 }
@@ -757,7 +737,7 @@ function startEarth() {
       if (!eLast) eLast = now;
       // one turn in two and a half minutes in the ring; as the horizon the Earth is far bigger, so it turns far slower,
       // until its surface drifts by only a few pixels a second and does not pull the eye from the chart
-      if (!reduced.matches) espin += (now - eLast) * (2 * Math.PI / 150000) * Math.pow(Math.min(1, ER / ePar.r), 1.6);
+      if (!reduced.matches) espin += (now - eLast) * (2 * Math.PI / 150000) * Math.pow(Math.min(1, ER / ePar.r), 1.25);
       eLast = now; renderEarth(now);
     } else eLast = 0;
     requestAnimationFrame(tick);
