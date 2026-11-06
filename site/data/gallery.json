@@ -1,5 +1,5 @@
 {
-  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped. Add talks and conferences the same way, with kind \"talk\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. See docs/MAINTAINING.md (Gallery).",
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped. Add talks and conferences the same way, with kind \"talk\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery).",
   "places": [
     {
       "id": "smapvex22",
@@ -60,6 +60,8 @@
       "kind": "field",
       "title": "Crop growth stages, field measurements",
       "where": "Michigan State University, East Lansing",
+      "place": "East Lansing, Michigan",
+      "cover": "michigan-corn",
       "date": "July–September 2022",
       "lat": 42.701,
       "lon": -84.482,
@@ -126,6 +128,7 @@
       "kind": "talk",
       "title": "AgroTrack at AGU24",
       "where": "Walter E. Washington Convention Center, Washington, DC",
+      "place": "Washington, DC",
       "date": "December 2024",
       "lat": 38.9046,
       "lon": -77.0226,

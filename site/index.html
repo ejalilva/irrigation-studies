@@ -17,7 +17,8 @@
 <link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css?v=ea362022be">
 <script src="assets/nav.js?v=639125ae95" defer></script>
-<link rel="stylesheet" href="assets/about.css?v=6f77ea5d75">
+<link rel="stylesheet" href="assets/about.css?v=f97703cd35">
+<script src="assets/about-gallery.js?v=cd42e498cb" defer></script>
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
 <script>
 /* This is the home page (About). Until November 2026 the home page was the water-cycle research page, now research.html,
@@ -123,6 +124,31 @@ else if(/^#(research\/\w+|explore|pubs)$/.test(h)||/[?&](tour|popup|cue)\b/.test
           <span class="ab-rs-go">Explore <span aria-hidden="true">→</span></span>
         </a>
       </div>
+    </section>
+
+    <!-- Gallery: a map with a numbered pin per place and a card per place, drawn by assets/about-gallery.js from
+         data/gallery.json. Without JavaScript the text and the link to the gallery still show. -->
+    <section class="ab-sec" id="gallery" aria-labelledby="ab-gl-h">
+      <div class="ab-side">
+        <h2 id="ab-gl-h">Gallery</h2>
+        <p>Field campaigns and talks, pinned where they happened.</p>
+        <a class="ab-pill" href="gallery.html">Open the gallery <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="ab-gl" id="ab-gl"></div>
+    </section>
+
+    <!-- Blog: the posts on blog.html, newest first, one line each. Add a post here when it goes on the blog. -->
+    <section class="ab-sec" id="blog" aria-labelledby="ab-bl-h">
+      <div class="ab-side">
+        <h2 id="ab-bl-h">Blog</h2>
+        <p>Posts and interviews.</p>
+        <a class="ab-pill" href="blog.html">All posts <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="ab-bl">
+        <li><a href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/" target="_blank" rel="noopener"><time class="ab-bl-date" datetime="2025-07">Jul 2025</time><span class="ab-bl-text"><span class="ab-bl-title">Early Career Scientist Spotlight: Ehsan Jalilvand</span><span class="ab-bl-meta">Interview · NASA Goddard · 11 min read</span></span><span class="ab-bl-go" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.linkedin.com/pulse/ice-wall-permafrost-going-break-army-dead-ancient-carbon-jalilvand" target="_blank" rel="noopener"><time class="ab-bl-date" datetime="2023-01-10">Jan 2023</time><span class="ab-bl-text"><span class="ab-bl-title">The Ice wall (permafrost) is going to break and an army of the dead (ancient carbon) is going to be released!</span><span class="ab-bl-meta">On LinkedIn · 5 min read</span></span><span class="ab-bl-go" aria-hidden="true">↗</span></a></li>
+        <li><a href="blog-big-ratchet.html"><span class="ab-bl-date"></span><span class="ab-bl-text"><span class="ab-bl-title">The Big Ratchet</span><span class="ab-bl-meta">The 4th agricultural revolution · 2 min read</span></span><span class="ab-bl-go" aria-hidden="true">→</span></a></li>
+      </ul>
     </section>
 
   </main>
