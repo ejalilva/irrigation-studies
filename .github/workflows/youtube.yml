@@ -1,0 +1,62 @@
+# Lists the YouTube channel for the website (all videos and playlists) into site/data/youtube.json, for the Videos
+# section of the Gallery. Runs every Monday, by hand from the Actions tab (List my YouTube videos > Run workflow), and
+# when the script, this file or site/data/videos.json changes on any branch. On main, a new list republishes the site.
+#
+# Needs the Actions secret YOUTUBE_API_KEY (a YouTube Data API v3 key; see agent/fetch_youtube.py). Without it the
+# run changes nothing.
+
+name: List my YouTube videos
+
+on:
+  schedule:
+    - cron: "41 12 * * 1"   # Mondays 12:41 UTC
+  workflow_dispatch:
+  push:
+    paths:
+      - "agent/fetch_youtube.py"
+      - ".github/workflows/youtube.yml"
+      - "site/data/videos.json"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: youtube-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Get the website files
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: List the channel
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: python agent/fetch_youtube.py
+
+      - name: Save the list
+        id: save
+        run: |
+          git add site/data/youtube.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Nothing new."; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update the list of YouTube videos"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # A push made by this workflow does not start other workflows, so on main it starts the publishing one itself.
+      - name: Publish the site
+        if: steps.save.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main

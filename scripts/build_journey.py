@@ -136,12 +136,12 @@ LOCAL_VIDEOS = {
               "AGU24, Washington, DC, December 2024: presenting AgroTrack, which finds when farms irrigate from thermal satellite data."),
 }
 
-# YouTube videos and playlists, from data/videos.json (also the Gallery page's videos): an entry with "journey" names a
-# stop by its short name ("Amirkabir"), or by year and short name when a name repeats ("2023 NASA"). It becomes the
+# YouTube videos and playlists, from "journey" in data/videos.json (which also sets up the Gallery page's videos): each
+# names a stop by its short name ("Amirkabir"), or by year and short name when a name repeats ("2023 NASA"). It becomes the
 # large card in front of that stop's fan, like a clip: while the stop is selected it plays silently through YouTube's
 # player (assets/journey-page.js), and a click opens it in the viewer with sound.
-VIDEOS = json.loads((ROOT / "data" / "videos.json").read_text(encoding="utf-8"))["videos"]
-YOUTUBE = {v["id"]: v for v in VIDEOS if v.get("journey") and (v.get("youtube") or v.get("youtube_playlist"))}
+VIDEOS = json.loads((ROOT / "data" / "videos.json").read_text(encoding="utf-8")).get("journey", [])
+YOUTUBE = {v["id"]: v for v in VIDEOS if v.get("stop") and (v.get("youtube") or v.get("youtube_playlist"))}
 def yt_embed(v):
     return ("https://www.youtube-nocookie.com/embed/" + v["youtube"]) if v.get("youtube") else \
         ("https://www.youtube-nocookie.com/embed/videoseries?list=" + v["youtube_playlist"])
@@ -195,7 +195,7 @@ STOPS = [
 ]
 
 for vid, v in YOUTUBE.items():
-    want = v["journey"].strip()
+    want = v["stop"].strip()
     at = next((i for i, st in enumerate(STOPS) if want in (st[1], f"{st[0]} {st[1]}")), None)
     if at is None:
         sys.exit(f"data/videos.json: no stop on the timeline is called {want!r} (video {vid!r})")
