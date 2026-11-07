@@ -136,6 +136,17 @@ LOCAL_VIDEOS = {
               "AGU24, Washington, DC, December 2024: presenting AgroTrack, which finds when farms irrigate from thermal satellite data."),
 }
 
+# YouTube videos and playlists, from "journey" in data/videos.json (which also sets up the Gallery page's videos): each
+# names a stop by its short name ("Amirkabir"), or by year and short name when a name repeats ("2023 NASA"). It becomes the
+# large card in front of that stop's fan, like a clip: while the stop is selected it plays silently through YouTube's
+# player (assets/journey-page.js), and a click opens it in the viewer with sound.
+VIDEOS = json.loads((ROOT / "data" / "videos.json").read_text(encoding="utf-8")).get("journey", [])
+YOUTUBE = {v["id"]: v for v in VIDEOS if v.get("stop") and (v.get("youtube") or v.get("youtube_playlist"))}
+def yt_embed(v):
+    return ("https://www.youtube-nocookie.com/embed/" + v["youtube"]) if v.get("youtube") else \
+        ("https://www.youtube-nocookie.com/embed/videoseries?list=" + v["youtube_playlist"])
+def yt_thumb(v): return f"https://i.ytimg.com/vi/{v['youtube']}/hqdefault.jpg" if v.get("youtube") else ""
+
 STUDY = "assets/studies/"
 STOPS = [
     ("2013", "Sharif", "Sharif University", "sharif", ["arcgis", "envi", "rs", "matlab"],
@@ -183,6 +194,13 @@ STOPS = [
      ["agu2025", "agent"], [], "nasa"),
 ]
 
+for vid, v in YOUTUBE.items():
+    want = v["stop"].strip()
+    at = next((i for i, st in enumerate(STOPS) if want in (st[1], f"{st[0]} {st[1]}")), None)
+    if at is None:
+        sys.exit(f"data/videos.json: no stop on the timeline is called {want!r} (video {vid!r})")
+    st = list(STOPS[at]); st[7] = [(f"yt:{vid}",)] + list(st[7]); STOPS[at] = tuple(st)
+
 esc = html.escape
 N = len(STOPS)
 last = N - 1
@@ -228,6 +246,8 @@ for i, (year, short, place, mark, skills, line, work, pics, logo) in enumerate(S
         extra = ""
         if href.startswith("drive:"):
             vk = href[6:]; extra = f' data-video="{vk}"'; href = f"https://drive.google.com/file/d/{DRIVE_VIDEOS[vk][0]}/view"
+        elif key in ("youtube",) and YOUTUBE and any(p[0].startswith("yt:") for p in pics):
+            extra = f' data-video="yt-{next(p[0][3:] for p in pics if p[0].startswith("yt:"))}"'
         elif href.startswith("clip:"):
             vk = href[5:]; extra = f' data-video="{vk}"'; href = f"{LOCAL_VIDEOS[vk][0]}?v={V}"
         links.append(f'<a class="jy-work" href="{esc(href)}" target="_blank" rel="noopener" title="{esc(title)}"{extra}><svg viewBox="0 0 16 16" aria-hidden="true">{ICON[kind]}</svg>{esc(label)}<span class="sr-only">: {esc(title)}</span></a>')
@@ -237,7 +257,7 @@ for i, (year, short, place, mark, skills, line, work, pics, logo) in enumerate(S
         cards = []
         # A clip sits in front of the fan, in the middle, and the other cards fan out to either side of it (the extra
         # one on the left): slots -2, -1, 1 for three pictures. Without a clip the cards are spread evenly about 0.
-        fanned = [p for p in pics if not p[0].startswith("clip:")]
+        fanned = [p for p in pics if not p[0].startswith(("clip:", "yt:"))]
         has_clip = len(fanned) < len(pics)
         if has_clip:
             left = (len(fanned) + 1) // 2
@@ -246,6 +266,12 @@ for i, (year, short, place, mark, skills, line, work, pics, logo) in enumerate(S
             slots = [j - (len(fanned) - 1) / 2 for j in range(len(fanned))]
         pos = {id(p): s for p, s in zip(fanned, slots)}
         for k, pic in enumerate(pics):
+            if pic[0].startswith("yt:"):
+                v = YOUTUBE[pic[0][3:]]; caption = v["title"]
+                pic_html = (f'<img src="{esc(yt_thumb(v))}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">' if yt_thumb(v)
+                            else '<span class="jy-yt-tile"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000"/><path d="M11 6v8l7-4z" fill="#fff"/></svg><span>' + esc(v["title"]) + '</span></span>')
+                cards.append(f'<button type="button" class="jy-card is-video is-clip is-yt" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="YouTube" data-video="yt-{esc(v["id"])}" data-yt="{esc(yt_embed(v))}" style="--k:0" aria-label="Play with sound: {esc(v["title"])}">{pic_html}<span class="jy-yt-live" aria-hidden="true"></span><span class="jy-play" aria-hidden="true"></span><span class="jy-mute" aria-hidden="true"></span></button>')
+                continue
             if pic[0].startswith("clip:"):
                 vk = pic[0][5:]; mp4, poster, caption = LOCAL_VIDEOS[vk]
                 cards.append(f'<button type="button" class="jy-card is-video is-clip" data-stage="{i}" data-i="{k}" data-caption="{esc(caption)}" data-credit="" data-video="{vk}" data-clip="{esc(mp4)}?v={V}" style="--k:0" aria-label="Play with sound: {esc(caption)}"><video src="{esc(mp4)}?v={V}" poster="{esc(poster)}?v={V}" muted loop playsinline preload="none" aria-hidden="true"></video><span class="jy-play" aria-hidden="true"></span><span class="jy-mute" aria-hidden="true"></span></button>')
@@ -280,6 +306,7 @@ out = f'''<!doctype html>
 <link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
+<script>/* The light or dark theme a visitor chose with the switch in the header (assets/nav.js), applied before the page draws. */try{{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <link rel="stylesheet" href="assets/site.css?v={V}">
 <script src="assets/nav.js?v={V}" defer></script>
 <link rel="stylesheet" href="assets/journey-page.css?v={V}">
@@ -355,7 +382,8 @@ record = {
     "logos": {k: dict(kind=v[0], value=v[1], name=v[2]) for k, v in LOGOS.items()},
     "work": {k: dict(kind=v[0], label=v[1], title=v[2], href=v[3]) for k, v in WORK.items()},
     "stops": [dict(period=y, short=s, place=p, landmark=m, skills=sk, story=t, work=w, logo=lg,
-                   pictures=[(dict(video=drive_embed(pc[0][6:]), caption=DRIVE_VIDEOS[pc[0][6:]][1]) if pc[0].startswith("video:")
+                   pictures=[(dict(youtube=yt_embed(YOUTUBE[pc[0][3:]]), caption=YOUTUBE[pc[0][3:]]["title"]) if pc[0].startswith("yt:")
+                              else dict(video=drive_embed(pc[0][6:]), caption=DRIVE_VIDEOS[pc[0][6:]][1]) if pc[0].startswith("video:")
                               else dict(clip=LOCAL_VIDEOS[pc[0][5:]][0], poster=LOCAL_VIDEOS[pc[0][5:]][1], caption=LOCAL_VIDEOS[pc[0][5:]][2]) if pc[0].startswith("clip:")
                               else dict(src=pc[0], caption=pc[1], credit=(pc[2] if len(pc) > 2 else None))) for pc in pics])
               for y, s, p, m, sk, t, w, pics, lg in STOPS],

@@ -15,10 +15,12 @@
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=f78fc0a1f9">
 <link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=ea362022be">
-<script src="assets/nav.js?v=639125ae95" defer></script>
-<link rel="stylesheet" href="assets/about.css?v=f97703cd35">
+<script>/* The light or dark theme a visitor chose with the switch in the header (assets/nav.js), applied before the page draws. */try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/site.css?v=6dce92b32f">
+<script src="assets/nav.js?v=707c94b7f2" defer></script>
+<link rel="stylesheet" href="assets/about.css?v=03078baa92">
 <script src="assets/about-gallery.js?v=cd42e498cb" defer></script>
+<script src="assets/study-cards.js?v=29ff509b94" defer></script>
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
 <script>
 /* This is the home page (About). Until November 2026 the home page was the water-cycle research page, now research.html,
@@ -113,15 +115,26 @@ else if(/^#(research\/\w+|explore|pubs)$/.test(h)||/[?&](tour|popup|cue)\b/.test
     <section class="ab-sec ab-rs-sec" id="research" aria-labelledby="ab-rs">
       <h2 id="ab-rs">My studies</h2>
       <div class="ab-body ab-rs">
-        <a class="ab-rs-card" href="research.html">
-          <span class="ab-rs-pic"><img src="assets/about/research-water-cycle.webp?v=42243e3e29" width="1200" height="750" alt="" loading="lazy" decoding="async"></span>
+        <a class="ab-rs-card" href="research.html" data-live="water-cycle">
+          <span class="ab-rs-pic ab-wc"><img src="assets/about/research-water-cycle.webp?v=42243e3e29" width="1200" height="750" alt="" loading="lazy" decoding="async"></span>
           <span class="ab-rs-text"><span class="ab-rs-title">Water cycle</span><span class="ab-rs-sub">My studies on each part of the water cycle</span></span>
           <span class="ab-rs-go">Explore <span aria-hidden="true">→</span></span>
         </a>
-        <a class="ab-rs-card" href="satellites.html">
+        <a class="ab-rs-card" href="satellites.html" data-live="satellites">
           <span class="ab-rs-pic is-sky"><img src="assets/about/research-satellites.webp?v=45d85d91d1" width="1200" height="750" alt="" loading="lazy" decoding="async"><span class="ab-rs-labels" aria-hidden="true"><span style="left:60.6%;top:21.1%">Terra</span><span style="left:39.4%;top:21.1%">Aqua</span><span style="left:20.6%;top:26.2%">SMOS</span><span style="left:8.6%;top:34.6%">GCOM-W</span><span style="left:6.1%;top:44.7%">Landsat</span><span style="left:13.6%;top:57.4%">GPM</span><span style="left:29.4%;top:67.0%">Sentinel-1</span><span style="left:50.0%;top:79.3%">SMAP</span><span style="left:70.6%;top:67.0%">Sentinel-2</span><span style="left:86.4%;top:57.1%">CYGNSS</span><span style="left:93.9%;top:44.9%">ISS</span><span style="left:91.4%;top:34.5%">GOSAT-GW</span><span style="left:79.4%;top:27.1%">NISAR</span></span></span>
           <span class="ab-rs-text"><span class="ab-rs-title">Satellites</span><span class="ab-rs-sub">My studies, grouped by the satellite behind each one</span></span>
           <span class="ab-rs-go">Explore <span aria-hidden="true">→</span></span>
+        </a>
+        <!-- The featured study: irrigation, my focus. The same card closes the map on research.html (styles: .feature-card in site.css). -->
+        <a class="feature-card" href="irrigation.html" data-live="clip">
+          <span class="fc-media"><video src="assets/irrigation/crop-circles-turkey.mp4?v=ef7c5fbbe3" poster="assets/irrigation/crop-circles-turkey.webp?v=5c5118b821" width="512" height="494" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video><span class="fc-credit">Sentinel-2 time-lapse: Annamaria Luongo, Sentinel Hub</span></span>
+          <span class="fc-body">
+            <span class="fc-kicker"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.2l2 4.3 4.7.5-3.5 3.2 1 4.6L8 11.4l-4.2 2.4 1-4.6L1.3 6l4.7-.5z"/></svg>Featured study · My focus</span>
+            <span class="fc-title">Irrigation, the largest human intervention in the water cycle</span>
+            <span class="fc-text">Why it matters, what is missing, and my studies on where, when and how much farms irrigate, with a research library of the latest papers.</span>
+            <span class="fc-qs"><span class="fc-q q-where">Where?</span><span class="fc-q q-when">When?</span><span class="fc-q q-how">How much?</span></span>
+            <span class="fc-go">Explore irrigation <span aria-hidden="true">→</span></span>
+          </span>
         </a>
       </div>
     </section>
@@ -147,7 +160,7 @@ else if(/^#(research\/\w+|explore|pubs)$/.test(h)||/[?&](tour|popup|cue)\b/.test
       <ul class="ab-bl">
         <li><a href="https://science.gsfc.nasa.gov/600/ECSS/spotlight/Ehsan-Jalilvand/" target="_blank" rel="noopener"><time class="ab-bl-date" datetime="2025-07">Jul 2025</time><span class="ab-bl-text"><span class="ab-bl-title">Early Career Scientist Spotlight: Ehsan Jalilvand</span><span class="ab-bl-meta">Interview · NASA Goddard · 11 min read</span></span><span class="ab-bl-go" aria-hidden="true">↗</span></a></li>
         <li><a href="https://www.linkedin.com/pulse/ice-wall-permafrost-going-break-army-dead-ancient-carbon-jalilvand" target="_blank" rel="noopener"><time class="ab-bl-date" datetime="2023-01-10">Jan 2023</time><span class="ab-bl-text"><span class="ab-bl-title">The Ice wall (permafrost) is going to break and an army of the dead (ancient carbon) is going to be released!</span><span class="ab-bl-meta">On LinkedIn · 5 min read</span></span><span class="ab-bl-go" aria-hidden="true">↗</span></a></li>
-        <li><a href="blog-big-ratchet.html"><span class="ab-bl-date"></span><span class="ab-bl-text"><span class="ab-bl-title">The Big Ratchet</span><span class="ab-bl-meta">The 4th agricultural revolution · 2 min read</span></span><span class="ab-bl-go" aria-hidden="true">→</span></a></li>
+        <li><a href="blog-big-ratchet.html"><time class="ab-bl-date" datetime="2021-12">Dec 2021</time><span class="ab-bl-text"><span class="ab-bl-title">The Big Ratchet</span><span class="ab-bl-meta">The 4th agricultural revolution · 2 min read</span></span><span class="ab-bl-go" aria-hidden="true">→</span></a></li>
       </ul>
     </section>
 

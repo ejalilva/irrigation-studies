@@ -10,7 +10,12 @@
    Visitors type their own email and a message; the form sends it through Web3Forms (web3forms.com), which emails it
    to the address the access key was made for, with the visitor's address as reply-to. The address itself never
    appears on the site. Any page + #contact opens the panel directly.
-   Other scripts can open it prefilled: window.siteContact.open({ subject, message }). */
+   Other scripts can open it prefilled: window.siteContact.open({ subject, message }).
+
+   Light and dark: a sun or moon button after the menu switches the theme. The choice is kept in localStorage ("theme") and
+   applied by a one-line script in each page's <head> before the page draws, so every page opens in it; with no choice
+   saved, the site follows the device. The switch fades the page into the new theme from the button (View Transitions,
+   where the browser has them). Other scripts can listen for the "themechange" event on document. */
 (() => {
   'use strict';
 
@@ -32,6 +37,52 @@
       return `<a href="${href}"${cur}>${label}</a>`;
     }).join('\n');
   });
+
+  // ---- Light and dark ----
+  const root = document.documentElement;
+  const sysDark = matchMedia('(prefers-color-scheme: dark)');
+  const theme = () => root.dataset.theme || (sysDark.matches ? 'dark' : 'light');
+  const SUN = '<svg class="tt-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
+  const MOON = '<svg class="tt-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.6A8.5 8.5 0 0 1 9.4 3.8a8.5 8.5 0 1 0 10.8 10.8Z"/></svg>';
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'theme-toggle';
+  toggle.innerHTML = MOON + SUN;
+  const label = () => {
+    const dark = theme() === 'dark', text = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    toggle.dataset.mode = theme();
+    toggle.setAttribute('aria-label', text);
+    toggle.title = text;
+  };
+  const setTheme = next => {
+    root.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) { /* private mode: this page only */ }
+    label();
+    document.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+  };
+  toggle.addEventListener('click', () => {
+    const next = theme() === 'dark' ? 'light' : 'dark';
+    if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) { setTheme(next); return; }
+    // The new theme spreads in a circle from the button.
+    const r = toggle.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.classList.add('theme-shift');
+    const t = document.startViewTransition(() => setTheme(next));
+    t.ready.then(() => root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+      { duration: 520, easing: 'cubic-bezier(.4,0,.2,1)', pseudoElement: '::view-transition-new(root)' })).catch(() => {});
+    t.finished.finally(() => root.classList.remove('theme-shift'));
+  });
+  sysDark.addEventListener('change', label);
+  // Another tab switched the theme: follow it.
+  window.addEventListener('storage', e => {
+    if (e.key !== 'theme') return;
+    if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+    label();
+  });
+  label();
+  // After the menu, at the top right; .jy-top is My journey's header over its painting.
+  const mainNav = document.querySelector('.site-head nav[aria-label="Main"], .jy-top nav[aria-label="Main"]');
+  if (mainNav) mainNav.after(toggle);
 
   // ---- Contact panel ----
   // The Web3Forms access key for the form. It only identifies the form and is safe to publish; get one free at

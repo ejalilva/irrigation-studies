@@ -13,11 +13,12 @@
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=f78fc0a1f9">
 <link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=ea362022be">
-<script src="assets/nav.js?v=639125ae95" defer></script>
+<script>/* The light or dark theme a visitor chose with the switch in the header (assets/nav.js), applied before the page draws. */try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/site.css?v=6dce92b32f">
+<script src="assets/nav.js?v=707c94b7f2" defer></script>
 <link rel="stylesheet" href="assets/water-cycle.css?v=ce0f7e208d">
 <link rel="stylesheet" href="assets/study-grid.css?v=026f51cbf4">
-<link rel="stylesheet" href="assets/irrigation.css?v=b6d5971363">
+<link rel="stylesheet" href="assets/irrigation.css?v=0b2400e694">
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
 </head>
 <body class="main-page irrigation-page">
@@ -89,20 +90,24 @@
         </div>
       </div>
 
-      <div class="ir-row ir-flip">
+      <!-- Climate change: the facts, then WRI Aqueduct's interactive water-stress map (Tableau Public) across the full width.
+           The map loads only as it nears the screen; until then, or if Tableau can't be reached, the still map shows. -->
+      <div class="ir-row ir-row-embed">
         <h3 class="ir-say">Climate change makes it worse.</h3>
-        <a class="ir-media ir-map" href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">
-          <img src="assets/why/water-stress.webp" width="900" height="493" loading="lazy" decoding="async" alt="World map of baseline water stress, the ratio of water demand to available supply; the highest stress is in the Middle East, South Asia, northern China and the western United States.">
-          <span class="ir-cap">Water stress: how much of the available water is already in demand. Explore the map at WRI Aqueduct <span aria-hidden="true">↗</span></span>
-        </a>
         <div class="ir-text">
           <ul>
             <li>About two-thirds of the area equipped for irrigation in 1995 may need more irrigation water by the 2020s and the 2070s. <a class="src" href="https://www.geo.uni-frankfurt.de/45217733/doell_climaticchange2002_irrigation.pdf" target="_blank" rel="noopener">Döll, 2002</a></li>
             <li>41% of irrigation water is taken from the flow rivers need to stay healthy, harming ecosystems and habitats. <a class="src" href="https://www.nature.com/articles/ncomms15900" target="_blank" rel="noopener">Jägermeyr et al., 2017</a></li>
             <li>Irrigation in Europe could rise by about 30% under a high-emission scenario. <a class="src" href="https://hess.copernicus.org/preprints/hess-2021-631/" target="_blank" rel="noopener">Busschaert et al., 2022</a></li>
-            <li>Competition for water is already intense and is expected to get worse. <a class="src" href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">WRI Aqueduct</a></li>
+            <li>Competition for water is already intense and is expected to get worse. The map below shows water stress: the demand for water as a share of the water available. <a class="src" href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">WRI Aqueduct</a></li>
           </ul>
         </div>
+        <figure class="ir-media ir-tableau">
+          <div class="ir-tableau-frame">
+            <iframe src="https://public.tableau.com/views/AqueductWaterRiskAtlasGlobalMaps/BWSDB?:embed=y&amp;:showVizHome=no&amp;:display_count=y&amp;:toolbar=yes&amp;:tabs=no&amp;:language=en-US&amp;:origin=viz_share_link" title="WRI Aqueduct Water Risk Atlas: baseline water stress around the world (interactive map, Tableau Public)" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+          <figcaption>Baseline water stress: yearly withdrawals for farms, industry and homes as a share of the surface and ground water available. Interactive map from the <a href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">WRI Aqueduct Water Risk Atlas</a>; <a href="https://public.tableau.com/views/AqueductWaterRiskAtlasGlobalMaps/BWSDB" target="_blank" rel="noopener">open it on Tableau Public ↗</a></figcaption>
+        </figure>
       </div>
 
       <div class="ir-row">

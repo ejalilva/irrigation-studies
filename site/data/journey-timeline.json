@@ -581,7 +581,12 @@
         "youtube"
       ],
       "logo": "aut",
-      "pictures": []
+      "pictures": [
+        {
+          "youtube": "https://www.youtube-nocookie.com/embed/videoseries?list=PLRzyLdRjry07fxT-BHQxJVipM95uXgWAy",
+          "caption": "Introduction to the Remote Sensing of Environment (Farsi)"
+        }
+      ]
     },
     {
       "period": "2021–22",

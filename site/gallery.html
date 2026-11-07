@@ -12,12 +12,14 @@
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=f78fc0a1f9">
 <link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=ea362022be">
-<script src="assets/nav.js?v=639125ae95" defer></script>
+<script>/* The light or dark theme a visitor chose with the switch in the header (assets/nav.js), applied before the page draws. */try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/site.css?v=6dce92b32f">
+<script src="assets/nav.js?v=707c94b7f2" defer></script>
 <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css?v=c02c12fe5e">
 <script src="assets/vendor/leaflet/leaflet.js?v=35b48eb991" defer></script>
-<link rel="stylesheet" href="assets/gallery.css?v=1bc0d86723">
+<link rel="stylesheet" href="assets/gallery.css?v=2c8418dffd">
 <script src="assets/gallery.js?v=649e881bce" defer></script>
+<script src="assets/videos.js?v=2845f9bdf8" defer></script>
 </head>
 <body class="gallery-page">
 <a class="skip" href="#gl-places">Skip to the list of places</a>
@@ -53,6 +55,10 @@
         <li><strong>AgroTrack at AGU24</strong>, Walter E. Washington Convention Center, Washington, DC, December 2024: <a href="assets/media/agrotrack-agu24.mp4">Presenting AgroTrack at AGU24 (video).</a></li>
       </noscript>
     </ul>
+    <!-- Videos, under the pictures: a large player and the list, drawn by assets/videos.js from data/videos.json. -->
+    <section class="glv" id="videos" aria-labelledby="glv-h">
+      <noscript><h2 id="glv-h">Videos</h2><p><a href="https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw">My lessons, talks and tutorials on YouTube</a> and <a href="assets/media/agrotrack-agu24.mp4">presenting AgroTrack at AGU24</a>.</p></noscript>
+    </section>
   </main>
 
   <footer class="site-foot">

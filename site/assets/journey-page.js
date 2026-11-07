@@ -9,7 +9,8 @@
    - A clip (a card with data-clip, in front of its stop's fan) plays silently while the visitor has that stop selected,
      and pauses when another stop is selected, when it is scrolled out of view, the tab is hidden or the viewer is open.
      It does not play during the opening play-through, with reduced motion or with data saver on. A click opens it in
-     the viewer with sound and controls, from the start.
+     the viewer with sound and controls, from the start. A YouTube card (data-yt, from data/videos.json) does the same
+     through YouTube's player: it is loaded, muted, when it should play, and taken away when it should stop.
    - The first time the skills come into view, the timeline plays once from 2013 to now, unless the visitor has
      already touched it. With reduced motion the page simply opens at now. */
 (() => {
@@ -35,14 +36,39 @@
   const quiet = reduce || Boolean(navigator.connection && navigator.connection.saveData);
   let viewing = false;
   const clips = [...inner.querySelectorAll('.jy-card.is-clip')].map(card => ({ card, video: card.querySelector('video'), seen: false }));
+  // YouTube's embedded player for a card's data-yt (a video or a playlist): silent (muted, so it may start by itself,
+  // no controls, looping) for the card, or with sound and controls for the viewer.
+  const ytURL = (base, silent) => {
+    const u = new URL(base), q = u.searchParams, id = u.pathname.split('/').pop();
+    [['autoplay', '1'], ['playsinline', '1'], ['rel', '0'], ['modestbranding', '1'], ['iv_load_policy', '3']].forEach(([k, v]) => q.set(k, v));
+    if (silent) { q.set('mute', '1'); q.set('controls', '0'); q.set('disablekb', '1'); if (id !== 'videoseries') { q.set('loop', '1'); q.set('playlist', id); } }
+    return u.toString();
+  };
+  const ytFrame = (src, title) => {
+    const f = document.createElement('iframe');
+    f.src = src; f.title = title || ''; f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen = true;
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    return f;
+  };
   function syncClips() {
     clips.forEach(c => {
       const want = !quiet && touched && c.seen && !viewing && !document.hidden && Number(c.card.dataset.stage) === sel;
+      if (c.card.dataset.yt) {
+        const live = c.card.querySelector('.jy-yt-live'), on = !!live.firstChild;
+        if (want && !on) {
+          const f = ytFrame(ytURL(c.card.dataset.yt, true));
+          f.tabIndex = -1; f.setAttribute('aria-hidden', 'true');
+          f.addEventListener('load', () => setTimeout(() => { if (live.contains(f)) c.card.classList.add('is-playing'); }, 600));
+          live.append(f);
+        } else if (!want && on) { live.replaceChildren(); c.card.classList.remove('is-playing'); }
+        return;
+      }
       if (want && c.video.paused) c.video.play().catch(() => {});
       else if (!want && !c.video.paused) c.video.pause();
     });
   }
   clips.forEach(c => {
+    if (!c.video) return;
     c.video.addEventListener('playing', () => c.card.classList.add('is-playing'));
     c.video.addEventListener('pause', () => c.card.classList.remove('is-playing'));
   });
@@ -136,7 +162,9 @@
       at = (k + list.length) % list.length;
       const card = list[at], pic = card.querySelector('img'), story = stories[Number(card.dataset.stage)];
       stopVideo();
-      if (card.dataset.clip && video) {
+      if (card.dataset.yt && video) {
+        video.append(ytFrame(ytURL(card.dataset.yt, false), card.dataset.caption)); video.hidden = false; img.hidden = true; img.removeAttribute('src');
+      } else if (card.dataset.clip && video) {
         const v = document.createElement('video');
         v.src = card.dataset.clip; v.poster = card.querySelector('video')?.poster || '';
         v.controls = true; v.autoplay = true; v.playsInline = true; v.setAttribute('aria-label', card.dataset.caption);

@@ -83,6 +83,7 @@
 .gl-viewer.is-single .gl-prev, .gl-viewer.is-single .gl-next { display: none; }
 
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gl-map { background: #1B262B; } }
+:root[data-theme="dark"] .gl-map { background: #1B262B; }
 @media (max-width: 760px) {
   .gl-head { padding-top: 24px; }
   .gl-map { height: 56vh; min-height: 320px; }
@@ -102,3 +103,85 @@
 .gl-map .leaflet-control-layers-expanded { padding: 8px 12px 8px 8px; background: var(--surface); color: var(--ink); }
 .gl-map .leaflet-control-layers label { margin: 2px 0; cursor: pointer; }
 .gl-map .leaflet-control-layers-list { padding-top: 0; } /* Leaflet's list is a <section>; the site pads sections at the top */
+
+/* Videos, under the pictures (assets/videos.js; data/youtube.json and data/videos.json): tabs for All videos and each
+   playlist, the large player on the left and, on the right (under it on phones), the chosen tab's videos in a list as
+   tall as the player that scrolls. A video in the list plays a silent preview in its small picture while the mouse
+   rests on it; a click plays it in the large player with sound. */
+.glv { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+.glv-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 24px; margin-bottom: 18px; }
+.glv-head h2 { margin: 0; font: 400 1.75rem/1.2 var(--head); }
+.glv-head p { flex: 1 1 320px; margin: 0; color: var(--ink-2); font-size: .95rem; }
+.glv-all { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: .92rem; font-weight: 600; text-decoration: none; white-space: nowrap; transition: border-color .15s, background-color .15s; }
+.glv-all:hover { color: var(--ink); border-color: var(--ink-2); background: var(--hover); }
+.glv-ytmark { width: 22px; height: 16px; flex: none; }
+/* Tabs: All videos and one per playlist, with their counts; on narrow screens they scroll sideways. */
+.glv-tabs { display: flex; gap: 8px; margin: 0 0 18px; padding: 2px 2px 6px; overflow-x: auto; scrollbar-width: thin; }
+.glv-tab { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font: 600 .9rem/1.2 var(--sans); cursor: pointer; transition: background-color .15s, border-color .15s; }
+.glv-tab:hover { border-color: var(--ink-2); }
+.glv-tab[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.glv-tab:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.glv-n { padding: 0 7px; border-radius: 999px; background: var(--tag-bg); color: var(--ink-2); font-size: .74rem; line-height: 1.6; }
+.glv-tab[aria-pressed="true"] .glv-n { background: rgba(255,255,255,.18); color: inherit; }
+.glv-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 360px); gap: 28px; align-items: start; }
+.glv-main { margin: 0; min-width: 0; }
+.glv-stage { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: #0F1A1F; }
+.glv-stage :is(iframe, video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.glv-cover { position: absolute; inset: 0; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.glv-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.glv-cover:hover img { transform: scale(1.02); }
+.glv-cover:focus-visible { outline: 3px solid var(--link); outline-offset: -3px; }
+.glv-big-play { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 74px; height: 74px; margin: -37px 0 0 -37px; border-radius: 50%; background: rgba(255,255,255,.94); box-shadow: 0 6px 22px rgba(0,0,0,.28); transition: transform .2s; }
+.glv-big-play svg { width: 28px; height: 28px; fill: #172026; margin-left: 3px; }
+.glv-cover:hover .glv-big-play { transform: scale(1.06); }
+.glv-away { position: absolute; right: 12px; bottom: 12px; padding: 3px 10px; border-radius: 999px; background: rgba(10,18,22,.8); color: #fff; font-size: .8rem; font-weight: 600; }
+.glv-main figcaption { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin-top: 12px; }
+.glv-kind { font-size: .78rem; font-weight: 700; color: var(--ink-2); }
+.glv-kind:empty { display: none; }
+.glv-title { font: 400 1.3rem/1.3 var(--head); color: var(--ink); }
+.glv-meta { font-size: .88rem; color: var(--ink-2); }
+.glv-meta:empty { display: none; }
+.glv-playall { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; padding: 8px 16px 8px 12px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 .9rem/1.2 var(--sans); cursor: pointer; }
+.glv-playall[hidden] { display: none; }
+.glv-playall svg { width: 16px; height: 16px; fill: currentColor; }
+.glv-playall:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+/* A playlist without a picture of its own: a dark tile with YouTube's mark. */
+.glv-tile { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px; background: #16191B; color: #F1F1F1; text-align: center; }
+.glv-tile .glv-ytmark { width: 34px; height: 24px; }
+.glv-tile-t { max-width: 30ch; font: 400 1.1rem/1.3 var(--head); }
+.glv-tile-n { font-size: .7rem; font-weight: 600; color: #C9CDD0; }
+.glv-thumb .glv-tile { gap: 4px; }
+.glv-thumb .glv-tile .glv-ytmark { width: 26px; height: 19px; }
+
+/* The list: as tall as the player and its caption beside it (--glv-h, set by assets/videos.js), scrolling, with a soft
+   edge where there is more. */
+.glv-side { display: flex; flex-direction: column; min-width: 0; max-height: var(--glv-h, 560px); }
+.glv-count { flex: none; margin: 0 0 8px; padding: 0 8px; font-size: .82rem; color: var(--ink-2); }
+.glv-list { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0 6px 0 0; list-style: none; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.glv-list.fade-end { -webkit-mask-image: linear-gradient(#000 calc(100% - 48px), transparent); mask-image: linear-gradient(#000 calc(100% - 48px), transparent); }
+.glv-list.fade-start.fade-end { -webkit-mask-image: linear-gradient(transparent, #000 32px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(transparent, #000 32px, #000 calc(100% - 48px), transparent); }
+.glv-list.fade-start:not(.fade-end) { -webkit-mask-image: linear-gradient(transparent, #000 32px); mask-image: linear-gradient(transparent, #000 32px); }
+.glv-item { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 12px; width: 100%; padding: 8px; border: 1px solid transparent; border-radius: 12px; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: background-color .15s, border-color .15s; }
+.glv-item:hover { background: var(--hover); }
+.glv-item[aria-current] { background: var(--tag-bg); border-color: var(--line); }
+.glv-item:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+.glv-thumb { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background: #16191B; }
+.glv-thumb > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.glv-live { position: absolute; inset: 0; pointer-events: none; }
+.glv-live :is(iframe, video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; background: #000; }
+.glv-len { position: absolute; right: 5px; bottom: 5px; padding: 0 5px; border-radius: 4px; background: rgba(10,18,22,.8); color: #fff; font-size: .7rem; font-weight: 600; line-height: 1.5; }
+.glv-preview { position: absolute; left: 5px; top: 5px; display: none; align-items: center; gap: 3px; padding: 0 6px 0 4px; border-radius: 4px; background: rgba(10,18,22,.8); color: #fff; font-size: .66rem; font-weight: 600; line-height: 1.6; }
+.glv-preview svg { width: 12px; height: 12px; fill: currentColor; }
+.glv-item.is-preview .glv-preview { display: inline-flex; }
+.glv-item.is-preview .glv-len { display: none; }
+.glv-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.glv-t { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: .9rem; font-weight: 600; line-height: 1.3; }
+.glv-k { font-size: .78rem; color: var(--ink-2); }
+.glv-k:empty { display: none; }
+@media (max-width: 760px) {
+  .glv-body { grid-template-columns: 1fr; gap: 16px; }
+  .glv-side { max-height: none; }
+  .glv-list { max-height: 400px; }
+  .glv-item { grid-template-columns: 120px minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .glv-cover img, .glv-big-play { transition: none; } }

@@ -22,6 +22,10 @@
 .jy-nav a { color: rgba(255,255,255,.92); text-decoration: none; }
 .jy-nav a:hover { color: #fff; text-decoration: underline; }
 .jy-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+/* The light and dark switch (assets/nav.js) after the menu, in white on the painting. */
+.jy-nav { margin-left: auto; }
+.jy-top .theme-toggle { color: rgba(255,255,255,.92); filter: drop-shadow(0 1px 6px rgba(0,0,0,.35)); }
+.jy-top .theme-toggle:hover { color: #fff; background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.4); }
 .jy-title { margin: 0; font: 500 clamp(1.7rem, 2.8vw, 2.4rem)/1.05 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }
 
 /* The painting, edge to edge */
@@ -81,6 +85,16 @@
    the timeline) never clips it. */
 .jy-card.is-clip { z-index: 3; left: -92px; width: 184px; height: 104px; background: #172026; cursor: pointer; transform: none; }
 .jy-card.is-clip video { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; background: #1F2A30; }
+/* A YouTube card (data/videos.json): its picture, or a dark tile with YouTube's mark for a playlist, under YouTube's
+   player, which is loaded muted while the stop is selected (assets/journey-page.js). */
+.jy-card.is-yt > img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 2px; opacity: 1; }
+.jy-yt-tile { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 8px 10px; border-radius: 2px; background: #16191B; color: #F1F1F1; font: 500 .68rem/1.25 var(--sans); text-align: center; }
+.jy-yt-tile svg { width: 26px; height: 19px; }
+.jy-yt-tile span { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.jy-yt-live { position: absolute; inset: 0; border-radius: 2px; overflow: hidden; pointer-events: none; }
+.jy-yt-live iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.jy-card.is-yt .jy-play { z-index: 1; }
+.jy-card.is-yt .jy-mute { z-index: 1; }
 .jy-card.is-clip:hover, .jy-card.is-clip:focus-visible { z-index: 3; transform: translateY(-3px) scale(1.03); }
 .jy-card.is-clip .jy-play { transition: opacity .2s; }
 .jy-card.is-clip.is-playing .jy-play { opacity: 0; }
@@ -141,6 +155,9 @@
   .jy-home .ej { width: 32px; height: 32px; box-shadow: none; }
   .jy-nav a { color: var(--ink-2); }
   .jy-nav a:hover, .jy-nav a[aria-current="page"] { color: var(--ink); }
+  .jy-top .theme-toggle { order: 1; margin: 0 -6px 0 auto; color: var(--ink-2); filter: none; }
+  .jy-top .theme-toggle:hover { color: var(--ink); background: var(--hover); border-color: var(--line); }
+  .jy-nav { order: 2; flex-basis: 100%; margin-left: 0; }
   .jy-scrim { display: none; }
   .jy-title { color: var(--ink); text-shadow: none; font-size: 1.6rem; }
   .jy-tag { font-size: .66rem; padding: 2px 6px; }
