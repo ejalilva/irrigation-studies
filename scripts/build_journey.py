@@ -280,6 +280,7 @@ out = f'''<!doctype html>
 <link rel="icon" href="assets/ej-32.png?v=2026-10-30a" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/ej-64.png?v=2026-10-30a" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/ej-180.png?v=2026-10-30a">
+<script>/* The light or dark theme a visitor chose with the switch in the header (assets/nav.js), applied before the page draws. */try{{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}}catch(e){{}}</script>
 <link rel="stylesheet" href="assets/site.css?v={V}">
 <script src="assets/nav.js?v={V}" defer></script>
 <link rel="stylesheet" href="assets/journey-page.css?v={V}">

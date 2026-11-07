@@ -83,6 +83,7 @@
 .gl-viewer.is-single .gl-prev, .gl-viewer.is-single .gl-next { display: none; }
 
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gl-map { background: #1B262B; } }
+:root[data-theme="dark"] .gl-map { background: #1B262B; }
 @media (max-width: 760px) {
   .gl-head { padding-top: 24px; }
   .gl-map { height: 56vh; min-height: 320px; }

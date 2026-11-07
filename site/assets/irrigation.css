@@ -48,11 +48,17 @@
 .ir-mosaic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .ir-mosaic img { aspect-ratio: 670 / 384; object-fit: cover; }
 .ir-mosaic .ir-m-wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
-/* The water-stress map links to the interactive map. */
-.ir-map { text-decoration: none; }
-.ir-map img { border: 1px solid var(--line); transition: box-shadow .15s; }
-.ir-map:hover img { box-shadow: 0 10px 26px var(--shadow); }
-.ir-map .ir-cap { color: var(--link); }
+/* Climate change: the facts, then WRI Aqueduct's interactive water-stress map (Tableau Public) across the full width.
+   Tableau sizes the dashboard to its frame; as in Tableau's own embed code, the frame is 4:3 wide and 727 px tall on
+   phones. The still map (assets/why/water-stress.webp) sits under the frame while it loads, or if Tableau can't load. */
+.ir-row-embed { grid-template-columns: minmax(0, 1fr); grid-template-areas: "say" "text" "media"; }
+.ir-row-embed .ir-text ul { columns: 2 320px; column-gap: 40px; }
+.ir-row-embed .ir-text li { break-inside: avoid; }
+.ir-tableau-frame { position: relative; width: 100%; aspect-ratio: 4 / 3; max-height: 82vh; min-height: 420px; overflow: hidden; border: 1px solid var(--line); border-radius: 10px;
+  background: #fff url("why/water-stress.webp") center / contain no-repeat; }
+.ir-tableau-frame::before { content: "Loading the interactive map…"; position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 4px 12px; border-radius: 999px; background: rgba(23,32,38,.72); color: #fff; font-size: .8rem; }
+.ir-tableau-frame iframe { position: relative; display: block; width: 100%; height: 100%; border: 0; }
+@media (max-width: 500px) { .ir-tableau-frame { aspect-ratio: auto; height: 727px; max-height: none; } }
 /* Diagrams and maps drawn on white keep a white card in dark mode. */
 .ir-white img { padding: 6px; border: 1px solid var(--line); background: #fff; }
 /* Modeling is hard: the two clips side by side. */
@@ -76,6 +82,7 @@
 @media (max-width: 760px) {
   .ir-row, .ir-flip { grid-template-columns: minmax(0, 1fr); grid-template-areas: "say" "media" "text"; gap: 14px; }
   .ir-row-wide { grid-template-areas: "say" "media" "more"; }
+  .ir-row-embed { grid-template-areas: "say" "text" "media"; }
   .ir-hero { min-height: 440px; margin-top: 16px; padding: 44px 18px 22px; border-radius: 12px;
     background: linear-gradient(to top, rgba(8,20,26,.9) 0%, rgba(8,20,26,.66) 55%, rgba(8,20,26,.42) 100%), url("irrigation/hero-canal.webp") 30% 58% / cover no-repeat, #3B4A3F; }
   .ir-lead { font-size: 1rem; }
@@ -87,4 +94,4 @@
   .ir-agent { grid-template-columns: 1fr; }
   .ir-agent li::after { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { .ir-toc a, .ir-map img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .ir-toc a { transition: none; } }

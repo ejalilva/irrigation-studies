@@ -22,6 +22,10 @@
 .jy-nav a { color: rgba(255,255,255,.92); text-decoration: none; }
 .jy-nav a:hover { color: #fff; text-decoration: underline; }
 .jy-nav a[aria-current="page"] { color: #fff; font-weight: 600; }
+/* The light and dark switch (assets/nav.js) after the menu, in white on the painting. */
+.jy-nav { margin-left: auto; }
+.jy-top .theme-toggle { color: rgba(255,255,255,.92); filter: drop-shadow(0 1px 6px rgba(0,0,0,.35)); }
+.jy-top .theme-toggle:hover { color: #fff; background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.4); }
 .jy-title { margin: 0; font: 500 clamp(1.7rem, 2.8vw, 2.4rem)/1.05 var(--head); letter-spacing: -.02em; color: #fff; text-shadow: 0 2px 16px rgba(10,35,60,.4); }
 
 /* The painting, edge to edge */
@@ -141,6 +145,9 @@
   .jy-home .ej { width: 32px; height: 32px; box-shadow: none; }
   .jy-nav a { color: var(--ink-2); }
   .jy-nav a:hover, .jy-nav a[aria-current="page"] { color: var(--ink); }
+  .jy-top .theme-toggle { order: 1; margin: 0 -6px 0 auto; color: var(--ink-2); filter: none; }
+  .jy-top .theme-toggle:hover { color: var(--ink); background: var(--hover); border-color: var(--line); }
+  .jy-nav { order: 2; flex-basis: 100%; margin-left: 0; }
   .jy-scrim { display: none; }
   .jy-title { color: var(--ink); text-shadow: none; font-size: 1.6rem; }
   .jy-tag { font-size: .66rem; padding: 2px 6px; }

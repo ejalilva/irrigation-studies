@@ -11,8 +11,9 @@ The source of my personal website. I'm a research scientist who brings human wat
 - **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation matters and why no one knows how much water each farm uses, told with the pictures from my old site; my studies on where, when and how much farms irrigate (told as six chapters); an essential reading list; and a research library of studies from across the field.
 - **[My journey](https://ejalilva.github.io/irrigation-studies/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
 - **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Point at a pin to see its pictures and videos.
-- **[Blog](https://ejalilva.github.io/irrigation-studies/blog.html)**: *The Big Ratchet*, my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
+- **[Blog](https://ejalilva.github.io/irrigation-studies/blog.html)**: *The Big Ratchet* (December 2021), my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
 - **Contact**: a message form on every page, alongside Google Scholar, ResearchGate, GitHub, LinkedIn and YouTube.
+- **Light and dark**: a switch at the top right of every page; the choice carries from page to page.
 
 ## The research library
 
@@ -25,7 +26,7 @@ The table is plain JSON in [`site/data/papers.json`](site/data/papers.json), and
 ```
 site/        the website itself: the pages, assets/ (styles, scripts, pictures) and data/
 agent/       the program that finds new papers for the research library
-scripts/     build helpers (the My journey page, asset versions)
+scripts/     build helpers (the My journey page, the About page's card pictures, asset versions)
 docs/        notes for maintaining the site
 archive/     pictures and embeds kept from the old Google Site (not published)
 .github/     workflows that publish the site, search for papers and apply reviews

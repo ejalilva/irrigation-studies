@@ -18,8 +18,9 @@
 .ab-links svg { width: 21px; height: 21px; fill: currentColor; }
 
 /* Photo */
-.ab-photo { justify-self: end; width: min(100%, 340px); margin: 0; }
-.ab-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 14px; box-shadow: 0 18px 44px rgba(15,26,31,.18); }
+/* Photo: cropped to a circle, centred on the face, with a thin ring in the page's colours. */
+.ab-photo { justify-self: end; width: min(100%, 320px); margin: 0; }
+.ab-photo img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; object-position: 50% 30%; border-radius: 50%; box-shadow: 0 0 0 6px var(--paper), 0 0 0 7px var(--line), 0 18px 44px rgba(15,26,31,.18); }
 
 /* Sections: number and heading on the left, text on the right */
 .ab-sec { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px 48px; padding: 56px 0; border-bottom: 1px solid var(--line); }
@@ -34,7 +35,8 @@
 .ab-deg { font-weight: 500; color: var(--ink); }
 .ab-where { font-size: .92rem; color: var(--ink-2); }
 
-/* My studies: two cards leading to the research pages, the water cycle (research.html) and the satellites (satellites.html).
+/* My studies: two cards leading to the research pages, the water cycle (research.html) and the satellites (satellites.html),
+   which come alive on a hover or when they scroll into view (assets/study-cards.js), then the featured irrigation study.
    The satellites picture carries each satellite's name (positions in % of the picture, from the orbit view). */
 .ab-rs-sec { grid-template-columns: 1fr; gap: 20px; }
 .ab-rs-sec .ab-body { max-width: none; }
@@ -53,6 +55,26 @@
 .ab-rs-sub { font-size: .92rem; line-height: 1.45; color: var(--ink-2); }
 .ab-rs-go { grid-area: go; margin-right: 20px; padding: 9px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); font-weight: 600; white-space: nowrap; transition: transform .2s; }
 .ab-rs-card:hover .ab-rs-go { transform: translateX(3px); }
+/* The featured study (irrigation) runs across both columns under the two cards; .feature-card is in site.css. */
+.ab-rs .feature-card { grid-column: 1 / -1; margin: 0; color: var(--ink); }
+/* Live cards (assets/study-cards.js): once the live picture is ready it fades in over the still one and keeps its last
+   frame when it rests. The water-cycle map is shown without its labels, with the playing part named in a chip. */
+.ab-rs-pic > img, .ab-rs-labels { transition: opacity .6s; }
+.ab-rs-pic.is-live > img, .ab-rs-pic.is-live .ab-rs-labels { opacity: 0; }
+.ab-wc-map, .ab-sat-canvas { position: absolute; inset: 0; opacity: 0; transition: opacity .6s; }
+.ab-rs-pic.is-live :is(.ab-wc-map, .ab-sat-canvas) { opacity: 1; }
+.ab-wc-map svg { display: block; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.ab-wc-map svg :is(text, .number, .hover-ring) { display: none; }
+.ab-rs-pic.ab-wc.is-paused .ab-wc-map .scene-item .anim { animation-play-state: paused !important; }
+.ab-sat-canvas { display: block; width: 100%; height: 100%; }
+.ab-rs-pic.is-sky.is-live { background: #04070f var(--sky) center / cover no-repeat; }
+.ab-live-cap { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 7px; padding: 3px 11px 3px 4px; border-radius: 999px;
+  background: rgba(255,255,255,.9); color: #172026; font-size: .78rem; font-weight: 600; box-shadow: 0 2px 10px rgba(23,32,38,.14); opacity: 0; transition: opacity .3s; pointer-events: none; }
+.ab-live-cap b { display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 4px; border-radius: 999px; background: #1E5C86; color: #fff; font-size: .7rem; }
+.ab-rs-pic.is-live .ab-live-cap.in { opacity: 1; animation: ab-cap-in .35s cubic-bezier(.2,.8,.3,1.1); }
+.ab-rs-pic.is-paused .ab-live-cap { opacity: 0; }
+@keyframes ab-cap-in { from { transform: translateY(6px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ab-live-cap.in { animation: none; } }
 @media (max-width: 760px) {
   .ab-rs { grid-template-columns: 1fr; }
   .ab-rs-labels span { font-size: .62rem; padding: 0 5px; }
@@ -60,7 +82,7 @@
 
 @media (max-width: 900px) {
   .ab-hero { grid-template-columns: 1fr; padding: 40px 0 48px; gap: 32px; }
-  .ab-photo { justify-self: start; order: -1; width: min(70%, 280px); }
+  .ab-photo { justify-self: start; order: -1; width: min(56%, 220px); }
   .ab-sec { grid-template-columns: 1fr; padding: 44px 0; }
 }
 
