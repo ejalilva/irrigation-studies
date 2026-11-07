@@ -1,0 +1,23 @@
+{
+  "_how_to_add": "The videos shown under the pictures on the Gallery page (assets/videos.js), and on My journey for those with \"journey\". One entry per video, in the order they are listed; the first is in the large player when the page opens. A YouTube video needs \"youtube\": its id (the part after watch?v= or youtu.be/). A YouTube playlist needs \"youtube_playlist\": its id (the part after list=); the channel's own uploads are the playlist UU6SyjY2pXoI0UK1tfY7uxcw. A video kept on the site needs \"src\" (an MP4 in assets/media/) and \"poster\". Give each a \"title\", a \"kind\" (Lesson, Tutorial, Talk, ...), a short \"meta\" line and, if you know it, its \"length\" (m:ss). Optional \"journey\" puts the video on My journey as a card at that stop: the stop's short name as on the timeline (\"Amirkabir\"), or its year and short name when a name repeats (\"2023 NASA\"); then run python scripts/build_journey.py. See docs/MAINTAINING.md (Videos).",
+  "channel": "https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw",
+  "videos": [
+    {
+      "id": "lessons",
+      "youtube_playlist": "UU6SyjY2pXoI0UK1tfY7uxcw",
+      "title": "My lessons on YouTube: remote sensing and GIS in water resources",
+      "kind": "Course",
+      "meta": "Recorded for a graduate course at Amirkabir University · every video on my channel, newest first",
+      "journey": "Amirkabir"
+    },
+    {
+      "id": "agu24",
+      "src": "assets/media/agrotrack-agu24.mp4",
+      "poster": "assets/media/agrotrack-agu24.webp",
+      "title": "Presenting AgroTrack at AGU24",
+      "kind": "Talk",
+      "meta": "AGU Annual Meeting · Washington, DC · December 2024",
+      "length": "1:10"
+    }
+  ]
+}

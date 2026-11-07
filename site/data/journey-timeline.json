@@ -581,7 +581,12 @@
         "youtube"
       ],
       "logo": "aut",
-      "pictures": []
+      "pictures": [
+        {
+          "youtube": "https://www.youtube-nocookie.com/embed/videoseries?list=UU6SyjY2pXoI0UK1tfY7uxcw",
+          "caption": "My lessons on YouTube: remote sensing and GIS in water resources"
+        }
+      ]
     },
     {
       "period": "2021–22",
