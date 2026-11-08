@@ -14,11 +14,12 @@
 <link rel="preload" href="assets/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/young-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>/* The light or dark theme a visitor chose with the switch in the header (assets/nav.js), applied before the page draws. */try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="stylesheet" href="assets/site.css?v=6dce92b32f">
+<link rel="stylesheet" href="assets/site.css?v=dd2d328f4d">
 <script src="assets/nav.js?v=707c94b7f2" defer></script>
+<script src="assets/aqueduct.js?v=d0e5a08954" defer></script>
 <link rel="stylesheet" href="assets/water-cycle.css?v=ce0f7e208d">
 <link rel="stylesheet" href="assets/study-grid.css?v=026f51cbf4">
-<link rel="stylesheet" href="assets/irrigation.css?v=0b2400e694">
+<link rel="stylesheet" href="assets/irrigation.css?v=046413e6c0">
 <script src="assets/journals.js?v=2bf1a5a0ed"></script>
 </head>
 <body class="main-page irrigation-page">
@@ -90,8 +91,8 @@
         </div>
       </div>
 
-      <!-- Climate change: the facts, then WRI Aqueduct's interactive water-stress map (Tableau Public) across the full width.
-           The map loads only as it nears the screen; until then, or if Tableau can't be reached, the still map shows. -->
+      <!-- Climate change: the facts, then WRI Aqueduct's interactive water-stress map (Tableau Public), scaled to the full width
+           of the text by assets/aqueduct.js, which loads Tableau's script as the map nears the screen. -->
       <div class="ir-row ir-row-embed">
         <h3 class="ir-say">Climate change makes it worse.</h3>
         <div class="ir-text">
@@ -103,8 +104,9 @@
           </ul>
         </div>
         <figure class="ir-media ir-tableau">
-          <div class="ir-tableau-frame">
-            <iframe src="https://public.tableau.com/views/AqueductWaterRiskAtlasGlobalMaps/BWSDB?:embed=y&amp;:showVizHome=no&amp;:display_count=y&amp;:toolbar=yes&amp;:tabs=no&amp;:language=en-US&amp;:origin=viz_share_link" title="WRI Aqueduct Water Risk Atlas: baseline water stress around the world (interactive map, Tableau Public)" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          <div class="ir-tableau-frame" id="aqueduct">
+            <div class="ir-tableau-scale"><tableau-viz src="https://public.tableau.com/views/AqueductWaterRiskAtlasGlobalMaps/BWSDB" toolbar="hidden" hide-tabs width="800" height="600" aria-label="WRI Aqueduct Water Risk Atlas: baseline water stress around the world (interactive map, Tableau Public)"></tableau-viz></div>
+            <p class="ir-tableau-msg">The interactive map could not load here. <a href="https://public.tableau.com/views/AqueductWaterRiskAtlasGlobalMaps/BWSDB" target="_blank" rel="noopener">Open it on Tableau Public ↗</a></p>
           </div>
           <figcaption>Baseline water stress: yearly withdrawals for farms, industry and homes as a share of the surface and ground water available. Interactive map from the <a href="https://www.wri.org/aqueduct" target="_blank" rel="noopener">WRI Aqueduct Water Risk Atlas</a>; <a href="https://public.tableau.com/views/AqueductWaterRiskAtlasGlobalMaps/BWSDB" target="_blank" rel="noopener">open it on Tableau Public ↗</a></figcaption>
         </figure>

@@ -1,5 +1,4 @@
-/* Study cards that come alive: the My studies cards on the About page (index.html) and the featured study on the
-   Research page (research.html).
+/* Study cards that come alive: the Water cycle and Satellites cards under My studies on the About page (index.html).
 
    Each card with data-live plays while it is "active":
    - on a hover (or keyboard focus), for as long as the pointer stays; hovering one card rests the others;
@@ -15,20 +14,19 @@
      drawn without WebGL). Pictures in assets/about/: sat-sky.webp (the Milky Way photo and its stars), sat-sprites.webp
      (the 13 satellites, in RING order, 5 to a row), earth-card.webp (Blue Marble with clouds) and earth-card-glint.webp
      (open water, where the sun glints), made from that page's pictures by scripts/build_card_pictures.py.
-   - data-live="clip": a card with a <video> (muted, preload="none"), such as the crop-circle time-lapse of the featured
-     irrigation study. A card that comes into view also gets the class fc-seen once, for its one-time sheen. */
+   */
 (() => {
   'use strict';
   const cards = [...document.querySelectorAll('[data-live]')];
   if (!cards.length) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const ROUND = { 'water-cycle': 0, satellites: 22000, clip: 0 };  // 0: the card's own length (one tour, one pass of the clip)
+  const ROUND = { 'water-cycle': 0, satellites: 22000 };  // 0: the card's own length (one tour)
   let hovered = null;
 
   const live = new Map();
   cards.forEach(card => {
     const kind = card.dataset.live;
-    const make = kind === 'water-cycle' ? waterCycle : kind === 'satellites' ? satellites : kind === 'clip' ? clip : null;
+    const make = kind === 'water-cycle' ? waterCycle : kind === 'satellites' ? satellites : null;
     if (!make) return;
     const c = { card, kind, ctl: make(card), visible: false, roundUntil: 0, timer: 0, playing: false, loading: null };
     live.set(card, c);
@@ -54,7 +52,7 @@
   const seen = new IntersectionObserver(es => es.forEach(e => {
     const c = live.get(e.target); if (!c) return;
     const vis = e.intersectionRatio >= 0.5;
-    if (vis && !c.visible) { c.card.classList.add('fc-seen'); c.visible = true; startRound(c); }
+    if (vis && !c.visible) { c.visible = true; startRound(c); }
     else if (!vis && e.intersectionRatio === 0 && c.visible) { c.visible = false; update(c); }
   }), { threshold: [0, 0.5] });
   live.forEach(c => {
@@ -299,18 +297,6 @@
       load,
       play() { target = 1; if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); } },
       pause() { target = 0; }
-    };
-  }
-
-  /* ---- A video clip ---- */
-  function clip(card) {
-    const v = card.querySelector('video');
-    let ends = 0;
-    return {
-      load() { if (v) { v.preload = 'auto'; v.playbackRate = 0.75; } },
-      roundMs: () => (v && v.duration ? v.duration / 0.75 * 1000 : 11500),
-      play() { if (!v) return; v.playbackRate = 0.75; const p = v.play(); p?.catch?.(() => {}); card.classList.add('is-playing'); },
-      pause() { if (!v) return; v.pause(); card.classList.remove('is-playing'); }
     };
   }
 })();

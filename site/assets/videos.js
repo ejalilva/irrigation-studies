@@ -1,9 +1,10 @@
 /* Videos on the Gallery page (gallery.html, the section under the pictures).
 
-   Where they come from: data/youtube.json lists every public video on the YouTube channel, newest first, and every
-   playlist with its videos; agent/fetch_youtube.py rewrites it every week (.github/workflows/youtube.yml). Videos
-   that are not on the channel, such as the AGU24 clip kept on the site, and ids to hide come from data/videos.json.
-   Until data/youtube.json exists, the channel is shown as one playlist.
+   Where they come from: "videos" in data/videos.json are listed first, in their order (YouTube videos by id, and
+   clips kept on the site such as the AGU24 talk); the first is in the large player when the page opens. Then come the
+   channel's other videos: data/youtube.json lists every public video, newest first, and every playlist with its
+   videos (agent/fetch_youtube.py rewrites it every week, .github/workflows/youtube.yml). Until that file exists, the
+   channel and the playlists in data/videos.json follow instead, each played by YouTube's own player.
 
    What it looks like: tabs for All videos and each playlist; a large player; beside it (under it on phones) the
    videos of the chosen tab, in a list that scrolls, about five in view. Resting the mouse on a video in the list
@@ -56,14 +57,19 @@
     cfg = cfg || {};
     const hide = new Set(cfg.hide || []);
     const channel = cfg.channel || 'https://www.youtube.com/';
-    const extras = (cfg.videos || []).filter(v => v.title && (v.src || v.youtube)).map(v => ({ ...v, key: 'x:' + (v.id || v.youtube || v.src) }));
+    // The chosen videos, in their order: YouTube videos keyed by id, so the channel's copy is not listed twice.
+    const extras = (cfg.videos || []).filter(v => v.title && (v.src || v.youtube) && !hide.has(v.youtube))
+      .map(v => ({ ...v, key: v.youtube ? 'yt:' + v.youtube : 'x:' + (v.id || v.src) }));
     let tabs;
     if (yt && Array.isArray(yt.videos) && yt.videos.length) {
       const byId = new Map(yt.videos.filter(v => !hide.has(v.id)).map(v => [v.id, {
         key: 'yt:' + v.id, youtube: v.id, title: v.title, date: v.published, length: v.length, thumb: v.thumb, embeddable: v.embeddable !== false
       }]));
-      const all = [...byId.values(), ...extras].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
-      tabs = [{ id: 'all', title: 'All videos', items: all, note: 'newest first' }];
+      // The chosen videos first (with the channel's date, length and picture where the channel has them), then the rest, newest first.
+      extras.forEach(v => { const c = byId.get(v.youtube); if (c) Object.assign(v, { date: v.date || c.date, length: v.length || c.length, thumb: c.thumb, embeddable: c.embeddable }); });
+      const chosen = new Set(extras.map(v => v.key));
+      const all = [...extras, ...[...byId.values()].filter(v => !chosen.has(v.key))];
+      tabs = [{ id: 'all', title: 'All videos', items: all, note: extras.length ? '' : 'newest first' }];
       (yt.playlists || []).filter(p => !hide.has(p.id)).forEach(p => {
         const items = p.videos.map(id => byId.get(id)).filter(Boolean);
         if (items.length) tabs.push({ id: p.id, title: p.title, items, list: p.id, note: 'in the playlist’s order' });
@@ -75,7 +81,7 @@
       const pls = (cfg.playlists || []).filter(p => p.id && !hide.has(p.id)).map(p => ({
         key: 'pl:' + p.id, list: p.id, title: p.title, kind: 'Playlist', count: p.count, meta: p.count ? `${p.count} ${p.count === 1 ? 'video' : 'videos'}` : '' }));
       tabs = [{ id: 'all', title: 'All videos', items: [
-        { key: 'uploads', list: uploads, title: 'All my videos on YouTube', kind: 'Channel', meta: 'Every video, newest first' }, ...pls, ...extras] }];
+        ...extras, { key: 'uploads', list: uploads, title: 'All my videos on YouTube', kind: 'Channel', meta: 'Every video, newest first' }, ...pls] }];
     }
     if (!tabs[0].items.length) return;
 
