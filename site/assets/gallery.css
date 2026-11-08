@@ -176,7 +176,7 @@
 .glv-item.is-preview .glv-len { display: none; }
 .glv-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .glv-t { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: .9rem; font-weight: 600; line-height: 1.3; }
-.glv-k { font-size: .78rem; color: var(--ink-2); }
+.glv-k { overflow: hidden; font-size: .78rem; color: var(--ink-2); white-space: nowrap; text-overflow: ellipsis; }
 .glv-k:empty { display: none; }
 @media (max-width: 760px) {
   .glv-body { grid-template-columns: 1fr; gap: 16px; }

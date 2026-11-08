@@ -1,5 +1,5 @@
 {
-  "_how_to_add": "Settings for the Videos section of the Gallery (assets/videos.js) and the videos on My journey. \"videos\": the videos listed first, in this order; the first is in the large player when the page opens. A YouTube video needs \"youtube\": its id (the part after watch?v=, youtu.be/ or embed/), a clip kept on the site needs \"src\" (an MP4 in assets/media/) and \"poster\"; each has a title, and may have kind, meta, date (YYYY-MM) and length (m:ss). After them come the channel's other videos, from data/youtube.json, which agent/fetch_youtube.py rewrites every week (see docs/MAINTAINING.md, Videos); until it exists, the channel and the \"playlists\" here (id, title, count) follow, each played by YouTube's own player. \"hide\": YouTube video or playlist ids to leave out. \"journey\": videos or playlists to show on My journey, each at a stop named by its short name as on the timeline (\"Amirkabir\"), or year and short name when a name repeats (\"2023 NASA\"); after changing it, run python scripts/build_journey.py.",
+  "_how_to_add": "Settings for the Videos section of the Gallery (assets/videos.js) and the videos on My journey. \"videos\": the videos listed first, in this order; the first is in the large player when the page opens. A YouTube video needs \"youtube\": its id (the part after watch?v=, youtu.be/ or embed/), a clip kept on the site needs \"src\" (an MP4 in assets/media/) and \"poster\"; each has a title, and may have kind, meta, date (YYYY-MM) and length (m:ss). The channel's other videos go where {\"rest\": true} is (at the end without it), from data/youtube.json, which agent/fetch_youtube.py rewrites every week (see docs/MAINTAINING.md, Videos); until it exists, the channel and the \"playlists\" here (id, title, count) follow, each played by YouTube's own player. \"hide\": YouTube video or playlist ids to leave out. \"journey\": videos or playlists to show on My journey, each at a stop named by its short name as on the timeline (\"Amirkabir\"), or year and short name when a name repeats (\"2023 NASA\"); after changing it, run python scripts/build_journey.py.",
   "channel": "https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw",
   "channel_id": "UC6SyjY2pXoI0UK1tfY7uxcw",
   "playlists": [
@@ -30,6 +30,14 @@
     }
   ],
   "videos": [
+    {
+      "youtube": "S6r3UyJSE5Q",
+      "title": "ChatGPT and Google Earth Engine: A Match Made in Heaven for Satellite Image Processing",
+      "kind": "Tutorial"
+    },
+    {
+      "rest": true
+    },
     {
       "id": "agu24",
       "src": "assets/media/agrotrack-agu24.mp4",
