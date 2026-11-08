@@ -1,0 +1,189 @@
+{
+  "_about": "The channel's public videos and playlists, for the Gallery's Videos (assets/videos.js). First filled in from the channel's Videos and Playlists pages on 8 November 2026, most viewed first and without dates; agent/fetch_youtube.py rewrites it every week once the Actions secret YOUTUBE_API_KEY is set (then newest first, with dates). Edit site/data/videos.json instead.",
+  "channel": {
+    "id": "UC6SyjY2pXoI0UK1tfY7uxcw",
+    "title": "Ehsan Jalilvand",
+    "uploads": "UU6SyjY2pXoI0UK1tfY7uxcw",
+    "url": "https://www.youtube.com/channel/UC6SyjY2pXoI0UK1tfY7uxcw"
+  },
+  "videos": [
+    {
+      "id": "S6r3UyJSE5Q",
+      "title": "ChatGPT and Google Earth Engine: A Match Made in Heaven for Satellite Image Processing",
+      "published": "",
+      "length": "8:19",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "Gl73ZaHGhRM",
+      "title": "Clip by Country boundary in Google Earth Engine",
+      "published": "",
+      "length": "7:56",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "72wTy8sCczw",
+      "title": "Processing NetCDF files with MATLAB (part 3)",
+      "published": "",
+      "length": "1:33:52",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "F92xitiSRCE",
+      "title": "Satellite Image processing with Matlab (Reading, Plotting and Writing a GeoTIFF file)-Part 1",
+      "published": "",
+      "length": "1:35:01",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "2WNWmM9tg4M",
+      "title": "GeoTIFF processing with Matlab (part 2)",
+      "published": "",
+      "length": "1:07:47",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "ZpF20thINu8",
+      "title": "Google Earth Engine, a quick start (Part 1)",
+      "published": "",
+      "length": "32:38",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "1hM_8ZR589M",
+      "title": "Google Earth Engine , JavaScript API (Part 2)",
+      "published": "",
+      "length": "1:34:59",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "2qS1xzsYc8M",
+      "title": "Google Earth Engine, improving land use classification (Part 4)",
+      "published": "",
+      "length": "1:44:44",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "_SOeC2D0Izk",
+      "title": "Introduction to remote sensing (Electromagnetic wave, emissivity, reflectance) - part 1",
+      "published": "",
+      "length": "22:28",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "GUueXEUvOFI",
+      "title": "Google Earth Engine, image classification (Part 3)",
+      "published": "",
+      "length": "1:32:40",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "xb9c1Y4f4Tk",
+      "title": "4th Agricultural revolution, The role of soil moisture remote sensing",
+      "published": "",
+      "length": "1:55:13",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "NcWogapivHc",
+      "title": "How to download and customize satellite data from NASA EARTHDATA and AppEARS - Part 4",
+      "published": "",
+      "length": "1:03:00",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "cItc2_ytxKA",
+      "title": "Satellite Image Characteristics (in Farsi) - Part 2",
+      "published": "",
+      "length": "40:13",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    },
+    {
+      "id": "qO7uSDttqXQ",
+      "title": "Introducing Environmental Monitoring Satellite missions (part 3)",
+      "published": "",
+      "length": "1:25:49",
+      "thumb": "",
+      "embeddable": true,
+      "language": ""
+    }
+  ],
+  "playlists": [
+    {
+      "id": "PLRzyLdRjry07fxT-BHQxJVipM95uXgWAy",
+      "title": "Introduction to the Remote Sensing of Environment (Farsi)",
+      "count": 4,
+      "videos": [
+        "_SOeC2D0Izk",
+        "cItc2_ytxKA",
+        "qO7uSDttqXQ",
+        "NcWogapivHc"
+      ]
+    },
+    {
+      "id": "PLRzyLdRjry07nF7bp1c72T9dZ_aKuEaJc",
+      "title": "Google Earth Engine, a quick start",
+      "count": 4,
+      "videos": [
+        "ZpF20thINu8",
+        "1hM_8ZR589M",
+        "GUueXEUvOFI",
+        "2qS1xzsYc8M"
+      ]
+    },
+    {
+      "id": "PLRzyLdRjry04a14PIohA7U1hkxXwVt2rI",
+      "title": "Satellite image Processing with Matlab",
+      "count": 3,
+      "videos": [
+        "F92xitiSRCE",
+        "2WNWmM9tg4M",
+        "72wTy8sCczw"
+      ]
+    },
+    {
+      "id": "PLRzyLdRjry07xBuRIZy0pwAoEwGsVLyni",
+      "title": "Short tutorials",
+      "count": 2,
+      "videos": [
+        "S6r3UyJSE5Q",
+        "Gl73ZaHGhRM"
+      ]
+    },
+    {
+      "id": "PLRzyLdRjry05XtLGlvZ83ByLAvBpgk-F9",
+      "title": "Talks",
+      "count": 1,
+      "videos": [
+        "xb9c1Y4f4Tk"
+      ]
+    }
+  ],
+  "updated": "2026-11-08"
+}

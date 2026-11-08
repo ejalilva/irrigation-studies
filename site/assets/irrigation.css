@@ -48,17 +48,18 @@
 .ir-mosaic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .ir-mosaic img { aspect-ratio: 670 / 384; object-fit: cover; }
 .ir-mosaic .ir-m-wide { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
-/* Climate change: the facts, then WRI Aqueduct's interactive water-stress map (Tableau Public) across the full width.
-   Tableau sizes the dashboard to its frame; as in Tableau's own embed code, the frame is 4:3 wide and 727 px tall on
-   phones. The still map (assets/why/water-stress.webp) sits under the frame while it loads, or if Tableau can't load. */
+/* Climate change: the facts, then WRI Aqueduct's interactive water-stress map (Tableau Public) as wide as the text.
+   assets/aqueduct.js draws the dashboard at its own size inside .ir-tableau-scale, scales it to the frame's width and
+   sets the frame's height to match; until then the frame keeps the space of a 4:3 map. */
 .ir-row-embed { grid-template-columns: minmax(0, 1fr); grid-template-areas: "say" "text" "media"; }
 .ir-row-embed .ir-text ul { columns: 2 320px; column-gap: 40px; }
 .ir-row-embed .ir-text li { break-inside: avoid; }
-.ir-tableau-frame { position: relative; width: 100%; aspect-ratio: 4 / 3; max-height: 82vh; min-height: 420px; overflow: hidden; border: 1px solid var(--line); border-radius: 10px;
-  background: #fff url("why/water-stress.webp") center / contain no-repeat; }
-.ir-tableau-frame::before { content: "Loading the interactive map…"; position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 4px 12px; border-radius: 999px; background: rgba(23,32,38,.72); color: #fff; font-size: .8rem; }
-.ir-tableau-frame iframe { position: relative; display: block; width: 100%; height: 100%; border: 0; }
-@media (max-width: 500px) { .ir-tableau-frame { aspect-ratio: auto; height: 727px; max-height: none; } }
+.ir-tableau-frame { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+.ir-tableau-frame[style*="height"] { aspect-ratio: auto; }
+.ir-tableau-scale { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.ir-tableau-scale tableau-viz { display: block; }
+.ir-tableau-msg { display: none; position: absolute; inset: 0; margin: 0; place-items: center; padding: 20px; text-align: center; color: #505B61; }
+.ir-tableau-frame.is-failed .ir-tableau-msg { display: grid; }
 /* Diagrams and maps drawn on white keep a white card in dark mode. */
 .ir-white img { padding: 6px; border: 1px solid var(--line); background: #fff; }
 /* Modeling is hard: the two clips side by side. */
