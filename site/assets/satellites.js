@@ -50,8 +50,7 @@ const AGENCIES = {
   ESA: { name: "ESA", color: "#3fd0c8" },
   JAXA: { name: "JAXA", color: "#cfa8ff" },
   ISRO: { name: "ISRO", color: "#ffa64d" },
-  USGS: { name: "USGS", color: "#a6d785" },
-  USSF: { name: "U.S. Space Force", color: "#d3d9e0" }
+  USGS: { name: "USGS", color: "#a6d785" }
 };
 
 const S = "assets/satellites/";
@@ -172,14 +171,6 @@ const SATELLITES = [
         text: "Co-Investigator on a proposal led by Rajat Bindlish that links irrigation detection and timing to water use in AgLIS." },
       { title: "Coming full circle", status: "Next", planned: true, link: "irrigation.html#studies",
         text: "Where from the foundation-model maps, when from AgroTrack and how much from the particle batch smoother, together in NASA LIS with NISAR." }
-    ] },
-  // Off the ring for now; delete "hidden: true" to bring it back.
-  { id: "wsf-m", name: "WSF-M", full: "Weather System Follow-on – Microwave", agency: ["USSF"], hidden: true, launch: "2024", wave: 0.03, waveText: "3 mm–4 cm",
-    sensor: "Microwave imager: soil moisture, ocean winds and more",
-    role: "A new microwave source of soil moisture for NASA's Land Information System.",
-    work: [
-      { title: "WSF-M in NASA LIS", status: "Delivered, April 2026",
-        text: "Machine learning soil moisture retrieval and the first WSF assimilation capability in NASA LIS, delivered with LIS 7.8." }
     ] },
   // Kept off the ring until a study of mine uses it.
   { id: "sentinel-3", name: "Sentinel-3", agency: ["ESA"], launch: "2016", wave: 0.6e-6, waveText: "0.4–12 µm", program: "Copernicus", hidden: true,
