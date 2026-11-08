@@ -15,7 +15,9 @@
    Light and dark: a sun or moon button after the menu switches the theme. The choice is kept in localStorage ("theme") and
    applied by a one-line script in each page's <head> before the page draws, so every page opens in it; with no choice
    saved, the site follows the device. The switch fades the page into the new theme from the button (View Transitions,
-   where the browser has them). Other scripts can listen for the "themechange" event on document. */
+   where the browser has them). Other scripts can listen for the "themechange" event on document.
+   A page can keep a theme of its own: satellites.html opens dark and saves its switch under "theme-satellites"
+   (data-theme-key on <html>, set by its <head> script), so the other pages keep theirs. */
 (() => {
   'use strict';
 
@@ -40,6 +42,7 @@
 
   // ---- Light and dark ----
   const root = document.documentElement;
+  const themeKey = root.dataset.themeKey || 'theme';
   const sysDark = matchMedia('(prefers-color-scheme: dark)');
   const theme = () => root.dataset.theme || (sysDark.matches ? 'dark' : 'light');
   const SUN = '<svg class="tt-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
@@ -56,7 +59,7 @@
   };
   const setTheme = next => {
     root.dataset.theme = next;
-    try { localStorage.setItem('theme', next); } catch (e) { /* private mode: this page only */ }
+    try { localStorage.setItem(themeKey, next); } catch (e) { /* private mode: this page only */ }
     label();
     document.dispatchEvent(new CustomEvent('themechange', { detail: next }));
   };
@@ -75,7 +78,7 @@
   sysDark.addEventListener('change', label);
   // Another tab switched the theme: follow it.
   window.addEventListener('storage', e => {
-    if (e.key !== 'theme') return;
+    if (e.key !== themeKey) return;
     if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
     label();
   });
