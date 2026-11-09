@@ -1,4 +1,4 @@
-# Publishes the website: everything in site/ goes to https://ejalilva.github.io/irrigation-studies/
+# Publishes the website: everything in site/ goes to https://ehsanjalilvand.com/
 # Runs on every change to main that touches site/ (including merged paper reviews), and by hand from the
 # Actions tab (Publish the website > Run workflow).
 #

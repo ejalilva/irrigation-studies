@@ -17,9 +17,33 @@
    saved, the site follows the device. The switch fades the page into the new theme from the button (View Transitions,
    where the browser has them). Other scripts can listen for the "themechange" event on document.
    A page can keep a theme of its own: satellites.html opens dark and saves its switch under "theme-satellites"
-   (data-theme-key on <html>, set by its <head> script), so the other pages keep theirs. */
+   (data-theme-key on <html>, set by its <head> script), so the other pages keep theirs.
+
+   Visit counting: Statcounter keeps a log of recent visits (approximate location, network, device, pages read). It
+   loads only once the project ID and security code below are filled in; with them empty, nothing is loaded.
+   Opening any page with ?notrack (for example index.html?notrack) stops counting visits from that browser, so my own
+   visits stay out of the numbers; ?track counts it again. While counting is on, the footer says so. */
 (() => {
   'use strict';
+
+  // ---- Visit counting ----
+  // statcounter.com → the project → Settings → Reinstall code: the numbers after sc_project= and sc_security=
+  const STATCOUNTER = { project: 0, security: '' };
+  (() => {
+    try {
+      const q = new URLSearchParams(location.search);
+      if (q.has('notrack')) localStorage.setItem('notrack', '1');
+      if (q.has('track')) localStorage.removeItem('notrack');
+      if (localStorage.getItem('notrack')) return;
+    } catch (e) { /* storage blocked: count the visit */ }
+    if (!STATCOUNTER.project) return;
+    Object.assign(window, { sc_project: STATCOUNTER.project, sc_invisible: 1, sc_security: STATCOUNTER.security });
+    const s = document.createElement('script');
+    s.async = true; s.src = 'https://www.statcounter.com/counter/counter.js';
+    document.head.append(s);
+    const note = document.querySelector('.site-foot > p');
+    if (note) note.append(' Visits to this site are counted with Statcounter, which records approximate location, device and the pages viewed.');
+  })();
 
   // ---- Menu ----
   // [link, label, pages that belong under it (shown as the current section)]

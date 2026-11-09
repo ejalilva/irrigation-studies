@@ -2,16 +2,16 @@
 
 The source of my personal website. I'm a research scientist who brings human water use, above all irrigation, into water-cycle models, using satellite observations and machine learning. The site covers who I am, the research I do, and the path that led here.
 
-**[Visit the website](https://ejalilva.github.io/irrigation-studies/)**
+**[Visit the website](https://ehsanjalilvand.com/)**
 
 ## What's on the site
 
-- **[About](https://ejalilva.github.io/irrigation-studies/)** (the home page): who I am and what I work on, my experience, education and studies, a map of my field work and talks from the gallery, my blog posts, and links to my profiles.
-- **[Research](https://ejalilva.github.io/irrigation-studies/research.html)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
-- **[Irrigation](https://ejalilva.github.io/irrigation-studies/irrigation.html)**: why irrigation matters and why no one knows how much water each farm uses, told with the pictures from my old site; my studies on where, when and how much farms irrigate (told as six chapters); an essential reading list; and a research library of studies from across the field.
-- **[My journey](https://ejalilva.github.io/irrigation-studies/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
-- **[Gallery](https://ejalilva.github.io/irrigation-studies/gallery.html)**: field campaigns and talks on a map. Point at a pin to see its pictures and videos. Under them, my videos: lessons, talks and tutorials, with silent previews on hover.
-- **[Blog](https://ejalilva.github.io/irrigation-studies/blog.html)**: *The Big Ratchet* (December 2021), my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
+- **[About](https://ehsanjalilvand.com/)** (the home page): who I am and what I work on, my experience, education and studies, a map of my field work and talks from the gallery, my blog posts, and links to my profiles.
+- **[Research](https://ehsanjalilvand.com/research.html)**: an interactive water-cycle landscape. Each part (snow, rain, lakes, vegetation, soil moisture, drainage, rivers) opens a short note on my work there, with its papers. The farm leads to irrigation.
+- **[Irrigation](https://ehsanjalilvand.com/irrigation.html)**: why irrigation matters and why no one knows how much water each farm uses, told with the pictures from my old site; my studies on where, when and how much farms irrigate (told as six chapters); an essential reading list; and a research library of studies from across the field.
+- **[My journey](https://ehsanjalilvand.com/journey.html)**: a painted timeline from Sharif University to NASA Goddard, with the work and skills from each stop.
+- **[Gallery](https://ehsanjalilvand.com/gallery.html)**: field campaigns and talks on a map. Point at a pin to see its pictures and videos. Under them, my videos: lessons, talks and tutorials, with silent previews on hover.
+- **[Blog](https://ehsanjalilvand.com/blog.html)**: *The Big Ratchet* (December 2021), my permafrost "ice wall" article, and the NASA Early Career Scientist Spotlight interview.
 - **Contact**: a message form on every page, alongside Google Scholar, ResearchGate, GitHub, LinkedIn and YouTube.
 - **Light and dark**: a switch at the top right of every page; the choice carries from page to page.
 
@@ -29,7 +29,7 @@ agent/       the program that finds new papers for the research library
 scripts/     build helpers (the My journey page, the About page's card pictures, asset versions)
 docs/        notes for maintaining the site
 archive/     pictures and embeds kept from the old Google Site (not published)
-.github/     workflows that publish the site, search for papers and apply reviews
+.github/     workflows that publish the site, search for papers, apply reviews and check for personal email addresses
 ```
 
 Everything in `site/` is published to GitHub Pages whenever it changes on `main`. To preview locally, run `python -m http.server -d site` and open http://localhost:8000. After changing anything in `site/assets/`, run `python scripts/stamp_assets.py` so browsers pick up the new files. The details are in [docs/MAINTAINING.md](docs/MAINTAINING.md).
