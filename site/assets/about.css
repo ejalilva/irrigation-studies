@@ -117,7 +117,7 @@
 
 /* Gallery and Blog: the heading, a line and a button on the left (.ab-side), the preview on the right. The gallery map
    and its cards are drawn by assets/about-gallery.js; the map's colours follow the theme. */
-:root { --gl-panel: #F4F7F6; --gl-land: #EAF0EE; --gl-line: #C3CDCF; --gl-edge: #9AA7AB; --gl-field: #2F7A3A; --gl-talk: #2B74A8; }
+:root { --gl-panel: #F4F7F6; --gl-land: #EAF0EE; --gl-line: #C3CDCF; --gl-edge: #9AA7AB; --gl-field: #2F7A3A; --gl-talk: #2B74A8; --gl-visit: #B5532A; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --gl-panel: #18282F; --gl-land: #213640; --gl-line: #34505A; --gl-edge: #4D6874; }
 }
@@ -134,12 +134,14 @@
 .ab-gl-key li { display: inline-flex; align-items: center; gap: 7px; }
 .ab-gl-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--gl-field); }
 .ab-gl-dot.k-talk { background: var(--gl-talk); }
+.ab-gl-dot.k-visit { background: var(--gl-visit); }
 .ab-gl-map { position: relative; max-width: 620px; margin: 8px auto 0; aspect-ratio: 975 / 610; }
 .ab-gl-map svg { display: block; width: 100%; height: 100%; }
 .ab-gl-map .land { fill: var(--gl-land); stroke: var(--gl-edge); }
 .ab-gl-map .lines { stroke: var(--gl-line); }
 .ab-gl-pin { position: absolute; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--gl-field); color: #fff; font-size: .82rem; font-weight: 700; text-decoration: none; transform: translate(-50%, -50%); box-shadow: 0 0 0 3px rgba(255,255,255,.92), 0 3px 10px rgba(23,32,38,.3); transition: transform .2s, box-shadow .2s; }
 .ab-gl-pin.k-talk { background: var(--gl-talk); }
+.ab-gl-pin.k-visit { background: var(--gl-visit); }
 .ab-gl-pin:hover, .ab-gl-pin.is-on { color: #fff; transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--ink), 0 6px 14px rgba(23,32,38,.35); z-index: 1; }
 .ab-gl-pin:focus-visible { outline: 2px solid var(--link); outline-offset: 4px; }
 .ab-gl-places { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
@@ -150,6 +152,7 @@
 .ab-gl-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .ab-gl-num { position: absolute; left: 10px; top: 10px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--gl-field); color: #fff; font-size: .75rem; font-weight: 700; box-shadow: 0 0 0 2px #fff; }
 .ab-gl-num.k-talk { background: var(--gl-talk); }
+.ab-gl-num.k-visit { background: var(--gl-visit); }
 .ab-gl-play { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.92); transform: translate(-50%, -50%); }
 .ab-gl-play svg { width: 16px; height: 16px; fill: #172026; }
 .ab-gl-text { display: flex; flex-direction: column; gap: 3px; padding: 11px 12px 13px; }

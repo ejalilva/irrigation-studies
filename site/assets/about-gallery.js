@@ -59,7 +59,8 @@
     return photo ? `assets/gallery/${photo.file}-sm.webp` : (p.video && p.video.poster) || '';
   };
   const PLAY = '<span class="ab-gl-play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z"/></svg></span>';
-  const KINDS = { field: 'Field campaign', talk: 'Talk' };
+  const KINDS = { field: 'Field campaign', visit: 'Research visit', talk: 'Talk' };
+  const kind = p => (KINDS[p.kind] ? p.kind : 'field');
 
   Promise.all([
     fetch('data/gallery.json').then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
@@ -68,17 +69,17 @@
     const places = (data.places || []).map((p, i) => ({ ...p, photos: p.photos || [], i }))
       .sort((a, b) => when(b.date) - when(a.date) || a.i - b.i);
     if (!places.length) return;
-    const kinds = Object.keys(KINDS).filter(k => places.some(p => (p.kind === 'talk' ? 'talk' : 'field') === k));
+    const kinds = Object.keys(KINDS).filter(k => places.some(p => kind(p) === k));
     const pins = places.map((p, n) => {
       const xy = albersUsa(+p.lon, +p.lat);
       if (!xy) return '';
-      return `<a class="ab-gl-pin k-${p.kind === 'talk' ? 'talk' : 'field'}" href="gallery.html#${encodeURIComponent(p.id)}" data-id="${esc(p.id)}" ` +
+      return `<a class="ab-gl-pin k-${kind(p)}" href="gallery.html#${encodeURIComponent(p.id)}" data-id="${esc(p.id)}" ` +
         `style="left:${(xy[0] / W * 100).toFixed(2)}%;top:${(xy[1] / H * 100).toFixed(2)}%" ` +
         `aria-label="${n + 1}. ${esc(p.title)}, ${esc(p.place || p.where)}">${n + 1}</a>`;
     }).join('');
     const cards = places.map((p, n) => `<li><a class="ab-gl-card" href="gallery.html#${encodeURIComponent(p.id)}" data-id="${esc(p.id)}">` +
       `<span class="ab-gl-pic"><img src="${esc(cover(p))}" alt="" loading="lazy" decoding="async">` +
-      `<span class="ab-gl-num k-${p.kind === 'talk' ? 'talk' : 'field'}" aria-hidden="true">${n + 1}</span>${p.photos.length ? '' : PLAY}</span>` +
+      `<span class="ab-gl-num k-${kind(p)}" aria-hidden="true">${n + 1}</span>${p.photos.length ? '' : PLAY}</span>` +
       `<span class="ab-gl-text"><span class="ab-gl-title">${esc(p.title)}</span>` +
       `<span class="ab-gl-meta">${esc(p.place || p.where)}<br>${[esc(short(p.date)), count(p)].filter(Boolean).join(' · ')}</span></span></a></li>`).join('');
     box.innerHTML = `<div class="ab-gl-panel"><ul class="ab-gl-key" aria-label="Pins">${kinds.map(k =>

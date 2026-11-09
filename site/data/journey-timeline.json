@@ -343,6 +343,12 @@
       "title": "Estimating the drainage rate from surface soil moisture drydowns: application of the DfD model",
       "href": "https://doi.org/10.1016/j.jhydrol.2018.08.035"
     },
+    "egu2017": {
+      "kind": "talk",
+      "label": "EGU 2017 poster",
+      "title": "Toward creating a global map of drainage rate using satellite soil moisture data as the only input (EGU2017-14156)",
+      "href": "https://meetingorganizer.copernicus.org/EGU2017/EGU2017-14156-1.pdf"
+    },
     "rse2019": {
       "kind": "paper",
       "label": "RSE 2019",
@@ -502,10 +508,42 @@
       ],
       "story": "Visiting researcher, improving SM2RAIN, a bottom-up approach that estimates rainfall from satellite soil moisture.",
       "work": [
-        "jhydrol2018"
+        "jhydrol2018",
+        "egu2017"
       ],
       "logo": "cnr",
-      "pictures": []
+      "pictures": [
+        {
+          "src": "assets/gallery/irpi-talk.webp",
+          "caption": "Presenting my PhD work during the visit: estimating drainage rate from soil moisture drydowns, toward a self-calibrated SM2RAIN.",
+          "credit": null
+        },
+        {
+          "src": "assets/gallery/irpi-desk.webp",
+          "caption": "At my desk at CNR IRPI in Perugia, with the SM2RAIN plan on the whiteboard.",
+          "credit": null
+        },
+        {
+          "src": "assets/gallery/irpi-whiteboard.webp",
+          "caption": "The SM2RAIN whiteboard: global ASCAT data, calibration runs with AMSR2 soil moisture for 2012–2015, and drainage from drydowns (DfD).",
+          "credit": null
+        },
+        {
+          "src": "assets/gallery/egu2017-poster.webp",
+          "caption": "My EGU 2017 poster, unrolled in the office in Perugia: toward a global map of drainage rate using satellite soil moisture data as the only input.",
+          "credit": null
+        },
+        {
+          "src": "assets/gallery/irpi-office.webp",
+          "caption": "In the office at CNR IRPI, 16 January 2017.",
+          "credit": null
+        },
+        {
+          "src": "assets/gallery/irpi-window.webp",
+          "caption": "Working by the office window in Perugia.",
+          "credit": null
+        }
+      ]
     },
     {
       "period": "2019",

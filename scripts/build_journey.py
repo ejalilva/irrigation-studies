@@ -99,6 +99,8 @@ WORK = {
     "tourism": ("video", "UX demo: rural tourism map", "Interactive prototype of a map-based platform that connects city visitors with rural life (2017)", "drive:tourism"),
     "sugarcane": ("video", "UX demo: crop monitoring", "Interactive prototype of a satellite-based crop monitoring system for a sugarcane producer (2018)", "drive:sugarcane"),
     "jhydrol2018": ("paper", "J. Hydrol. 2018", "Estimating the drainage rate from surface soil moisture drydowns: application of the DfD model", DOI + "10.1016/j.jhydrol.2018.08.035"),
+    "egu2017": ("talk", "EGU 2017 poster", "Toward creating a global map of drainage rate using satellite soil moisture data as the only input (EGU2017-14156)",
+                "https://meetingorganizer.copernicus.org/EGU2017/EGU2017-14156-1.pdf"),
     "rse2019": ("paper", "RSE 2019", "Quantification of irrigation water using remote sensing of soil moisture in a semi-arid region", DOI + "10.1016/j.rse.2019.111226"),
     "jstars2021": ("paper", "IEEE JSTARS 2021", "Evaluation of SMAP/Sentinel-1 high-resolution soil moisture data to detect irrigation", DOI + "10.1109/JSTARS.2021.3119228"),
     "su2021": ("paper", "Sustainability 2021", "Estimating soil moisture and mapping irrigated cropland with Sentinel-1 and Sentinel-2", DOI + "10.3390/su132011355"),
@@ -148,6 +150,7 @@ def yt_embed(v):
 def yt_thumb(v): return f"https://i.ytimg.com/vi/{v['youtube']}/hqdefault.jpg" if v.get("youtube") else ""
 
 STUDY = "assets/studies/"
+GALLERY = "assets/gallery/"  # photos shared with the Gallery (data/gallery.json), so each is on the site once
 STOPS = [
     ("2013", "Sharif", "Sharif University", "sharif", ["arcgis", "envi", "rs", "matlab"],
      "PhD: an inverse water balance model (SM2RAIN-DfD) that estimates rainfall from satellite soil moisture alone, and soil hydraulic properties from soil-moisture drydowns.",
@@ -157,7 +160,13 @@ STOPS = [
      ["tourism", "sugarcane"], [("video:tourism",), ("video:sugarcane",)], "sdk"),
     ("2016–17", "Italy", "CNR IRPI, Italy", "italy", ["imgproc", "model"],
      "Visiting researcher, improving SM2RAIN, a bottom-up approach that estimates rainfall from satellite soil moisture.",
-     ["jhydrol2018"], [], "cnr"),
+     ["jhydrol2018", "egu2017"],
+     [(GALLERY + "irpi-talk.webp", "Presenting my PhD work during the visit: estimating drainage rate from soil moisture drydowns, toward a self-calibrated SM2RAIN."),
+      (GALLERY + "irpi-desk.webp", "At my desk at CNR IRPI in Perugia, with the SM2RAIN plan on the whiteboard."),
+      (GALLERY + "irpi-whiteboard.webp", "The SM2RAIN whiteboard: global ASCAT data, calibration runs with AMSR2 soil moisture for 2012–2015, and drainage from drydowns (DfD)."),
+      (GALLERY + "egu2017-poster.webp", "My EGU 2017 poster, unrolled in the office in Perugia: toward a global map of drainage rate using satellite soil moisture data as the only input."),
+      (GALLERY + "irpi-office.webp", "In the office at CNR IRPI, 16 January 2017."),
+      (GALLERY + "irpi-window.webp", "Working by the office window in Perugia.")], "cnr"),
     ("2019", "PhD · teaching", "Sharif University", "sharif", ["teach"],
      "Finished my PhD with my first irrigation study, and taught undergraduate hydrology.",
      ["rse2019"], [(STUDY + "irrigation-2019-study-area.webp", "Irrigated and non-irrigated pixels in the 2019 study area, south of Lake Urmia.")], "sharif"),
@@ -263,7 +272,10 @@ for i, (year, short, place, mark, skills, line, work, pics, logo) in enumerate(S
             left = (len(fanned) + 1) // 2
             slots = list(range(-left, 0)) + list(range(1, len(fanned) - left + 1))
         else:
-            slots = [j - (len(fanned) - 1) / 2 for j in range(len(fanned))]
+            # Evenly about 0. More than four pictures are drawn closer together, so the fan is no wider than four
+            # (slots -1.5 to 1.5) and its outer cards don't dip over the logos on the timeline.
+            reach = (len(fanned) - 1) / 2
+            slots = [round((j - reach) * min(1, 1.5 / reach), 3) if reach else 0 for j in range(len(fanned))]
         pos = {id(p): s for p, s in zip(fanned, slots)}
         for k, pic in enumerate(pics):
             if pic[0].startswith("yt:"):
