@@ -1,11 +1,14 @@
-# Fails when a personal email address (Gmail, Yahoo, Outlook and the like) appears in any file of the repository.
-# Visitors reach me through the site's Contact form, so no personal address belongs here. See docs/MAINTAINING.md.
+# Fails when a personal email address (Gmail, Yahoo, Outlook and the like) appears in any file, in the author or
+# message of a new commit, or in a pull request's title or description. Visitors reach me through the site's Contact
+# form, so no personal address belongs anywhere here. The log says only where an address is (file, commit or pull
+# request), never the address itself, because the logs of a public repository are public too. See CLAUDE.md.
 name: Privacy check
 
 on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, edited, synchronize, reopened]
 
 permissions:
   contents: read
@@ -15,11 +18,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: No personal email addresses
+        env:
+          PR_TEXT: ${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           pattern='[A-Za-z0-9._%+-]+@(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|proton|protonmail)\.[A-Za-z.]+'
-          if git grep -n -I -E "$pattern" -- .; then
-            echo "::error::A personal email address is in the lines above. Remove it; the Contact form is how visitors reach me."
-            exit 1
+          fail=0
+          files=$(git grep -l -I -E "$pattern" -- . || true)
+          if [ -n "$files" ]; then
+            echo "::error::A personal email address is in these files:"; echo "$files"; fail=1
           fi
-          echo "No personal email addresses."
+          if [ -n "$BASE" ] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            for c in $(git rev-list "$BASE..$HEAD"); do
+              if git log -1 --format='%an <%ae>%n%cn <%ce>%n%B' "$c" | grep -q -E "$pattern"; then
+                echo "::error::Commit $c has a personal email address in its author, committer or message."; fail=1
+              fi
+            done
+          fi
+          if printf '%s' "$PR_TEXT" | grep -q -E "$pattern"; then
+            echo "::error::The pull request's title or description has a personal email address."; fail=1
+          fi
+          [ "$fail" = 0 ] && echo "No personal email addresses."
+          exit $fail

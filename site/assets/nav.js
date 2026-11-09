@@ -28,7 +28,7 @@
 
   // ---- Visit counting ----
   // statcounter.com → the project → Settings → Reinstall code: the numbers after sc_project= and sc_security=
-  const STATCOUNTER = { project: 0, security: '' };
+  const STATCOUNTER = { project: 13365857, security: '8381277f' };
   (() => {
     try {
       const q = new URLSearchParams(location.search);
