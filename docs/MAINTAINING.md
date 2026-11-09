@@ -59,7 +59,7 @@ docs/                 these notes and docs/JOURNEY.md
 | `agent/rejected.json` | Papers you unticked during review. Created on the first rejection. |
 | `.github/workflows/find-papers.yml` | Weekly search and the year-by-year backfill; opens the review pull request. |
 | `.github/workflows/apply-review.yml` | Runs when you tick or untick a paper in the pull request description. |
-| `.github/workflows/privacy-check.yml` | Fails if a personal email address appears in any file (see Visit counting). |
+| `.github/workflows/privacy-check.yml` | Fails if a personal email address appears in a file, a new commit or a pull request's text (see Privacy). |
 | `CLAUDE.md` | Standing notes for Claude sessions on this repository, including the privacy rules. |
 
 ## Fonts
@@ -231,7 +231,13 @@ GitHub Pages keeps no visitor logs (a repository's Insights → Traffic counts v
 - **What it can't see:** names or email addresses, and most robots and scrapers, which don't run the script.
 - **No public visitor map:** a map of visitors would need the data out of Statcounter automatically, and its API is only on paid plans.
 
-**Privacy check.** `.github/workflows/privacy-check.yml` fails on any push to `main` or pull request that puts a personal email address (Gmail, Yahoo, Outlook and the like) in any file. For commits, turn on "Keep my email addresses private" and "Block command line pushes that expose my email" under GitHub → Settings → Emails, so commits carry the GitHub noreply address.
+## Privacy
+
+Everything around this repository is public, not only the site: files, code comments, commit messages, branch names, pull request and issue text and comments, and the logs of Actions runs. None of them should carry personal information: a personal email address or phone number, a home address or town, names or details of relatives, birth dates, ID or immigration details, health, finances or travel dates. Describe privacy-related changes neutrally ("Gallery: remove two photos"), and strip location data (EXIF, GPS) from pictures before adding them. `CLAUDE.md` gives Claude sessions the same rules.
+
+- **Privacy check.** `.github/workflows/privacy-check.yml` runs on every push to `main` and on every pull request, including when its description is edited. It fails when a personal email address (Gmail, Yahoo, Outlook and the like) is in a file, in a new commit's author, committer or message, or in the pull request's title or description. Its log names the file, commit or pull request, never the address, because Actions logs of a public repository are public.
+- **Your own commits.** Under GitHub → Settings → Emails, turn on "Keep my email addresses private" and "Block command line pushes that expose my email", so commits carry the GitHub noreply address.
+- **Edited descriptions and comments** keep their earlier versions in an edit history anyone can open. To remove a version: click "edited" on the description or comment, choose the version, then "Delete revision from history". Only the repository owner can do this.
 
 ## Site address
 
@@ -429,7 +435,7 @@ The flakes sit in a `.snow-shower` group, the cloud is `.snow-cloud` and the sun
 
 - **A place** has an `id` (also its address: `gallery.html#smapvex22` opens it), `kind` (`field`, green pin; `visit`, terracotta pin, for research visits; or `talk`, blue pin, for conferences and presentations), `title`, `where`, `date`, `lat` and `lon`, one or two sentences of `text`, and `photos`.
 - **A photo** is `{ "file": "name", "caption": "...", "credit": "Photo: ..." }` (credit optional) for two files in `assets/gallery/`: `name.webp`, about 1400 px on the long side, and `name-sm.webp`, about 480 px. Strip location data when saving (the pictures here were re-encoded without EXIF). Add `"wide": true` to show a photo across the whole panel at its own shape instead of as a cropped tile; wide photos load the large file. The ALASKA letters, the Last Frontier title picture and the SMAPVEX22 team photo are wide. The panel lists photos in the order of the array, two tiles to a row.
-- **Small pictures.** The viewer shows a picture narrower than 700 px at no more than 1.5 times its own width, so it is not blown up into a blur. The two Alaska photos cut from Ehsan's "Alaska, the Last Frontier" collage (`alaska-spruce-valley`, `alaska-shore`) are only about 400 px wide; replacing them with the original photos, under the same names, would make the large views sharper.
+- **Small pictures.** The viewer shows a picture narrower than 700 px at no more than 1.5 times its own width, so it is not blown up into a blur. The three Alaska photos cut from Ehsan's "Alaska, the Last Frontier" collage (`alaska-sea-stacks`, `alaska-spruce-valley`, `alaska-shore`) are only about 400 px wide; replacing them with the original photos, under the same names, would make the large views sharper.
 - **On the About page.** Every place also appears on the home page, as a numbered pin and a card (newest first, by the year and last month of its `date`). Two optional fields are for that card only: `place`, a short location ("Washington, DC"; else `where` is used), and `cover`, the `file` of the photo it shows (else the first photo that is not `wide`, else the video's poster).
 - **To add a talk or conference**, add a place with `"kind": "talk"` and its pictures (a research visit: `"kind": "visit"`). A meeting held at the same venue in several years is one place, as EGU is, because two places with the same `lat` and `lon` would put one pin exactly on top of the other. Pins are placed so that all of them fit the map beside the panel.
 - **Pins open on hover.** Resting the mouse on a pin for 150 ms (so passing over it does not count) opens its panel; a click or tap does the same. The panel stays open when the mouse moves on, so its pictures can be reached; another pin replaces it, and × or Escape closes it. The tooltip shows the title and date.
