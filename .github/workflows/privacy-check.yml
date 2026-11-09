@@ -1,0 +1,25 @@
+# Fails when a personal email address (Gmail, Yahoo, Outlook and the like) appears in any file of the repository.
+# Visitors reach me through the site's Contact form, so no personal address belongs here. See docs/MAINTAINING.md.
+name: Privacy check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  personal-email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: No personal email addresses
+        run: |
+          pattern='[A-Za-z0-9._%+-]+@(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|proton|protonmail)\.[A-Za-z.]+'
+          if git grep -n -I -E "$pattern" -- .; then
+            echo "::error::A personal email address is in the lines above. Remove it; the Contact form is how visitors reach me."
+            exit 1
+          fi
+          echo "No personal email addresses."

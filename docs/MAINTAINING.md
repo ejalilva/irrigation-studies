@@ -59,6 +59,8 @@ docs/                 these notes and docs/JOURNEY.md
 | `agent/rejected.json` | Papers you unticked during review. Created on the first rejection. |
 | `.github/workflows/find-papers.yml` | Weekly search and the year-by-year backfill; opens the review pull request. |
 | `.github/workflows/apply-review.yml` | Runs when you tick or untick a paper in the pull request description. |
+| `.github/workflows/privacy-check.yml` | Fails if a personal email address appears in any file (see Visit counting). |
+| `CLAUDE.md` | Standing notes for Claude sessions on this repository, including the privacy rules. |
 
 ## Fonts
 
@@ -152,7 +154,7 @@ The backfill fills the table with older papers, one publication year per pull re
 
 ### Reviewing a pull request
 
-1. **Preview it.** The pull request description starts with a link to `https://ejalilva.github.io/irrigation-studies/irrigation.html?preview#landscape`. The preview shows the proposed papers on the real page, badged **Proposed**, with **Check details** on rows that have empty columns. Adding `?preview` to the page address works at any time; with no open review it shows the published table.
+1. **Preview it.** The pull request description starts with a link to `https://ehsanjalilvand.com/irrigation.html?preview#landscape`. The preview shows the proposed papers on the real page, badged **Proposed**, with **Check details** on rows that have empty columns. Adding `?preview` to the page address works at any time; with no open review it shows the published table.
 2. **Untick papers to reject them.** Each paper is a tickbox in the description. Unticking one makes `apply-review.yml` move it to `agent/rejected.json` within a minute; it stays in `seen.json` and is never proposed again. Ticking it again restores it. The preview can lag a few minutes behind because GitHub caches raw files.
 3. **Mark Rising papers.** Under each paper is a **Rising** tickbox. Tick it to feature the paper as your pick. To add your note, edit the pull request description and type it after `Note:` on that line; it appears on the pick's card. Unticking removes the pick.
 4. **Fix details if needed.** Edit `data/papers.json` on the `agent/new-papers` branch (the preview has an "Edit details on GitHub" link), and set `needs_review` to `false` on rows you complete.
@@ -219,9 +221,21 @@ Rising papers live in `data/editor_picks.json`, separate from the table data:
   - `OPENALEX_API_KEY`: free, from openalex.org → Settings → API. A weekly run (about 15 to 20 requests) fits in the no-key allowance.
 - GitHub disables scheduled workflows in public repositories after 60 days without activity. Re-enable from the Actions tab if that happens.
 
-## Google Sites
+## Visit counting
 
-The site was linked from the old Google Site's navigation (Pages → New link → `https://ejalilva.github.io/irrigation-studies/`). To serve it at a subdomain such as `research.ehsanjalilvand.com`, add a CNAME record pointing to `ejalilva.github.io` and set the custom domain under Settings → Pages.
+GitHub Pages keeps no visitor logs (a repository's Insights → Traffic counts visits to the code on github.com, not to the site), so visits are counted with [Statcounter](https://statcounter.com). Its log of recent visits shows each one's approximate location, network (the internet provider, or the organization when someone browses from work), device, how they arrived and the pages they read. The free plan keeps the most recent 500 page loads in detail.
+
+- **Switching it on:** at the top of `site/assets/nav.js`, set `STATCOUNTER.project` and `STATCOUNTER.security` to the numbers after `sc_project=` and `sc_security=` in the project's install code (statcounter.com → the project → Settings → Reinstall code). With `project` left at 0, nothing is loaded. Run `python scripts/stamp_assets.py` afterwards.
+- **Your own visits:** open any page with `?notrack` (for example `https://ehsanjalilvand.com/?notrack`) once on each of your browsers and devices; that browser is no longer counted. `?track` undoes it.
+- **The footer** says visits are counted with Statcounter while it is on.
+- **What it can't see:** names or email addresses, and most robots and scrapers, which don't run the script.
+- **No public visitor map:** a map of visitors would need the data out of Statcounter automatically, and its API is only on paid plans.
+
+**Privacy check.** `.github/workflows/privacy-check.yml` fails on any push to `main` or pull request that puts a personal email address (Gmail, Yahoo, Outlook and the like) in any file. For commits, turn on "Keep my email addresses private" and "Block command line pushes that expose my email" under GitHub → Settings → Emails, so commits carry the GitHub noreply address.
+
+## Site address
+
+The site is served at https://ehsanjalilvand.com, the custom domain set under Settings → Pages; it replaced the old Google Site. The GitHub address, https://ejalilva.github.io/irrigation-studies/, forwards there. Links, the canonical link in `index.html` and `site_url` in `agent/config.json` use the custom domain.
 
 ## Storyline: "Every answer revealed another question"
 
@@ -415,7 +429,7 @@ The flakes sit in a `.snow-shower` group, the cloud is `.snow-cloud` and the sun
 
 - **A place** has an `id` (also its address: `gallery.html#smapvex22` opens it), `kind` (`field`, green pin; `visit`, terracotta pin, for research visits; or `talk`, blue pin, for conferences and presentations), `title`, `where`, `date`, `lat` and `lon`, one or two sentences of `text`, and `photos`.
 - **A photo** is `{ "file": "name", "caption": "...", "credit": "Photo: ..." }` (credit optional) for two files in `assets/gallery/`: `name.webp`, about 1400 px on the long side, and `name-sm.webp`, about 480 px. Strip location data when saving (the pictures here were re-encoded without EXIF). Add `"wide": true` to show a photo across the whole panel at its own shape instead of as a cropped tile; wide photos load the large file. The ALASKA letters, the Last Frontier title picture and the SMAPVEX22 team photo are wide. The panel lists photos in the order of the array, two tiles to a row.
-- **Small pictures.** The viewer shows a picture narrower than 700 px at no more than 1.5 times its own width, so it is not blown up into a blur. The three Alaska photos cut from Ehsan's "Alaska, the Last Frontier" collage (`alaska-sea-stacks`, `alaska-spruce-valley`, `alaska-shore`) are only about 400 px wide; replacing them with the original photos, under the same names, would make the large views sharper.
+- **Small pictures.** The viewer shows a picture narrower than 700 px at no more than 1.5 times its own width, so it is not blown up into a blur. The two Alaska photos cut from Ehsan's "Alaska, the Last Frontier" collage (`alaska-spruce-valley`, `alaska-shore`) are only about 400 px wide; replacing them with the original photos, under the same names, would make the large views sharper.
 - **On the About page.** Every place also appears on the home page, as a numbered pin and a card (newest first, by the year and last month of its `date`). Two optional fields are for that card only: `place`, a short location ("Washington, DC"; else `where` is used), and `cover`, the `file` of the photo it shows (else the first photo that is not `wide`, else the video's poster).
 - **To add a talk or conference**, add a place with `"kind": "talk"` and its pictures (a research visit: `"kind": "visit"`). A meeting held at the same venue in several years is one place, as EGU is, because two places with the same `lat` and `lon` would put one pin exactly on top of the other. Pins are placed so that all of them fit the map beside the panel.
 - **Pins open on hover.** Resting the mouse on a pin for 150 ms (so passing over it does not count) opens its panel; a click or tap does the same. The panel stays open when the mouse moves on, so its pictures can be reached; another pin replaces it, and × or Escape closes it. The tooltip shows the title and date.

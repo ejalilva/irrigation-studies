@@ -1,6 +1,6 @@
 {
   "_help": "Settings for agent/find_papers.py. Edit the search phrases to change what the agent looks for.",
-  "site_url": "https://ejalilva.github.io/irrigation-studies/",
+  "site_url": "https://ehsanjalilvand.com/",
   "lookback_days": 60,
   "max_results_per_query": 20000,
   "max_new_per_run": 20,
