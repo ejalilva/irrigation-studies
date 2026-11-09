@@ -1,6 +1,60 @@
 {
-  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped. Add talks and conferences the same way, with kind \"talk\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery).",
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped. Add talks and conferences the same way, with kind \"talk\", and research visits with kind \"visit\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery).",
   "places": [
+    {
+      "id": "irpi-italy",
+      "kind": "visit",
+      "title": "Visiting researcher at CNR IRPI",
+      "where": "CNR IRPI, Perugia, Italy",
+      "place": "Perugia, Italy",
+      "date": "2016–2017",
+      "lat": 43.1122,
+      "lon": 12.3888,
+      "text": "A research visit to CNR IRPI, where SM2RAIN was developed: improving how it estimates rainfall from satellite soil moisture, and working on drainage from drydowns (DfD), published in the Journal of Hydrology in 2018.",
+      "photos": [
+        {
+          "file": "irpi-desk",
+          "caption": "At my desk at CNR IRPI, with the SM2RAIN plan on the whiteboard."
+        },
+        {
+          "file": "irpi-whiteboard",
+          "caption": "The SM2RAIN whiteboard: global ASCAT data, calibration runs with AMSR2 soil moisture for 2012–2015, and drainage from drydowns (DfD)."
+        },
+        {
+          "file": "irpi-talk",
+          "caption": "Presenting my PhD work during the visit: estimating drainage rate from soil moisture drydowns, toward a self-calibrated SM2RAIN."
+        },
+        {
+          "file": "irpi-office",
+          "caption": "In the office, 16 January 2017."
+        },
+        {
+          "file": "irpi-window",
+          "caption": "Working by the office window in Perugia."
+        }
+      ]
+    },
+    {
+      "id": "egu-vienna",
+      "kind": "talk",
+      "title": "EGU General Assembly, 2017 and 2018",
+      "where": "Austria Center Vienna, Vienna, Austria",
+      "place": "Vienna, Austria",
+      "date": "April 2017 and April 2018",
+      "lat": 48.2343,
+      "lon": 16.4128,
+      "text": "Drainage from drydowns at EGU two years running: in 2017 a poster toward a global map of drainage rate using satellite soil moisture as the only input, and in 2018 drainage rate estimated from satellite soil moisture drydowns.",
+      "photos": [
+        {
+          "file": "egu2017-poster",
+          "caption": "My EGU 2017 poster, unrolled in the office in Perugia: toward a global map of drainage rate using satellite soil moisture data as the only input."
+        },
+        {
+          "file": "egu2018-vienna",
+          "caption": "With colleagues at EGU 2018 in Vienna, 10 April 2018."
+        }
+      ]
+    },
     {
       "id": "smapvex22",
       "kind": "field",
