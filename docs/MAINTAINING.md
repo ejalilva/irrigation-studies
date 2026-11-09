@@ -225,7 +225,7 @@ Rising papers live in `data/editor_picks.json`, separate from the table data:
 
 GitHub Pages keeps no visitor logs (a repository's Insights → Traffic counts visits to the code on github.com, not to the site), so visits are counted with [Statcounter](https://statcounter.com). Its log of recent visits shows each one's approximate location, network (the internet provider, or the organization when someone browses from work), device, how they arrived and the pages they read. The free plan keeps the most recent 500 page loads in detail.
 
-- **Switching it on:** at the top of `site/assets/nav.js`, set `STATCOUNTER.project` and `STATCOUNTER.security` to the numbers after `sc_project=` and `sc_security=` in the project's install code (statcounter.com → the project → Settings → Reinstall code). With `project` left at 0, nothing is loaded. Run `python scripts/stamp_assets.py` afterwards.
+- **Switching it on:** at the top of `site/assets/nav.js`, set `STATCOUNTER.project` and `STATCOUNTER.security` to the numbers after `sc_project=` and `sc_security=` in the project's install code (statcounter.com → the project → Settings → Reinstall code). It is on: project 13365857 ("Personal website" in the Statcounter account). With `project` set to 0, nothing is loaded. Run `python scripts/stamp_assets.py` afterwards.
 - **Your own visits:** open any page with `?notrack` (for example `https://ehsanjalilvand.com/?notrack`) once on each of your browsers and devices; that browser is no longer counted. `?track` undoes it.
 - **The footer** says visits are counted with Statcounter while it is on.
 - **What it can't see:** names or email addresses, and most robots and scrapers, which don't run the script.
