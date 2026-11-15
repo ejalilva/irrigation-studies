@@ -40,8 +40,15 @@
 /* A place's video (assets/gallery.js): across the top of the panel, playing silently while the panel is open; a click
    plays it in the viewer with sound. The crossed-out speaker shows it is muted; the play button shows when it is not playing. */
 .gl-grid li.is-wide { grid-column: 1 / -1; }
+/* A tile that would sit alone beside an empty cell spans the row, still cropped (assets/gallery.js, solo()). */
+.gl-grid li.is-solo { grid-column: 1 / -1; }
 .gl-thumb.is-video { position: relative; background: #172026; cursor: pointer; }
 .gl-thumb.is-video video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+/* A clip among the photos (data/gallery.json) is a 4:3 tile like a picture unless it is wide; one saved without sound
+   ("sound": false) shows no speaker and no muted badge. */
+.gl-grid li:not(.is-wide) .gl-thumb.is-video video { aspect-ratio: 4 / 3; }
+.gl-thumb.is-video.no-sound .gl-mute { display: none; }
+.gl-thumb.is-video.no-sound.is-playing:hover .gl-play svg:first-child, .gl-thumb.is-video.no-sound.is-playing:focus-visible .gl-play svg:first-child { display: block; }
 .gl-play { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255,255,255,.92); box-shadow: 0 2px 10px rgba(0,0,0,.3); transition: opacity .2s; }
 .gl-play svg { width: 18px; height: 18px; margin-left: 3px; fill: #172026; }
 .gl-thumb.is-video.is-playing .gl-play { opacity: 0; }
@@ -74,6 +81,8 @@
 .gl-viewer figure > .gl-viewer-video, .gl-viewer figcaption { justify-self: stretch; }
 .gl-viewer-video { width: 100%; aspect-ratio: 16 / 9; max-height: calc(100dvh - 150px); border-radius: 6px; overflow: hidden; background: #000; }
 .gl-viewer-video video { display: block; width: 100%; height: 100%; background: #000; }
+/* A tall clip: its own shape (aspect-ratio set by gallery.js), as tall as the viewer allows, centred. */
+.gl-viewer figure > .gl-viewer-video.is-tall { justify-self: center; width: auto; height: calc(100dvh - 150px); max-width: 100%; }
 .gl-viewer-video[hidden], .gl-viewer img[hidden] { display: none; }
 .gl-viewer figcaption { padding: 10px 2px 0; }
 .gl-viewer figcaption p { margin: 0; font-size: 1.02rem; line-height: 1.45; }
