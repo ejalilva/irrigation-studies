@@ -1,5 +1,6 @@
-/* Gallery preview on the About page (index.html, the "Gallery" section): a map of the United States with a numbered pin
-   for every place in data/gallery.json, and a card per place below it, newest first. A pin or a card opens that place in
+/* Gallery preview on the About page (index.html, the "Gallery" section): a small sample of the gallery, the places in
+   data/gallery.json marked "about": true, as a map of the United States with a numbered pin per place and a card per
+   place below it, newest first. Places without "about" are on the gallery page only. A pin or a card opens that place in
    the gallery (gallery.html#<id>); pointing at one highlights the other.
 
    The map is assets/about/us-map.svg (made by scripts/build_us_map.mjs), drawn inline so assets/about.css can colour it
@@ -11,7 +12,7 @@
    date, with month names shortened, and the number of photos and the video; and as its picture the photo named in "cover", else the
    first photo that is not "wide", else the video's poster, cropped at the photo's "position" if it has one.
 
-   Pins closer together than NEAR (in the map's 975 x 610 units; the two Washington, DC talks) sit side by side, west to
+   Pins closer together than NEAR (in the map's 975 x 610 units) sit side by side, west to
    east, centred on their place: each gets --dx, its step left or right, and assets/about.css moves it by --dx pin widths. */
 (() => {
   'use strict';
@@ -70,7 +71,7 @@
     fetch('data/gallery.json').then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }),
     fetch('assets/about/us-map.svg').then(r => r.ok ? r.text() : '')
   ]).then(([data, svg]) => {
-    const places = (data.places || []).map((p, i) => ({ ...p, photos: p.photos || [], i }))
+    const places = (data.places || []).map((p, i) => ({ ...p, photos: p.photos || [], i })).filter(p => p.about)
       .sort((a, b) => when(b.date) - when(a.date) || a.i - b.i);
     if (!places.length) return;
     const kinds = Object.keys(KINDS).filter(k => places.some(p => kind(p) === k));
