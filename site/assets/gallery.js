@@ -3,7 +3,8 @@
    place's pictures in a panel beside the map. The panel stays open when the mouse moves on, so its pictures can be
    reached; another pin replaces it, and × or Escape closes it. A picture opens large in the viewer, with its caption,
    previous/next and Escape to close; small pictures are enlarged at most 1.5 times. A photo with "wide": true spans the
-   panel at its own shape, from its large file. Leaflet is in assets/vendor/leaflet/. The map has four basemaps (BASEMAPS below,
+   panel at its own shape, from its large file; "position" sets which part of a photo its cropped tile shows. Pins that
+   would overlap are set side by side (spread() below). Leaflet is in assets/vendor/leaflet/. The map has four basemaps (BASEMAPS below,
    none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default
    (Toner), and ?map=<name> in the address or a visitor's last choice overrides it. Toner is drawn by MapLibre
    (assets/vendor/maplibre/), which loads only when that map is shown.
@@ -214,6 +215,24 @@
     if (window.L) {
       map = L.map(mapBox, { scrollWheelZoom: false, worldCopyJump: true, zoomSnap: .25, attributionControl: true });
       addBasemaps(map);
+      // Pins that would overlap at a zoom (AGU24 and IGARSS 2026 are 2 km apart in Washington, DC) sit side by side, west
+      // to east, centred on their middle; zoomed in far enough, each is back at its own place. Registered before the pins
+      // are added, so during a zoom animation the pins already move to their new spots.
+      const PIN = 34, GAP = 4;
+      const spread = z => {
+        const groups = [];
+        places.forEach(p => {
+          const pt = map.project([p.lat, p.lon], z), near = groups.find(g => g.some(o => o.pt.distanceTo(pt) < PIN + GAP));
+          near ? near.push({ p, pt }) : groups.push([{ p, pt }]);
+        });
+        groups.forEach(g => {
+          g.sort((a, b) => a.pt.x - b.pt.x);
+          const mid = g.reduce((s, o) => s.add(o.pt), L.point(0, 0)).divideBy(g.length);
+          g.forEach((o, i) => pins.get(o.p.id)?.setLatLng(map.unproject(g.length > 1 ? mid.add([(i - (g.length - 1) / 2) * (PIN + GAP), 0]) : o.pt, z)));
+        });
+      };
+      map.on('zoomanim', e => spread(e.zoom));
+      map.on('zoomend', () => spread(map.getZoom()));
       places.forEach(p => {
         const glyph = p.photos.length ? `<b>${p.photos.length}</b>` : CAMERA;
         const icon = L.divIcon({ className: '', html: `<span class="gl-pin k-${esc(p.kind || 'field')}${p.photos.length ? '' : ' is-video'}">${glyph}</span>`, iconSize: [34, 34], iconAnchor: [17, 17] });
@@ -229,7 +248,7 @@
       // All pins in view, leaving room on the right for the panel on wide screens, so opening it never hides a pin.
       const room = () => innerWidth > 760 ? Math.min(380, mapBox.clientWidth * .42) + 24 : 0;
       const fit = () => map.fitBounds(L.latLngBounds(places.map(p => [p.lat, p.lon])), { maxZoom: 5, paddingTopLeft: [60, 60], paddingBottomRight: [room() + 60, 60] });
-      fit();
+      fit(); spread(map.getZoom());
       new ResizeObserver(() => map.invalidateSize()).observe(mapBox);
     } else {
       mapBox.classList.add('is-off');
@@ -244,11 +263,17 @@
       if (current === p && !panel.hidden) return; // already open: keep its video playing
       current = p;
       const all = items(p);
+      // A tile with a wide item (or nothing) on both sides would sit beside an empty cell: it spans the row instead, still
+      // cropped, from the large file (the one AGU25 close-up, between nothing and the wide stage photo).
+      const full = it => it.video || it.wide;
+      const solo = i => all.length > 1 && !full(all[i]) && (!all[i - 1] || full(all[i - 1])) && (!all[i + 1] || full(all[i + 1]));
+      // "position" picks the part of a photo its cropped tile shows (object-position), for tall photos with a face near the top.
+      const pos = it => it.position && !it.wide ? ` style="object-position:${esc(it.position)}"` : '';
       panel.innerHTML = `<button type="button" class="gl-close" aria-label="Close">×</button>
         <p class="gl-kick">${esc(p.date)} · ${esc(p.where)}</p><h2>${esc(p.title)}</h2>${p.text ? `<p class="gl-text">${esc(p.text)}</p>` : ''}
         <ul class="gl-grid${all.length === 1 ? ' is-one' : ''}">${all.map((it, i) => it.video
           ? `<li class="is-wide"><button type="button" class="gl-thumb is-video" data-i="${i}" aria-label="Play with sound: ${esc(it.caption)}">${preview(it.video)}<span class="gl-play" aria-hidden="true">${PLAY}${SOUND}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
-          : `<li${it.wide ? ' class="is-wide"' : ''}><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, !it.wide)}" alt="${esc(it.caption)}" loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
+          : `<li${it.wide ? ' class="is-wide"' : solo(i) ? ' class="is-solo"' : ''}><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, !it.wide && !solo(i))}" alt="${esc(it.caption)}"${pos(it)} loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
       panel.hidden = false; panel.scrollTop = 0;
       if (panelPreview) { previews.delete(panelPreview); panelPreview = null; }
       panelIO?.disconnect(); panelSeen = !panelIO;

@@ -1,5 +1,5 @@
 {
-  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped. Add talks and conferences the same way, with kind \"talk\", and research visits with kind \"visit\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery).",
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped; \"position\" (CSS object-position, such as \"50% 15%\") picks which part of a tall or wide photo shows in its cropped tile. Add talks and conferences the same way, with kind \"talk\", and research visits with kind \"visit\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture); it plays silently when the pin is hovered or the place is opened. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery).",
   "places": [
     {
       "id": "irpi-italy",
@@ -159,6 +159,11 @@
           "caption": "On the shore of Cook Inlet in Lake Clark National Park, with the bush plane behind us, 30 May 2023."
         },
         {
+          "file": "alaska-bald-eagle",
+          "caption": "A bald eagle on a driftwood stump behind me, 31 May 2023.",
+          "position": "50% 15%"
+        },
+        {
           "file": "alaska-sea-stacks",
           "caption": "Spruce-topped sea stacks from the deck of the boat."
         },
@@ -169,6 +174,11 @@
         {
           "file": "alaska-shore",
           "caption": "Walking the shore at dusk, with snow on the mountains across the water."
+        },
+        {
+          "file": "alaska-campfire",
+          "caption": "A driftwood fire on a stony beach in the evening, with snowy mountains across the water.",
+          "position": "50% 72%"
         },
         {
           "file": "alaska-last-frontier",
@@ -193,6 +203,60 @@
         "caption": "Presenting AgroTrack at AGU24."
       },
       "photos": []
+    },
+    {
+      "id": "agu25",
+      "kind": "talk",
+      "title": "Irrigation mapping with Prithvi at AGU25",
+      "where": "Ernest N. Morial Convention Center, New Orleans, Louisiana",
+      "place": "New Orleans, Louisiana",
+      "date": "December 2025",
+      "lat": 29.9418,
+      "lon": -90.0632,
+      "text": "An oral talk at AGU’s Annual Meeting: fine-tuning the Prithvi-EO-2.0 geospatial foundation model to map irrigated fields at high resolution from only a few labeled examples.",
+      "photos": [
+        {
+          "file": "agu25-podium",
+          "caption": "At the AGU25 podium, 18 December 2025.",
+          "position": "50% 20%"
+        },
+        {
+          "file": "agu25-stage",
+          "caption": "The talk in session IN41A, with maps of the study area on the screen.",
+          "wide": true
+        }
+      ]
+    },
+    {
+      "id": "igarss2026",
+      "kind": "talk",
+      "title": "Irrigation mapping with foundation models at IGARSS 2026",
+      "where": "Washington Hilton, Washington, DC",
+      "place": "Washington, DC",
+      "date": "August 2026",
+      "lat": 38.9163,
+      "lon": -77.0456,
+      "text": "The next step after AGU25: mapping irrigated fields by fine-tuning geospatial foundation models, presented at IGARSS, the IEEE Geoscience and Remote Sensing Society’s flagship symposium.",
+      "photos": [
+        {
+          "file": "igarss2026-room",
+          "caption": "Presenting to a full room at IGARSS 2026.",
+          "wide": true
+        },
+        {
+          "file": "igarss2026-podium",
+          "caption": "Presenting irrigation mapping with fine-tuned geospatial foundation models."
+        },
+        {
+          "file": "igarss2026-talk",
+          "caption": "Walking the audience through a slide."
+        },
+        {
+          "file": "igarss2026-audience",
+          "caption": "Mid-talk, seen from the side of the room.",
+          "wide": true
+        }
+      ]
     }
   ]
 }

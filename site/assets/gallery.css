@@ -40,6 +40,8 @@
 /* A place's video (assets/gallery.js): across the top of the panel, playing silently while the panel is open; a click
    plays it in the viewer with sound. The crossed-out speaker shows it is muted; the play button shows when it is not playing. */
 .gl-grid li.is-wide { grid-column: 1 / -1; }
+/* A tile that would sit alone beside an empty cell spans the row, still cropped (assets/gallery.js, solo()). */
+.gl-grid li.is-solo { grid-column: 1 / -1; }
 .gl-thumb.is-video { position: relative; background: #172026; cursor: pointer; }
 .gl-thumb.is-video video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
 .gl-play { position: absolute; left: 50%; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255,255,255,.92); box-shadow: 0 2px 10px rgba(0,0,0,.3); transition: opacity .2s; }

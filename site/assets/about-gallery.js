@@ -9,7 +9,10 @@
 
    From a place in gallery.json the card uses: title; "place", a short location for the card, else "where"; then the
    date, with month names shortened, and the number of photos and the video; and as its picture the photo named in "cover", else the
-   first photo that is not "wide", else the video's poster. */
+   first photo that is not "wide", else the video's poster, cropped at the photo's "position" if it has one.
+
+   Pins closer together than NEAR (in the map's 975 x 610 units; the two Washington, DC talks) sit side by side, west to
+   east, centred on their place: each gets --dx, its step left or right, and assets/about.css moves it by --dx pin widths. */
 (() => {
   'use strict';
   const box = document.getElementById('ab-gl');
@@ -53,11 +56,10 @@
     const n = p.photos.length, photos = n ? `${n} ${n === 1 ? 'photo' : 'photos'}` : '';
     return p.video ? (photos ? `Video and ${photos}` : 'Video') : photos;
   };
-  const cover = p => {
-    const named = p.cover && p.photos.find(f => f.file === p.cover);
-    const photo = named || p.photos.find(f => !f.wide) || p.photos[0];
-    return photo ? `assets/gallery/${photo.file}-sm.webp` : (p.video && p.video.poster) || '';
-  };
+  const coverPhoto = p => (p.cover && p.photos.find(f => f.file === p.cover)) || p.photos.find(f => !f.wide) || p.photos[0];
+  const cover = p => { const photo = coverPhoto(p); return photo ? `assets/gallery/${photo.file}-sm.webp` : (p.video && p.video.poster) || ''; };
+  const coverPos = p => { const photo = coverPhoto(p); return photo && photo.position ? ` style="object-position:${esc(photo.position)}"` : ''; };
+  const NEAR = 20;
   const PLAY = '<span class="ab-gl-play" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M5 3l8 5-8 5z"/></svg></span>';
   const KINDS = { field: 'Field campaign', visit: 'Research visit', talk: 'Talk' };
   const kind = p => (KINDS[p.kind] ? p.kind : 'field');
@@ -70,15 +72,23 @@
       .sort((a, b) => when(b.date) - when(a.date) || a.i - b.i);
     if (!places.length) return;
     const kinds = Object.keys(KINDS).filter(k => places.some(p => kind(p) === k));
+    const at = places.map(p => albersUsa(+p.lon, +p.lat));
+    const dx = places.map(() => 0), groups = [];
+    at.forEach((xy, i) => {
+      if (!xy) return;
+      const g = groups.find(g => g.some(j => Math.hypot(at[j][0] - xy[0], at[j][1] - xy[1]) < NEAR));
+      g ? g.push(i) : groups.push([i]);
+    });
+    groups.forEach(g => g.sort((a, b) => at[a][0] - at[b][0]).forEach((i, k) => { dx[i] = k - (g.length - 1) / 2; }));
     const pins = places.map((p, n) => {
-      const xy = albersUsa(+p.lon, +p.lat);
+      const xy = at[n];
       if (!xy) return '';
       return `<a class="ab-gl-pin k-${kind(p)}" href="gallery.html#${encodeURIComponent(p.id)}" data-id="${esc(p.id)}" ` +
-        `style="left:${(xy[0] / W * 100).toFixed(2)}%;top:${(xy[1] / H * 100).toFixed(2)}%" ` +
+        `style="left:${(xy[0] / W * 100).toFixed(2)}%;top:${(xy[1] / H * 100).toFixed(2)}%${dx[n] ? `;--dx:${dx[n]}` : ''}" ` +
         `aria-label="${n + 1}. ${esc(p.title)}, ${esc(p.place || p.where)}">${n + 1}</a>`;
     }).join('');
     const cards = places.map((p, n) => `<li><a class="ab-gl-card" href="gallery.html#${encodeURIComponent(p.id)}" data-id="${esc(p.id)}">` +
-      `<span class="ab-gl-pic"><img src="${esc(cover(p))}" alt="" loading="lazy" decoding="async">` +
+      `<span class="ab-gl-pic"><img src="${esc(cover(p))}" alt=""${coverPos(p)} loading="lazy" decoding="async">` +
       `<span class="ab-gl-num k-${kind(p)}" aria-hidden="true">${n + 1}</span>${p.photos.length ? '' : PLAY}</span>` +
       `<span class="ab-gl-text"><span class="ab-gl-title">${esc(p.title)}</span>` +
       `<span class="ab-gl-meta">${esc(p.place || p.where)}<br>${[esc(short(p.date)), count(p)].filter(Boolean).join(' · ')}</span></span></a></li>`).join('');
