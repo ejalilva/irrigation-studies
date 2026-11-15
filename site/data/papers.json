@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-09",
   "papers": [
     {
       "id": "10.5194/essd-2026-603",
@@ -1904,6 +1904,52 @@
       "resources_checked": "2026-10-21"
     },
     {
+      "id": "10.22541/essoar.15011826/v1",
+      "title": "Improving Global Simulation of Irrigation within the Land Information System",
+      "authors": "Rodell, M., Beaudoing, H.K., Mahanama, S.",
+      "first_author": "Rodell",
+      "year": 2026,
+      "date": "2026-11-06",
+      "venue": "Preprint",
+      "doi": "10.22541/essoar.15011826/v1",
+      "url": null,
+      "status": "preprint",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Global; contiguous U.S. evaluation",
+      "region": "Multiple",
+      "scale": "global",
+      "period": null,
+      "approach": "Irrigation scheme in Land Information System using satellite land cover and irrigation datasets",
+      "methods": [
+        "model",
+        "imagery"
+      ],
+      "data": [
+        "Land Information System (LIS)",
+        "satellite-based land cover datasets",
+        "satellite-based irrigation datasets",
+        "county-level reported irrigation water u"
+      ],
+      "keywords": [
+        "irrigation modeling",
+        "Land Information System",
+        "land surface model",
+        "irrigation methods",
+        "global irrigation"
+      ],
+      "summary": "The authors built a new irrigation scheme for the Land Information System that distinguishes irrigation methods, simulating about 2765 km3/yr globally and improving U.S. county-level agreement.",
+      "added": "2026-11-09",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-09"
+    },
+    {
       "id": "10.1007/s00271-026-01142-0",
       "title": "Remote sensing-based assessment of long-term evapotranspiration and irrigation performance following modernization of Andalusian irrigation districts",
       "authors": "Rodríguez-Álvarez, J.A., Mateos, L., Egea, G.",
@@ -1998,6 +2044,64 @@
       "needs_review": false,
       "source": "agent",
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1016/j.agwat.2026.110887",
+      "title": "A two-soil-layer agro-hydrological model for irrigation requirements: Evaluation and trends in the Po River basin",
+      "authors": "Shahmohammadi, A., Tamea, S.",
+      "first_author": "Shahmohammadi",
+      "year": 2026,
+      "date": "2026-11-05",
+      "venue": "Agricultural Water Management",
+      "doi": "10.1016/j.agwat.2026.110887",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Po River basin, Italy",
+      "region": "Europe",
+      "scale": "regional",
+      "period": {
+        "start": 1981,
+        "end": 2022
+      },
+      "approach": "Two-layer FAO-56 dual crop coefficient soil water balance model, evaluated against satellite ET",
+      "methods": [
+        "et",
+        "model"
+      ],
+      "data": [
+        "WaPOR",
+        "GLEAM"
+      ],
+      "keywords": [
+        "irrigation requirements",
+        "soil water balance",
+        "FAO-56",
+        "evapotranspiration",
+        "Po River basin"
+      ],
+      "summary": "The study presents AGRHYD, a two-layer soil water balance model that estimates irrigation requirements for Po basin crops over 1981–2022, validated against WaPOR and GLEAM evapotranspiration.",
+      "added": "2026-11-09",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [
+        {
+          "type": "data",
+          "url": "https://doi.org/10.5281/zenodo.23573248",
+          "label": "Zenodo"
+        },
+        {
+          "type": "data",
+          "url": "https://doi.org/10.5281/zenodo.23573249",
+          "label": "Zenodo"
+        }
+      ],
+      "resources_checked": "2026-11-09"
     },
     {
       "id": "10.3389/frsen.2026.1895172",
@@ -2138,6 +2242,54 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-26"
+    },
+    {
+      "id": "10.1080/01431161.2026.2758254",
+      "title": "Diagnosing water resource pressure from cropland expansion using multisource remote sensing in Xinjiang, China",
+      "authors": "Wang, R., Cheng, W., Feng, X.",
+      "first_author": "Wang",
+      "year": 2026,
+      "date": "2026-11-04",
+      "venue": "International Journal of Remote Sensing",
+      "doi": "10.1080/01431161.2026.2758254",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Xinjiang, China",
+      "region": "Asia",
+      "scale": "regional",
+      "period": {
+        "start": 2015,
+        "end": 2024
+      },
+      "approach": "Multisource remote sensing index combining oasis cooling effect, cropland persistence and water cons",
+      "methods": [
+        "imagery",
+        "et"
+      ],
+      "data": [
+        "Landsat",
+        "IrriMap_CN",
+        "Annual cropland trajectory products"
+      ],
+      "keywords": [
+        "cropland expansion",
+        "irrigation diagnostic index",
+        "oasis cooling effect",
+        "water-resource pressure",
+        "Xinjiang"
+      ],
+      "summary": "The study builds a 1 km remote-sensing indicator linking cropland expansion, thermal signals of irrigation and water constraint in Xinjiang from 2015 to 2024.",
+      "added": "2026-11-09",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-09"
     },
     {
       "id": "10.1016/j.agwat.2026.110566",
