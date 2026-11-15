@@ -1,9 +1,10 @@
 {
-  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped; \"position\" (CSS object-position, such as \"50% 15%\") picks which part of a tall or wide photo shows in its cropped tile. Add talks and conferences the same way, with kind \"talk\", and research visits with kind \"visit\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture) across the top of its panel, and clips among its photos: a photo entry with \"video\": \"assets/media/<name>.mp4\", whose \"file\" pictures are the poster (\"sound\": false for a clip saved without sound). Videos play silently while the panel is open and they are in view. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery).",
+  "_how_to_add": "One entry per place. lat/lon place the pin; photos are files in assets/gallery/ (a large .webp about 1400 px and a -sm.webp thumbnail about 480 px). \"wide\": true shows a photo across the full width of the panel, uncropped; \"position\" (CSS object-position, such as \"50% 15%\") picks which part of a tall or wide photo shows in its cropped tile. Add talks and conferences the same way, with kind \"talk\", and research visits with kind \"visit\". A place can also have one \"video\" (an MP4 in assets/media/ with a poster picture) across the top of its panel, and clips among its photos: a photo entry with \"video\": \"assets/media/<name>.mp4\", whose \"file\" pictures are the poster (\"sound\": false for a clip saved without sound). Videos play silently while the panel is open and they are in view. The About page shows every place too, as a numbered pin on a map of the United States and a card: optional \"place\" is a short location for that card (else \"where\"), and optional \"cover\" names the photo it shows (else the first photo that is not wide). See docs/MAINTAINING.md (Gallery). \"about\": true also shows a place on the About page, a small fixed sample of the gallery; new places go on the gallery page only, unless Ehsan asks.",
   "places": [
     {
       "id": "irpi-italy",
       "kind": "visit",
+      "about": true,
       "title": "Visiting researcher at CNR IRPI",
       "where": "CNR IRPI, Perugia, Italy",
       "place": "Perugia, Italy",
@@ -37,6 +38,7 @@
     {
       "id": "egu-vienna",
       "kind": "talk",
+      "about": true,
       "title": "EGU General Assembly, 2017 and 2018",
       "where": "Austria Center Vienna, Vienna, Austria",
       "place": "Vienna, Austria",
@@ -75,6 +77,7 @@
     {
       "id": "smapvex22",
       "kind": "field",
+      "about": true,
       "title": "SMAPVEX22 field campaign",
       "where": "Harvard Forest, Massachusetts",
       "date": "July 2022",
@@ -129,6 +132,7 @@
     {
       "id": "michigan-crops",
       "kind": "field",
+      "about": true,
       "title": "Crop growth stages, field measurements",
       "where": "Michigan State University, East Lansing",
       "place": "East Lansing, Michigan",
@@ -159,6 +163,7 @@
     {
       "id": "alaska-2023",
       "kind": "field",
+      "about": true,
       "title": "Across Alaska’s tundra",
       "where": "Alaska",
       "date": "May–June 2023",
@@ -223,6 +228,7 @@
     {
       "id": "agu24",
       "kind": "talk",
+      "about": true,
       "title": "AgroTrack at AGU24",
       "where": "Walter E. Washington Convention Center, Washington, DC",
       "place": "Washington, DC",
