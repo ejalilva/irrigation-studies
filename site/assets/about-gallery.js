@@ -52,9 +52,11 @@
     let m = 0; MONTHS.forEach((name, i) => { if (s.includes(name)) m = i + 1; });
     return y * 12 + m;
   };
+  // "7 photos and 3 videos" (clips among the photos count as videos); a place with one video and nothing else: "Video".
   const count = p => {
-    const n = p.photos.length, photos = n ? `${n} ${n === 1 ? 'photo' : 'photos'}` : '';
-    return p.video ? (photos ? `Video and ${photos}` : 'Video') : photos;
+    const n = p.photos.filter(f => !f.video).length, v = (p.video ? 1 : 0) + p.photos.filter(f => f.video).length;
+    const photos = n ? `${n} ${n === 1 ? 'photo' : 'photos'}` : '', videos = v ? `${v} ${v === 1 ? 'video' : 'videos'}` : '';
+    return !n && v === 1 ? 'Video' : [photos, videos].filter(Boolean).join(' and ');
   };
   const coverPhoto = p => (p.cover && p.photos.find(f => f.file === p.cover)) || p.photos.find(f => !f.wide) || p.photos[0];
   const cover = p => { const photo = coverPhoto(p); return photo ? `assets/gallery/${photo.file}-sm.webp` : (p.video && p.video.poster) || ''; };

@@ -8,10 +8,12 @@
    none needs a key), switched with the layers button under the zoom buttons; data-basemap on #gl-map picks the default
    (Toner), and ?map=<name> in the address or a visitor's last choice overrides it. Toner is drawn by MapLibre
    (assets/vendor/maplibre/), which loads only when that map is shown.
-   A place may have one video (p.video: an MP4 and its poster). It sits in its own box across the top of the panel and
-   plays there, silently, while the panel is open and in view; it pauses when the panel closes or scrolls out of view,
-   the tab is hidden or the viewer is open. A click opens it in the viewer with sound and controls. With reduced motion
-   or data saver it never plays by itself: the poster shows with a play button.
+   A place may have one video (p.video: an MP4 and its poster) in its own box across the top of the panel, and clips
+   among its photos (a photo entry with "video": the MP4; its "file" pictures are the poster), each a tile or, with
+   "wide", across the panel. Each plays silently while the panel is open and it is at least half in view; it pauses
+   when the panel closes or it scrolls out of view, the tab is hidden or the viewer is open. A click opens it in the
+   viewer with sound (unless "sound": false, for a clip saved without sound) and controls. With reduced motion or data
+   saver none plays by itself: the poster shows with a play button.
    Without JavaScript the place list still links to every picture. */
 (() => {
   'use strict';
@@ -23,16 +25,22 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const src = (p, small) => `assets/gallery/${p.file}${small ? '-sm' : ''}.webp`;
   const quiet = matchMedia('(prefers-reduced-motion: reduce)').matches || Boolean(navigator.connection && navigator.connection.saveData);
-  // A place's items: its video first, then its pictures.
-  const items = p => [...(p.video ? [{ video: p.video, caption: p.video.caption }] : []), ...p.photos];
+  // A place's items: its video first, then its pictures and clips, each clip as { video: { src, poster, small } }.
+  const items = p => [
+    ...(p.video ? [{ video: { ...p.video, small: p.video.poster }, caption: p.video.caption, sound: p.video.sound, wide: true }] : []),
+    ...p.photos.map(ph => ph.video ? { ...ph, video: { src: ph.video, poster: src(ph), small: src(ph, true) } } : ph)];
   const PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3l8 5-8 5z"/></svg>';
   // Shown over the playing video when the mouse is on it: a click plays it with sound.
   const SOUND = '<svg class="gl-sound" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6v4h2.6L8 13V3L4.6 6z"/><path d="M10.5 5.5a3.5 3.5 0 010 5M12.3 3.7a6 6 0 010 8.6" fill="none" stroke="#172026" stroke-width="1.4" stroke-linecap="round"/></svg>';
   // The pin of a place with a video and no pictures: a video camera.
   const CAMERA = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="13.5" height="12" rx="3"/><path d="M16.5 10.6l4.3-2.9c.6-.4 1.2 0 1.2.7v7.2c0 .7-.6 1.1-1.2.7l-4.3-2.9z"/></svg>';
   const HOVER_DWELL = 150; // ms the mouse rests on a pin before its panel opens
-  const preview = v => `<video src="${esc(v.src)}" poster="${esc(v.poster)}" muted loop playsinline preload="none" aria-hidden="true"></video>`;
-  const count = p => [p.video ? 'video' : '', p.photos.length ? `${p.photos.length} ${p.photos.length === 1 ? 'picture' : 'pictures'}` : ''].filter(Boolean).join(' and ');
+  const preview = (v, poster, style = '') => `<video src="${esc(v.src)}" poster="${esc(poster)}"${style} muted loop playsinline preload="none" aria-hidden="true"></video>`;
+  // "7 pictures and 3 videos"; a place with one video and nothing else: "video".
+  const count = p => {
+    const n = p.photos.filter(f => !f.video).length, v = (p.video ? 1 : 0) + p.photos.filter(f => f.video).length;
+    return [n ? `${n} ${n === 1 ? 'picture' : 'pictures'}` : '', v ? (n || v > 1 ? `${v} ${v === 1 ? 'video' : 'videos'}` : 'video') : ''].filter(Boolean).join(' and ');
+  };
   // Silent previews: each wants to play while it is shown (want()), and only then.
   const previews = new Set();
   function syncPreviews() {
@@ -255,30 +263,36 @@
       mapBox.innerHTML = '<p>The map could not load. Pick a place below to see its pictures.</p>';
     }
 
-    // The panel's video plays while the panel is open and at least half of the video is on screen.
-    let panelPreview = null, panelSeen = false;
-    const panelIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => { panelSeen = es.some(e => e.isIntersecting); syncPreviews(); }, { threshold: 0.5 }) : null;
+    // Each video in the panel plays while the panel is open and at least half of that video is on screen.
+    let panelPreviews = [];
+    const panelIO = 'IntersectionObserver' in window ? new IntersectionObserver(es => {
+      es.forEach(e => { const pv = panelPreviews.find(x => x.box === e.target); if (pv) pv.seen = e.isIntersecting; });
+      syncPreviews();
+    }, { threshold: 0.5 }) : null;
     function open(id) {
       const p = places.find(x => x.id === id); if (!p) return;
       if (current === p && !panel.hidden) return; // already open: keep its video playing
       current = p;
       const all = items(p);
       // A tile with a wide item (or nothing) on both sides would sit beside an empty cell: it spans the row instead, still
-      // cropped, from the large file (the one AGU25 close-up, between nothing and the wide stage photo).
-      const full = it => it.video || it.wide;
+      // cropped, from the large file (the one AGU25 close-up, between nothing and the wide stage photo). A place's only
+      // picture (Sharif) fills the panel at its own shape, also from the large file.
+      const full = it => it.wide;
       const solo = i => all.length > 1 && !full(all[i]) && (!all[i - 1] || full(all[i - 1])) && (!all[i + 1] || full(all[i + 1]));
       // "position" picks the part of a photo its cropped tile shows (object-position), for tall photos with a face near the top.
       const pos = it => it.position && !it.wide ? ` style="object-position:${esc(it.position)}"` : '';
       panel.innerHTML = `<button type="button" class="gl-close" aria-label="Close">×</button>
         <p class="gl-kick">${esc(p.date)} · ${esc(p.where)}</p><h2>${esc(p.title)}</h2>${p.text ? `<p class="gl-text">${esc(p.text)}</p>` : ''}
         <ul class="gl-grid${all.length === 1 ? ' is-one' : ''}">${all.map((it, i) => it.video
-          ? `<li class="is-wide"><button type="button" class="gl-thumb is-video" data-i="${i}" aria-label="Play with sound: ${esc(it.caption)}">${preview(it.video)}<span class="gl-play" aria-hidden="true">${PLAY}${SOUND}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
-          : `<li${it.wide ? ' class="is-wide"' : solo(i) ? ' class="is-solo"' : ''}><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, !it.wide && !solo(i))}" alt="${esc(it.caption)}"${pos(it)} loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
+          ? `<li${it.wide ? ' class="is-wide"' : solo(i) ? ' class="is-solo"' : ''}><button type="button" class="gl-thumb is-video${it.sound === false ? ' no-sound' : ''}" data-i="${i}" aria-label="${it.sound === false ? 'Play' : 'Play with sound'}: ${esc(it.caption)}">${preview(it.video, it.wide || solo(i) ? it.video.poster : it.video.small, pos(it))}<span class="gl-play" aria-hidden="true">${PLAY}${it.sound === false ? '' : SOUND}</span><span class="gl-mute" aria-hidden="true"></span></button></li>`
+          : `<li${it.wide ? ' class="is-wide"' : solo(i) ? ' class="is-solo"' : ''}><button type="button" class="gl-thumb" data-i="${i}" aria-label="Open picture ${i + 1} of ${all.length}: ${esc(it.caption)}"><img src="${src(it, !it.wide && !solo(i) && all.length > 1)}" alt="${esc(it.caption)}"${pos(it)} loading="lazy" decoding="async"></button></li>`).join('')}</ul>`;
       panel.hidden = false; panel.scrollTop = 0;
-      if (panelPreview) { previews.delete(panelPreview); panelPreview = null; }
-      panelIO?.disconnect(); panelSeen = !panelIO;
-      const pv = panel.querySelector('.gl-thumb.is-video');
-      if (pv) { panelPreview = addPreview(pv.querySelector('video'), pv, () => current === p && !panel.hidden && panelSeen); panelIO?.observe(pv); }
+      panelPreviews.forEach(pv => previews.delete(pv)); panelPreviews = [];
+      panelIO?.disconnect();
+      panel.querySelectorAll('.gl-thumb.is-video').forEach(box => {
+        const pv = addPreview(box.querySelector('video'), box, () => current === p && !panel.hidden && pv.seen);
+        pv.box = box; pv.seen = !panelIO; panelPreviews.push(pv); panelIO?.observe(box);
+      });
       syncPreviews();
       panel.querySelector('.gl-close').addEventListener('click', close);
       panel.querySelectorAll('.gl-thumb').forEach(b => b.addEventListener('click', () => show(+b.dataset.i, b)));
@@ -311,7 +325,7 @@
     // only 1.5 times, so it is not blown up into a blur.
     function fitSmall() { const n = vImg.naturalWidth; vImg.style.width = n && n < 700 ? `${Math.round(n * 1.5)}px` : ''; }
     vImg.addEventListener('load', fitSmall);
-    const stopVideo = () => { if (vVideo) { vVideo.replaceChildren(); vVideo.hidden = true; } vImg.hidden = false; };
+    const stopVideo = () => { if (vVideo) { vVideo.replaceChildren(); vVideo.hidden = true; vVideo.classList.remove('is-tall'); vVideo.style.aspectRatio = ''; } vImg.hidden = false; };
     function show(i, from) {
       if (!viewer?.showModal || !current) return;
       const ph = items(current); at = (i + ph.length) % ph.length; opener = from || opener;
@@ -321,6 +335,11 @@
         const v = document.createElement('video');
         v.src = it.video.src; v.poster = it.video.poster; v.controls = true; v.autoplay = true; v.playsInline = true;
         v.setAttribute('aria-label', it.caption);
+        // A tall clip (the campfire) gets a box of its own shape, as tall as the viewer allows, instead of a 16:9 one.
+        v.addEventListener('loadedmetadata', () => {
+          const tall = v.videoHeight > v.videoWidth;
+          vVideo.classList.toggle('is-tall', tall); vVideo.style.aspectRatio = tall ? `${v.videoWidth} / ${v.videoHeight}` : '';
+        });
         vVideo.append(v); vVideo.hidden = false; vImg.hidden = true; vImg.removeAttribute('src'); vImg.alt = '';
       } else { vImg.style.width = ''; vImg.src = src(it); vImg.alt = it.caption; if (vImg.complete) fitSmall(); }
       vCap.textContent = it.caption;
