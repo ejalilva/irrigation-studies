@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-16",
   "papers": [
     {
       "id": "10.5194/essd-2026-603",
@@ -96,6 +96,56 @@
       "needs_review": false,
       "source": "agent",
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1007/s12518-026-00826-8",
+      "title": "Monitoring the spatiotemporal dynamics of summer-irrigated agriculture under conflict and drought: The Middle Orontes Basin, Syria (1995–2025)",
+      "authors": "Auda, A., Nhamo, L., Kutnyánszky, V., et al.",
+      "first_author": "Auda",
+      "year": 2026,
+      "date": "2026-11-05",
+      "venue": "Applied Geomatics",
+      "doi": "10.1007/s12518-026-00826-8",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Middle Orontes Basin, Syria",
+      "region": "Asia",
+      "scale": "regional",
+      "period": {
+        "start": 1995,
+        "end": 2025
+      },
+      "approach": "Landsat and Sentinel-2 NDVI seasonal composites with change detection in GEE and ArcGIS Pro",
+      "methods": [
+        "imagery"
+      ],
+      "data": [
+        "Landsat",
+        "Sentinel-2",
+        "CHIRPS precipitation",
+        "VIIRS night-time lights",
+        "Land Surface Temperature",
+        "Vegetation Health Index"
+      ],
+      "keywords": [
+        "summer-irrigated agriculture",
+        "NDVI",
+        "change detection",
+        "Orontes Basin",
+        "conflict"
+      ],
+      "summary": "Maps summer-irrigated agricultural extent in the conflict-affected Middle Orontes Basin, Syria, from 1995 to 2025 using harmonized Landsat and Sentinel-2 NDVI masks.",
+      "added": "2026-11-16",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-16"
     },
     {
       "id": "10.3389/frsen.2026.1920951",
@@ -471,6 +521,50 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.5194/bg-23-8137-2026",
+      "title": "Understanding ecosystem gross primary productivity, evapotranspiration, and water use efficiency of maize using ISBA-A-g s land surface model over temperate and tropical semi-arid climates",
+      "authors": "Chintala, S., Jarlan, L., Rivalland, V., et al.",
+      "first_author": "Chintala",
+      "year": 2026,
+      "date": "2026-11-11",
+      "venue": "Biogeosciences",
+      "doi": "10.5194/bg-23-8137-2026",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "FR-Lam (France) and Ind-IITH (India) maize sites",
+      "region": "Multiple",
+      "scale": "field",
+      "period": null,
+      "approach": "ISBA-A-gs land surface model calibrated against eddy covariance flux data for maize",
+      "methods": [
+        "model"
+      ],
+      "data": [
+        "ISBA-A-gs land surface model in SURFEX",
+        "eddy covariance flux measurements at FR-",
+        "eddy covariance flux measurements at Ind"
+      ],
+      "keywords": [
+        "maize",
+        "water use efficiency",
+        "land surface model",
+        "evapotranspiration",
+        "gross primary productivity"
+      ],
+      "summary": "Evaluates the ISBA-A-gs land surface model for maize gross primary productivity, evapotranspiration and water use efficiency at sprinkler and furrow-irrigated sites in France and India.",
+      "added": "2026-11-16",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-16"
     },
     {
       "id": "10.1029/2025ef007572",
@@ -892,6 +986,55 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-26"
+    },
+    {
+      "id": "10.21203/rs.3.rs-11524145/v1",
+      "title": "Comparative Evaluation of Machine Learning Algorithms for Irrigated Area Mapping in the Upper Blue Nile Basin",
+      "authors": "Hamza, A.A., Dejen, Z.A., Gebrekristos, S.T., et al.",
+      "first_author": "Hamza",
+      "year": 2026,
+      "date": "2026-11-13",
+      "venue": "Research Square (preprint)",
+      "doi": "10.21203/rs.3.rs-11524145/v1",
+      "url": null,
+      "status": "preprint",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "Upper Blue Nile Basin, Ethiopia",
+      "region": "Africa",
+      "scale": "regional",
+      "period": {
+        "start": 2025,
+        "end": 2026
+      },
+      "approach": "Comparison of RF, SVM, GTB and BiLSTM classifiers with ensemble consensus mapping",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "Sentinel-2",
+        "Sentinel-1",
+        "CHIRPS",
+        "NASADEM"
+      ],
+      "keywords": [
+        "irrigated area mapping",
+        "machine learning",
+        "Upper Blue Nile",
+        "Sentinel-2",
+        "Sentinel-1 SAR"
+      ],
+      "summary": "Compares four machine learning classifiers using Sentinel and rainfall data to map irrigated fields in the Upper Blue Nile Basin, producing a consensus irrigated-area map of about 588,545 ha.",
+      "added": "2026-11-16",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-16"
     },
     {
       "id": "10.1088/1748-9326/ae7e0c",
@@ -1904,16 +2047,16 @@
       "resources_checked": "2026-10-21"
     },
     {
-      "id": "10.22541/essoar.15011826/v1",
+      "id": "10.1029/2025ms005696",
       "title": "Improving Global Simulation of Irrigation within the Land Information System",
       "authors": "Rodell, M., Beaudoing, H.K., Mahanama, S.",
       "first_author": "Rodell",
       "year": 2026,
-      "date": "2026-11-06",
-      "venue": "Preprint",
-      "doi": "10.22541/essoar.15011826/v1",
+      "date": "2026-11-01",
+      "venue": "Journal of Advances in Modeling Earth Systems",
+      "doi": "10.1029/2025ms005696",
       "url": null,
-      "status": "preprint",
+      "status": "published",
       "type": "article",
       "questions": {
         "where": true,
@@ -1947,7 +2090,8 @@
       "needs_review": false,
       "source": "agent",
       "resources": [],
-      "resources_checked": "2026-11-09"
+      "resources_checked": "2026-11-09",
+      "note": "Peer-reviewed version of a preprint previously listed (10.22541/essoar.15011826/v1)."
     },
     {
       "id": "10.1007/s00271-026-01142-0",
@@ -2046,6 +2190,52 @@
       "resources_checked": "2026-10-21"
     },
     {
+      "id": "10.3390/rs18213850",
+      "title": "Irrigation Channel Mapping from Very High-Resolution Satellite Imagery and LiDAR-Derived Digital Elevation Models",
+      "authors": "Selkowitz, D.J., Heldmyer, A.J., Taylor, N., et al.",
+      "first_author": "Selkowitz",
+      "year": 2026,
+      "date": "2026-11-09",
+      "venue": "Remote Sensing",
+      "doi": "10.3390/rs18213850",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": true,
+        "when": false,
+        "how_much": false
+      },
+      "domain": "San Luis Valley, Colorado, USA",
+      "region": "North America",
+      "scale": "regional",
+      "period": null,
+      "approach": "U-Net CNN, Hessian filter, geomorphons and XGBoost for channel mapping",
+      "methods": [
+        "imagery",
+        "ml"
+      ],
+      "data": [
+        "WorldView very high-resolution imagery",
+        "1 m LiDAR-derived DEM",
+        "USGS NHDPlus High Resolution",
+        "Colorado Division of Water Resources irr"
+      ],
+      "keywords": [
+        "irrigation channels",
+        "very high-resolution imagery",
+        "LiDAR",
+        "deep learning",
+        "San Luis Valley"
+      ],
+      "summary": "The study maps irrigation channels in Colorado's San Luis Valley by combining WorldView imagery, LiDAR elevation data, and machine learning, finding more channels than existing inventories.",
+      "added": "2026-11-16",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-16"
+    },
+    {
       "id": "10.1016/j.agwat.2026.110887",
       "title": "A two-soil-layer agro-hydrological model for irrigation requirements: Evaluation and trends in the Po River basin",
       "authors": "Shahmohammadi, A., Tamea, S.",
@@ -2102,6 +2292,48 @@
         }
       ],
       "resources_checked": "2026-11-09"
+    },
+    {
+      "id": "10.1029/2026wr044352",
+      "title": "Irrigation as a Crop Buffer and Its Contrasting Hydrologic Impacts Across the Mississippi River Basin Using an Integrated Hydrology‐Crop‐Irrigation Model",
+      "authors": "Shrestha, A., POKHREL, Y.N., Jia, M., et al.",
+      "first_author": "Shrestha",
+      "year": 2026,
+      "date": "2026-11-01",
+      "venue": "Water Resources Research",
+      "doi": "10.1029/2026wr044352",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "Mississippi River Basin, USA (High Plains Aquifer and Mississippi Alluvial Plain",
+      "region": "North America",
+      "scale": "regional",
+      "period": null,
+      "approach": "Enhanced CLM5 with observation-constrained surface water and groundwater irrigation scheme",
+      "methods": [
+        "model"
+      ],
+      "data": [
+        "Community Land Model version 5 (CLM5)"
+      ],
+      "keywords": [
+        "irrigation",
+        "crop yield buffer",
+        "groundwater depletion",
+        "Community Land Model",
+        "Mississippi River Basin"
+      ],
+      "summary": "An enhanced CLM5 model shows irrigation buffers crop yields against drought in the Mississippi basin, with groundwater sustaining gains but causing depletion in the High Plains Aquifer.",
+      "added": "2026-11-16",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-16"
     },
     {
       "id": "10.3389/frsen.2026.1895172",
@@ -2339,6 +2571,55 @@
       "source": "agent",
       "resources": [],
       "resources_checked": "2026-10-21"
+    },
+    {
+      "id": "10.1029/2026ef009289",
+      "title": "China's Irrigation‐Induced Evapotranspiration Largely Returns to Land as Precipitation Through Atmospheric Recycling",
+      "authors": "Zhang, L., Che, T., Zhang, K., et al.",
+      "first_author": "Zhang",
+      "year": 2026,
+      "date": "2026-11-01",
+      "venue": "Earth's Future",
+      "doi": "10.1029/2026ef009289",
+      "url": null,
+      "status": "published",
+      "type": "article",
+      "questions": {
+        "where": false,
+        "when": false,
+        "how_much": true
+      },
+      "domain": "China",
+      "region": "Asia",
+      "scale": "national",
+      "period": {
+        "start": 2000,
+        "end": 2020
+      },
+      "approach": "Satellite ET minus ERA5-Land baseline residual, calibrated to prefecture statistics, with Lagrangian",
+      "methods": [
+        "et",
+        "model"
+      ],
+      "data": [
+        "Satellite-based evapotranspiration produ",
+        "ERA5-Land",
+        "Prefecture-level irrigation water consum",
+        "Lagrangian moisture tracking model"
+      ],
+      "keywords": [
+        "irrigation-induced evapotranspiration",
+        "moisture recycling",
+        "precipitation attribution",
+        "irrigation water consumption",
+        "China"
+      ],
+      "summary": "Estimates China's irrigation-induced evapotranspiration from satellite and reanalysis residuals and tracks where that vapor returns as precipitation, mostly over land.",
+      "added": "2026-11-16",
+      "needs_review": false,
+      "source": "agent",
+      "resources": [],
+      "resources_checked": "2026-11-16"
     },
     {
       "id": "10.3390/agronomy16212081",
